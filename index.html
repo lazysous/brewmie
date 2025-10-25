@@ -3072,8 +3072,11 @@ function updateAuthUI() {
 
 // Initialize app interface regardless of auth state
 async function initializeAppInterface() {
+        console.log('Starting app initialization...');
+
     // Set up machine profile first
     updateMachineProfile();
+        console.log('Machine profile updated');
     
     // Initialize tamper settings based on saved state
     if (brewmieData.tampType === 'spring') {

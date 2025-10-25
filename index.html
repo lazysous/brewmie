@@ -6788,20 +6788,25 @@ function openPrivacyModal() {
 document.addEventListener('DOMContentLoaded', async () => {
     loadData();
     
-    // Initialize Google Auth and cloud sync
-    // Don't wait for Google Auth if SDK hasn't loaded yet
+    // Initialize the app first - don't wait for auth
+    initializeAppInterface();
+    
+    // Initialize Google Auth in background (don't await)
     if (googleAuthReady) {
-        await initializeGoogleAuth();
+        initializeGoogleAuth(); // Remove await
     } else if (!initializingAuth) {
-        // Fallback to anonymous if Google Auth never loads
+        initializeAnonymousUser(); // Initialize anonymous immediately
+        // Still set timeout as fallback
         setTimeout(() => {
             if (!googleAuthReady && !initializingAuth) {
-                console.log('Google Auth timeout - proceeding with anonymous mode');
-                initializeAnonymousUser();
+                console.log('Google Auth timeout - already in anonymous mode');
             }
         }, 3000);
     }
-    
+});
+
+// Create new function for app interface initialization
+function initializeAppInterface() {
     // Set up machine profile first
     updateMachineProfile();
     
@@ -6832,7 +6837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     // Load weather with proper error handling
-    await loadWeather();
+    loadWeather();
     
     updateWelcomeMessage();
     loadInputSettings();
@@ -7008,7 +7013,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Regular updates
     setInterval(updateWelcomeMessage, 60000);
     setInterval(loadWeather, 600000);
-});
+}
 </script>
 </body>
 </html>

@@ -10,6 +10,7 @@
 
 <!-- Supabase Backend -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1765,8 +1766,28 @@ input[type=number] { -moz-appearance: textfield; }
 <div class="app">
     <!-- Header -->
     <header class="header">
-    <img src="https://raw.githubusercontent.com/lazysous/logo/main/BM-logo-full-white.png" alt="Brewmie" style="height: 36px; width: auto;">
-    <div class="brand-subtitle"><a href="https://lazysous.app" target="_blank">By Lazy Sous</a></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <div style="text-align: center; flex: 1;">
+            <img src="https://raw.githubusercontent.com/lazysous/logo/main/BM-logo-full-white.png" alt="Brewmie" style="height: 36px; width: auto;">
+            <div class="brand-subtitle"><a href="https://lazysous.app" target="_blank">By Lazy Sous</a></div>
+        </div>
+        <div id="auth-container" style="position: absolute; right: 20px; top: 16px;">
+            <div id="signed-out-state">
+                <button id="google-sign-in-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 14px;">🔒</span>
+                    <span>Sign In</span>
+                </button>
+            </div>
+            <div id="signed-in-state" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img id="user-avatar" src="" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3);">
+                    <button id="sign-out-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 
     <!-- Sub Header -->
@@ -2071,6 +2092,19 @@ input[type=number] { -moz-appearance: textfield; }
             </div>
 <!-- Footer Section -->
     <div style="margin: 16px 0 8px; text-align: center;">
+        <!-- Auth Promo -->
+        <div style="text-align: center; padding: 12px; background: var(--cream); border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border);" id="auth-promo-setup">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">
+                <span style="font-size: 16px;">🔄</span> Keep your brewing data safe
+            </div>
+            <div style="font-size: 11px; color: var(--text-tertiary); margin-bottom: 8px;">
+                Sign in to sync your shots, settings, and insights across all devices
+            </div>
+            <button onclick="signInWithGoogle()" style="background: var(--accent-green); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer;">
+                Sign In with Google
+            </button>
+        </div>
+        
         <a href="https://lazysous.app" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--black); border-radius: 18px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <img src="https://raw.githubusercontent.com/lazysous/logo/main/logo-transparent-white.png" alt="Lazy Sous" style="height: 18px; width: auto;">
             <span style="font-size: 13px; color: var(--white); font-weight: 500;">What's for dinner?</span>
@@ -2091,6 +2125,9 @@ input[type=number] { -moz-appearance: textfield; }
                 <span class="footer-icon-label" style="display: block; font-size: 10px; margin-top: 2px;">Privacy</span>
             </button>
         </div>
+        
+        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 10px;">© <span class="copyright-year-setup"></span> Lazy Sous.</div>
+    </div>
         
         <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 10px;">© <span class="copyright-year-setup"></span> Lazy Sous.</div>
     </div>
@@ -2278,6 +2315,19 @@ input[type=number] { -moz-appearance: textfield; }
 
     <!-- Footer Section -->
     <div style="margin: 16px 0 8px; text-align: center;">
+        <!-- Auth Promo -->
+        <div style="text-align: center; padding: 12px; background: var(--cream); border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border);" id="auth-promo-brew">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">
+                <span style="font-size: 16px;">🔄</span> Keep your brewing data safe
+            </div>
+            <div style="font-size: 11px; color: var(--text-tertiary); margin-bottom: 8px;">
+                Sign in to sync your shots, settings, and insights across all devices
+            </div>
+            <button onclick="signInWithGoogle()" style="background: var(--accent-green); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer;">
+                Sign In with Google
+            </button>
+        </div>
+        
         <a href="https://lazysous.app" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--black); border-radius: 18px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <img src="https://raw.githubusercontent.com/lazysous/logo/main/logo-transparent-white.png" alt="Lazy Sous" style="height: 18px; width: auto;">
             <span style="font-size: 13px; color: var(--white); font-weight: 500;">What's for dinner?</span>
@@ -2374,6 +2424,19 @@ input[type=number] { -moz-appearance: textfield; }
         </div>
 <!-- Footer Section -->
     <div style="margin: 16px 0 8px; text-align: center;">
+        <!-- Auth Promo -->
+        <div style="text-align: center; padding: 12px; background: var(--cream); border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border);" id="auth-promo-insights">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">
+                <span style="font-size: 16px;">🔄</span> Keep your brewing data safe
+            </div>
+            <div style="font-size: 11px; color: var(--text-tertiary); margin-bottom: 8px;">
+                Sign in to sync your shots, settings, and insights across all devices
+            </div>
+            <button onclick="signInWithGoogle()" style="background: var(--accent-green); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer;">
+                Sign In with Google
+            </button>
+        </div>
+        
         <a href="https://lazysous.app" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--black); border-radius: 18px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <img src="https://raw.githubusercontent.com/lazysous/logo/main/logo-transparent-white.png" alt="Lazy Sous" style="height: 18px; width: auto;">
             <span style="font-size: 13px; color: var(--white); font-weight: 500;">What's for dinner?</span>
@@ -2616,8 +2679,10 @@ const SUPABASE_URL = 'https://evzvfmviodlpjuewumlp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2enZmbXZpb2RscGp1ZXd1bWxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNDk1MDAsImV4cCI6MjA3MzgyNTUwMH0.6WJoVdjl__MKh8WNygrmkslnZm-JIDbvIPbXfrZa4hQ';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Anonymous user management
+// User management
 let currentUserId = null;
+let currentUser = null;
+let isSignedIn = false;
 
 // ML Model Storage
 let mlModel = null;
@@ -2830,7 +2895,180 @@ function applyPersonalPreferences(baseRecommendation, confidence) {
     return personalAdjustment;
 }
 
+// Google Auth Configuration
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // You'll need to set this
+
+async function initializeGoogleAuth() {
+    try {
+        await new Promise((resolve) => {
+            window.google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleGoogleSignIn,
+                auto_select: false,
+                cancel_on_tap_outside: false
+            });
+            resolve();
+        });
+        
+        // Check if user is already signed in
+        const savedUser = localStorage.getItem('brewmie_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            isSignedIn = true;
+            await initializeUser();
+            updateAuthUI();
+        } else {
+            // Try anonymous mode
+            await initializeAnonymousUser();
+        }
+        
+        // Set up auth UI
+        document.getElementById('google-sign-in-btn').addEventListener('click', signInWithGoogle);
+        document.getElementById('sign-out-btn').addEventListener('click', signOut);
+        
+    } catch (error) {
+        console.error('Google Auth init error:', error);
+        await initializeAnonymousUser();
+    }
+}
+
+async function handleGoogleSignIn(response) {
+    try {
+        const decoded = parseJWT(response.credential);
+        currentUser = {
+            id: decoded.sub,
+            email: decoded.email,
+            name: decoded.name,
+            picture: decoded.picture
+        };
+        
+        isSignedIn = true;
+        localStorage.setItem('brewmie_user', JSON.stringify(currentUser));
+        
+        await initializeUser();
+        updateAuthUI();
+        
+        showAlert(`Welcome ${currentUser.name}! Your data will now sync across devices.`, 'success');
+        
+    } catch (error) {
+        console.error('Sign in error:', error);
+        showAlert('Sign in failed. Please try again.', 'error');
+    }
+}
+
+function parseJWT(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+}
+
+function signInWithGoogle() {
+    window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed()) {
+            // Fallback to popup
+            window.google.accounts.id.renderButton(
+                document.getElementById('google-sign-in-btn'),
+                { theme: 'outline', size: 'medium' }
+            );
+        }
+    });
+}
+
+async function signOut() {
+    try {
+        currentUser = null;
+        currentUserId = null;
+        isSignedIn = false;
+        localStorage.removeItem('brewmie_user');
+        
+        // Switch to anonymous mode
+        await initializeAnonymousUser();
+        updateAuthUI();
+        
+        showAlert('Signed out successfully', 'info');
+        
+    } catch (error) {
+        console.error('Sign out error:', error);
+    }
+}
+
+function updateAuthUI() {
+    const signedInState = document.getElementById('signed-in-state');
+    const signedOutState = document.getElementById('signed-out-state');
+    
+    if (isSignedIn && currentUser) {
+        signedInState.style.display = 'flex';
+        signedOutState.style.display = 'none';
+        document.getElementById('user-avatar').src = currentUser.picture;
+    } else {
+        signedInState.style.display = 'none';
+        signedOutState.style.display = 'block';
+    }
+    
+    updateAuthPromo();
+}
+
+function updateAuthPromo() {
+    const promos = ['auth-promo-setup', 'auth-promo-brew', 'auth-promo-insights'];
+    promos.forEach(promoId => {
+        const promo = document.getElementById(promoId);
+        if (promo) {
+            promo.style.display = isSignedIn ? 'none' : 'block';
+        }
+    });
+}
+    
 async function initializeUser() {
+    try {
+        if (isSignedIn && currentUser) {
+            // Signed-in user
+            let { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('google_id', currentUser.id)
+                .single();
+            
+            if (!profile) {
+                const { data: newProfile, error } = await supabase
+                    .from('profiles')
+                    .insert([{
+                        google_id: currentUser.id,
+                        email: currentUser.email,
+                        name: currentUser.name,
+                        algorithm_version: '3.4'
+                    }])
+                    .select()
+                    .single();
+                
+                if (error) throw error;
+                profile = newProfile;
+            }
+            
+            currentUserId = profile.id;
+            console.log('Signed-in user initialized:', currentUserId);
+            
+            // Load user's cloud data
+            await loadUserDataFromCloud();
+            
+        } else {
+            // Anonymous user fallback
+            await initializeAnonymousUser();
+        }
+        
+        // Load ML model
+        await loadMLModel();
+        await loadCommunityData();
+        
+    } catch (error) {
+        console.error('User init error:', error);
+        await initializeAnonymousUser();
+    }
+}
+
+async function initializeAnonymousUser() {
     let deviceId = localStorage.getItem('brewmie_device_id');
     if (!deviceId) {
         deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -2859,19 +3097,10 @@ async function initializeUser() {
         }
         
         currentUserId = profile.id;
-        console.log('User initialized:', currentUserId);
-        
-        // Load ML model instead of just checking for it
-        await loadMLModel();
-        
-        // Load community patterns for better ML
-        await loadCommunityData();
-        
-        // Load user's personal data from cloud
-        await loadUserShotsFromCloud();
+        console.log('Anonymous user initialized:', currentUserId);
         
     } catch (error) {
-        console.error('User init error:', error);
+        console.error('Anonymous user init error:', error);
     }
 }
 
@@ -2967,11 +3196,58 @@ async function syncToCloud() {
     }
 }
 
+async function loadUserDataFromCloud() {
+    if (!currentUserId || !isSignedIn) return;
+    
+    try {
+        // Load complete user data from cloud
+        const { data: userData, error } = await supabase
+            .from('user_data')
+            .select('*')
+            .eq('user_id', currentUserId)
+            .single();
+        
+        if (error && error.code !== 'PGRST116') throw error;
+        
+        if (userData && userData.data) {
+            const cloudData = userData.data;
+            
+            // Merge cloud data with local data
+            if (cloudData.shots && cloudData.shots.length > 0) {
+                const localShotIds = new Set(brewmieData.shots.map(s => s.id));
+                const newShots = cloudData.shots.filter(shot => !localShotIds.has(shot.id));
+                
+                if (newShots.length > 0) {
+                    brewmieData.shots = [...newShots, ...brewmieData.shots]
+                        .sort((a, b) => b.id - a.id)
+                        .slice(0, 100);
+                }
+            }
+            
+            // Merge settings (prioritize cloud for signed-in users)
+            if (cloudData.machine) brewmieData.machine = { ...brewmieData.machine, ...cloudData.machine };
+            if (cloudData.grinder) brewmieData.grinder = { ...brewmieData.grinder, ...cloudData.grinder };
+            if (cloudData.beans) brewmieData.beans = { ...brewmieData.beans, ...cloudData.beans };
+            if (cloudData.maintenance) brewmieData.maintenance = { ...brewmieData.maintenance, ...cloudData.maintenance };
+            if (cloudData.personalWeights) brewmieData.personalWeights = { ...brewmieData.personalWeights, ...cloudData.personalWeights };
+            
+            console.log('User data loaded from cloud');
+            saveData();
+        }
+        
+        // Also load shots for community ML
+        await loadUserShotsFromCloud();
+        
+    } catch (error) {
+        console.error('Failed to load user data from cloud:', error);
+    }
+}
+
 async function loadUserShotsFromCloud() {
     if (!currentUserId) return;
     
     try {
-        // Get user's last 30 shots from cloud
+        // Get user's last 30 shots from cloud (for community ML)
         const { data: cloudShots, error } = await supabase
             .from('shots')
             .select('*')
@@ -2982,20 +3258,41 @@ async function loadUserShotsFromCloud() {
         if (error) throw error;
         if (!cloudShots || cloudShots.length === 0) return;
         
-        // Merge with local shots (avoid duplicates)
-        const localShotIds = new Set(brewmieData.shots.map(s => s.id));
-        const newShots = cloudShots.filter(shot => !localShotIds.has(shot.id));
-        
-        if (newShots.length > 0) {
-            console.log(`Loading ${newShots.length} shots from cloud`);
-            brewmieData.shots = [...newShots, ...brewmieData.shots]
-                .sort((a, b) => b.id - a.id)
-                .slice(0, 100);
-            saveData();
-        }
+        // This is just for ML - actual user data sync happens above
+        console.log(`Loaded ${cloudShots.length} shots for ML patterns`);
         
     } catch (error) {
         console.error('Failed to load cloud shots:', error);
+    }
+}
+
+async function syncUserDataToCloud() {
+    if (!currentUserId || !isSignedIn) return;
+    
+    try {
+        const userDataToSync = {
+            machine: brewmieData.machine,
+            grinder: brewmieData.grinder,
+            beans: brewmieData.beans,
+            maintenance: brewmieData.maintenance,
+            personalWeights: brewmieData.personalWeights,
+            shots: brewmieData.shots.slice(0, 50), // Sync last 50 shots
+            lastSynced: new Date().toISOString()
+        };
+        
+        const { error } = await supabase
+            .from('user_data')
+            .upsert({
+                user_id: currentUserId,
+                data: userDataToSync,
+                updated_at: new Date().toISOString()
+            });
+        
+        if (error) throw error;
+        console.log('User data synced to cloud');
+        
+    } catch (error) {
+        console.error('Failed to sync user data to cloud:', error);
     }
 }
 
@@ -6219,6 +6516,11 @@ function saveData() {
         
         // Sync to cloud in background (don't wait)
         if (currentUserId) {
+            if (isSignedIn) {
+                // Full user data sync for signed-in users
+                syncUserDataToCloud();
+            }
+            // Anonymous shot sync for ML
             syncToCloud();
         }
         
@@ -6427,8 +6729,8 @@ function openPrivacyModal() {
 document.addEventListener('DOMContentLoaded', async () => {
     loadData();
     
-    // Initialize cloud sync
-    await initializeUser();
+    // Initialize Google Auth and cloud sync
+    await initializeGoogleAuth();
     
     // Set up machine profile first
     updateMachineProfile();

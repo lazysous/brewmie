@@ -10,7 +10,7 @@
 
 <!-- Supabase Backend -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleAuthLoaded()" onerror="onGoogleAuthError()"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2681,6 +2681,8 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // User management
 let currentUserId = null;
+let googleAuthReady = false;
+let initializingAuth = false;
 let currentUser = null;
 let isSignedIn = false;
 
@@ -2897,11 +2899,30 @@ function applyPersonalPreferences(baseRecommendation, confidence) {
 
 // Google Auth Configuration
 const GOOGLE_CLIENT_ID = '905052120391-em83388c72qovj7peet0opjvh1nvp60o.apps.googleusercontent.com';
+// Google Auth SDK callback functions
+function onGoogleAuthLoaded() {
+    console.log('Google Auth SDK loaded successfully');
+    googleAuthReady = true;
+    if (!initializingAuth) {
+        initializeGoogleAuth();
+    }
+}
 
+function onGoogleAuthError() {
+    console.warn('Google Auth SDK failed to load - continuing in offline mode');
+    googleAuthReady = false;
+    if (!initializingAuth) {
+        initializeAnonymousUser();
+    }
+}
+    
 async function initializeGoogleAuth() {
+    if (initializingAuth) return;
+    initializingAuth = true;
+    
     try {
         // Check if we're online and Google SDK loaded
-        if (navigator.onLine && window.google && window.google.accounts && window.google.accounts.id) {
+        if (navigator.onLine && googleAuthReady && window.google?.accounts?.id) {
             // Initialize Google Auth
             window.google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,
@@ -2916,21 +2937,16 @@ async function initializeGoogleAuth() {
                 currentUser = JSON.parse(savedUser);
                 isSignedIn = true;
                 await initializeUser();
-                updateAuthUI();
             } else {
                 await initializeAnonymousUser();
             }
             
-            // Set up auth UI
-            const signInBtn = document.getElementById('google-sign-in-btn');
-            const signOutBtn = document.getElementById('sign-out-btn');
-            
-            if (signInBtn) signInBtn.addEventListener('click', signInWithGoogle);
-            if (signOutBtn) signOutBtn.addEventListener('click', signOut);
+            updateAuthUI();
+            console.log('Google Auth initialized successfully');
             
         } else {
             // Offline or Google SDK failed - use anonymous mode
-            console.log('Google Auth unavailable (offline or SDK failed) - using anonymous mode');
+            console.log('Google Auth unavailable - using anonymous mode');
             
             // Check for existing signed-in user data
             const savedUser = localStorage.getItem('brewmie_user');
@@ -2938,32 +2954,33 @@ async function initializeGoogleAuth() {
                 currentUser = JSON.parse(savedUser);
                 isSignedIn = true;
                 await initializeUser();
-                updateAuthUI();
             } else {
                 await initializeAnonymousUser();
             }
             
-            // Disable auth UI when offline
-            const signInBtn = document.getElementById('google-sign-in-btn');
-            if (signInBtn) {
-                signInBtn.disabled = true;
-                signInBtn.textContent = 'Offline';
-                signInBtn.style.opacity = '0.5';
-            }
+            updateAuthUI();
         }
         
     } catch (error) {
         console.error('Google Auth init error:', error);
-        // Always fall back to anonymous mode
         await initializeAnonymousUser();
+        updateAuthUI();
+    } finally {
+        initializingAuth = false;
         
-        // Disable auth UI on error
+        // Set up auth UI event listeners
         const signInBtn = document.getElementById('google-sign-in-btn');
-        if (signInBtn) {
+        const signOutBtn = document.getElementById('sign-out-btn');
+        
+        if (signInBtn && googleAuthReady) {
+            signInBtn.addEventListener('click', signInWithGoogle);
+        } else if (signInBtn) {
             signInBtn.disabled = true;
-            signInBtn.textContent = 'Auth Error';
+            signInBtn.textContent = 'Offline';
             signInBtn.style.opacity = '0.5';
         }
+        
+        if (signOutBtn) signOutBtn.addEventListener('click', signOut);
     }
 }
 
@@ -3001,15 +3018,22 @@ function parseJWT(token) {
 }
 
 function signInWithGoogle() {
-    window.google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed()) {
-            // Fallback to popup
-            window.google.accounts.id.renderButton(
-                document.getElementById('google-sign-in-btn'),
-                { theme: 'outline', size: 'medium' }
-            );
-        }
-    });
+    if (!googleAuthReady || !window.google?.accounts?.id) {
+        showAlert('Google Sign In is not available. Please check your internet connection.', 'error');
+        return;
+    }
+    
+    try {
+        window.google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed()) {
+                console.log('Google Sign In prompt not displayed:', notification.getNotDisplayedReason());
+                showAlert('Sign in popup was blocked. Please allow popups and try again.', 'warning');
+            }
+        });
+    } catch (error) {
+        console.error('Sign in error:', error);
+        showAlert('Sign in failed. Please try again.', 'error');
+    }
 }
 
 async function signOut() {
@@ -6765,7 +6789,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadData();
     
     // Initialize Google Auth and cloud sync
-    await initializeGoogleAuth();
+    // Don't wait for Google Auth if SDK hasn't loaded yet
+    if (googleAuthReady) {
+        await initializeGoogleAuth();
+    } else if (!initializingAuth) {
+        // Fallback to anonymous if Google Auth never loads
+        setTimeout(() => {
+            if (!googleAuthReady && !initializingAuth) {
+                console.log('Google Auth timeout - proceeding with anonymous mode');
+                initializeAnonymousUser();
+            }
+        }, 3000);
+    }
     
     // Set up machine profile first
     updateMachineProfile();

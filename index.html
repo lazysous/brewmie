@@ -1889,79 +1889,45 @@ input[type=number] { -moz-appearance: textfield; }
                     </div>
                     
                     <div id="standalone-grinder-section" style="display: none;">
-                        <div class="setup-row">
-                            <div>
-                                <label class="setup-label">Grinder Brand</label>
-                                <div id="standalone-grinder-section" style="display: none;">
-                        <div class="setup-row">
-                            <div>
-                                <label class="setup-label">Grinder Brand</label>
-                                <input type="text" id="grinder-brand-input" class="setup-input" placeholder="e.g. Baratza" list="grinder-brands" onchange="updateGrinderBrand()">
-                                <datalist id="grinder-brands">
-                                    <option value="Baratza">
-                                    <option value="Eureka">
-                                    <option value="Niche">
-                                    <option value="Fellow">
-                                    <option value="DF64">
-                                    <option value="1Zpresso">
-                                    <option value="Comandante">
-                                    <option value="Breville">
-                                    <option value="Sage">
-                                    <option value="Rancilio">
-                                </datalist>
-                            </div>
-                            <div>
-                                <label class="setup-label">Grinder Model</label>
-                                <input type="text" id="grinder-model-input" class="setup-input" placeholder="e.g. Sette 270Wi" onchange="updateCustomGrinder()">
-                            </div>
+                    <div class="setup-row">
+                        <div>
+                            <label class="setup-label">Grinder Brand</label>
+                            <input type="text" id="grinder-brand-input" class="setup-input" placeholder="e.g. Baratza" list="grinder-brands" onchange="updateGrinderBrand()">
+                            <datalist id="grinder-brands">
+                                <option value="Baratza">
+                                <option value="Eureka">
+                                <option value="Niche">
+                                <option value="Fellow">
+                                <option value="DF64">
+                                <option value="1Zpresso">
+                                <option value="Comandante">
+                                <option value="Breville">
+                                <option value="Sage">
+                                <option value="Rancilio">
+                            </datalist>
                         </div>
-                        
-                        <div class="setup-row">
-                            <div>
-                                <label class="setup-label">Min Setting</label>
-                                <input type="number" id="grind-custom-min" class="setup-input" value="1" min="0" max="999" step="0.1" onchange="updateCustomGrinder()">
-                            </div>
-                            <div>
-                                <label class="setup-label">Max Setting</label>
-                                <input type="number" id="grind-custom-max" class="setup-input" value="40" min="1" max="999" step="0.1" onchange="updateCustomGrinder()">
-                            </div>
-                        </div>
-                        
-                        <div style="font-size: 10px; color: var(--text-tertiary); text-align: center; margin-top: 8px;">
-                            Popular models will auto-fill settings. Custom entries welcome!
+                        <div>
+                            <label class="setup-label">Grinder Model</label>
+                            <input type="text" id="grinder-model-input" class="setup-input" placeholder="e.g. Sette 270Wi" onchange="updateCustomGrinder()">
                         </div>
                     </div>
-                            </div>
-                            <div>
-                                <label class="setup-label">Grinder Model</label>
-                                <select id="grinder-model" class="setup-input" onchange="updateGrinderProfile()">
-                                    <option value="">Select model...</option>
-                                </select>
-                            </div>
+                    
+                    <div class="setup-row">
+                        <div>
+                            <label class="setup-label">Min Setting</label>
+                            <input type="number" id="grind-custom-min" class="setup-input" value="1" min="0" max="999" step="0.1" onchange="updateCustomGrinder()">
                         </div>
-                        
-                        <div id="custom-grind-range" style="display: none;">
-                            <div class="setup-row">
-                                <div>
-                                    <label class="setup-label">Min Grind Setting</label>
-                                    <input type="number" id="grind-custom-min" class="setup-input" value="1" min="0" max="100">
-                                </div>
-                                <div>
-                                    <label class="setup-label">Max Grind Setting</label>
-                                    <input type="number" id="grind-custom-max" class="setup-input" value="50" min="1" max="100">
-                                </div>
-                            </div>
-                            <div style="font-size: 10px; color: var(--text-tertiary); text-align: center; margin-top: 8px;">
-                                Enter your grinder's actual min/max settings
-                            </div>
+                        <div>
+                            <label class="setup-label">Max Setting</label>
+                            <input type="number" id="grind-custom-max" class="setup-input" value="40" min="1" max="999" step="0.1" onchange="updateCustomGrinder()">
                         </div>
-                        
-                        <div id="grinder-info" style="display: none; margin-top: 12px; padding: 8px; background: var(--cream); border-radius: 6px;">
-                            <div style="font-size: 11px; color: var(--text-secondary);">
-                                <span id="grinder-range-info">Range: 1-30</span> • 
-                                <span id="grinder-type-info">Stepped adjustment</span>
+                    </div>
+                    
+                    <div style="font-size: 10px; color: var(--text-tertiary); text-align: center; margin-top: 8px;">
+                        Popular models will auto-fill settings. Custom entries welcome!
+                    </div>
+                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -6972,6 +6938,10 @@ function openPrivacyModal() {
 // Initialize Application
 document.addEventListener('DOMContentLoaded', async () => {
     loadData();
+    
+    // Ensure brew tab is visible on startup
+    document.getElementById('brew-tab').classList.add('active');
+    document.getElementById('brew-nav').classList.add('active');
     
     // Initialize the app first - don't wait for auth
     await initializeAppInterface();

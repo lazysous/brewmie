@@ -10,7 +10,7 @@
 
 <!-- Supabase Backend -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleAuthLoaded()" onerror="onGoogleAuthError()"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2686,6 +2686,16 @@ let initializingAuth = false;
 let currentUser = null;
 let isSignedIn = false;
 
+// Check if Google Auth SDK loaded
+window.addEventListener('load', () => {
+    if (window.google?.accounts?.id) {
+        googleAuthReady = true;
+        console.log('Google Auth SDK loaded successfully');
+    } else {
+        console.log('Google Auth SDK not available - using anonymous mode');
+    }
+});
+
 // ML Model Storage
 let mlModel = null;
 let personalModel = null;
@@ -2899,22 +2909,6 @@ function applyPersonalPreferences(baseRecommendation, confidence) {
 
 // Google Auth Configuration
 const GOOGLE_CLIENT_ID = '905052120391-em83388c72qovj7peet0opjvh1nvp60o.apps.googleusercontent.com';
-// Google Auth SDK callback functions
-function onGoogleAuthLoaded() {
-    console.log('Google Auth SDK loaded successfully');
-    googleAuthReady = true;
-    if (!initializingAuth) {
-        initializeGoogleAuth();
-    }
-}
-
-function onGoogleAuthError() {
-    console.warn('Google Auth SDK failed to load - continuing in offline mode');
-    googleAuthReady = false;
-    if (!initializingAuth) {
-        initializeAnonymousUser();
-    }
-}
     
 async function initializeGoogleAuth() {
     if (initializingAuth) return;

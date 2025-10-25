@@ -2900,15 +2900,54 @@ const GOOGLE_CLIENT_ID = '905052120391-em83388c72qovj7peet0opjvh1nvp60o.apps.goo
 
 async function initializeGoogleAuth() {
     try {
-        await new Promise((resolve) => {
-            window.google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
-                callback: handleGoogleSignIn,
-                auto_select: false,
-                cancel_on_tap_outside: false
-            });
-            resolve();
+        // Wait for Google SDK to fully load
+        await new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 50; // 5 seconds max wait
+            
+            const checkGoogleReady = () => {
+                attempts++;
+                if (window.google && window.google.accounts && window.google.accounts.id) {
+                    resolve();
+                } else if (attempts < maxAttempts) {
+                    setTimeout(checkGoogleReady, 100);
+                } else {
+                    reject(new Error('Google SDK failed to load'));
+                }
+            };
+            
+            checkGoogleReady();
         });
+        
+        // Now initialize Google Auth
+        window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleSignIn,
+            auto_select: false,
+            cancel_on_tap_outside: false
+        });
+        
+        // Check if user is already signed in
+        const savedUser = localStorage.getItem('brewmie_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            isSignedIn = true;
+            await initializeUser();
+            updateAuthUI();
+        } else {
+            // Try anonymous mode
+            await initializeAnonymousUser();
+        }
+        
+        // Set up auth UI
+        document.getElementById('google-sign-in-btn').addEventListener('click', signInWithGoogle);
+        document.getElementById('sign-out-btn').addEventListener('click', signOut);
+        
+    } catch (error) {
+        console.error('Google Auth init error:', error);
+        await initializeAnonymousUser();
+    }
+}
         
         // Check if user is already signed in
         const savedUser = localStorage.getItem('brewmie_user');

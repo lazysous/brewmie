@@ -3070,6 +3070,194 @@ function updateAuthUI() {
     updateAuthPromo();
 }
 
+// Initialize app interface regardless of auth state
+async function initializeAppInterface() {
+    // Set up machine profile first
+    updateMachineProfile();
+    
+    // Initialize tamper settings based on saved state
+    if (brewmieData.tampType === 'spring') {
+        selectTampType('spring');
+    } else if (brewmieData.tampType === 'automatic') {
+        selectTampType('automatic');
+    } else {
+        selectTampType('manual');
+    }
+    
+    // Load weather with proper error handling
+    await loadWeather();
+    
+    // Initialize all UI elements
+    updateWelcomeMessage();
+    loadInputSettings();
+    updateTargets();
+    updateInsights();
+    updateSessionLabel();
+    checkSetupReminder();
+    checkMaintenanceAlerts();
+    updateMaintenanceNotes();
+    updateBeanLabel();
+    
+    // Initialize roast date if not set
+    const roastDateInput = document.getElementById('roast-date');
+    if (roastDateInput) {
+        if (!brewmieData.beans.roastDate) {
+            const twoWeeksAgo = new Date();
+            twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+            roastDateInput.value = twoWeeksAgo.toISOString().split('T')[0];
+            brewmieData.beans.roastDate = roastDateInput.value;
+        } else {
+            roastDateInput.value = brewmieData.beans.roastDate;
+        }
+    }
+    updateRoastAge();
+    
+    // Setup event listeners for all input changes
+    const inputIds = ['shot-temp', 'bean-brand', 'bean-type', 'roast-date', 'roast-select', 
+                      'filter-date', 'descale-date', 'flush-date', 'basket-size', 'basket-type', 
+                      'spring-min', 'spring-max', 'auto-min', 'auto-max'];
+    inputIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', (e) => {
+                if (id === 'shot-temp') {
+                    brewmieData.machine.shotTemp = parseInt(e.target.value) || 93;
+                } else if (id === 'bean-brand') {
+                    brewmieData.beans.brand = e.target.value;
+                } else if (id === 'bean-type') {
+                    brewmieData.beans.type = e.target.value;
+                } else if (id === 'roast-date') {
+                    brewmieData.beans.roastDate = e.target.value;
+                    checkSetupReminder();
+                } else if (id === 'roast-select') {
+                    brewmieData.beans.roastLevel = e.target.value;
+                } else if (id === 'basket-size') {
+                    brewmieData.machine.basketSize = e.target.value;
+                    updateMachineProfile();
+                } else if (id === 'basket-type') {
+                    brewmieData.machine.basketType = e.target.value;
+                } else if (id === 'spring-min') {
+                    brewmieData.springMin = parseInt(e.target.value) || 0;
+                    const springInput = document.getElementById('spring-input');
+                    if (springInput) springInput.min = brewmieData.springMin;
+                } else if (id === 'spring-max') {
+                    brewmieData.springMax = parseInt(e.target.value) || 99;
+                    const springInput = document.getElementById('spring-input');
+                    if (springInput) springInput.max = brewmieData.springMax;
+                } else if (id === 'auto-min') {
+                    brewmieData.autoMin = parseInt(e.target.value) || 0;
+                } else if (id === 'auto-max') {
+                    brewmieData.autoMax = parseInt(e.target.value) || 30;
+                } else if (id.includes('date')) {
+                    const type = id.replace('-date', '');
+                    brewmieData.maintenance[`last${type.charAt(0).toUpperCase() + type.slice(1)}`] = e.target.value;
+                    // Reset shot count
+                    brewmieData.maintenance.shotCounts[`since${type.charAt(0).toUpperCase() + type.slice(1)}`] = 0;
+                    checkSetupReminder();
+                    checkMaintenanceAlerts();
+                    updateMaintenanceNotes();
+                }
+                
+                updateTargets();
+                saveData();
+            });
+        }
+    });
+    
+    // Load saved values into setup fields
+    if (brewmieData.machine.brand) {
+        document.getElementById('machine-brand').value = brewmieData.machine.brand;
+        updateMachineModels();
+        setTimeout(() => {
+            if (brewmieData.machine.model) {
+                document.getElementById('machine-model').value = brewmieData.machine.model;
+            }
+        }, 100);
+    }
+    
+    if (brewmieData.machine.basketSize) {
+        document.getElementById('basket-size').value = brewmieData.machine.basketSize;
+    }
+    
+    if (brewmieData.machine.basketType) {
+        document.getElementById('basket-type').value = brewmieData.machine.basketType;
+    }
+    
+    if (brewmieData.machine.shotTemp) {
+        document.getElementById('shot-temp').value = brewmieData.machine.shotTemp;
+    }
+    
+    if (brewmieData.beans.brand) {
+        document.getElementById('bean-brand').value = brewmieData.beans.brand;
+    }
+    
+    if (brewmieData.beans.type) {
+        document.getElementById('bean-type').value = brewmieData.beans.type;
+    }
+    
+    if (brewmieData.beans.roastLevel) {
+        document.getElementById('roast-select').value = brewmieData.beans.roastLevel;
+    }
+    
+    if (brewmieData.maintenance.lastFilter) {
+        document.getElementById('filter-date').value = brewmieData.maintenance.lastFilter;
+    }
+    
+    if (brewmieData.maintenance.lastDescale) {
+        document.getElementById('descale-date').value = brewmieData.maintenance.lastDescale;
+    }
+    
+    if (brewmieData.maintenance.lastFlush) {
+        document.getElementById('flush-date').value = brewmieData.maintenance.lastFlush;
+    }
+    
+    // Load spring tamper settings
+    if (brewmieData.springMin !== undefined) {
+        document.getElementById('spring-min').value = brewmieData.springMin;
+        const springInput = document.getElementById('spring-input');
+        if (springInput) springInput.min = brewmieData.springMin;
+    }
+    
+    if (brewmieData.springMax !== undefined) {
+        document.getElementById('spring-max').value = brewmieData.springMax;
+        const springInput = document.getElementById('spring-input');
+        if (springInput) springInput.max = brewmieData.springMax;
+    }
+    
+    if (brewmieData.springPressure !== undefined) {
+        const springInput = document.getElementById('spring-input');
+        if (springInput) springInput.value = brewmieData.springPressure;
+    }
+    
+    // Load automatic tamper settings
+    if (brewmieData.autoMin !== undefined) {
+        document.getElementById('auto-min').value = brewmieData.autoMin;
+    }
+    
+    if (brewmieData.autoMax !== undefined) {
+        document.getElementById('auto-max').value = brewmieData.autoMax;
+    }
+    
+    if (brewmieData.autoPressure !== undefined && brewmieData.tampType === 'automatic') {
+        document.getElementById('auto-tamp-display').textContent = brewmieData.autoPressure;
+    }
+    
+    // Initialize units
+    if (brewmieData.units) {
+        toggleUnits(brewmieData.units);
+    }
+    
+    // Set initial phase
+    setBrewingPhase('pre-brew');
+    
+    // Add click handler for manual weather refresh
+    document.getElementById('weather-strip').addEventListener('click', () => {
+        loadWeather();
+    });
+    
+    console.log('App interface initialized successfully');
+}
+    
 function updateAuthPromo() {
     const promos = ['auth-promo-setup', 'auth-promo-brew', 'auth-promo-insights'];
     promos.forEach(promoId => {
@@ -6789,20 +6977,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadData();
     
     // Initialize the app first - don't wait for auth
-    initializeAppInterface();
+    await initializeAppInterface();
     
     // Initialize Google Auth in background (don't await)
-    if (googleAuthReady) {
-        initializeGoogleAuth(); // Remove await
-    } else if (!initializingAuth) {
-        initializeAnonymousUser(); // Initialize anonymous immediately
-        // Still set timeout as fallback
-        setTimeout(() => {
-            if (!googleAuthReady && !initializingAuth) {
-                console.log('Google Auth timeout - already in anonymous mode');
+    setTimeout(async () => {
+        try {
+            if (googleAuthReady && window.google?.accounts?.id) {
+                await initializeGoogleAuth();
+            } else {
+                await initializeAnonymousUser();
             }
-        }, 3000);
-    }
+            updateAuthUI();
+        } catch (error) {
+            console.error('Auth initialization error:', error);
+            await initializeAnonymousUser();
+            updateAuthUI();
+        }
+    }, 100);
 });
 
 // Create new function for app interface initialization

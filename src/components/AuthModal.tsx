@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { Capacitor } from '@capacitor/core'
 import type { AppAction } from '../types'
-import { signInWithEmail, signUpWithEmail } from '../lib/supabase'
+import { signInWithEmail, signUpWithEmail, signInWithApple, signInWithGoogle } from '../lib/supabase'
+
+const isNative = Capacitor.isNativePlatform()
 
 interface AuthModalProps {
   open: boolean
@@ -47,6 +50,42 @@ export function AuthModal({ open, onClose, dispatch }: AuthModalProps) {
     }
   }
 
+  async function handleApple() {
+    setError(null)
+    setLoading(true)
+    try {
+      const { data, error: err } = await signInWithApple()
+      if (err) throw err
+      if (data.user) {
+        dispatch({ type: 'SET_USER', payload: data.user.id })
+        onClose()
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Apple sign-in failed.'
+      setError(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleGoogle() {
+    setError(null)
+    setLoading(true)
+    try {
+      const { data, error: err } = await signInWithGoogle()
+      if (err) throw err
+      if (data.user) {
+        dispatch({ type: 'SET_USER', payload: data.user.id })
+        onClose()
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Google sign-in failed.'
+      setError(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="am-backdrop" onClick={onClose} role="dialog" aria-modal="true" aria-label="Sign in">
       <div className="am-sheet" onClick={(e) => e.stopPropagation()}>
@@ -58,6 +97,26 @@ export function AuthModal({ open, onClose, dispatch }: AuthModalProps) {
 
         {success ? (
           <p className="am-success">Account created. You're dialling in.</p>
+        ) : isNative ? (
+          <div className="am-native-buttons">
+            {error && <p className="am-error">{error}</p>}
+            <button
+              className="am-native-apple"
+              type="button"
+              disabled={loading}
+              onClick={handleApple}
+            >
+              {loading ? '…' : 'Continue with Apple'}
+            </button>
+            <button
+              className="am-native-google"
+              type="button"
+              disabled={loading}
+              onClick={handleGoogle}
+            >
+              {loading ? '…' : 'Continue with Google'}
+            </button>
+          </div>
         ) : (
           <form className="am-form" onSubmit={handleSubmit}>
             <label className="am-field">
@@ -223,6 +282,52 @@ export function AuthModal({ open, onClose, dispatch }: AuthModalProps) {
 
         .am-toggle:hover {
           color: var(--accent-green);
+        }
+
+        .am-native-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .am-native-apple {
+          height: 52px;
+          background: #000;
+          color: #fff;
+          border: none;
+          border-radius: 14px;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          cursor: pointer;
+          width: 100%;
+          transition: opacity 0.15s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .am-native-apple:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .am-native-google {
+          height: 52px;
+          background: #fff;
+          color: #1a1a1a;
+          border: 1.5px solid var(--border, #d1d5db);
+          border-radius: 14px;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          cursor: pointer;
+          width: 100%;
+          transition: opacity 0.15s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .am-native-google:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
       `}</style>
     </div>

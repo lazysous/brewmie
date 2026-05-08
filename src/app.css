@@ -1,0 +1,331 @@
+/* ─── Google Fonts ──────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600&display=swap');
+
+/* ─── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Palette */
+  --black: #1A1A1A;
+  --charcoal: #2C2C2C;
+  --grey-dark: #4A4A4A;
+  --grey-medium: #6A6A6A;
+  --grey-light: #9A9A9A;
+  --white: #FFFFFF;
+  --off-white: #F5F2EE;
+  --cream: #FAF8F5;
+
+  /* Brand accent */
+  --accent-green: #2D5016;
+  --gold: #FFD700;
+  --gold-dark: #D4A017;
+
+  /* Score tier colors */
+  --score-perfect: #D4A017;
+  --score-excellent: #2D5016;
+  --score-good: #6B7280;
+  --score-poor: #8B1A1A;
+
+  /* Roast age colors */
+  --roast-fresh: #D97706;
+  --roast-prime: #2D5016;
+  --roast-stale: #9CA3AF;
+  --roast-old: #8B1A1A;
+
+  /* Semantic text */
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-tertiary: #6A6A6A;
+
+  /* Borders */
+  --border: #DDD9D4;          /* warmer border -- less blue-grey */
+  --border-light: #EDE9E4;    /* warmer dividers */
+
+  /* Motion */
+  --transition: all 0.2s ease;
+
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-brand: 'Cormorant Garamond', Georgia, serif;
+
+  /* Layout */
+  --app-max-width: 428px;
+  --header-height: 56px;
+  --bottom-nav-height: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Elevation */
+  --shadow-sm: 0 1px 4px rgba(45, 30, 10, 0.07), 0 1px 2px rgba(45, 30, 10, 0.04);
+  --shadow-md: 0 4px 16px rgba(45, 30, 10, 0.10), 0 2px 6px rgba(45, 30, 10, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--cream);
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--charcoal);
+}
+
+/* ─── App container ─────────────────────────────────────────────────────────── */
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--app-max-width);
+  height: 100%;
+  background-color: var(--cream);
+  overflow: hidden;
+}
+
+/* ─── Screen content area ───────────────────────────────────────────────────── */
+.screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-bottom));
+  scroll-behavior: smooth;
+}
+
+.screen-top-pad {
+  padding-top: 12px;
+}
+
+/* ─── Scrollbar (webkit, visible on web) ────────────────────────────────────── */
+.screen-content::-webkit-scrollbar {
+  width: 3px;
+}
+
+.screen-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.screen-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* ─── Global interactive ────────────────────────────────────────────────────── */
+button {
+  font-family: var(--font-primary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-green) !important;
+  box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+}
+
+::selection {
+  background: rgba(45, 80, 22, 0.2);
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scoreReveal {
+  0%   { opacity: 0; transform: scale(0.5); }
+  70%  { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes brewingDot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
+@keyframes brewPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.02); }
+}
+
+/* ─── Utility classes ───────────────────────────────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Animations */
+.animate-fade-in  { animation: fadeIn 0.25s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.2s ease-out both; }
+.animate-score    { animation: scoreReveal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* Score tiers */
+.score-perfect  { color: var(--score-perfect); }
+.score-excellent { color: var(--score-excellent); }
+.score-good     { color: var(--score-good); }
+.score-poor     { color: var(--score-poor); }
+
+/* Typography scale */
+.text-xs   { font-size: 11px; }
+.text-sm   { font-size: 13px; }
+.text-base { font-size: 15px; }
+.text-lg   { font-size: 18px; }
+.text-xl   { font-size: 22px; }
+
+.text-mono  { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+.text-brand { font-family: var(--font-brand); }
+.text-gold  { color: var(--gold); }
+.text-green { color: var(--accent-green); }
+
+/* Font weights */
+.font-medium    { font-weight: 500; }
+.font-semibold  { font-weight: 600; }
+.font-bold      { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+
+/* Card primitives */
+.card {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card--hover:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  transition: var(--transition);
+}
+
+/* Section title */
+.section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 24px;
+  text-align: center;
+}
+.empty-state__icon { color: var(--border); }
+.empty-state__title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.empty-state__body { font-size: 13px; color: var(--text-tertiary); line-height: 1.5; max-width: 240px; }
+
+/* Pill badges */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.pill-badge--green { background: rgba(45, 80, 22, 0.1);  color: var(--accent-green); }
+.pill-badge--gold  { background: rgba(212, 160, 23, 0.12); color: var(--gold-dark); }
+.pill-badge--red   { background: rgba(139, 26, 26, 0.08); color: #8B1A1A; }
+.pill-badge--grey  { background: rgba(107, 114, 128, 0.08); color: var(--grey-medium); }

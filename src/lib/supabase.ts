@@ -29,6 +29,29 @@ export async function getCurrentUser() {
   return data.user
 }
 
+export async function signInWithApple() {
+  const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
+  const result = await SignInWithApple.authorize({
+    clientId: 'app.brewmie.brewmie',
+    redirectURI: 'https://placeholder.supabase.co/auth/v1/callback',
+    scopes: 'email name',
+    nonce: Math.random().toString(36).slice(2),
+  })
+  return supabase.auth.signInWithIdToken({
+    provider: 'apple',
+    token: result.response.identityToken,
+  })
+}
+
+export async function signInWithGoogle() {
+  const { GoogleAuth } = await import('@codetrix-studio/capacitor-google-auth')
+  const user = await GoogleAuth.signIn()
+  return supabase.auth.signInWithIdToken({
+    provider: 'google',
+    token: user.authentication.idToken,
+  })
+}
+
 // ─── Shot sync helpers ────────────────────────────────────────────────────────
 
 /**
@@ -39,6 +62,19 @@ export async function upsertShot(shot: ShotEntry, userId: string) {
   return supabase
     .from('shots')
     .upsert({ ...shot, user_id: userId }, { onConflict: 'id' })
+}
+
+/**
+ * Bulk-upsert all shots for a user (used for first-login migration).
+ */
+export async function bulkUpsertShots(shots: ShotEntry[], userId: string): Promise<void> {
+  if (shots.length === 0) return
+  await supabase
+    .from('shots')
+    .upsert(
+      shots.map((s) => ({ ...s, user_id: userId })),
+      { onConflict: 'id' }
+    )
 }
 
 /**

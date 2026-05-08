@@ -1,7 +1,7 @@
-import { useReducer, useEffect, useCallback } from 'react'
+import { useReducer, useEffect, useRef, useCallback } from 'react'
 import type { BrewmieState, AppAction } from '../types'
 import { loadState, saveState, clearState, defaultState } from '../lib/storage'
-import { upsertShot, upsertPublicShot, upsertUserConfig } from '../lib/supabase'
+import { upsertShot, upsertPublicShot, upsertUserConfig, bulkUpsertShots } from '../lib/supabase'
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
 
@@ -88,11 +88,21 @@ export interface UseBrewmieReturn {
 export function useBrewmie(): UseBrewmieReturn {
   // Initialise from localStorage on first render
   const [state, dispatch] = useReducer(brewmieReducer, undefined, () => loadState())
+  const prevUserIdRef = useRef<string | null>(state.userId)
 
   // Persist to localStorage on every state change
   useEffect(() => {
     saveState(state)
   }, [state])
+
+  // First-login migration: push existing localStorage shots to Supabase
+  useEffect(() => {
+    const prevUserId = prevUserIdRef.current
+    prevUserIdRef.current = state.userId
+    if (prevUserId === null && state.userId !== null && state.shots.length > 0) {
+      bulkUpsertShots(state.shots, state.userId).catch(() => {})
+    }
+  }, [state.userId, state.shots])
 
   // Sync newest shot to personal Supabase store (logged-in only)
   useEffect(() => {

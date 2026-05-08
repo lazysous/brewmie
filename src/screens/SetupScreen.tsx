@@ -168,6 +168,14 @@ function IconClock() {
   )
 }
 
+function IconShield() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  )
+}
+
 function IconRuler() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -369,8 +377,8 @@ interface SetupScreenProps {
 
 // ─── Card keys ────────────────────────────────────────────────────────────────
 
-type CardKey = 'units' | 'machine' | 'grinder' | 'tamper' | 'beans' | 'maintenance'
-const CARD_KEYS: CardKey[] = ['units', 'machine', 'grinder', 'tamper', 'beans', 'maintenance']
+type CardKey = 'units' | 'machine' | 'grinder' | 'tamper' | 'beans' | 'maintenance' | 'privacy'
+const CARD_KEYS: CardKey[] = ['units', 'machine', 'grinder', 'tamper', 'beans', 'maintenance', 'privacy']
 
 // ─── Roast age display ────────────────────────────────────────────────────────
 
@@ -403,6 +411,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
       tamper: false,
       beans: false,
       maintenance: false,
+      privacy: false,
     }
   }
 
@@ -424,6 +433,17 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
       if (toastTimer.current) clearTimeout(toastTimer.current)
     }
   }, [])
+
+  // ── Privacy / consent local state ───────────────────────────────────────────
+  const [sharingOn, setSharingOn] = useState<boolean>(
+    () => localStorage.getItem('analyticsOptOut') !== 'true'
+  )
+
+  function handleSharingToggle() {
+    const next = !sharingOn
+    setSharingOn(next)
+    localStorage.setItem('analyticsOptOut', next ? 'false' : 'true')
+  }
 
   // ── Machine local state ──────────────────────────────────────────────────────
   const [machineBrand, setMachineBrand] = useState<string>(state.machine?.brand ?? '')
@@ -1093,6 +1113,32 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           <p className="sc-hint sc-hint--spaced">
             Backflush every 2 weeks. Descale every 3 months. Grinder clean every 4 weeks.
           </p>
+        </Card>
+
+        {/* ── 7. Privacy ── */}
+        <Card
+          title="Privacy"
+          open={openCards.privacy}
+          onToggle={() => toggleCard('privacy')}
+          complete={true}
+          icon={<IconShield />}
+        >
+          <div className="sc-privacy-row">
+            <div className="sc-privacy-text">
+              <span className="sc-privacy-label">Share anonymous shot data</span>
+              <span className="sc-privacy-sub">Helps improve recommendations for all users. No personal data is ever included.</span>
+            </div>
+            <button
+              className={`sc-toggle${sharingOn ? ' sc-toggle--on' : ''}`}
+              role="switch"
+              aria-checked={sharingOn}
+              aria-label="Share anonymous shot data"
+              onClick={handleSharingToggle}
+              type="button"
+            >
+              <span className="sc-toggle__thumb" />
+            </button>
+          </div>
         </Card>
 
       </div>
@@ -1769,6 +1815,71 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         .sc-toast--visible {
           opacity: 1;
           transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Privacy row ── */
+        .sc-privacy-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        .sc-privacy-text {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .sc-privacy-label {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text-primary);
+          line-height: 1.3;
+        }
+
+        .sc-privacy-sub {
+          font-size: 12px;
+          color: var(--text-tertiary);
+          line-height: 1.45;
+        }
+
+        /* ── Toggle switch ── */
+        .sc-toggle {
+          position: relative;
+          width: 44px;
+          height: 26px;
+          border-radius: 999px;
+          border: none;
+          background: #D1D5DB;
+          cursor: pointer;
+          flex-shrink: 0;
+          padding: 0;
+          transition: background 0.2s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .sc-toggle--on {
+          background: var(--accent-green);
+        }
+
+        .sc-toggle__thumb {
+          position: absolute;
+          top: 3px;
+          left: 3px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: #fff;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+          transition: transform 0.2s ease;
+          pointer-events: none;
+        }
+
+        .sc-toggle--on .sc-toggle__thumb {
+          transform: translateX(18px);
         }
       `}</style>
     </div>

@@ -9,7 +9,7 @@ import { ConsentBanner } from './components/ConsentBanner'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams } from './lib/supabase'
 import type { AlgoParams } from './lib/supabase'
 
 interface WeatherData { temp: number; humidity: number }
@@ -20,6 +20,20 @@ export function App() {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
+
+  // Restore Supabase session on mount and listen for auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      dispatch({ type: 'SET_USER', payload: data.session?.user.id ?? null })
+    }).catch(() => {})
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      dispatch({ type: 'SET_USER', payload: session?.user.id ?? null })
+    })
+
+    return () => { subscription.unsubscribe() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Fetch calibrated algorithm params on startup (cached 24h)
   useEffect(() => {

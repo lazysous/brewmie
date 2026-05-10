@@ -80,22 +80,21 @@ function computeScore(
 
 // ─── Data-driven adjustment helpers ──────────────────────────────────────────
 
-// Minimum shots before we trust the learned params over hard-coded defaults
+// Minimum real Brewmie shots before we trust learned params over defaults
 const MIN_SHOTS_TO_LEARN = 30
 
-/**
- * Convert an observed avg time-delta (seconds) for a given condition into a
- * grind step recommendation.
- *
- * Sign convention (applies throughout the app):
- *   positive step  = go coarser (higher grind number)
- *   negative step  = go finer   (lower grind number)
- *
- * A positive avgTd means shots run *longer* in this condition → need coarser.
- * A negative avgTd means shots run *shorter* → need finer.
- *
- * `defaultStep` is used when the dataset is too small.
- */
+// Roast-level time offsets derived from 19,546 Visualizer.coffee community shots.
+// Represents how many seconds each roast level naturally deviates from the
+// community baseline of 32.1s. Used to normalise timeDelta so a dark roast
+// running 4s long isn't misread as a grind problem.
+const ROAST_TIME_OFFSET: Record<string, number> = {
+  'light':       -1.5,   // avg 30.6s  (lighter = less dense = faster)
+  'medium-light': -0.5,  // interpolated between light and medium
+  'medium':       1.0,   // avg 33.1s
+  'medium-dark':  0.0,   // avg 32.1s  (same as baseline)
+  'dark':         4.0,   // avg 36.1s  (denser, more soluble, runs long)
+}
+
 function effectToStep(avgTd: number | null, defaultStep: number): number {
   if (avgTd === null) return defaultStep
   const abs = Math.abs(avgTd)
@@ -112,26 +111,27 @@ function computeAdjustments(
   inputDose: number,
   weather: { temp: number; humidity: number } | null,
   beanAgeDays: number | null,
+  roastLevel: string | null,
   algoParams?: AlgoParams | null,
 ): { grindAdjust: number; doseAdjust: number; volumeAdjust: number; timeAdjust: number; tampAdjust: number } {
-  // Use learned params only once we have enough shots; otherwise fall back to defaults
   const p = (algoParams && algoParams.n >= MIN_SHOTS_TO_LEARN) ? algoParams : null
   const timeWindow = p?.time_window ?? 3
 
-  // Base: shot ran long → grind too fine → go coarser (+)
-  //       shot ran short → grind too coarse → go finer (-)
-  const timeDelta = actualTime - targetTime
+  // Roast-normalised delta: subtract the natural roast offset so we only react
+  // to deviations that are likely grind/equipment related, not roast-inherent.
+  const roastOffset = roastLevel ? (ROAST_TIME_OFFSET[roastLevel] ?? 0) : 0
+  const timeDelta = (actualTime - targetTime) - roastOffset
   let grindAdjust = timeDelta > timeWindow ? 0.5 : timeDelta < -timeWindow ? -0.5 : 0
 
-  // Bean age: fresh beans outgas CO2 → slower extraction → shots run long → go coarser
+  // Bean age: fresh beans outgas CO2 → shots run long → go coarser
   //           stale beans extract faster → shots run short → go finer
   if (beanAgeDays !== null) {
-    if (beanAgeDays <= 5)  grindAdjust += effectToStep(p?.age_fresh ?? null,  0.5)
+    if (beanAgeDays <= 5)       grindAdjust += effectToStep(p?.age_fresh ?? null,  0.5)
     else if (beanAgeDays >= 28) grindAdjust += effectToStep(p?.age_stale ?? null, -0.5)
   }
 
-  // Humidity: high humidity swells grounds → shots run long → go coarser
-  //           low humidity → grounds dry/loose → shots run short → go finer
+  // Humidity: high swells grounds → shots run long → go coarser
+  //           low → grounds dry/loose → shots run short → go finer
   // Temperature: hot speeds extraction → shots run short → go finer
   //              cold slows extraction → shots run long → go coarser
   if (weather) {
@@ -377,7 +377,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, weather, algoPa
   // ─── Save shot ───────────────────────────────────────────────────────────────
   function handleSave(actualTime: number, actualVolume: number) {
     const score = computeScore(actualTime, actualVolume, targets.time, targets.volume, targets.dose)
-    const adjs = computeAdjustments(actualTime, actualVolume, targets.time, targets.volume, targets.dose, weather, age, algoParams)
+    const adjs = computeAdjustments(actualTime, actualVolume, targets.time, targets.volume, targets.dose, weather, age, state.beans?.roastLevel ?? null, algoParams)
     const shotId = generateId()
 
     const shot: ShotEntry = {

@@ -1274,6 +1274,9 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       {/* ── Taste feedback card (inline, below results) ── */}
       {phase === 'taste' && renderTasteCard()}
 
+      {/* Flex spacer — pushes BREW to the bottom of the visible area. */}
+      <div className="bs-spacer" aria-hidden="true" />
+
       {/* ── BREW button ── */}
       <button
         className={`bs-brew-btn${phase === 'brewing' ? ' bs-brew-btn--brewing' : ''}`}
@@ -2254,11 +2257,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         /* BREW is the sibling of Lazy Sous's Dinner Spinner: one big sage pill
            that does the magic. Their identity edge is gold; ours is copper. */
+        .bs-spacer {
+          flex: 1 1 0;
+          min-height: 0;
+        }
+
         .bs-brew-btn {
           position: relative;
           width: 100%;
-          /* Push to bottom — claims all remaining vertical space. */
-          margin-top: auto;
           height: clamp(56px, 9vh, 76px);
           border-radius: 9999px;
           background:

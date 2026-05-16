@@ -501,55 +501,6 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         )}
       </div>
 
-      {/* Data & Backup */}
-      <div className="ix-card">
-        <div className="ix-card__header">
-          <span className="ix-card__title">{t('insights.dataBackup')}</span>
-        </div>
-
-        <div className="ix-data-btns">
-          <button className="ix-data-btn" onClick={handleExport}>
-            <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 3v10M6 9l4 4 4-4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
-            </svg>
-            {t('insights.export')}
-          </button>
-          <button className="ix-data-btn" onClick={handleExportCsv}>
-            <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 3v10M6 9l4 4 4-4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
-            </svg>
-            {t('insights.exportCsv')}
-          </button>
-          <button
-            className="ix-data-btn"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 13V3M6 7l4-4 4 4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
-            </svg>
-            {t('insights.import')}
-          </button>
-        </div>
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          className="visually-hidden"
-          onChange={handleImport}
-        />
-
-        <button className="ix-reset-btn" onClick={handleReset}>
-          {t('insights.resetAll')}
-        </button>
-        {state.userId && (
-          <p className="ix-account-delete-note">{t('insights.deleteAccountEmail')}</p>
-        )}
-      </div>
-
       {/* Free-tier history cap tease */}
       {isFree && hiddenByFreeCap > 0 && (
         <button

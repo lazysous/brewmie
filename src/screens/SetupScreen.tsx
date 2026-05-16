@@ -1509,28 +1509,38 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           margin: 0;
         }
 
-        /* Standalone CTA (no surrounding card, no repeated heading) */
+        /* Sleek full-width CTA — sibling of the BREW button on the brew tab,
+           same gradient + copper hairline so the whole app speaks one language. */
         .sc-profile-cta {
-          display: inline-flex;
+          display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 15px;
+          width: 100%;
+          height: clamp(50px, 7.5vh, 64px);
+          font-family: var(--font-primary);
+          font-size: clamp(14px, 2vh, 16px);
           font-weight: 700;
-          padding: 14px 32px;
-          border-radius: 999px;
-          background: var(--accent-green);
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          border-radius: 9999px;
+          background:
+            radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
+            linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
           color: var(--white);
-          border: none;
+          border: 1.5px solid rgba(184, 116, 74, 0.45);
           cursor: pointer;
-          transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+          transition: transform 0.12s ease, box-shadow 0.22s ease, filter 0.18s ease;
           -webkit-tap-highlight-color: transparent;
-          letter-spacing: 0.2px;
-          box-shadow: 0 2px 8px rgba(60, 40, 20, 0.10), 0 8px 22px rgba(107, 142, 92, 0.28);
-          align-self: flex-start;
-          margin: 0 0 4px;
+          box-shadow:
+            inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+            inset 0 -2px 0 rgba(40, 60, 30, 0.20),
+            0 0 0 1px rgba(184, 116, 74, 0.18),
+            0 2px 4px rgba(60, 40, 20, 0.10),
+            0 10px 24px rgba(88, 125, 73, 0.30);
+          margin: 4px 0;
         }
-        .sc-profile-cta:active { background: #5C7E4D; transform: scale(0.98); }
-        .sc-profile-cta:hover  { background: #5C7E4D; }
+        .sc-profile-cta:hover { filter: brightness(1.04); }
+        .sc-profile-cta:active { transform: scale(0.985); filter: brightness(0.96); }
 
         .sc-profile__cta-btn {
           margin-top: 10px;

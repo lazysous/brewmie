@@ -343,17 +343,17 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           color: var(--copper-deep);
         }
 
-        /* Editorial body */
+        /* Editorial body — scales with viewport height for tablet → phone. */
         .hero__body {
-          margin-top: 18px;
-          margin-bottom: 4px;
-          min-height: 64px;
+          margin-top: clamp(8px, 2vh, 22px);
+          margin-bottom: clamp(0px, 0.4vh, 6px);
+          min-height: clamp(40px, 8vh, 72px);
         }
 
         .hero__big {
           font-family: var(--font-brand);
           font-weight: 600;
-          font-size: 32px;
+          font-size: clamp(24px, 4.4vh, 36px);
           line-height: 1.02;
           letter-spacing: -0.3px;
           color: #221C15;
@@ -365,12 +365,12 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           color: var(--copper);
           font-style: italic;
           font-weight: 500;
-          font-size: 28px;
+          font-size: clamp(20px, 3.8vh, 30px);
         }
 
         .hero__status {
-          margin-top: 6px;
-          font-size: 13px;
+          margin-top: clamp(3px, 0.6vh, 8px);
+          font-size: clamp(11px, 1.7vh, 14px);
           font-weight: 600;
           letter-spacing: 0.1px;
           line-height: 1.35;
@@ -382,8 +382,8 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         .hero--neutral .hero__status { color: var(--text-secondary); }
 
         .hero__meta {
-          margin-top: 10px;
-          font-size: 12px;
+          margin-top: clamp(4px, 1vh, 12px);
+          font-size: clamp(11px, 1.6vh, 13px);
           font-weight: 500;
           color: var(--text-tertiary);
           line-height: 1.4;
@@ -412,21 +412,11 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* Very narrow phones (≤360px) — nudge the title down one size step
+           regardless of height. */
         @media (max-width: 360px) {
-          .hero__big { font-size: 30px; }
-          .hero__big-rest { font-size: 26px; }
-        }
-
-        /* Short viewports (iPhone SE / iPhone 8 / older Android): every pixel
-           matters. Squeeze the hero so the BREW button stays above the fold. */
-        @media (max-height: 720px) {
-          .hero__top { height: 44px; margin-bottom: 6px; }
-          .hero__logo { height: 24px; }
-          .hero__body { margin-top: 8px; margin-bottom: 0; min-height: 0; }
-          .hero__big { font-size: 24px; line-height: 1.02; }
-          .hero__big-rest { font-size: 20px; }
-          .hero__status { margin-top: 3px; font-size: 12px; }
-          .hero__meta { margin-top: 4px; font-size: 11px; }
+          .hero__big { font-size: clamp(22px, 4vh, 30px); }
+          .hero__big-rest { font-size: clamp(18px, 3.4vh, 26px); }
         }
       `}</style>
     </header>

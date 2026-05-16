@@ -1440,10 +1440,12 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Screen container ─────────────────────────────────────────── */
         .bs-screen {
           background: var(--cream);
-          padding: 6px 16px 12px;
+          /* Padding + gap scale with viewport height so iPhone SE breathes
+             but iPhone Pro Max doesn't waste space. */
+          padding: clamp(4px, 1vh, 12px) 16px clamp(8px, 1.5vh, 20px);
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: clamp(4px, 0.8vh, 10px);
           min-height: 100%;
         }
 
@@ -1574,7 +1576,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Sections: RECIPE (copper tint) and TARGETS (sage tint) ──── */
         .bs-section {
           position: relative;
-          padding: 4px 0 2px;
+          padding: clamp(2px, 0.6vh, 8px) 0 clamp(1px, 0.3vh, 4px);
         }
         .bs-section--recipe {
           background: linear-gradient(180deg, rgba(184, 116, 74, 0.045) 0%, rgba(184, 116, 74, 0.015) 100%);
@@ -1606,14 +1608,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         }
 
         .bs-section__rows {
-          padding-top: 14px;
+          padding-top: clamp(10px, 1.8vh, 22px);
         }
 
         /* ── Param row: tighter, label left, controls right ───────────── */
         .bs-param-row {
-          padding: 6px 14px;
+          padding: clamp(4px, 0.9vh, 11px) clamp(12px, 2vw, 16px);
           display: grid;
-          grid-template-columns: 56px 1fr;
+          grid-template-columns: clamp(50px, 8vw, 64px) 1fr;
           align-items: center;
           gap: 8px;
         }
@@ -1647,12 +1649,12 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         }
 
         .bs-param-row__value {
-          font-size: 22px;
+          font-size: clamp(19px, 3.2vh, 30px);
           font-weight: 800;
           color: var(--text-primary);
           line-height: 1;
           font-variant-numeric: tabular-nums;
-          letter-spacing: -0.5px;
+          letter-spacing: -0.6px;
           text-align: right;
         }
         .bs-param-row__input {
@@ -1702,14 +1704,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           -webkit-tap-highlight-color: transparent;
         }
         .bs-stepper--big {
-          width: 28px;
-          height: 28px;
-          font-size: 17px;
+          width: clamp(26px, 4vh, 34px);
+          height: clamp(26px, 4vh, 34px);
+          font-size: clamp(15px, 2.3vh, 19px);
         }
         .bs-stepper--fine {
-          width: 20px;
-          height: 20px;
-          font-size: 13px;
+          width: clamp(18px, 2.8vh, 24px);
+          height: clamp(18px, 2.8vh, 24px);
+          font-size: clamp(12px, 1.8vh, 15px);
           opacity: 0.75;
         }
         .bs-stepper--fine:hover:not(:disabled) { opacity: 1; }
@@ -2250,7 +2252,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-brew-btn {
           position: relative;
           width: 100%;
-          height: 56px;
+          height: clamp(52px, 8.5vh, 72px);
           border-radius: 9999px;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
@@ -2765,33 +2767,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           0%   { opacity: 0; transform: scale(0.5); }
           70%  { transform: scale(1.08); }
           100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Short viewport (iPhone SE / older phones): every pixel matters.
-           Compress the param card + BREW button so they fit above the fold
-           without scrolling. Triggered at <=720px viewport height. */
-        @media (max-height: 720px) {
-          .bs-screen { padding: 2px 14px 8px; gap: 4px; }
-          .bs-setup-pill { padding: 6px 14px; }
-          .bs-setup-pill__text { font-size: 12px; }
-          .bs-bean-card { padding: 6px 12px; gap: 1px; }
-          .bs-bean-card__name { font-size: 12px; }
-          .bs-bean-card__age { font-size: 11px; }
-          .bs-section { padding: 2px 0 1px; }
-          .bs-section__label { top: 4px; font-size: 8px; letter-spacing: 1.2px; }
-          .bs-section__rows { padding-top: 10px; }
-          .bs-section--targets { border-top-width: 1px; }
-          .bs-param-row { padding: 3px 12px; grid-template-columns: 48px 1fr; gap: 6px; }
-          .bs-param-row__label { font-size: 9px; letter-spacing: 0.6px; }
-          .bs-param-row__value { font-size: 18px; }
-          .bs-param-row__value-group { width: 64px; grid-template-columns: 1fr 18px; }
-          .bs-param-row__unit { font-size: 11px; }
-          .bs-stepper--big { width: 26px; height: 26px; font-size: 15px; }
-          .bs-stepper--fine { width: 18px; height: 18px; font-size: 12px; }
-          .bs-tamp-btn { padding: 5px 0; font-size: 12px; }
-          .bs-tamp-fixed__badge { width: 26px; height: 26px; font-size: 9px; }
-          .bs-brew-btn { height: 50px; font-size: 15px; letter-spacing: 3px; }
-          .bs-card-wrap { /* keep transition */ }
         }
       `}</style>
     </div>

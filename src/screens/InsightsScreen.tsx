@@ -545,6 +545,9 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         <button className="ix-reset-btn" onClick={handleReset}>
           {t('insights.resetAll')}
         </button>
+        {state.userId && (
+          <p className="ix-account-delete-note">{t('insights.deleteAccountEmail')}</p>
+        )}
       </div>
 
       {/* Free-tier history cap tease */}
@@ -1018,6 +1021,14 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         .ix-reset-btn:hover {
           background: #FFF5F5;
           border-color: rgba(139, 26, 26, 0.55);
+        }
+
+        .ix-account-delete-note {
+          margin-top: 8px;
+          font-size: 12px;
+          color: var(--text-tertiary);
+          text-align: center;
+          line-height: 1.5;
         }
 
         .ix-data-note {

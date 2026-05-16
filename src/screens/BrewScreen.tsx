@@ -1590,6 +1590,10 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-section {
           position: relative;
           padding: clamp(2px, 0.6vh, 8px) 0 clamp(1px, 0.3vh, 4px);
+          /* Sections share the card's growable height. */
+          flex: 1 1 auto;
+          display: flex;
+          flex-direction: column;
         }
         .bs-section--recipe {
           background: linear-gradient(180deg, rgba(184, 116, 74, 0.045) 0%, rgba(184, 116, 74, 0.015) 100%);
@@ -1622,15 +1626,23 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         .bs-section__rows {
           padding-top: clamp(10px, 1.8vh, 22px);
+          /* Rows distribute evenly across the section's height. */
+          flex: 1 1 auto;
+          display: flex;
+          flex-direction: column;
         }
 
-        /* ── Param row: tighter, label left, controls right ───────────── */
+        /* ── Param row: each row claims an equal share of the section
+              so the card breathes naturally on tall screens, stays compact
+              on small ones. ───────────────────────────────────────────── */
         .bs-param-row {
           padding: clamp(4px, 0.9vh, 11px) clamp(12px, 2vw, 16px);
           display: grid;
           grid-template-columns: clamp(50px, 8vw, 64px) 1fr;
           align-items: center;
           gap: 8px;
+          flex: 1 1 0;
+          min-height: 0;
         }
         .bs-param-row--sep {
           border-bottom: 1px solid rgba(0, 0, 0, 0.04);

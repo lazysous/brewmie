@@ -506,7 +506,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
   // (in case they downgrade) — the toggle just becomes locked.
   const baristaActive = state.baristaMode === true
   useWakeLock(baristaActive)
-  const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | 'household' | null>(null)
+  const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null>(null)
 
   // ── Derived defaults from state
   const initTargets = useCallback(() => defaultTargets(state), [])

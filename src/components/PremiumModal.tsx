@@ -6,7 +6,7 @@ import { track } from '../lib/analytics'
 interface PremiumModalProps {
   open: boolean
   onClose: () => void
-  trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | 'household' | null
+  trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null
   // True when the user is signed in. Premium requires sign-in (same model as
   // Lazy Sous) — if false, the modal routes to sign-in first.
   isSignedIn?: boolean
@@ -19,7 +19,6 @@ const TRIGGER_KEYS: Record<NonNullable<PremiumModalProps['trigger']>, string> = 
   beans: 'premium.triggerBeans',
   history: 'premium.triggerHistory',
   benchmarks: 'premium.triggerBenchmarks',
-  household: 'premium.triggerHousehold',
 }
 
 export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSignInRequired }: PremiumModalProps) {

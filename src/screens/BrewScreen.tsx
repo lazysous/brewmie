@@ -2602,13 +2602,12 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           -webkit-backdrop-filter: blur(4px);
           display: flex;
           align-items: flex-end;
+          justify-content: center;
           z-index: 100;
-          max-width: var(--app-max-width);
-          left: 50%;
-          transform: translateX(-50%);
         }
         .bs-modal {
           width: 100%;
+          max-width: var(--app-max-width);
           background: var(--white);
           border-radius: 20px 20px 0 0;
           padding: 20px 16px calc(24px + var(--safe-bottom));

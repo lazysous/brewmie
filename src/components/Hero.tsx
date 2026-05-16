@@ -208,11 +208,11 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
             >
               {t('header.signOut')}
             </button>
-          ) : (
+          ) : SIGN_IN_AVAILABLE ? (
             <button className="hero__signin" onClick={onSignIn} type="button">
               {t('header.signIn')}
             </button>
-          )}
+          ) : null}
         </div>
       </div>
 

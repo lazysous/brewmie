@@ -153,10 +153,6 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
     : activeTab === 'setup' ? setupCopy(state, t)
     : insightsCopy(state, t)
 
-  const initial = state.displayName
-    ? state.displayName.slice(0, 1).toUpperCase()
-    : state.userId ? '·' : ''
-
   const handleSignOut = async () => {
     await signOut()
     dispatch({ type: 'SET_USER', payload: null })

@@ -198,13 +198,13 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           </button>
           {state.userId ? (
             <button
-              className="hero__avatar"
+              className="hero__signin"
               onClick={handleSignOut}
               aria-label={t('header.signOut')}
               title={state.displayName ?? ''}
               type="button"
             >
-              <span className="hero__avatar-initial">{initial}</span>
+              {t('header.signOut')}
             </button>
           ) : (
             <button className="hero__signin" onClick={onSignIn} type="button">

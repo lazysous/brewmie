@@ -299,39 +299,82 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
   const benchmarksUnlocked = !isFree && shotCount >= 10
   const shotsToGo = Math.max(0, 10 - shotCount)
 
-  const grindRange = bestGrindRange(shots)
-  const grindRangeLabel =
-    grindRange === null
-      ? '--'
-      : grindRange[0] === grindRange[1]
-      ? String(grindRange[0])
-      : `${grindRange[0]} – ${grindRange[1]}`
-
   const topShots = shots.filter((s) => s.score !== null && s.score >= 85)
-  let sweetSpotLabel = '--'
-  if (topShots.length > 0) {
-    const ratios = topShots
-      .filter((s) => s.actualVolume !== null && s.inputDose > 0)
-      .map((s) => (s.actualVolume as number) / s.inputDose)
-    if (ratios.length > 0) {
-      const avgRatio = ratios.reduce((a, b) => a + b, 0) / ratios.length
-      sweetSpotLabel = `1:${avgRatio.toFixed(1)}`
-    }
-  }
 
   let timeWindowLabel = '--'
+  let timeMedianLabel = ''
   if (topShots.length > 0) {
     const times = topShots
       .filter((s) => s.actualTime !== null)
       .map((s) => s.actualTime as number)
+      .sort((a, b) => a - b)
     if (times.length > 0) {
-      const tMin = Math.round(Math.min(...times))
-      const tMax = Math.round(Math.max(...times))
-      timeWindowLabel = tMin === tMax ? `${tMin}s` : `${tMin} – ${tMax}s`
+      const tMin = Math.round(times[0])
+      const tMax = Math.round(times[times.length - 1])
+      timeWindowLabel = tMin === tMax ? `${tMin}s` : `${tMin}–${tMax}s`
+      const median = times[Math.floor(times.length / 2)]
+      timeMedianLabel = `median ${Math.round(median)}s`
     }
   }
 
   const consistency = t(consistencyKey(shots))
+
+  // ── Richer benchmarks data ────────────────────────────────────────────────
+
+  // Sweet spot recipe — average of the top-scoring shots.
+  type SweetSpot = { grind: number; dose: number; volume: number; time: number; ratio: number; n: number }
+  let sweetSpot: SweetSpot | null = null
+  if (topShots.length > 0) {
+    const valid = topShots.filter((s) => s.actualVolume !== null && s.actualTime !== null)
+    if (valid.length > 0) {
+      const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length
+      const grind = avg(valid.map((s) => s.inputGrind))
+      const dose = avg(valid.map((s) => s.inputDose))
+      const volume = avg(valid.map((s) => s.actualVolume as number))
+      const time = avg(valid.map((s) => s.actualTime as number))
+      sweetSpot = {
+        grind: Math.round(grind * 2) / 2,
+        dose: Math.round(dose * 10) / 10,
+        volume: Math.round(volume),
+        time: Math.round(time),
+        ratio: dose > 0 ? volume / dose : 0,
+        n: valid.length,
+      }
+    }
+  }
+
+  // Personal best.
+  const scoredShots = shots.filter((s) => s.score !== null) as (ShotEntry & { score: number })[]
+  const personalBest = scoredShots.length > 0
+    ? scoredShots.reduce((best, s) => (s.score > best.score ? s : best), scoredShots[0])
+    : null
+
+  // This week — last 7 days.
+  const weekAgo = Date.now() - 7 * 86400000
+  const thisWeekShots = shots.filter((s) => new Date(s.timestamp).getTime() >= weekAgo)
+  const thisWeekScored = thisWeekShots.filter((s) => s.score !== null) as (ShotEntry & { score: number })[]
+  const thisWeekAvg = thisWeekScored.length > 0
+    ? Math.round(thisWeekScored.reduce((a, s) => a + s.score, 0) / thisWeekScored.length)
+    : null
+
+  // Days active — distinct YYYY-MM-DD count.
+  const distinctDays = new Set(shots.map((s) => s.timestamp.slice(0, 10))).size
+
+  // Consistency value (numeric) — for the bar fill. Inverts std dev of recent
+  // 10 scores into a 0–100 "steadiness" reading.
+  const recentScored = scoredShots.slice(0, 10)
+  let consistencyPct = 0
+  if (recentScored.length >= 3) {
+    const mean = recentScored.reduce((a, s) => a + s.score, 0) / recentScored.length
+    const variance = recentScored.reduce((a, s) => a + Math.pow(s.score - mean, 2), 0) / recentScored.length
+    const sd = Math.sqrt(variance)
+    consistencyPct = Math.round(Math.max(0, Math.min(100, 100 - sd * 3)))
+  }
+
+  const formatShotDate = (iso: string) => {
+    const d = new Date(iso)
+    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+  }
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -529,21 +572,72 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
             </div>
           </button>
         ) : (
-          <div className="ix-benchmark-list">
-            {(
-              [
-                { label: t('insights.bestGrindRange'), value: grindRangeLabel },
-                { label: t('insights.sweetSpotRatio'), value: sweetSpotLabel },
-                { label: t('insights.optimalTimeWindow'), value: timeWindowLabel },
-                { label: t('insights.consistencyScore'), value: consistency },
-              ] as { label: string; value: string }[]
-            ).map(({ label, value }) => (
-              <div key={label} className="ix-benchmark-row">
-                <span className="ix-benchmark-row__label">{label}</span>
-                <span className="ix-benchmark-row__dots" aria-hidden="true" />
-                <span className="ix-benchmark-row__value">{value}</span>
+          <div className="ix-bench">
+            {/* Hero tile — the sweet-spot recipe in full */}
+            <div className="ix-bench__hero">
+              <span className="ix-bench__eyebrow">{t('insights.sweetSpotEyebrow')}</span>
+              {sweetSpot ? (
+                <>
+                  <div className="ix-bench__recipe">
+                    <span className="ix-bench__recipe-num">{sweetSpot.dose}</span>
+                    <span className="ix-bench__recipe-unit">g in</span>
+                    <span className="ix-bench__recipe-sep">·</span>
+                    <span className="ix-bench__recipe-num">{sweetSpot.volume}</span>
+                    <span className="ix-bench__recipe-unit">ml out</span>
+                    <span className="ix-bench__recipe-sep">·</span>
+                    <span className="ix-bench__recipe-num">{sweetSpot.time}</span>
+                    <span className="ix-bench__recipe-unit">s</span>
+                  </div>
+                  <div className="ix-bench__chips">
+                    <span className="ix-bench__chip"><strong>{sweetSpot.grind}</strong> {t('insights.bestGrindLabel')}</span>
+                    <span className="ix-bench__chip"><strong>1:{sweetSpot.ratio.toFixed(1)}</strong> {t('insights.ratioLabel')}</span>
+                    <span className="ix-bench__chip ix-bench__chip--muted">{t('insights.fromNShots', { n: sweetSpot.n })}</span>
+                  </div>
+                </>
+              ) : (
+                <p className="ix-bench__empty">{t('insights.noTopShots')}</p>
+              )}
+            </div>
+
+            {/* 2x2 stat tiles */}
+            <div className="ix-bench__grid">
+              <div className="ix-bench__tile">
+                <span className="ix-bench__tile-label">{t('insights.personalBest')}</span>
+                <span className="ix-bench__tile-value ix-bench__tile-value--sage">
+                  {personalBest ? personalBest.score : '–'}
+                </span>
+                <span className="ix-bench__tile-sub">
+                  {personalBest ? formatShotDate(personalBest.timestamp) : t('insights.noShotsYet')}
+                </span>
               </div>
-            ))}
+
+              <div className="ix-bench__tile">
+                <span className="ix-bench__tile-label">{t('insights.consistencyScore')}</span>
+                <span className="ix-bench__tile-value ix-bench__tile-value--copper">{consistencyPct || '–'}</span>
+                <div className="ix-bench__bar" aria-hidden="true">
+                  <div className="ix-bench__bar-fill" style={{ width: `${consistencyPct}%` }} />
+                </div>
+                <span className="ix-bench__tile-sub">{consistency}</span>
+              </div>
+
+              <div className="ix-bench__tile">
+                <span className="ix-bench__tile-label">{t('insights.thisWeek')}</span>
+                <span className="ix-bench__tile-value ix-bench__tile-value--sage">{thisWeekShots.length}</span>
+                <span className="ix-bench__tile-sub">
+                  {thisWeekAvg !== null ? t('insights.avgScore', { score: thisWeekAvg }) : t('insights.noShotsYet')}
+                </span>
+              </div>
+
+              <div className="ix-bench__tile">
+                <span className="ix-bench__tile-label">{t('insights.timeWindow')}</span>
+                <span className="ix-bench__tile-value ix-bench__tile-value--copper">{timeWindowLabel}</span>
+                <span className="ix-bench__tile-sub">{timeMedianLabel || t('insights.noShotsYet')}</span>
+              </div>
+            </div>
+
+            <div className="ix-bench__footnote">
+              {t('insights.daysActive', { count: distinctDays })}
+            </div>
           </div>
         )}
       </div>
@@ -1176,44 +1270,147 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           color: var(--text-tertiary);
         }
 
-        /* ── Benchmark rows (dotted connector) ──────────────────────────── */
-        .ix-benchmark-list {
+        /* ── Personal Benchmarks: editorial, brand-tinted, data-rich ────── */
+        .ix-bench {
           display: flex;
           flex-direction: column;
-          gap: 0;
-          margin-top: 8px;
+          gap: 14px;
+          padding-top: 8px;
         }
 
-        .ix-benchmark-row {
+        /* Hero tile — the sweet-spot recipe */
+        .ix-bench__hero {
+          padding: 16px 18px;
+          border-radius: 14px;
+          background:
+            radial-gradient(120% 80% at 0% 0%, rgba(184, 116, 74, 0.07) 0%, transparent 60%),
+            linear-gradient(180deg, #FBF8F1 0%, var(--cream) 100%);
+          border: 1px solid rgba(184, 116, 74, 0.18);
+        }
+        .ix-bench__eyebrow {
+          display: block;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.8px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+          margin-bottom: 10px;
+        }
+        .ix-bench__recipe {
           display: flex;
           align-items: baseline;
-          gap: 4px;
-          padding: 11px 0;
-          border-bottom: 1px solid var(--border-light);
+          flex-wrap: wrap;
+          gap: 6px;
+          font-family: var(--font-brand);
+          line-height: 1;
+          margin-bottom: 12px;
         }
-
-        .ix-benchmark-row:last-child {
-          border-bottom: none;
-        }
-
-        .ix-benchmark-row__label {
-          font-size: 13px;
-          color: var(--text-secondary);
-          flex-shrink: 0;
-        }
-
-        .ix-benchmark-row__dots {
-          flex: 1;
-          border-bottom: 1.5px dotted #D0D0D0;
-          margin-bottom: 3px;
-          min-width: 16px;
-        }
-
-        .ix-benchmark-row__value {
-          font-size: 14px;
-          font-weight: 700;
+        .ix-bench__recipe-num {
+          font-size: clamp(26px, 5.5vh, 36px);
+          font-weight: 600;
           color: var(--text-primary);
-          flex-shrink: 0;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: -0.8px;
+        }
+        .ix-bench__recipe-unit {
+          font-size: 13px;
+          font-style: italic;
+          color: var(--text-tertiary);
+          font-weight: 500;
+        }
+        .ix-bench__recipe-sep {
+          font-size: 18px;
+          color: rgba(184, 116, 74, 0.55);
+          padding: 0 2px;
+        }
+        .ix-bench__chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+        .ix-bench__chip {
+          font-size: 11.5px;
+          padding: 5px 10px;
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px solid rgba(184, 116, 74, 0.22);
+          color: var(--text-secondary);
+          border-radius: 9999px;
+          letter-spacing: 0.1px;
+        }
+        .ix-bench__chip strong {
+          color: var(--copper-deep);
+          font-weight: 800;
+          font-variant-numeric: tabular-nums;
+        }
+        .ix-bench__chip--muted {
+          background: transparent;
+          border-color: var(--border-light);
+          color: var(--text-tertiary);
+        }
+        .ix-bench__empty {
+          font-size: 13px;
+          color: var(--text-tertiary);
+          font-style: italic;
+        }
+
+        /* 2x2 tile grid */
+        .ix-bench__grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+        .ix-bench__tile {
+          padding: 12px 14px;
+          border-radius: 12px;
+          background: var(--white);
+          border: 1px solid var(--border-light);
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          min-height: 92px;
+        }
+        .ix-bench__tile-label {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.4px;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+        }
+        .ix-bench__tile-value {
+          font-family: var(--font-brand);
+          font-size: clamp(26px, 5vh, 34px);
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: -1px;
+          font-variant-numeric: tabular-nums;
+        }
+        .ix-bench__tile-value--sage { color: var(--accent-green); }
+        .ix-bench__tile-value--copper { color: var(--copper-deep); }
+        .ix-bench__tile-sub {
+          font-size: 11.5px;
+          color: var(--text-tertiary);
+          line-height: 1.3;
+        }
+        .ix-bench__bar {
+          width: 100%;
+          height: 4px;
+          background: var(--border-light);
+          border-radius: 9999px;
+          overflow: hidden;
+          margin-top: 2px;
+        }
+        .ix-bench__bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, var(--copper) 0%, var(--copper-deep) 100%);
+          border-radius: 9999px;
+          transition: width 0.4s ease;
+        }
+        .ix-bench__footnote {
+          font-size: 11px;
+          color: var(--text-tertiary);
+          text-align: center;
+          letter-spacing: 0.3px;
+          margin-top: 2px;
         }
 
         /* ── Data & Backup card ─────────────────────────────────────────── */

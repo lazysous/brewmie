@@ -62,7 +62,17 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
       return { ...state, autoApplyAdjustments: action.payload }
 
     case 'SET_USER':
-      return { ...state, userId: action.payload }
+      // Clearing user also clears their cached displayName
+      return { ...state, userId: action.payload, displayName: action.payload ? state.displayName : null }
+
+    case 'SET_DISPLAY_NAME':
+      return { ...state, displayName: action.payload }
+
+    case 'SET_TIER':
+      return { ...state, tier: action.payload }
+
+    case 'SET_BARISTA_MODE':
+      return { ...state, baristaMode: action.payload }
 
     case 'HYDRATE':
       return action.payload

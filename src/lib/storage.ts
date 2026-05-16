@@ -21,6 +21,9 @@ export const defaultState: BrewmieState = {
   maintenance: defaultMaintenanceRecord,
   autoApplyAdjustments: false,
   userId: null,
+  displayName: null,
+  tier: 'free',
+  baristaMode: false,
 }
 
 /**

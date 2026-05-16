@@ -1,5 +1,9 @@
 import React, { useRef } from 'react'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
+import { useState } from 'react'
+import { useTranslation } from '../hooks/useTranslation'
+import { useTier } from '../hooks/useTier'
+import { PremiumModal } from '../components/PremiumModal'
 
 // ─── Computation helpers ───────────────────────────────────────────────────────
 
@@ -77,13 +81,13 @@ function stdDev(values: number[]): number {
   return Math.sqrt(variance)
 }
 
-function consistencyLabel(shots: ShotEntry[]): string {
+function consistencyKey(shots: ShotEntry[]): string {
   const rated = shots.filter((s): s is ShotEntry & { score: number } => s.score !== null)
-  if (rated.length < 2) return 'Not enough data'
+  if (rated.length < 2) return 'insights.consistencyNoData'
   const sd = stdDev(rated.map((s) => s.score))
-  if (sd <= 3) return 'High'
-  if (sd <= 6) return 'Medium'
-  return 'Low'
+  if (sd <= 3) return 'insights.consistencyHigh'
+  if (sd <= 6) return 'insights.consistencyMedium'
+  return 'insights.consistencyLow'
 }
 
 // ─── Days of dialling in ──────────────────────────────────────────────────────
@@ -102,7 +106,7 @@ function dialInDays(shots: ShotEntry[]): number | null {
 function scorePillStyle(score: number | null): React.CSSProperties {
   if (score === null) return { background: '#E0E0E0', color: '#6A6A6A' }
   if (score >= 95) return { background: '#FFD700', color: '#6B4E00' }
-  if (score >= 85) return { background: '#2D5016', color: '#FFFFFF' }
+  if (score >= 85) return { background: '#6B8E5C', color: '#FFFFFF' }
   if (score >= 70) return { background: '#9A9A9A', color: '#FFFFFF' }
   return { background: '#8B1A1A', color: '#FFFFFF' }
 }
@@ -112,13 +116,13 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
-function adjustmentLabel(shot: ShotEntry): { text: string; positive: boolean; neutral: boolean } {
+function adjustmentLabel(shot: ShotEntry): { textKey: string; positive: boolean; neutral: boolean } {
   if (shot.grindAdjust === null || shot.grindAdjust === undefined) {
-    return { text: '✓ On target', positive: false, neutral: true }
+    return { textKey: 'insights.adjOnTarget', positive: false, neutral: true }
   }
-  if (shot.grindAdjust < 0) return { text: '↓ Grind', positive: false, neutral: false }
-  if (shot.grindAdjust > 0) return { text: '↑ Grind', positive: true, neutral: false }
-  return { text: '✓ On target', positive: false, neutral: true }
+  if (shot.grindAdjust < 0) return { textKey: 'insights.adjGrindDown', positive: false, neutral: false }
+  if (shot.grindAdjust > 0) return { textKey: 'insights.adjGrindUp', positive: true, neutral: false }
+  return { textKey: 'insights.adjOnTarget', positive: false, neutral: true }
 }
 
 // ─── Skeleton placeholder ─────────────────────────────────────────────────────
@@ -137,11 +141,26 @@ function StatSkeleton() {
 interface InsightsScreenProps {
   state: BrewmieState
   dispatch: React.Dispatch<AppAction>
+  onSignIn: () => void
 }
 
-export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
+export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProps) {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const shots = state.shots
+  const tier = useTier(state)
+  const isFree = tier === 'free'
+  const [premiumTrigger, setPremiumTrigger] = useState<'history' | 'benchmarks' | null>(null)
+
+  // Free tier sees only shots in the last 30 days.
+  const allShots = state.shots
+  const totalShotCount = allShots.length
+  const cutoffMs = Date.now() - 30 * 24 * 60 * 60 * 1000
+  const visibleShots = isFree
+    ? allShots.filter((s) => new Date(s.timestamp).getTime() >= cutoffMs)
+    : allShots
+  const hiddenByFreeCap = isFree ? totalShotCount - visibleShots.length : 0
+
+  const shots = visibleShots
   const shotCount = shots.length
 
   // ── Stat computations ──────────────────────────────────────────────────────
@@ -166,11 +185,12 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
 
   // ── Days of dialling in ────────────────────────────────────────────────────
 
-  const days = dialInDays(shots)
+  void dialInDays(shots)
 
   // ── Benchmarks ────────────────────────────────────────────────────────────
 
-  const benchmarksUnlocked = shotCount >= 10
+  // Premium gates benchmarks. Free users see the lock regardless of shot count.
+  const benchmarksUnlocked = !isFree && shotCount >= 10
   const shotsToGo = Math.max(0, 10 - shotCount)
 
   const grindRange = bestGrindRange(shots)
@@ -205,12 +225,12 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
     }
   }
 
-  const consistency = consistencyLabel(shots)
+  const consistency = t(consistencyKey(shots))
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
   function handleClearShots() {
-    if (!window.confirm('Clear all shot history? This cannot be undone.')) return
+    if (!window.confirm(t('insights.confirmClear'))) return
     for (const shot of shots) {
       dispatch({ type: 'DELETE_SHOT', payload: shot.id })
     }
@@ -231,6 +251,32 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
     URL.revokeObjectURL(url)
   }
 
+  function handleExportCsv() {
+    const cols = [
+      'timestamp', 'inputGrind', 'inputDose', 'inputTamp',
+      'targetVolume', 'targetTime', 'actualVolume', 'actualTime',
+      'score', 'grindAdjust', 'doseAdjust', 'tampAdjust',
+      'tasteFlavor', 'tasteStrength', 'beanAge', 'roastLevel',
+      'temp', 'humidity',
+    ] as const
+    const escape = (v: unknown): string => {
+      if (v === null || v === undefined) return ''
+      const s = String(v)
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+    }
+    const rows = state.shots.map((s) =>
+      cols.map((c) => escape((s as unknown as Record<string, unknown>)[c])).join(',')
+    )
+    const csv = [cols.join(','), ...rows].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
@@ -240,7 +286,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
         const parsed = JSON.parse(ev.target?.result as string) as BrewmieState
         dispatch({ type: 'HYDRATE', payload: parsed })
       } catch {
-        alert('Invalid file. Please select a valid Brewmie export.')
+        alert(t('insights.importInvalid'))
       }
     }
     reader.readAsText(file)
@@ -249,12 +295,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
   }
 
   function handleReset() {
-    if (
-      !window.confirm(
-        'Reset ALL data including machine config, grinder config, and shot history? This cannot be undone.'
-      )
-    )
-      return
+    if (!window.confirm(t('insights.confirmReset'))) return
     dispatch({ type: 'RESET' })
   }
 
@@ -273,20 +314,6 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
   return (
     <div className="ix-screen">
 
-      {/* Page header */}
-      <div className="ix-page-header">
-        <h1 className="ix-page-header__title">Your Coffee Journey</h1>
-        {/* Decorative editorial rule */}
-        <div className="ix-page-header__rule" aria-hidden="true" />
-        <p className="ix-page-header__count">
-          {shotCount === 0
-            ? '0 shots tracked'
-            : days !== null
-            ? `${shotCount} shot${shotCount !== 1 ? 's' : ''} tracked · ${days} day${days !== 1 ? 's' : ''} of dialling in`
-            : `${shotCount} shot${shotCount !== 1 ? 's' : ''} tracked`}
-        </p>
-      </div>
-
       {/* Stats Grid */}
       <div className="ix-stats-grid">
 
@@ -295,7 +322,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           <span className="ix-stat-card__value">
             {firstShotAvg !== null ? firstShotAvg.toFixed(1) : <StatSkeleton />}
           </span>
-          <span className="ix-stat-card__label">First Shot Avg</span>
+          <span className="ix-stat-card__label">{t('insights.firstShotAvg')}</span>
         </div>
 
         {/* Follow-up Avg */}
@@ -303,7 +330,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           <span className="ix-stat-card__value">
             {followUpAvg !== null ? followUpAvg.toFixed(1) : <StatSkeleton />}
           </span>
-          <span className="ix-stat-card__label">Follow-up Avg</span>
+          <span className="ix-stat-card__label">{t('insights.followUpAvg')}</span>
         </div>
 
         {/* Optimal Grind */}
@@ -311,16 +338,15 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           <span className="ix-stat-card__value">
             {optGrind !== null ? optGrind : <StatSkeleton />}
           </span>
-          <span className="ix-stat-card__label">Optimal Grind</span>
-          <span className="ix-stat-card__sub">from your best shots</span>
+          <span className="ix-stat-card__label">{t('insights.optimalGrind')}</span>
         </div>
 
         {/* Total Shots + 100-shot club */}
         <div className="ix-stat-card">
           <span className="ix-stat-card__value">{shotCount}</span>
-          <span className="ix-stat-card__label">Total Shots</span>
+          <span className="ix-stat-card__label">{t('insights.totalShots')}</span>
           {shotCount > 0 && (
-            <div className="ix-shot-club-bar" title={`${shotCount}/100 shot club`}>
+            <div className="ix-shot-club-bar" title={t('insights.shotClubTooltip', { count: shotCount })}>
               <div
                 className="ix-shot-club-bar__fill"
                 style={{ width: `${shotClubPct}%` }}
@@ -334,10 +360,10 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
       {/* Recent Performance */}
       <div className="ix-card">
         <div className="ix-card__header">
-          <span className="ix-card__title">Recent Performance</span>
+          <span className="ix-card__title">{t('insights.recentPerformance')}</span>
           {shotCount > 0 && (
             <button className="ix-ghost-btn" onClick={handleClearShots}>
-              Clear
+              {t('insights.clear')}
             </button>
           )}
         </div>
@@ -351,8 +377,8 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
               <path d="M22 14c0-4 6-4 6-8" stroke="#C0C0C0" strokeWidth="2" strokeLinecap="round"/>
               <path d="M32 14c0-4 6-4 6-8" stroke="#C0C0C0" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            <p className="ix-empty-state__heading">No shots logged yet</p>
-            <p className="ix-empty-state__sub">Pull your first shot and log it on the Brew tab</p>
+            <p className="ix-empty-state__heading">{t('insights.emptyHeading')}</p>
+            <p className="ix-empty-state__sub">{t('insights.emptySub')}</p>
           </div>
         ) : (
           <div className="ix-shot-list">
@@ -374,7 +400,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
                   style={{
                     borderBottom: idx < recentShots.length - 1 ? '1px solid var(--border-light)' : 'none',
                     background: isExcellent
-                      ? 'rgba(45, 80, 22, 0.02)'
+                      ? 'rgba(107, 142, 92, 0.02)'
                       : isEvenRow
                       ? 'var(--cream)'
                       : undefined,
@@ -402,16 +428,16 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
                       color: adj.neutral
                         ? '#6A9A6A'
                         : adj.positive
-                        ? '#2D5016'
+                        ? '#6B8E5C'
                         : '#8B1A1A',
                       background: adj.neutral
-                        ? 'rgba(45,80,22,0.07)'
+                        ? 'rgba(107, 142, 92,0.07)'
                         : adj.positive
-                        ? 'rgba(45,80,22,0.1)'
+                        ? 'rgba(107, 142, 92,0.1)'
                         : 'rgba(139,26,26,0.08)',
                     }}
                   >
-                    {adj.text}
+                    {t(adj.textKey)}
                   </span>
                 </div>
               )
@@ -423,18 +449,23 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
       {/* Personal Benchmarks */}
       <div className="ix-card">
         <div className="ix-card__header">
-          <span className="ix-card__title">Personal Benchmarks</span>
+          <span className="ix-card__title">{t('insights.personalBenchmarks')}</span>
         </div>
 
         {!benchmarksUnlocked ? (
-          <div className="ix-locked">
+          <button
+            type="button"
+            className="ix-locked"
+            onClick={() => isFree ? setPremiumTrigger('benchmarks') : undefined}
+            style={{ width: '100%', cursor: isFree ? 'pointer' : 'default', background: 'none', border: 'none', textAlign: 'center', padding: 0 }}
+          >
             {/* Padlock SVG */}
             <svg className="ix-locked__icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="6" y="14" width="20" height="14" rx="3" stroke="#9A9A9A" strokeWidth="2" fill="none"/>
               <path d="M10 14v-4a6 6 0 0 1 12 0v4" stroke="#9A9A9A" strokeWidth="2" strokeLinecap="round" fill="none"/>
               <circle cx="16" cy="21" r="2" fill="#9A9A9A"/>
             </svg>
-            <p className="ix-locked__heading">Unlock at 10 shots</p>
+            <p className="ix-locked__heading">{isFree ? t('tierLock.benchmarksLocked') : t('insights.unlockAt10')}</p>
             <div className="ix-locked__progress-wrap">
               <div className="ix-locked__progress-bar">
                 <div
@@ -447,17 +478,17 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
                   style={{ left: `${(shotCount / 10) * 100}%` }}
                 />
               </div>
-              <span className="ix-locked__progress-label">{shotsToGo} to go</span>
+              <span className="ix-locked__progress-label">{t('insights.toGo', { count: shotsToGo })}</span>
             </div>
-          </div>
+          </button>
         ) : (
           <div className="ix-benchmark-list">
             {(
               [
-                { label: 'Best Grind Range', value: grindRangeLabel },
-                { label: 'Sweet Spot Ratio', value: sweetSpotLabel },
-                { label: 'Optimal Time Window', value: timeWindowLabel },
-                { label: 'Consistency Score', value: consistency },
+                { label: t('insights.bestGrindRange'), value: grindRangeLabel },
+                { label: t('insights.sweetSpotRatio'), value: sweetSpotLabel },
+                { label: t('insights.optimalTimeWindow'), value: timeWindowLabel },
+                { label: t('insights.consistencyScore'), value: consistency },
               ] as { label: string; value: string }[]
             ).map(({ label, value }) => (
               <div key={label} className="ix-benchmark-row">
@@ -473,26 +504,33 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
       {/* Data & Backup */}
       <div className="ix-card">
         <div className="ix-card__header">
-          <span className="ix-card__title">Data &amp; Backup</span>
+          <span className="ix-card__title">{t('insights.dataBackup')}</span>
         </div>
 
         <div className="ix-data-btns">
           <button className="ix-data-btn" onClick={handleExport}>
             <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 3v10M6 9l4 4 4-4" stroke="#2D5016" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="#2D5016" strokeWidth="1.75" strokeLinecap="round"/>
+              <path d="M10 3v10M6 9l4 4 4-4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
             </svg>
-            Export
+            {t('insights.export')}
+          </button>
+          <button className="ix-data-btn" onClick={handleExportCsv}>
+            <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 3v10M6 9l4 4 4-4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
+            </svg>
+            {t('insights.exportCsv')}
           </button>
           <button
             className="ix-data-btn"
             onClick={() => fileInputRef.current?.click()}
           >
             <svg className="ix-data-btn__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 13V3M6 7l4-4 4 4" stroke="#2D5016" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 15h14" stroke="#2D5016" strokeWidth="1.75" strokeLinecap="round"/>
+              <path d="M10 13V3M6 7l4-4 4 4" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 15h14" stroke="#6B8E5C" strokeWidth="1.75" strokeLinecap="round"/>
             </svg>
-            Import
+            {t('insights.import')}
           </button>
         </div>
 
@@ -505,13 +543,31 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
         />
 
         <button className="ix-reset-btn" onClick={handleReset}>
-          Reset All Data
+          {t('insights.resetAll')}
         </button>
-
-        <p className="ix-data-note">
-          Your dial-in history lives here. Export it or sign in to keep it safe across devices.
-        </p>
       </div>
+
+      {/* Free-tier history cap tease */}
+      {isFree && hiddenByFreeCap > 0 && (
+        <button
+          type="button"
+          className="ix-history-cap"
+          onClick={() => setPremiumTrigger('history')}
+        >
+          <span className="ix-history-cap__text">
+            {t('tierLock.historyMore')}
+          </span>
+          <span className="ix-history-cap__count">+{hiddenByFreeCap}</span>
+        </button>
+      )}
+
+      <PremiumModal
+        open={premiumTrigger !== null}
+        onClose={() => setPremiumTrigger(null)}
+        trigger={premiumTrigger}
+        isSignedIn={!!state.userId}
+        onSignInRequired={onSignIn}
+      />
 
       {/* Footer */}
       <div className="ix-footer">
@@ -522,16 +578,16 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           className="ix-footer__pill"
         >
           <img
-            src="https://raw.githubusercontent.com/lazysous/logo/main/logo-transparent-white.png"
+            src="./assets/lazysous-logo.png"
             alt="Lazy Sous"
             className="ix-footer__logo"
           />
           <div className="ix-footer__text">
-            <span className="ix-footer__dinner">What's for dinner?</span>
-            <span className="ix-footer__cta">Visit Lazy Sous &rarr;</span>
+            <span className="ix-footer__dinner">{t('insights.footerDinner')}</span>
+            <span className="ix-footer__cta">{t('insights.footerCta')}</span>
           </div>
         </a>
-        <p className="ix-footer__copy">&copy; {new Date().getFullYear()} Brewmie</p>
+        <p className="ix-footer__copy">{t('insights.footerCopy', { year: new Date().getFullYear() })}</p>
       </div>
 
       <style>{`
@@ -557,9 +613,9 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
 
         /* Thin editorial rule below title */
         .ix-page-header__rule {
-          width: 40px;
+          width: 32px;
           height: 2px;
-          background: var(--gold-dark);
+          background: var(--accent-green);
           border-radius: 1px;
           margin-bottom: 8px;
         }
@@ -574,29 +630,41 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
         .ix-stats-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          padding: 8px 16px 10px;
+          gap: 0;
+          margin: 0 16px 14px;
+          background: var(--white);
+          border: 1px solid var(--border-light);
+          border-radius: 16px;
+          box-shadow: 0 1px 3px rgba(60, 40, 20, 0.06), 0 6px 18px rgba(60, 40, 20, 0.05);
+          overflow: hidden;
         }
 
         .ix-stat-card {
           background: var(--white);
-          border-radius: 16px;
-          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-          padding: 16px;
+          border-radius: 0;
+          box-shadow: none;
+          padding: 16px 16px 14px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 2px;
+          gap: 4px;
+          border-right: 1px solid var(--border-light);
+          border-bottom: 1px solid var(--border-light);
         }
+        .ix-stat-card:nth-child(2n) { border-right: none; }
+        .ix-stat-card:nth-last-child(-n+2) { border-bottom: none; }
 
         .ix-stat-card__value {
-          font-size: 32px;
-          font-weight: 800;
+          font-family: var(--font-brand);
+          font-size: 40px;
+          font-weight: 500;
           color: var(--text-primary);
-          line-height: 1;
+          line-height: 0.95;
+          letter-spacing: -1px;
           display: flex;
           align-items: center;
-          min-height: 32px;
+          min-height: 38px;
+          font-variant-numeric: tabular-nums;
         }
 
         /* Skeleton placeholder bar */
@@ -840,7 +908,7 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           background: linear-gradient(
             90deg,
             var(--accent-green) 0%,
-            rgba(45, 80, 22, 0.3) 50%,
+            rgba(107, 142, 92, 0.3) 50%,
             var(--accent-green) 100%
           );
           background-size: 400px 100%;
@@ -960,6 +1028,41 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
           line-height: 1.5;
         }
 
+        /* Free-tier history cap tease */
+        .ix-history-cap {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          width: 100%;
+          margin: 4px 0 8px;
+          padding: 12px 16px;
+          background: rgba(184, 116, 74, 0.06);
+          border: 1px dashed rgba(184, 116, 74, 0.32);
+          border-radius: 12px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          text-align: left;
+        }
+        .ix-history-cap:active { transform: scale(0.995); }
+        .ix-history-cap__text {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--copper-deep);
+          letter-spacing: 0.1px;
+          line-height: 1.4;
+        }
+        .ix-history-cap__count {
+          font-size: 13px;
+          font-weight: 800;
+          color: var(--copper-deep);
+          background: rgba(184, 116, 74, 0.14);
+          padding: 3px 9px;
+          border-radius: 9999px;
+          font-variant-numeric: tabular-nums;
+          flex-shrink: 0;
+        }
+
         /* ── Footer ─────────────────────────────────────────────────────── */
         .ix-footer {
           display: flex;
@@ -972,24 +1075,26 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
         .ix-footer__pill {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          background: var(--black);
+          gap: 12px;
+          background: var(--white);
+          border: 1px solid var(--border-light);
           border-radius: 20px;
-          padding: 10px 20px;
+          padding: 10px 18px 10px 12px;
           text-decoration: none;
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .ix-footer__pill:hover {
           transform: translateY(-1px);
-          box-shadow: var(--shadow-md);
+          background: var(--cream);
         }
 
         .ix-footer__logo {
-          height: 22px;
-          width: auto;
+          height: 28px;
+          width: 28px;
           flex-shrink: 0;
+          border-radius: 8px;
         }
 
         .ix-footer__text {
@@ -999,16 +1104,17 @@ export function InsightsScreen({ state, dispatch }: InsightsScreenProps) {
         }
 
         .ix-footer__dinner {
-          font-size: 12px;
-          font-weight: 400;
-          color: rgba(255,255,255,0.75);
+          font-size: 11px;
+          font-weight: 600;
+          color: var(--text-tertiary);
+          letter-spacing: 0.2px;
           line-height: 1.2;
         }
 
         .ix-footer__cta {
           font-size: 13px;
           font-weight: 700;
-          color: var(--gold);
+          color: var(--accent-green);
           line-height: 1.2;
         }
 

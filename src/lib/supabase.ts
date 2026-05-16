@@ -11,13 +11,19 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? 'placeholder
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
+// OAuth-only. We never see or store credentials; the provider holds them and
+// Supabase hands us back a session token. The only thing we persist on our
+// side is `display_name` (see fetchDisplayName / setDisplayName below).
 
-export async function signInWithEmail(email: string, password: string) {
-  return supabase.auth.signInWithPassword({ email, password })
+async function isNative(): Promise<boolean> {
+  const { Capacitor } = await import('@capacitor/core')
+  return Capacitor.isNativePlatform()
 }
 
-export async function signUpWithEmail(email: string, password: string) {
-  return supabase.auth.signUp({ email, password })
+function webRedirectTo(): string {
+  return typeof window !== 'undefined'
+    ? window.location.origin + window.location.pathname
+    : '/'
 }
 
 export async function signOut() {
@@ -30,26 +36,95 @@ export async function getCurrentUser() {
 }
 
 export async function signInWithApple() {
-  const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
-  const result = await SignInWithApple.authorize({
-    clientId: 'app.brewmie.brewmie',
-    redirectURI: 'https://placeholder.supabase.co/auth/v1/callback',
-    scopes: 'email name',
-    nonce: Math.random().toString(36).slice(2),
-  })
-  return supabase.auth.signInWithIdToken({
+  if (await isNative()) {
+    const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
+    const result = await SignInWithApple.authorize({
+      clientId: 'app.brewmie.brewmie',
+      redirectURI: SUPABASE_URL + '/auth/v1/callback',
+      scopes: 'email name',
+      nonce: Math.random().toString(36).slice(2),
+    })
+    return supabase.auth.signInWithIdToken({
+      provider: 'apple',
+      token: result.response.identityToken,
+    })
+  }
+  return supabase.auth.signInWithOAuth({
     provider: 'apple',
-    token: result.response.identityToken,
+    options: { redirectTo: webRedirectTo() },
   })
 }
 
 export async function signInWithGoogle() {
-  const { GoogleAuth } = await import('@codetrix-studio/capacitor-google-auth')
-  const user = await GoogleAuth.signIn()
-  return supabase.auth.signInWithIdToken({
+  if (await isNative()) {
+    const { GoogleAuth } = await import('@codetrix-studio/capacitor-google-auth')
+    const user = await GoogleAuth.signIn()
+    return supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: user.authentication.idToken,
+    })
+  }
+  return supabase.auth.signInWithOAuth({
     provider: 'google',
-    token: user.authentication.idToken,
+    options: { redirectTo: webRedirectTo() },
   })
+}
+
+export async function signInWithMeta() {
+  return supabase.auth.signInWithOAuth({
+    provider: 'facebook',
+    options: { redirectTo: webRedirectTo() },
+  })
+}
+
+export async function signInWithGitHub() {
+  return supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: webRedirectTo() },
+  })
+}
+
+// ─── Display name (the only user-identifying data we store) ──────────────────
+
+export async function fetchDisplayName(userId: string): Promise<string | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('display_name')
+    .eq('id', userId)
+    .single()
+  if (error) return null
+  return (data?.display_name as string | null) ?? null
+}
+
+export async function setDisplayName(userId: string, displayName: string) {
+  return supabase
+    .from('profiles')
+    .upsert({ id: userId, display_name: displayName }, { onConflict: 'id' })
+}
+
+// ─── Tier (free / premium) ───────────────────────────────────────────────────
+// Production entitlement flow (when StoreKit / Play Billing is wired):
+//   1. On launch, query the store for active non-consumable purchases.
+//   2. If "Brewmie Premium" (or the bundle) is owned, set tier locally to 'premium'.
+//   3. Cache the entitlement in localStorage so the app boots premium offline.
+//   4. If a user signs in, mirror the receipt to profiles.tier for sync.
+//   5. fetchTier(userId) below is only the SERVER read path for cross-device sync.
+// Effective tier = localPurchaseEntitlement ?? state.tier (from server) ?? 'free'.
+
+export async function fetchTier(userId: string): Promise<'free' | 'premium'> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('tier')
+    .eq('id', userId)
+    .single()
+  if (error || !data) return 'free'
+  return (data.tier as 'free' | 'premium') ?? 'free'
+}
+
+export async function setTier(userId: string, tier: 'free' | 'premium') {
+  return supabase
+    .from('profiles')
+    .upsert({ id: userId, tier }, { onConflict: 'id' })
 }
 
 // ─── Shot sync helpers ────────────────────────────────────────────────────────

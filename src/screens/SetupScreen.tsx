@@ -10,83 +10,30 @@ import type {
   TampConfig,
   BeanConfig,
 } from '../types'
+import { useTranslation } from '../hooks/useTranslation'
+import type { TParams } from '../lib/i18n'
+import { useTier } from '../hooks/useTier'
+import { PremiumModal } from '../components/PremiumModal'
+import {
+  MACHINE_BRANDS,
+  MACHINE_MODELS,
+  BASKET_TYPES,
+  GRINDER_BRANDS,
+  GRINDER_MODELS,
+  BEAN_TYPES,
+  BEAN_ROASTERS,
+} from '../data/equipment'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MACHINE_BRANDS: string[] = [
-  'Breville',
-  "De'Longhi",
-  'Sage',
-  'Gaggia',
-  'Rancilio',
-  'La Marzocco',
-  'ECM',
-  'Rocket',
-  'Lelit',
-  'Jura',
-  'Profitec',
-  'Nespresso',
-  'Other',
-]
+const OTHER = 'Other'
 
-const MACHINE_MODELS: Record<string, string[]> = {
-  Breville: ['Barista Express', 'Barista Pro', 'Barista Touch', 'Bambino Plus', 'Oracle', 'Oracle Touch'],
-  "De'Longhi": ['Dedica', 'Dedica Style', 'La Specialista', 'La Specialista Maestro', 'Dinamica', 'Eletta Explore'],
-  Sage: ['Barista Express', 'Barista Pro', 'Oracle', 'Oracle Touch', 'Bambino', 'Bambino Plus'],
-  Gaggia: ['Classic', 'Classic Pro', 'Classic Evo Pro', 'Carezza', 'Magenta Plus'],
-  Rancilio: ['Silvia', 'Silvia Pro', 'Silvia Pro X', 'Mia'],
-  'La Marzocco': ['Linea Mini', 'GS3', 'Micra', 'Strada'],
-  ECM: ['Synchronika', 'Classika PID', 'Puristika', 'Mechanika'],
-  Rocket: ['Appartamento', 'Mozzafiato', 'Giotto', 'Boxer'],
-  Lelit: ['Bianca', 'Elizabeth', 'Anna', 'Mara X', 'Victoria'],
-  Jura: ['ENA 4', 'E8', 'S8', 'Z10', 'X8'],
-  Other: [],
-}
-
-const BASKET_TYPES = ['Standard', 'Precision/VST', 'Bottomless']
-
-const GRINDER_BRANDS = [
-  'Baratza',
-  'Eureka',
-  'Niche',
-  'Fellow',
-  'DF64',
-  'DF64 Gen 2',
-  '1Zpresso',
-  'Comandante',
-  'Lagom',
-  'Mahlkonig',
-  'Mazzer',
-  'EK43',
-  'Other',
-]
-
-// Known grinder setting ranges: [min, max]
-const GRINDER_PRESETS: Record<string, [number, number]> = {
-  'Niche Zero': [0, 50],
-  DF64: [0, 64],
-  'DF64 Gen 2': [0, 64],
-  'Eureka Mignon Specialita': [0, 8],
-  'Eureka Mignon Silenzio': [0, 8],
-  'Baratza Encore': [1, 40],
-  'Baratza Virtuoso+': [1, 40],
-  'Lagom P64': [0, 12],
-  'Lagom P100': [0, 12],
-  'Fellow Ode Gen 2': [1, 11],
-  '1Zpresso JX-Pro': [0, 90],
-  '1Zpresso Q2': [0, 36],
-  'Comandante C40': [0, 40],
-  'Mahlkonig EK43': [1, 10],
-  'Mahlkonig E65S': [1, 9],
-  'Mazzer Mini': [1, 8],
-}
-
-const ROAST_LEVELS: { value: RoastLevel; label: string }[] = [
-  { value: 'light', label: 'Light' },
-  { value: 'medium-light', label: 'Med-Light' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'medium-dark', label: 'Med-Dark' },
-  { value: 'dark', label: 'Dark' },
+const ROAST_LEVELS: { value: RoastLevel; labelKey: string }[] = [
+  { value: 'light', labelKey: 'setup.roastLight' },
+  { value: 'medium-light', labelKey: 'setup.roastMediumLight' },
+  { value: 'medium', labelKey: 'setup.roastMedium' },
+  { value: 'medium-dark', labelKey: 'setup.roastMediumDark' },
+  { value: 'dark', labelKey: 'setup.roastDark' },
 ]
 
 const TODAY_ISO = new Date().toISOString().slice(0, 10)
@@ -185,29 +132,6 @@ function IconRuler() {
   )
 }
 
-// Portafilter silhouette for the empty state hero
-function IconPortafilter() {
-  return (
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-      {/* Long horizontal handle */}
-      <rect x="22" y="6" width="18" height="6" rx="3" fill="currentColor"/>
-      {/* Short neck down from handle into basket top */}
-      <rect x="18" y="10" width="7" height="5" rx="1.5" fill="currentColor"/>
-      {/* Basket body -- trapezoidal shape, wider at top, narrower at bottom */}
-      <path d="M7 15 L37 15 L33 34 L11 34 Z" fill="currentColor" opacity="0.9"/>
-      {/* Double spout */}
-      <line x1="14" y1="34" x2="11" y2="42" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-      <line x1="30" y1="34" x2="33" y2="42" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-      {/* Filter holes */}
-      <circle cx="17" cy="22" r="1.3" fill="white" opacity="0.55"/>
-      <circle cx="22" cy="22" r="1.3" fill="white" opacity="0.55"/>
-      <circle cx="27" cy="22" r="1.3" fill="white" opacity="0.55"/>
-      <circle cx="19" cy="27" r="1.3" fill="white" opacity="0.55"/>
-      <circle cx="25" cy="27" r="1.3" fill="white" opacity="0.55"/>
-    </svg>
-  )
-}
-
 // Clean tamper icons (SVG, no emoji)
 function IconTamperManual() {
   return (
@@ -282,20 +206,28 @@ interface CardProps {
   complete?: boolean
   icon: React.ReactNode
   children: React.ReactNode
+  locked?: boolean
 }
-function Card({ title, open, onToggle, complete, icon, children }: CardProps) {
+function Card({ title, open, onToggle, complete, icon, children, locked }: CardProps) {
+  const { t } = useTranslation()
+  const completeLabel = t('setup.complete')
+  const incompleteLabel = t('setup.incomplete')
   return (
-    <div className={`sc-card${open ? ' sc-card--open' : ''}`}>
+    <div className={`sc-card${open ? ' sc-card--open' : ''}${locked ? ' sc-card--locked' : ''}`}>
       <button className={`sc-card__header${open ? ' sc-card__header--open' : ''}`} onClick={onToggle} aria-expanded={open}>
         <span className="sc-card__header-left">
           <span className="sc-card__icon">{icon}</span>
           <span className="sc-card__title">{title}</span>
         </span>
         <span className="sc-card__header-right">
-          <span
-            className={`sc-card__dot${complete ? ' sc-card__dot--complete' : ''}`}
-            aria-label={complete ? 'Complete' : 'Incomplete'}
-          />
+          {locked ? (
+            <span className="sc-card__premium-badge">{t('tierLock.badge')}</span>
+          ) : (
+            <span
+              className={`sc-card__dot${complete ? ' sc-card__dot--complete' : ''}`}
+              aria-label={complete ? completeLabel : incompleteLabel}
+            />
+          )}
           <Chevron open={open} />
         </span>
       </button>
@@ -327,22 +259,23 @@ interface MaintenanceRowProps {
   intervalDays: number
   onDateChange: (iso: string) => void
   onToday: () => void
+  t: (key: string, params?: TParams) => string
 }
-function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday }: MaintenanceRowProps) {
+function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday, t }: MaintenanceRowProps) {
   const daysLeft = daysUntilDue(lastDate, intervalDays)
 
   let pillClass = 'sc-maint__pill'
-  let noteText = 'No record'
+  let noteText = t('setup.maintNoRecord')
   if (daysLeft !== null) {
     if (daysLeft > 3) {
       pillClass = 'sc-maint__pill sc-maint__pill--good'
-      noteText = `Due in ${daysLeft}d`
+      noteText = t('setup.maintDueIn', { days: daysLeft })
     } else if (daysLeft >= 0) {
       pillClass = 'sc-maint__pill sc-maint__pill--warn'
-      noteText = daysLeft === 0 ? 'Due today' : `Due in ${daysLeft}d`
+      noteText = daysLeft === 0 ? t('setup.maintDueToday') : t('setup.maintDueIn', { days: daysLeft })
     } else {
       pillClass = 'sc-maint__pill sc-maint__pill--overdue'
-      noteText = `Overdue ${Math.abs(daysLeft)}d`
+      noteText = t('setup.maintOverdue', { days: Math.abs(daysLeft) })
     }
   }
 
@@ -361,7 +294,7 @@ function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday }
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDateChange(e.target.value)}
         />
         <button className="sc-btn-today" onClick={onToday} type="button">
-          Today
+          {t('setup.maintToday')}
         </button>
       </div>
     </div>
@@ -373,49 +306,55 @@ function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday }
 interface SetupScreenProps {
   state: BrewmieState
   dispatch: React.Dispatch<AppAction>
+  onSignIn: () => void
 }
 
 // ─── Card keys ────────────────────────────────────────────────────────────────
 
 type CardKey = 'units' | 'machine' | 'grinder' | 'tamper' | 'beans' | 'maintenance' | 'privacy'
-const CARD_KEYS: CardKey[] = ['units', 'machine', 'grinder', 'tamper', 'beans', 'maintenance', 'privacy']
+
+const WIZARD_STEP_KEYS = ['wizard.stepMachine', 'wizard.stepGrinder', 'wizard.stepTamper', 'wizard.stepBeans'] as const
+type WizardStep = 0 | 1 | 2 | 3
 
 // ─── Roast age display ────────────────────────────────────────────────────────
 
 interface RoastAgeDisplayProps {
   days: number
+  t: (key: string, params?: TParams) => string
 }
-function RoastAgeDisplay({ days }: RoastAgeDisplayProps) {
+function RoastAgeDisplay({ days, t }: RoastAgeDisplayProps) {
   if (days < 7) {
-    return <span className="sc-age-tag sc-age-tag--fresh">Too fresh -- let it degas</span>
+    return <span className="sc-age-tag sc-age-tag--fresh">{t('setup.ageTooFresh')}</span>
   }
   if (days <= 21) {
-    return <span className="sc-age-tag sc-age-tag--prime">Prime window</span>
+    return <span className="sc-age-tag sc-age-tag--prime">{t('setup.agePrime')}</span>
   }
   if (days <= 30) {
-    return <span className="sc-age-tag sc-age-tag--aging">Getting towards stale</span>
+    return <span className="sc-age-tag sc-age-tag--aging">{t('setup.ageAging')}</span>
   }
-  return <span className="sc-age-tag sc-age-tag--stale">Past peak</span>
+  return <span className="sc-age-tag sc-age-tag--stale">{t('setup.ageStale')}</span>
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function SetupScreen({ state, dispatch }: SetupScreenProps) {
-  // Determine which card starts open
-  const defaultOpen = (): Record<CardKey, boolean> => {
-    const hasMachine = state.machine && state.machine.brand
-    return {
-      units: !hasMachine,
-      machine: !hasMachine,
-      grinder: false,
-      tamper: false,
-      beans: false,
-      maintenance: false,
-      privacy: false,
-    }
-  }
+export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
+  const { t } = useTranslation()
+  const allClosed = (): Record<CardKey, boolean> => ({
+    units: false, machine: false, grinder: false, tamper: false,
+    beans: false, maintenance: false, privacy: false,
+  })
 
-  const [openCards, setOpenCards] = useState<Record<CardKey, boolean>>(defaultOpen)
+  const [openCards, setOpenCards] = useState<Record<CardKey, boolean>>(allClosed)
+  const [wizardOpen, setWizardOpen] = useState(false)
+  const [wizardStep, setWizardStep] = useState<WizardStep>(0)
+
+  // ── Tier gating ───────────────────────────────────────────────────────────
+  const tier = useTier(state)
+  const isFree = tier === 'free'
+  const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | null>(null)
+  const PREMIUM_CARDS: CardKey[] = ['grinder', 'tamper', 'beans']
+  const isLocked = (key: CardKey): boolean =>
+    isFree && PREMIUM_CARDS.includes(key)
 
   // ── Toast state ──────────────────────────────────────────────────────────────
   const [toastVisible, setToastVisible] = useState<boolean>(false)
@@ -478,6 +417,9 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
   const shotTempDisplay = state.units === 'imperial' ? celsiusToFahrenheit(shotTempC) : shotTempC
 
   const isEquipmentConfigured = !!(state.machine?.brand && state.grinder?.brand)
+  // True when the user has filled at least one optional section (machine, grinder, tamp, beans).
+  // Used to swap the giant empty-state hero for a thin nudge banner once any progress exists.
+  const hasAnyProgress = !!(state.machine?.brand || state.grinder?.brand || state.tamp || state.beans?.brand)
 
   // ─── Dispatch helpers ─────────────────────────────────────────────────────────
 
@@ -568,19 +510,25 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
   // ─── Card toggle helpers ──────────────────────────────────────────────────────
 
   function toggleCard(key: CardKey) {
+    if (isLocked(key)) {
+      setPremiumTrigger(key as 'grinder' | 'tamper' | 'beans')
+      return
+    }
     setOpenCards((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  function expandAll() {
-    const all: Record<CardKey, boolean> = {} as Record<CardKey, boolean>
-    CARD_KEYS.forEach((k) => (all[k] = true))
-    setOpenCards(all)
+  function openWizard() {
+    setWizardStep(0)
+    setWizardOpen(true)
   }
 
-  function collapseAll() {
-    const none: Record<CardKey, boolean> = {} as Record<CardKey, boolean>
-    CARD_KEYS.forEach((k) => (none[k] = false))
-    setOpenCards(none)
+  function wizardNext() {
+    if (wizardStep < 3) setWizardStep((s) => (s + 1) as WizardStep)
+    else setWizardOpen(false)
+  }
+
+  function wizardBack() {
+    if (wizardStep > 0) setWizardStep((s) => (s - 1) as WizardStep)
   }
 
   // ─── Machine brand change ─────────────────────────────────────────────────────
@@ -591,15 +539,46 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
     setMachineModel('')
   }
 
-  // ─── Machine model auto-suggest ───────────────────────────────────────────────
-  const modelSuggestions: string[] = machineBrand ? (MACHINE_MODELS[machineBrand] ?? []) : []
+  // ─── Machine model dropdown ───────────────────────────────────────────────────
+  const machineModelOptions: string[] = machineBrand ? (MACHINE_MODELS[machineBrand] ?? []) : []
+  const [machineModelOther, setMachineModelOther] = useState<boolean>(
+    !!(machineModel && machineBrand && machineModelOptions.length > 0 && !machineModelOptions.includes(machineModel))
+  )
 
-  // ─── Grinder model preset detection ──────────────────────────────────────────
+  function handleMachineModelChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const val = e.target.value
+    if (val === OTHER) {
+      setMachineModelOther(true)
+      setMachineModel('')
+    } else {
+      setMachineModelOther(false)
+      setMachineModel(val)
+    }
+  }
 
-  function handleGrinderModelChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const model = e.target.value
-    setGrinderModel(model)
-    const preset = GRINDER_PRESETS[model]
+  // ─── Grinder model dropdown with auto-preset ─────────────────────────────────
+  const grinderModelOptions = grinderBrand ? (GRINDER_MODELS[grinderBrand] ?? []) : []
+  const [grinderModelOther, setGrinderModelOther] = useState<boolean>(
+    !!(grinderModel && grinderBrand && grinderModelOptions.length > 0
+      && !grinderModelOptions.some((m) => m.name === grinderModel))
+  )
+
+  function handleGrinderBrandChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    setGrinderBrand(e.target.value)
+    setGrinderModel('')
+    setGrinderModelOther(false)
+  }
+
+  function handleGrinderModelChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const val = e.target.value
+    if (val === OTHER) {
+      setGrinderModelOther(true)
+      setGrinderModel('')
+      return
+    }
+    setGrinderModelOther(false)
+    setGrinderModel(val)
+    const preset = (GRINDER_MODELS[grinderBrand] ?? []).find((m) => m.name === val)?.range
     if (preset) {
       setGrinderMin(preset[0])
       setGrinderMax(preset[1])
@@ -662,9 +641,9 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
   // Tamper button definitions (SVG icons, no emoji)
   const tampOptions: { type: TampType; icon: React.ReactNode; label: string }[] = [
-    { type: 'manual',    icon: <IconTamperManual />,  label: 'Manual' },
-    { type: 'spring',    icon: <IconTamperSpring />,  label: 'Spring' },
-    { type: 'automatic', icon: <IconTamperAuto />,    label: 'Auto'   },
+    { type: 'manual',    icon: <IconTamperManual />,  label: t('setup.tamperManual') },
+    { type: 'spring',    icon: <IconTamperSpring />,  label: t('setup.tamperSpring') },
+    { type: 'automatic', icon: <IconTamperAuto />,    label: t('setup.tamperAuto')   },
   ]
 
   // ─── Render ───────────────────────────────────────────────────────────────────
@@ -678,35 +657,28 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           <span className="sc-profile__dot" aria-hidden="true" />
           <span className="sc-profile__text">{buildProfileLabel()}</span>
         </div>
+      ) : hasAnyProgress ? (
+        <button
+          className="sc-profile sc-profile--banner"
+          type="button"
+          onClick={openWizard}
+        >
+          <span className="sc-profile__banner-eyebrow">{t('setup.bannerEyebrow')}</span>
+          <span className="sc-profile__banner-text">{t('setup.profileFinish')}</span>
+          <span className="sc-profile__banner-cta">{t('setup.bannerCta')}</span>
+        </button>
       ) : (
-        <div className="sc-profile sc-profile--empty">
-          <div className="sc-profile__icon-wrap" aria-hidden="true">
-            <IconPortafilter />
-          </div>
-          <h2 className="sc-profile__heading">What are you working with?</h2>
-          <p className="sc-profile__body">Your machine and grinder shape every shot. Set them up once and we'll remember.</p>
-          <button
-            className="sc-profile__cta-btn"
-            type="button"
-            onClick={() => setOpenCards((prev) => ({ ...prev, machine: true }))}
-          >
-            Let's set it up →
-          </button>
-        </div>
+        <button className="sc-profile-cta" type="button" onClick={openWizard}>
+          {t('setup.profileCta')}
+        </button>
       )}
-
-      {/* Expand / Collapse All */}
-      <div className="sc-controls">
-        <button className="sc-ctrl-btn" onClick={expandAll} type="button">Expand All</button>
-        <button className="sc-ctrl-btn" onClick={collapseAll} type="button">Collapse All</button>
-      </div>
 
       {/* Cards */}
       <div className="sc-cards">
 
         {/* ── 1. Units ── */}
         <Card
-          title="Units"
+          title={t('setup.cardUnits')}
           open={openCards.units}
           onToggle={() => toggleCard('units')}
           complete={true}
@@ -723,66 +695,73 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
               onClick={() => dispatch({ type: 'SET_UNITS', payload: 'metric' as Units })}
               type="button"
             >
-              Metric
+              {t('setup.unitsMetric')}
             </button>
             <button
               className={`sc-pill-option${state.units === 'imperial' ? ' sc-pill-option--active' : ''}`}
               onClick={() => dispatch({ type: 'SET_UNITS', payload: 'imperial' as Units })}
               type="button"
             >
-              Imperial
+              {t('setup.unitsImperial')}
             </button>
           </div>
           <p className="sc-hint">
             {state.units === 'metric'
-              ? 'Weights in grams, temperature in °C'
-              : 'Weights in oz, temperature in °F'}
+              ? t('setup.unitsHintMetric')
+              : t('setup.unitsHintImperial')}
           </p>
         </Card>
 
         {/* ── 2. Machine ── */}
         <Card
-          title="Machine"
+          title={t('setup.cardMachine')}
           open={openCards.machine}
           onToggle={() => toggleCard('machine')}
           complete={!!state.machine?.brand}
           icon={<IconWrench />}
         >
-          <p className="sc-card__desc">Your espresso machine determines your baseline pressure and temperature profile.</p>
+          <p className="sc-card__desc">{t('setup.machineDesc')}</p>
 
-          <Field label="Brand">
+          <Field label={t('setup.fieldBrand')}>
             <select
               className="sc-select"
               value={machineBrand}
               onChange={handleMachineBrandChange}
             >
-              <option value="">Select brand</option>
+              <option value="">{t('setup.selectBrand')}</option>
               {MACHINE_BRANDS.map((b) => (
                 <option key={b} value={b}>{b}</option>
               ))}
             </select>
           </Field>
 
-          <Field label="Model">
-            <input
-              list="machine-model-list"
-              className="sc-input"
-              placeholder="e.g. Barista Express"
-              value={machineModel}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMachineModel(e.target.value)}
-              onBlur={() => machineBrand && dispatchMachine({ model: machineModel })}
-            />
-            {modelSuggestions.length > 0 && (
-              <datalist id="machine-model-list">
-                {modelSuggestions.map((m) => (
-                  <option key={m} value={m} />
+          <Field label={t('setup.fieldModel')}>
+            {machineModelOther || machineModelOptions.length === 0 ? (
+              <input
+                type="text"
+                className="sc-input"
+                placeholder={t('setup.modelPlaceholder')}
+                value={machineModel}
+                onChange={(e) => setMachineModel(e.target.value)}
+                onBlur={() => machineBrand && dispatchMachine({ model: machineModel })}
+              />
+            ) : (
+              <select
+                className="sc-select"
+                value={machineModel}
+                onChange={handleMachineModelChange}
+              >
+                <option value="">{t('setup.selectModel')}</option>
+                {machineModelOptions.map((m) => (
+                  <option key={m} value={m}>{m}</option>
                 ))}
-              </datalist>
+                <option value={OTHER}>{t('setup.other')}</option>
+              </select>
             )}
           </Field>
 
           <div className="sc-row">
-            <Field label="Basket Size (g)">
+            <Field label={t('setup.basketSize')}>
               <input
                 type="number"
                 className="sc-input"
@@ -793,20 +772,20 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBasketSize(Number(e.target.value))}
               />
             </Field>
-            <Field label="Basket Type">
+            <Field label={t('setup.basketType')}>
               <select
                 className="sc-select"
                 value={basketType}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setBasketType(e.target.value)}
               >
-                {BASKET_TYPES.map((t) => (
-                  <option key={t} value={t}>{t}</option>
+                {BASKET_TYPES.map((bt) => (
+                  <option key={bt} value={bt}>{bt}</option>
                 ))}
               </select>
             </Field>
           </div>
 
-          <Field label={`Shot Temperature (°${state.units === 'imperial' ? 'F' : 'C'})`}>
+          <Field label={state.units === 'imperial' ? t('setup.shotTempF') : t('setup.shotTempC')}>
             <input
               type="number"
               className="sc-input"
@@ -821,67 +800,75 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
         {/* ── 3. Grinder ── */}
         <Card
-          title="Grinder"
+          title={t('setup.cardGrinder')}
           open={openCards.grinder}
           onToggle={() => toggleCard('grinder')}
           complete={!!state.grinder?.brand}
           icon={<IconDroplet />}
+          locked={isLocked('grinder')}
         >
-          <p className="sc-card__desc">The most important variable. We use your grinder's sensitivity curve from community data.</p>
+          <p className="sc-card__desc">{t('setup.grinderDesc')}</p>
 
-          <Field label="Grinder Type">
+          <Field label={t('setup.grinderType')}>
             <div className="sc-option-group">
               <button
                 className={`sc-option-btn${grinderBuiltIn ? ' sc-option-btn--active' : ''}`}
                 onClick={() => setGrinderBuiltIn(true)}
                 type="button"
               >
-                Built-in
+                {t('setup.builtIn')}
               </button>
               <button
                 className={`sc-option-btn${!grinderBuiltIn ? ' sc-option-btn--active' : ''}`}
                 onClick={() => setGrinderBuiltIn(false)}
                 type="button"
               >
-                Standalone
+                {t('setup.standalone')}
               </button>
             </div>
           </Field>
 
           {!grinderBuiltIn && (
             <>
-              <Field label="Brand">
-                <input
-                  list="grinder-brand-list"
-                  className="sc-input"
-                  placeholder="e.g. Niche"
+              <Field label={t('setup.fieldBrand')}>
+                <select
+                  className="sc-select"
                   value={grinderBrand}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGrinderBrand(e.target.value)}
-                />
-                <datalist id="grinder-brand-list">
-                  {GRINDER_BRANDS.map((b) => (
-                    <option key={b} value={b} />
+                  onChange={handleGrinderBrandChange}
+                >
+                  <option value="">{t('setup.selectBrand')}</option>
+                  {GRINDER_BRANDS.filter((b) => b !== 'Built-in').map((b) => (
+                    <option key={b} value={b}>{b}</option>
                   ))}
-                </datalist>
+                </select>
               </Field>
 
-              <Field label="Model">
-                <input
-                  list="grinder-model-list"
-                  className="sc-input"
-                  placeholder="e.g. Zero"
-                  value={grinderModel}
-                  onChange={handleGrinderModelChange}
-                />
-                <datalist id="grinder-model-list">
-                  {Object.keys(GRINDER_PRESETS).map((m) => (
-                    <option key={m} value={m} />
-                  ))}
-                </datalist>
+              <Field label={t('setup.fieldModel')}>
+                {grinderModelOther || grinderModelOptions.length === 0 ? (
+                  <input
+                    type="text"
+                    className="sc-input"
+                    placeholder={t('setup.modelPlaceholder')}
+                    value={grinderModel}
+                    onChange={(e) => setGrinderModel(e.target.value)}
+                  />
+                ) : (
+                  <select
+                    className="sc-select"
+                    value={grinderModel}
+                    onChange={handleGrinderModelChange}
+                  >
+                    <option value="">{t('setup.selectModel')}</option>
+                    {grinderModelOptions.map((m) => (
+                      <option key={m.name} value={m.name}>{m.name}</option>
+                    ))}
+                    <option value={OTHER}>{t('setup.other')}</option>
+                  </select>
+                )}
               </Field>
 
               <div className="sc-row">
-                <Field label="Min Setting">
+                <Field label={t('setup.minSetting')}>
                   <input
                     type="number"
                     className="sc-input"
@@ -891,7 +878,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGrinderMin(Number(e.target.value))}
                   />
                 </Field>
-                <Field label="Max Setting">
+                <Field label={t('setup.maxSetting')}>
                   <input
                     type="number"
                     className="sc-input"
@@ -908,15 +895,16 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
         {/* ── 4. Tamper ── */}
         <Card
-          title="Tamper"
+          title={t('setup.cardTamper')}
           open={openCards.tamper}
           onToggle={() => toggleCard('tamper')}
           complete={!!state.tamp}
           icon={<IconDisc />}
+          locked={isLocked('tamper')}
         >
-          <p className="sc-card__desc">Helps calibrate tamp consistency across shots.</p>
+          <p className="sc-card__desc">So we can hold tamp steady from shot to shot.</p>
 
-          <Field label="Tamper Type">
+          <Field label={t('setup.tamperType')}>
             <div className="sc-option-group">
               {tampOptions.map(({ type: t, icon, label }) => (
                 <button
@@ -936,7 +924,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           </Field>
 
           {tampType === 'spring' && (
-            <Field label="Tamper Pressure">
+            <Field label={t('setup.tamperPressure')}>
               <div className="sc-pressure-presets">
                 {[10, 15, 20, 25, 30].map((kg) => (
                   <button
@@ -951,22 +939,22 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                 <button
                   className={`sc-pressure-btn${![10, 15, 20, 25, 30].includes(springPressure) ? ' sc-option-btn--active' : ''}`}
                   onClick={() => {
-                    const val = Number(prompt('Enter pressure in kg', String(springPressure)))
+                    const val = Number(prompt(t('setup.customPrompt'), String(springPressure)))
                     if (val > 0) setSpringPressure(val)
                   }}
                   type="button"
                 >
-                  Custom
+                  {t('setup.tamperCustom')}
                 </button>
               </div>
               {![10, 15, 20, 25, 30].includes(springPressure) && (
-                <p className="sc-hint">Your tamper pressure: {springPressure}kg</p>
+                <p className="sc-hint">{t('setup.tamperPressureHint', { kg: springPressure })}</p>
               )}
             </Field>
           )}
 
           {tampType === 'automatic' && (
-            <Field label="Tamper Pressure">
+            <Field label={t('setup.tamperPressure')}>
               <div className="sc-pressure-presets">
                 {[10, 15, 20, 25, 30].map((kg) => (
                   <button
@@ -981,58 +969,67 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                 <button
                   className={`sc-pressure-btn${![10, 15, 20, 25, 30].includes(autoPressure) ? ' sc-option-btn--active' : ''}`}
                   onClick={() => {
-                    const val = Number(prompt('Enter pressure in kg', String(autoPressure)))
+                    const val = Number(prompt(t('setup.customPrompt'), String(autoPressure)))
                     if (val > 0) setAutoPressure(val)
                   }}
                   type="button"
                 >
-                  Custom
+                  {t('setup.tamperCustom')}
                 </button>
               </div>
               {![10, 15, 20, 25, 30].includes(autoPressure) && (
-                <p className="sc-hint">Your tamper pressure: {autoPressure}kg</p>
+                <p className="sc-hint">{t('setup.tamperPressureHint', { kg: autoPressure })}</p>
               )}
             </Field>
           )}
 
           {tampType === 'manual' && (
-            <p className="sc-hint">Tamp level is adjusted per-shot on the Brew screen.</p>
+            <p className="sc-hint">{t('setup.tamperManualHint')}</p>
           )}
         </Card>
 
         {/* ── 5. Beans ── */}
         <Card
-          title="Beans"
+          title={t('setup.cardBeans')}
           open={openCards.beans}
           onToggle={() => toggleCard('beans')}
           complete={!!state.beans?.brand}
           icon={<IconLeaf />}
+          locked={isLocked('beans')}
         >
-          <p className="sc-card__desc">Fresh beans dial in differently. We factor roast age into every recommendation.</p>
+          <p className="sc-card__desc">{t('setup.beansDesc')}</p>
 
-          <Field label="Brand">
+          <Field label={t('setup.beanRoaster')}>
             <input
+              list="bean-roaster-list"
               type="text"
               className="sc-input"
-              placeholder="e.g. Seven Seeds"
+              placeholder={t('setup.beanRoasterPlaceholder')}
               value={beanBrand}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBeanBrand(e.target.value)}
+              onChange={(e) => setBeanBrand(e.target.value)}
               onBlur={() => dispatchBeans({ brand: beanBrand })}
             />
+            <datalist id="bean-roaster-list">
+              {BEAN_ROASTERS.map((r) => (
+                <option key={r} value={r} />
+              ))}
+            </datalist>
           </Field>
 
-          <Field label="Type">
-            <input
-              type="text"
-              className="sc-input"
-              placeholder="e.g. Single Origin, Blend"
+          <Field label={t('setup.fieldType')}>
+            <select
+              className="sc-select"
               value={beanType}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBeanType(e.target.value)}
-              onBlur={() => dispatchBeans({ type: beanType })}
-            />
+              onChange={(e) => { setBeanType(e.target.value); dispatchBeans({ type: e.target.value }) }}
+            >
+              <option value="">{t('setup.selectType')}</option>
+              {BEAN_TYPES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
           </Field>
 
-          <Field label="Date of Roast">
+          <Field label={t('setup.beanRoastDate')}>
             <div className="sc-date-row">
               <input
                 type="date"
@@ -1046,17 +1043,17 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                 }}
               />
               {beanAgeDays !== null && (
-                <RoastAgeDisplay days={beanAgeDays} />
+                <RoastAgeDisplay days={beanAgeDays} t={t} />
               )}
             </div>
             {beanAgeDays !== null && (
               <p className="sc-bean-age-sub">
-                {beanAgeDays === 0 ? 'Roasted today' : `${beanAgeDays} day${beanAgeDays !== 1 ? 's' : ''} since roast`}
+                {beanAgeDays === 0 ? t('setup.roastedToday') : t(beanAgeDays === 1 ? 'setup.daysSinceRoast' : 'setup.daysSinceRoastPlural', { days: beanAgeDays })}
               </p>
             )}
           </Field>
 
-          <Field label="Roast Level">
+          <Field label={t('setup.beanRoastLevel')}>
             <div className="sc-roast-group">
               {ROAST_LEVELS.map((rl) => (
                 <button
@@ -1068,56 +1065,56 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
                   }}
                   type="button"
                 >
-                  {rl.label}
+                  {t(rl.labelKey)}
                 </button>
               ))}
             </div>
           </Field>
 
           <button className="sc-new-beans-btn" onClick={handleNewBeans} type="button">
-            New Beans
+            {t('setup.newBeans')}
           </button>
         </Card>
 
         {/* ── 6. Maintenance ── */}
         <Card
-          title="Maintenance"
+          title={t('setup.cardMaintenance')}
           open={openCards.maintenance}
           onToggle={() => toggleCard('maintenance')}
           complete={!!(state.maintenance.lastBackflush || state.maintenance.lastDescale || state.maintenance.lastGrinderClean)}
           icon={<IconClock />}
         >
-          <p className="sc-card__desc">Clean equipment pulls better shots. We'll remind you when it's time.</p>
+          <p className="sc-card__desc">{t('setup.maintenanceDesc')}</p>
 
           <MaintenanceRow
-            label="Backflush"
+            label={t('setup.maintBackflush')}
             lastDate={state.maintenance.lastBackflush}
             intervalDays={BACKFLUSH_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastBackflush', v)}
             onToday={() => setMaintenanceDate('lastBackflush', TODAY_ISO)}
+            t={t}
           />
           <MaintenanceRow
-            label="Descale"
+            label={t('setup.maintDescale')}
             lastDate={state.maintenance.lastDescale}
             intervalDays={DESCALE_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastDescale', v)}
             onToday={() => setMaintenanceDate('lastDescale', TODAY_ISO)}
+            t={t}
           />
           <MaintenanceRow
-            label="Grinder Clean"
+            label={t('setup.maintGrinderClean')}
             lastDate={state.maintenance.lastGrinderClean}
             intervalDays={GRINDER_CLEAN_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastGrinderClean', v)}
             onToday={() => setMaintenanceDate('lastGrinderClean', TODAY_ISO)}
+            t={t}
           />
-          <p className="sc-hint sc-hint--spaced">
-            Backflush every 2 weeks. Descale every 3 months. Grinder clean every 4 weeks.
-          </p>
         </Card>
 
         {/* ── 7. Privacy ── */}
         <Card
-          title="Privacy"
+          title={t('setup.cardPrivacy')}
           open={openCards.privacy}
           onToggle={() => toggleCard('privacy')}
           complete={true}
@@ -1125,33 +1122,247 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         >
           <div className="sc-privacy-row">
             <div className="sc-privacy-text">
-              <span className="sc-privacy-label">Share anonymous shot data</span>
-              <span className="sc-privacy-sub">Helps improve recommendations for all users. No personal data is ever included.</span>
+              <span className="sc-privacy-label">{t('setup.privacyLabel')}</span>
+              <span className="sc-privacy-sub">{t('setup.privacySub')}</span>
             </div>
             <button
               className={`sc-toggle${sharingOn ? ' sc-toggle--on' : ''}`}
               role="switch"
               aria-checked={sharingOn}
-              aria-label="Share anonymous shot data"
+              aria-label={t('setup.privacyLabel')}
               onClick={handleSharingToggle}
               type="button"
             >
               <span className="sc-toggle__thumb" />
             </button>
           </div>
+          <a
+            className="sc-privacy-link"
+            href="/privacy.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('setup.privacyPolicyLink')} →
+          </a>
         </Card>
 
       </div>
 
       {/* Saved toast */}
       <div className={`sc-toast${toastVisible ? ' sc-toast--visible' : ''}`} aria-live="polite" aria-atomic="true">
-        Saved.
+        {t('setup.toastSaved')}
       </div>
+
+      {/* ── Setup Wizard ── */}
+      {wizardOpen && (
+        <div className="wz-backdrop" role="dialog" aria-modal="true" aria-label={t('wizard.ariaLabel')}>
+          <div className="wz-sheet">
+
+            {/* Header */}
+            <div className="wz-header">
+              <button className="wz-close" onClick={() => setWizardOpen(false)} type="button" aria-label={t('modal.close')}>✕</button>
+              <div className="wz-steps">
+                {WIZARD_STEP_KEYS.map((labelKey, i) => (
+                  <div key={labelKey} className={`wz-step${i === wizardStep ? ' wz-step--active' : i < wizardStep ? ' wz-step--done' : ''}`}>
+                    <span className="wz-step__dot" />
+                    <span className="wz-step__label">{t(labelKey)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Step content */}
+            <div className="wz-body">
+
+              {wizardStep === 0 && (
+                <>
+                  <h2 className="wz-title">{t('wizard.step1Title')}</h2>
+                  <p className="wz-sub">{t('wizard.step1Sub')}</p>
+                  <Field label={t('setup.fieldBrand')}>
+                    <select className="sc-select" value={machineBrand} onChange={handleMachineBrandChange}>
+                      <option value="">{t('setup.selectBrand')}</option>
+                      {MACHINE_BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                  </Field>
+                  <Field label={t('setup.fieldModel')}>
+                    {machineModelOther || machineModelOptions.length === 0 ? (
+                      <input type="text" className="sc-input" placeholder={t('setup.modelPlaceholder')}
+                        value={machineModel} onChange={(e) => setMachineModel(e.target.value)}
+                        onBlur={() => machineBrand && dispatchMachine({ model: machineModel })} />
+                    ) : (
+                      <select className="sc-select" value={machineModel} onChange={handleMachineModelChange}>
+                        <option value="">{t('setup.selectModel')}</option>
+                        {machineModelOptions.map((m) => <option key={m} value={m}>{m}</option>)}
+                        <option value={OTHER}>{t('setup.other')}</option>
+                      </select>
+                    )}
+                  </Field>
+                  <Field label={t('setup.basketSize')}>
+                    <input type="number" className="sc-input" min={14} max={24} step={0.1}
+                      value={basketSize} onChange={(e) => setBasketSize(Number(e.target.value))} />
+                  </Field>
+                </>
+              )}
+
+              {wizardStep === 1 && (
+                <>
+                  <h2 className="wz-title">{t('wizard.step2Title')}</h2>
+                  <p className="wz-sub">{t('wizard.step2Sub')}</p>
+                  <Field label={t('setup.fieldType')}>
+                    <div className="sc-option-group">
+                      <button className={`sc-option-btn${grinderBuiltIn ? ' sc-option-btn--active' : ''}`}
+                        onClick={() => setGrinderBuiltIn(true)} type="button">{t('setup.builtIn')}</button>
+                      <button className={`sc-option-btn${!grinderBuiltIn ? ' sc-option-btn--active' : ''}`}
+                        onClick={() => setGrinderBuiltIn(false)} type="button">{t('setup.standalone')}</button>
+                    </div>
+                  </Field>
+                  {!grinderBuiltIn && (
+                    <>
+                      <Field label={t('setup.fieldBrand')}>
+                        <select className="sc-select" value={grinderBrand} onChange={handleGrinderBrandChange}>
+                          <option value="">{t('setup.selectBrand')}</option>
+                          {GRINDER_BRANDS.filter((b) => b !== 'Built-in').map((b) => <option key={b} value={b}>{b}</option>)}
+                        </select>
+                      </Field>
+                      <Field label={t('setup.fieldModel')}>
+                        {grinderModelOther || grinderModelOptions.length === 0 ? (
+                          <input type="text" className="sc-input" placeholder={t('setup.modelPlaceholder')}
+                            value={grinderModel} onChange={(e) => setGrinderModel(e.target.value)} />
+                        ) : (
+                          <select className="sc-select" value={grinderModel} onChange={handleGrinderModelChange}>
+                            <option value="">{t('setup.selectModel')}</option>
+                            {grinderModelOptions.map((m) => <option key={m.name} value={m.name}>{m.name}</option>)}
+                            <option value={OTHER}>{t('setup.other')}</option>
+                          </select>
+                        )}
+                      </Field>
+                      <div className="sc-row">
+                        <Field label={t('setup.minSetting')}>
+                          <input type="number" className="sc-input" min={0} step={1}
+                            value={grinderMin} onChange={(e) => setGrinderMin(Number(e.target.value))} />
+                        </Field>
+                        <Field label={t('setup.maxSetting')}>
+                          <input type="number" className="sc-input" min={1} step={1}
+                            value={grinderMax} onChange={(e) => setGrinderMax(Number(e.target.value))} />
+                        </Field>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+
+              {wizardStep === 2 && (
+                <>
+                  <h2 className="wz-title">{t('wizard.step3Title')}</h2>
+                  <p className="wz-sub">{t('wizard.step3Sub')}</p>
+                  <Field label={t('setup.fieldType')}>
+                    <div className="sc-option-group">
+                      {tampOptions.map(({ type: t, icon, label }) => (
+                        <button key={t}
+                          className={`sc-option-btn sc-tamp-btn${tampType === t ? ' sc-option-btn--active' : ''}`}
+                          onClick={() => { setTampType(t); dispatchTamp({ type: t }) }} type="button">
+                          <span className="sc-tamp-btn__icon">{icon}</span>
+                          <span>{label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </Field>
+                  {tampType === 'spring' && (
+                    <Field label={t('wizard.springPressure')}>
+                      <div className="sc-pressure-presets">
+                        {[10, 15, 20, 25, 30].map((kg) => (
+                          <button key={kg} className={`sc-pressure-btn${springPressure === kg ? ' sc-option-btn--active' : ''}`}
+                            onClick={() => setSpringPressure(kg)} type="button">{kg} kg</button>
+                        ))}
+                      </div>
+                    </Field>
+                  )}
+                  {tampType === 'automatic' && (
+                    <Field label={t('wizard.autoPressure')}>
+                      <div className="sc-pressure-presets">
+                        {[10, 15, 20, 25, 30].map((kg) => (
+                          <button key={kg} className={`sc-pressure-btn${autoPressure === kg ? ' sc-option-btn--active' : ''}`}
+                            onClick={() => setAutoPressure(kg)} type="button">{kg} kg</button>
+                        ))}
+                      </div>
+                    </Field>
+                  )}
+                  {tampType === 'manual' && (
+                    <p className="sc-hint">Set tamp per shot on the Brew screen.</p>
+                  )}
+                </>
+              )}
+
+              {wizardStep === 3 && (
+                <>
+                  <h2 className="wz-title">{t('wizard.step4Title')}</h2>
+                  <p className="wz-sub">{t('wizard.step4Sub')}</p>
+                  <Field label={t('setup.beanRoaster')}>
+                    <input list="wz-bean-roaster-list" type="text" className="sc-input" placeholder={t('setup.beanRoasterPlaceholder')}
+                      value={beanBrand} onChange={(e) => setBeanBrand(e.target.value)}
+                      onBlur={() => dispatchBeans({ brand: beanBrand })} />
+                    <datalist id="wz-bean-roaster-list">
+                      {BEAN_ROASTERS.map((r) => <option key={r} value={r} />)}
+                    </datalist>
+                  </Field>
+                  <Field label={t('setup.fieldType')}>
+                    <select className="sc-select" value={beanType}
+                      onChange={(e) => { setBeanType(e.target.value); dispatchBeans({ type: e.target.value }) }}>
+                      <option value="">{t('setup.selectType')}</option>
+                      {BEAN_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </Field>
+                  <Field label={t('setup.beanRoastDate')}>
+                    <div className="sc-date-row">
+                      <input type="date" className="sc-input sc-input--date" value={toDateInputValue(roastDate)} max={TODAY_ISO}
+                        onChange={(e) => { const v = e.target.value || null; setRoastDate(v); dispatchBeans({ roastDate: v, beanAge: daysSince(v) }) }} />
+                      {beanAgeDays !== null && <RoastAgeDisplay days={beanAgeDays} t={t} />}
+                    </div>
+                  </Field>
+                  <Field label={t('setup.beanRoastLevel')}>
+                    <div className="sc-roast-group">
+                      {ROAST_LEVELS.map((rl) => (
+                        <button key={rl.value}
+                          className={`sc-roast-btn ${roastTintClass(rl.value)}${roastLevel === rl.value ? ' sc-roast-btn--active' : ''}`}
+                          onClick={() => { setRoastLevel(rl.value); dispatchBeans({ roastLevel: rl.value }) }} type="button">
+                          {t(rl.labelKey)}
+                        </button>
+                      ))}
+                    </div>
+                  </Field>
+                </>
+              )}
+
+            </div>
+
+            {/* Footer nav */}
+            <div className="wz-footer">
+              {wizardStep > 0 ? (
+                <button className="wz-btn wz-btn--back" onClick={wizardBack} type="button">{t('wizard.back')}</button>
+              ) : (
+                <div />
+              )}
+              <button className="wz-btn wz-btn--next" onClick={wizardNext} type="button">
+                {wizardStep < 3 ? t('wizard.next') : t('wizard.done')}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      <PremiumModal
+        open={premiumTrigger !== null}
+        onClose={() => setPremiumTrigger(null)}
+        trigger={premiumTrigger}
+        isSignedIn={!!state.userId}
+        onSignInRequired={onSignIn}
+      />
 
       <style>{`
         /* ── Screen ── */
         .sc-screen {
-          padding: 16px 16px 32px;
+          padding: 4px 16px 32px;
           min-height: 100%;
           display: flex;
           flex-direction: column;
@@ -1169,41 +1380,111 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         .sc-profile--set {
           display: flex;
           align-items: center;
-          gap: 8px;
-          background: #1A1A1A;
-          border: 1px solid rgba(255,255,255,0.08);
+          gap: 10px;
+          background: transparent;
+          border: none;
+          padding: 4px 4px 10px;
+          margin-bottom: 6px;
         }
 
         .sc-profile__dot {
-          width: 8px;
-          height: 8px;
+          width: 7px;
+          height: 7px;
           border-radius: 50%;
-          background: #22c55e;
+          background: var(--accent-green);
           flex-shrink: 0;
-          box-shadow: 0 0 0 2px rgba(34,197,94,0.25);
+          box-shadow: 0 0 0 2.5px rgba(107, 142, 92, 0.18);
         }
 
         .sc-profile__text {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
-          color: #e5e7eb;
-          letter-spacing: 0.1px;
+          color: var(--text-tertiary);
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
 
+        /* Progress banner: a real wizard launcher, not a notification strip. */
+        .sc-profile--banner {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-template-rows: auto auto;
+          align-items: center;
+          column-gap: 12px;
+          row-gap: 4px;
+          width: 100%;
+          background: linear-gradient(180deg, var(--accent-green) 0%, #5C7E4F 100%);
+          border: none;
+          padding: 14px 18px;
+          border-radius: 14px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          text-align: left;
+          box-shadow: 0 1px 2px rgba(60, 40, 20, 0.04), 0 8px 18px rgba(107, 142, 92, 0.22);
+          transition: transform 0.1s ease, box-shadow 0.15s ease;
+          position: relative;
+          overflow: hidden;
+        }
+        .sc-profile--banner::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(120% 80% at 100% 0%, rgba(255, 255, 255, 0.16) 0%, transparent 55%);
+          pointer-events: none;
+        }
+        .sc-profile--banner:hover {
+          box-shadow: 0 2px 4px rgba(60, 40, 20, 0.06), 0 12px 24px rgba(107, 142, 92, 0.28);
+          transform: translateY(-1px);
+        }
+        .sc-profile--banner:active { transform: scale(0.985); }
+
+        .sc-profile__banner-eyebrow {
+          grid-column: 1;
+          grid-row: 1;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 1.4px;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.78);
+          line-height: 1;
+        }
+        .sc-profile__banner-text {
+          grid-column: 1;
+          grid-row: 2;
+          font-size: 16px;
+          font-weight: 700;
+          color: #FFFFFF;
+          letter-spacing: 0.1px;
+          line-height: 1.25;
+        }
+        .sc-profile__banner-cta {
+          grid-column: 2;
+          grid-row: 1 / span 2;
+          align-self: center;
+          font-size: 13px;
+          font-weight: 700;
+          color: #FFFFFF;
+          background: rgba(255, 255, 255, 0.18);
+          padding: 8px 14px;
+          border-radius: 9999px;
+          letter-spacing: 0.2px;
+          white-space: nowrap;
+        }
+
         /* Empty state hero */
         .sc-profile--empty {
-          background: var(--white);
+          background: linear-gradient(180deg, #FDFBF7 0%, var(--white) 100%);
           border: 1px solid var(--border-light);
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
-          gap: 8px;
-          padding: 24px 20px 20px;
-          box-shadow: 0 1px 4px rgba(45,30,10,0.06);
+          gap: 10px;
+          padding: 32px 24px 28px;
+          box-shadow: 0 1px 3px rgba(60, 40, 20, 0.06), 0 8px 24px rgba(60, 40, 20, 0.05);
         }
 
         .sc-profile__icon-wrap {
@@ -1228,26 +1509,51 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           margin: 0;
         }
 
-        .sc-profile__cta-btn {
-          margin-top: 6px;
+        /* Standalone CTA (no surrounding card, no repeated heading) */
+        .sc-profile-cta {
           display: inline-flex;
           align-items: center;
-          font-size: 14px;
+          justify-content: center;
+          font-size: 15px;
           font-weight: 700;
-          padding: 10px 22px;
+          padding: 14px 32px;
           border-radius: 999px;
           background: var(--accent-green);
           color: var(--white);
           border: none;
           cursor: pointer;
-          transition: opacity 0.15s ease, transform 0.15s ease;
+          transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
           -webkit-tap-highlight-color: transparent;
-          letter-spacing: 0.1px;
+          letter-spacing: 0.2px;
+          box-shadow: 0 2px 8px rgba(60, 40, 20, 0.10), 0 8px 22px rgba(107, 142, 92, 0.28);
+          align-self: flex-start;
+          margin: 0 0 4px;
+        }
+        .sc-profile-cta:active { background: #5C7E4D; transform: scale(0.98); }
+        .sc-profile-cta:hover  { background: #5C7E4D; }
+
+        .sc-profile__cta-btn {
+          margin-top: 10px;
+          display: inline-flex;
+          align-items: center;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 13px 28px;
+          border-radius: 999px;
+          background: var(--accent-green);
+          color: var(--white);
+          border: none;
+          cursor: pointer;
+          transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+          -webkit-tap-highlight-color: transparent;
+          letter-spacing: 0.2px;
+          box-shadow: 0 2px 8px rgba(60, 40, 20, 0.10), 0 8px 22px rgba(107, 142, 92, 0.28);
         }
 
         .sc-profile__cta-btn:active {
-          opacity: 0.85;
+          background: #5C7E4D;
           transform: scale(0.97);
+          box-shadow: 0 1px 4px rgba(60, 40, 20, 0.10), 0 3px 10px rgba(107, 142, 92, 0.22);
         }
 
         /* ── Expand/Collapse controls ── */
@@ -1287,7 +1593,8 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         .sc-card {
           background: var(--white);
           border-radius: 16px;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+          border: 1px solid var(--border-light);
+          box-shadow: 0 1px 3px rgba(60, 40, 20, 0.05), 0 4px 12px rgba(60, 40, 20, 0.04);
           overflow: hidden;
         }
 
@@ -1316,7 +1623,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         .sc-card__header-left {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 12px;
         }
 
         .sc-card__header-right {
@@ -1327,10 +1634,16 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         }
 
         .sc-card__icon {
-          color: var(--text-tertiary);
+          color: var(--copper);
           display: flex;
           align-items: center;
+          justify-content: center;
           flex-shrink: 0;
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          background: rgba(184, 116, 74, 0.10);
+          border: 1px solid rgba(184, 116, 74, 0.18);
         }
 
         .sc-card__title {
@@ -1351,9 +1664,25 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         }
 
         .sc-card__dot--complete {
-          background: #22c55e;
-          border-color: #22c55e;
-          box-shadow: 0 0 0 2px rgba(34,197,94,0.2);
+          background: var(--accent-green);
+          border-color: var(--accent-green);
+          box-shadow: 0 0 0 2px rgba(107, 142, 92, 0.18);
+        }
+
+        /* Premium-locked card: copper badge replaces the complete-dot */
+        .sc-card--locked .sc-card__title { color: var(--text-secondary); }
+        .sc-card--locked .sc-card__icon  { opacity: 0.55; }
+        .sc-card__premium-badge {
+          font-size: 9px;
+          font-weight: 800;
+          letter-spacing: 1.2px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+          background: rgba(184, 116, 74, 0.14);
+          border: 1px solid rgba(184, 116, 74, 0.32);
+          padding: 3px 8px;
+          border-radius: 9999px;
+          line-height: 1;
         }
 
         .sc-card__body {
@@ -1417,7 +1746,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
         .sc-input:focus {
           border-color: var(--accent-green);
-          box-shadow: 0 0 0 3px rgba(45,80,22,0.1);
+          box-shadow: 0 0 0 3px rgba(107, 142, 92,0.1);
         }
 
         .sc-input--date {
@@ -1443,7 +1772,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
         .sc-select:focus {
           border-color: var(--accent-green);
-          box-shadow: 0 0 0 3px rgba(45,80,22,0.1);
+          box-shadow: 0 0 0 3px rgba(107, 142, 92,0.1);
         }
 
         /* ── Side-by-side row ── */
@@ -1535,7 +1864,7 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         .sc-option-btn--active {
           border-color: var(--accent-green);
           color: var(--accent-green);
-          box-shadow: 0 0 0 3px rgba(45,80,22,0.12);
+          box-shadow: 0 0 0 3px rgba(107, 142, 92,0.12);
         }
 
         .sc-option-btn:active:not(.sc-option-btn--active) {
@@ -1793,14 +2122,14 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
         /* ── Saved toast ── */
         .sc-toast {
           position: fixed;
-          bottom: 80px;
-          left: 50%;
-          transform: translateX(-50%) translateY(12px);
-          background: rgba(26,26,26,0.88);
+          top: calc(var(--safe-top) + 70px);
+          right: 16px;
+          transform: translateY(-8px);
+          background: rgba(26,26,26,0.92);
           color: #fff;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
-          padding: 8px 18px;
+          padding: 6px 14px;
           border-radius: 999px;
           pointer-events: none;
           opacity: 0;
@@ -1810,11 +2139,12 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           -webkit-backdrop-filter: blur(6px);
           z-index: 100;
           letter-spacing: 0.1px;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
         .sc-toast--visible {
           opacity: 1;
-          transform: translateX(-50%) translateY(0);
+          transform: translateY(0);
         }
 
         /* ── Privacy row ── */
@@ -1845,6 +2175,18 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
           color: var(--text-tertiary);
           line-height: 1.45;
         }
+
+        .sc-privacy-link {
+          display: inline-block;
+          margin-top: 12px;
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--copper);
+          text-decoration: none;
+          letter-spacing: 0.1px;
+        }
+        .sc-privacy-link:hover { color: var(--copper-deep); }
+        .sc-privacy-link:active { transform: scale(0.97); }
 
         /* ── Toggle switch ── */
         .sc-toggle {
@@ -1880,6 +2222,179 @@ export function SetupScreen({ state, dispatch }: SetupScreenProps) {
 
         .sc-toggle--on .sc-toggle__thumb {
           transform: translateX(18px);
+        }
+
+        /* ── Wizard ── */
+        .wz-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.55);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          z-index: 200;
+          display: flex;
+          align-items: flex-end;
+        }
+
+        .wz-sheet {
+          background: var(--white);
+          border-radius: 24px 24px 0 0;
+          width: 100%;
+          max-height: 92vh;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          animation: wz-slide-up 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        @keyframes wz-slide-up {
+          from { transform: translateY(100%); }
+          to   { transform: translateY(0); }
+        }
+
+        .wz-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 18px 20px 14px;
+          border-bottom: 1px solid var(--border-light);
+          flex-shrink: 0;
+        }
+
+        .wz-close {
+          font-size: 16px;
+          color: var(--text-tertiary);
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          line-height: 1;
+          flex-shrink: 0;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .wz-steps {
+          display: flex;
+          justify-content: space-between;
+          gap: 4px;
+          flex: 1;
+          align-items: center;
+          min-width: 0;
+        }
+
+        .wz-step {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          opacity: 0.7;
+          transition: opacity 0.2s ease;
+          min-width: 0;
+        }
+
+        .wz-step--active {
+          opacity: 1;
+        }
+
+        .wz-step--done {
+          opacity: 0.85;
+        }
+
+        .wz-step__dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: var(--text-tertiary);
+          flex-shrink: 0;
+          transition: background 0.2s ease;
+        }
+
+        .wz-step--active .wz-step__dot {
+          background: var(--accent-green);
+          width: 14px;
+          border-radius: 4px;
+        }
+
+        .wz-step--done .wz-step__dot {
+          background: var(--accent-green);
+        }
+
+        .wz-step__label {
+          font-size: 10px;
+          font-weight: 700;
+          color: var(--text-tertiary);
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .wz-step--active .wz-step__label {
+          color: var(--accent-green);
+        }
+
+        .wz-step--done .wz-step__label {
+          color: var(--accent-green);
+        }
+
+        .wz-body {
+          padding: 20px 20px 8px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          flex: 1;
+        }
+
+        .wz-title {
+          font-size: 22px;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .wz-sub {
+          font-size: 13px;
+          color: var(--text-tertiary);
+          line-height: 1.5;
+          margin: -6px 0 4px;
+        }
+
+        .wz-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+          border-top: 1px solid var(--border-light);
+          gap: 12px;
+          flex-shrink: 0;
+        }
+
+        .wz-btn {
+          font-size: 15px;
+          font-weight: 700;
+          padding: 13px 24px;
+          border-radius: 999px;
+          border: none;
+          cursor: pointer;
+          transition: opacity 0.15s ease, transform 0.1s ease;
+          -webkit-tap-highlight-color: transparent;
+          letter-spacing: 0.1px;
+        }
+
+        .wz-btn:active {
+          opacity: 0.82;
+          transform: scale(0.97);
+        }
+
+        .wz-btn--back {
+          background: var(--off-white);
+          color: var(--text-secondary);
+        }
+
+        .wz-btn--next {
+          background: var(--accent-green);
+          color: #fff;
+          flex: 1;
         }
       `}</style>
     </div>

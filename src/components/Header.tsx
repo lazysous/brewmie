@@ -1,32 +1,44 @@
 import React from 'react'
 import type { BrewmieState, AppAction } from '../types'
 import { signOut } from '../lib/supabase'
+import { useTranslation } from '../hooks/useTranslation'
 
 interface HeaderProps {
   state: BrewmieState
   dispatch: React.Dispatch<AppAction>
   onSignIn: () => void
+  onHome?: () => void
 }
 
-export function Header({ state, dispatch, onSignIn }: HeaderProps) {
+export function Header({ state, dispatch, onSignIn, onHome }: HeaderProps) {
+  const { t } = useTranslation()
   const handleSignOut = async () => {
     await signOut()
     dispatch({ type: 'SET_USER', payload: null })
   }
 
-  const initial = state.userId ? state.userId.slice(0, 1).toUpperCase() : ''
+  const initial = state.displayName
+    ? state.displayName.slice(0, 1).toUpperCase()
+    : state.userId
+      ? '·'
+      : ''
 
   return (
     <header className="header">
-      {/* Centered brand */}
-      <div className="header__brand">
+      {/* Brand acts as home button */}
+      <button
+        className="header__brand"
+        onClick={onHome}
+        type="button"
+        aria-label={t('header.home')}
+      >
         <img
           src="/assets/BM-logo-full-white.png"
-          alt="Brewmie"
+          alt={t('header.logoAlt')}
           className="header__logo-img"
         />
-        <span className="header__byline">by Lazy Sous</span>
-      </div>
+        <span className="header__byline">{t('header.byLazySous')}</span>
+      </button>
 
       {/* Right: auth */}
       <div className="header__actions">
@@ -34,14 +46,14 @@ export function Header({ state, dispatch, onSignIn }: HeaderProps) {
           <button
             className="header__avatar-btn"
             onClick={handleSignOut}
-            aria-label="Sign out"
-            title="Sign out"
+            aria-label={t('header.signOut')}
+            title={t('header.signOut')}
           >
             <span className="header__avatar-initial">{initial}</span>
           </button>
         ) : (
-          <button className="header__sign-in-btn" onClick={onSignIn} aria-label="Sign in">
-            Sign in
+          <button className="header__sign-in-btn" onClick={onSignIn} aria-label={t('header.signIn')}>
+            {t('header.signIn')}
           </button>
         )}
       </div>
@@ -52,39 +64,57 @@ export function Header({ state, dispatch, onSignIn }: HeaderProps) {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: calc(60px + var(--safe-top));
+          height: calc(52px + var(--safe-top));
           padding-top: var(--safe-top);
           padding-left: 16px;
           padding-right: 16px;
-          background: linear-gradient(160deg, #1A1A1A 0%, #2C2C2C 100%);
-          border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+          background: linear-gradient(180deg, #221C15 0%, #2C261E 100%);
+          border-bottom: 1px solid rgba(184, 116, 74, 0.22);
           flex-shrink: 0;
           user-select: none;
         }
 
-        /* Brand — centered via absolute so auth doesn't shift it */
+        /* Brand acts as home button. Centered visually; auth slot is absolute. */
         .header__brand {
           display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 2px;
-          pointer-events: none;
+          flex-direction: row;
+          align-items: baseline;
+          gap: 8px;
+          background: none;
+          border: none;
+          padding: 4px 12px;
+          cursor: pointer;
+          border-radius: 12px;
+          transition: background 0.18s ease, transform 0.08s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .header__brand:hover {
+          background: rgba(184, 116, 74, 0.08);
+        }
+
+        .header__brand:active {
+          transform: scale(0.96);
         }
 
         .header__logo-img {
-          height: 28px;
+          height: 34px;
           width: auto;
           display: block;
           object-fit: contain;
+          position: relative;
+          top: 4px;
         }
 
         .header__byline {
           font-family: var(--font-brand);
           font-size: 12px;
-          font-weight: 600;
-          color: #D4A017;
-          letter-spacing: 0.6px;
+          font-style: italic;
+          font-weight: 500;
+          color: #C68A5C;
+          letter-spacing: 0.4px;
           line-height: 1;
+          opacity: 0.85;
         }
 
         /* Auth slot — absolute right */
@@ -104,16 +134,16 @@ export function Header({ state, dispatch, onSignIn }: HeaderProps) {
           width: 34px;
           height: 34px;
           border-radius: var(--radius-full);
-          background: rgba(212, 160, 23, 0.12);
-          border: 1.5px solid rgba(212, 160, 23, 0.45);
+          background: rgba(184, 116, 74, 0.12);
+          border: 1.5px solid rgba(184, 116, 74, 0.45);
           cursor: pointer;
           transition: background 0.2s ease, border-color 0.2s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .header__avatar-btn:hover {
-          background: rgba(212, 160, 23, 0.22);
-          border-color: rgba(212, 160, 23, 0.7);
+          background: rgba(184, 116, 74, 0.22);
+          border-color: rgba(184, 116, 74, 0.7);
         }
 
         .header__avatar-btn:active {
@@ -123,16 +153,16 @@ export function Header({ state, dispatch, onSignIn }: HeaderProps) {
         .header__avatar-initial {
           font-size: 13px;
           font-weight: 700;
-          color: #D4A017;
+          color: #C68A5C;
           letter-spacing: 0.3px;
           line-height: 1;
         }
 
         .header__sign-in-btn {
           font-family: var(--font-primary);
-          font-size: 11px;
-          font-weight: 500;
-          color: rgba(212, 160, 23, 0.75);
+          font-size: 12px;
+          font-weight: 600;
+          color: #E5B891;
           background: transparent;
           border: none;
           padding: 4px 0;
@@ -143,7 +173,7 @@ export function Header({ state, dispatch, onSignIn }: HeaderProps) {
         }
 
         .header__sign-in-btn:hover {
-          color: #D4A017;
+          color: #F2CFA9;
         }
 
         .header__sign-in-btn:active {

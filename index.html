@@ -1,19 +1,288 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#1A1A1A" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Brewmie" />
-    <meta name="description" content="Espresso dialling-in assistant — dial in your shots, track your grind, improve every pull." />
-    <title>Brewmie</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Brewmie. Dial in your espresso, one shot at a time.</title>
+
+<!-- Primary SEO -->
+<meta name="description" content="The home barista's dialling-in assistant. Log a shot, tell us how it tastes, get the next grind, dose, or yield move. Free. Works offline. iOS, Android, and the web." />
+<meta name="keywords" content="dial in espresso, espresso dialling in app, espresso shot logger, espresso grind adjustment, brew ratio calculator, espresso shot timer, home barista, sour espresso fix, bitter espresso fix, channelling espresso, PuckYeah alternative, BeanConquerer alternative, espresso recipe tracker, grinder setting log, roast date tracker, espresso troubleshooting, espresso ratio, espresso yield, espresso TDS proxy" />
+<link rel="canonical" href="https://brewmie.app/" />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<!-- Hreflang -->
+<link rel="alternate" hreflang="x-default" href="https://brewmie.app/" />
+<link rel="alternate" hreflang="af" href="https://brewmie.app/?lang=af" />
+<link rel="alternate" hreflang="am" href="https://brewmie.app/?lang=am" />
+<link rel="alternate" hreflang="ar" href="https://brewmie.app/?lang=ar" />
+<link rel="alternate" hreflang="as" href="https://brewmie.app/?lang=as" />
+<link rel="alternate" hreflang="az" href="https://brewmie.app/?lang=az" />
+<link rel="alternate" hreflang="be" href="https://brewmie.app/?lang=be" />
+<link rel="alternate" hreflang="cs" href="https://brewmie.app/?lang=cs" />
+<link rel="alternate" hreflang="cy" href="https://brewmie.app/?lang=cy" />
+<link rel="alternate" hreflang="da" href="https://brewmie.app/?lang=da" />
+<link rel="alternate" hreflang="de" href="https://brewmie.app/?lang=de" />
+<link rel="alternate" hreflang="el" href="https://brewmie.app/?lang=el" />
+<link rel="alternate" hreflang="en" href="https://brewmie.app/" />
+<link rel="alternate" hreflang="es" href="https://brewmie.app/?lang=es" />
+<link rel="alternate" hreflang="et" href="https://brewmie.app/?lang=et" />
+<link rel="alternate" hreflang="eu" href="https://brewmie.app/?lang=eu" />
+<link rel="alternate" hreflang="fa" href="https://brewmie.app/?lang=fa" />
+<link rel="alternate" hreflang="fi" href="https://brewmie.app/?lang=fi" />
+<link rel="alternate" hreflang="fil" href="https://brewmie.app/?lang=fil" />
+<link rel="alternate" hreflang="fr" href="https://brewmie.app/?lang=fr" />
+<link rel="alternate" hreflang="ga" href="https://brewmie.app/?lang=ga" />
+<link rel="alternate" hreflang="gl" href="https://brewmie.app/?lang=gl" />
+<link rel="alternate" hreflang="gu" href="https://brewmie.app/?lang=gu" />
+<link rel="alternate" hreflang="ha" href="https://brewmie.app/?lang=ha" />
+<link rel="alternate" hreflang="he" href="https://brewmie.app/?lang=he" />
+<link rel="alternate" hreflang="hi" href="https://brewmie.app/?lang=hi" />
+<link rel="alternate" hreflang="hr" href="https://brewmie.app/?lang=hr" />
+<link rel="alternate" hreflang="hu" href="https://brewmie.app/?lang=hu" />
+<link rel="alternate" hreflang="hy" href="https://brewmie.app/?lang=hy" />
+<link rel="alternate" hreflang="it" href="https://brewmie.app/?lang=it" />
+<link rel="alternate" hreflang="ja" href="https://brewmie.app/?lang=ja" />
+<link rel="alternate" hreflang="ka" href="https://brewmie.app/?lang=ka" />
+<link rel="alternate" hreflang="kk" href="https://brewmie.app/?lang=kk" />
+<link rel="alternate" hreflang="km" href="https://brewmie.app/?lang=km" />
+<link rel="alternate" hreflang="kn" href="https://brewmie.app/?lang=kn" />
+<link rel="alternate" hreflang="ko" href="https://brewmie.app/?lang=ko" />
+<link rel="alternate" hreflang="ml" href="https://brewmie.app/?lang=ml" />
+<link rel="alternate" hreflang="mn" href="https://brewmie.app/?lang=mn" />
+<link rel="alternate" hreflang="mr" href="https://brewmie.app/?lang=mr" />
+<link rel="alternate" hreflang="ms" href="https://brewmie.app/?lang=ms" />
+<link rel="alternate" hreflang="mt" href="https://brewmie.app/?lang=mt" />
+<link rel="alternate" hreflang="my" href="https://brewmie.app/?lang=my" />
+<link rel="alternate" hreflang="nl" href="https://brewmie.app/?lang=nl" />
+<link rel="alternate" hreflang="pl" href="https://brewmie.app/?lang=pl" />
+<link rel="alternate" hreflang="ps" href="https://brewmie.app/?lang=ps" />
+<link rel="alternate" hreflang="pt" href="https://brewmie.app/?lang=pt" />
+<link rel="alternate" hreflang="ro" href="https://brewmie.app/?lang=ro" />
+<link rel="alternate" hreflang="rw" href="https://brewmie.app/?lang=rw" />
+<link rel="alternate" hreflang="sd" href="https://brewmie.app/?lang=sd" />
+<link rel="alternate" hreflang="si" href="https://brewmie.app/?lang=si" />
+<link rel="alternate" hreflang="sk" href="https://brewmie.app/?lang=sk" />
+<link rel="alternate" hreflang="sv" href="https://brewmie.app/?lang=sv" />
+<link rel="alternate" hreflang="sw" href="https://brewmie.app/?lang=sw" />
+<link rel="alternate" hreflang="ta" href="https://brewmie.app/?lang=ta" />
+<link rel="alternate" hreflang="te" href="https://brewmie.app/?lang=te" />
+<link rel="alternate" hreflang="th" href="https://brewmie.app/?lang=th" />
+<link rel="alternate" hreflang="tr" href="https://brewmie.app/?lang=tr" />
+<link rel="alternate" hreflang="uk" href="https://brewmie.app/?lang=uk" />
+<link rel="alternate" hreflang="ur" href="https://brewmie.app/?lang=ur" />
+<link rel="alternate" hreflang="zh" href="https://brewmie.app/?lang=zh" />
+
+
+<!-- App + PWA. Relative paths so the same build works at /brewmie/ and in Capacitor file:// -->
+<link rel="manifest" href="./manifest.json" />
+<link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="./assets/icon-512.png" />
+<link rel="apple-touch-icon" href="./assets/icon-192.png" />
+<meta name="theme-color" content="#1A1A1A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Brewmie" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://brewmie.app/" />
+<meta property="og:title" content="Brewmie. Dial in your espresso, one shot at a time." />
+<meta property="og:description" content="Log a shot. Tell us how it tastes. Get the next move. The home barista's dialling-in assistant. Free, offline, no subscription." />
+<meta property="og:image" content="https://brewmie.app/assets/og-card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Brewmie" />
+<meta property="og:locale" content="en_AU" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Brewmie. Dial in your espresso." />
+<meta name="twitter:description" content="Log a shot, tell us how it tasted, get the next move. Free. Offline. No subscription." />
+<meta name="twitter:image" content="https://brewmie.app/assets/og-card.png" />
+
+<!-- App Links (when published) -->
+<meta property="al:ios:app_store_id" content="" />
+<meta property="al:ios:app_name" content="Brewmie" />
+<meta property="al:android:package" content="app.brewmie.brewmie" />
+<meta property="al:android:app_name" content="Brewmie" />
+
+<!-- Schema.org: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Brewmie",
+  "alternateName": "Brewmie Espresso Dialling-In Assistant",
+  "description": "Brewmie is a dialling-in assistant for home baristas. After every shot, the user logs time, yield, and taste. Brewmie returns the next grind, dose, or yield adjustment in plain English, with the reason. Built for prosumer machines and standalone grinders. Free, offline, no subscription.",
+  "applicationCategory": "LifestyleApplication",
+  "applicationSubCategory": "Coffee",
+  "operatingSystem": "iOS, Android, Web",
+  "url": "https://brewmie.app/",
+  "image": "https://brewmie.app/assets/icon-512.png",
+  "softwareVersion": "0.1.0",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Lazy Sous",
+    "url": "https://lazysous.app/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "AUD",
+    "availability": "https://schema.org/InStock",
+    "description": "Free to download and use. No subscription."
+  },
+  "featureList": [
+    "Per-shot logging with time, yield, dose, and taste",
+    "Grind adjustments in actual grinder units, not abstract steps",
+    "Population prior from real espresso shots, personalised after 8 shots",
+    "Roast-level and bean-age compensation built in",
+    "Channelling detection (long time with under-yield)",
+    "Live recommendation that updates the moment you rate taste",
+    "Works offline. Optional sign-in syncs across devices.",
+    "Comprehensive equipment library for machines and grinders"
+  ]
+}
+</script>
+
+<!-- Schema.org: FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is espresso dialling in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dialling in is the process of finding the right grind, dose, and yield for a new bag of coffee so the shot lands in your target time with the taste you want. With a new bag you typically need 3-6 shots to settle on a recipe. Brewmie shortcuts that by telling you what to change after every shot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my espresso taste sour?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sour espresso usually means the shot is under-extracted. The fix is to grind finer so the water spends more time in contact with the coffee. If your shot also ran short on yield, finer grind is the right call. If yield is on target but it still tastes sour, the beans may be too fresh (less than 7 days from roast) and degassing into the puck."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my espresso taste bitter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bitter espresso is the opposite signal. The shot is over-extracted. Go coarser on the grind so the water moves faster and pulls less of the bitter late-extraction compounds. If your shot ran long over target, the time delta confirms it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Brewmie different from PuckYeah or BeanConquerer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PuckYeah and BeanConquerer are excellent shot trackers. Brewmie is a shot tracker that also tells you what to change, in your grinder's actual units, with a one-line reason. Recommendations update live when you log taste. There is no subscription."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need an internet connection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Brewmie works fully offline. Sign-in is optional and only used to sync your shots across devices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the right brew ratio for espresso?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A traditional espresso is 1:2 (18g in, 36g out) in 25 to 32 seconds. Lighter roasts often pull better at 1:2.5 or 1:3. Brewmie lets you set the target ratio per recipe and tracks how close your actual shot landed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How fresh should my beans be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Espresso beans want 7 to 21 days post-roast. Younger than 7 days, they outgas CO2 into the puck and pull long and harsh. Older than 30 days, they lose body and shots run fast and thin. Brewmie shows the roast age on your bean card and adjusts recommendations accordingly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Brewmie work with my grinder?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The setup wizard lists 25+ grinder brands and over 100 specific models with known setting ranges. Pick yours and recommendations come out in your grinder's actual units, whether that is 0-50 on a Niche Zero, 1-40 on a Baratza Encore, or 0-90 on a 1Zpresso K-Max."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Schema.org: HowTo (dialling in) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to dial in a new bag of espresso with Brewmie",
+  "description": "Pull a shot, log it, follow the recommendation. Three to six shots gets you to a recipe that pulls clean every morning.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Set your kit",
+      "text": "Pick your machine, grinder, tamper, and beans once. Brewmie remembers. The wizard takes under a minute."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Pull your first shot",
+      "text": "Use your usual grind and an 18g dose. Aim for 36g out. Hit Brew, log the time, weight, and how it tasted."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Read the call",
+      "text": "Brewmie shows the next move in one line. Go finer, go coarser, or hold. The number is in your grinder's units, not abstract steps."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Apply and repeat",
+      "text": "Tap Apply, dial in the new setting, and pull again. Three or four shots later you're locked in for the bag."
+    }
+  ],
+  "totalTime": "PT15M"
+}
+</script>
+
+<!-- Schema.org: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Lazy Sous",
+  "url": "https://lazysous.app/",
+  "logo": "https://lazysous.app/assets/logo-192.png",
+  "sameAs": [
+    "https://brewmie.app/",
+    "https://lazysous.app/"
+  ]
+}
+</script>
+
+</head>
+<body>
+<div id="root">
+<!-- Crawler-readable fallback. Hidden once React hydrates. -->
+<noscript>
+<h1>Brewmie. Dial in your espresso, one shot at a time.</h1>
+<p>Brewmie is a home barista's dialling-in assistant. Log a shot, tell us how it tasted, and we'll tell you the next grind, dose, or yield move. Free. Offline. No subscription.</p>
+<p>By the team behind <a href="https://lazysous.app/">Lazy Sous</a>. Available as a web app, iOS, and Android.</p>
+</noscript>
+</div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

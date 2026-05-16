@@ -133,7 +133,12 @@ export interface BrewmieState {
   maintenance: MaintenanceRecord
   autoApplyAdjustments: boolean
   userId: string | null
+  displayName: string | null
+  tier: Tier
+  baristaMode: boolean
 }
+
+export type Tier = 'free' | 'premium'
 
 // ─── Actions (discriminated union) ────────────────────────────────────────────
 
@@ -150,5 +155,8 @@ export type AppAction =
   | { type: 'UPDATE_MAINTENANCE'; payload: Partial<MaintenanceRecord> }
   | { type: 'SET_AUTO_APPLY'; payload: boolean }
   | { type: 'SET_USER'; payload: string | null }
+  | { type: 'SET_DISPLAY_NAME'; payload: string | null }
+  | { type: 'SET_TIER'; payload: Tier }
+  | { type: 'SET_BARISTA_MODE'; payload: boolean }
   | { type: 'HYDRATE'; payload: BrewmieState }
   | { type: 'RESET' }

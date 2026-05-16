@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import type { AppTab } from './types'
 import { useBrewmie } from './hooks/useBrewmie'
-import { Header } from './components/Header'
-import { SubHeader } from './components/SubHeader'
+import { Hero } from './components/Hero'
 import { BottomNav } from './components/BottomNav'
 import { AuthModal } from './components/AuthModal'
 import { ConsentBanner } from './components/ConsentBanner'
+import { DevTierPill } from './components/DevTierPill'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier } from './lib/supabase'
+import { notifyAppReady } from './lib/native'
+import { trackScreen, track } from './lib/analytics'
 import type { AlgoParams } from './lib/supabase'
 
 interface WeatherData { temp: number; humidity: number }
@@ -38,9 +40,19 @@ export function App() {
   // Fetch calibrated algorithm params on startup (cached 24h)
   useEffect(() => {
     fetchAlgoParams().then((p) => { if (p) setAlgoParams(p) }).catch(() => {})
+    // Tell the Capacitor Updater the app loaded cleanly so it doesn't roll
+    // back the latest OTA bundle.
+    notifyAppReady()
+    track('app_open')
   }, [])
 
-  // Load shots + config from Supabase when user signs in
+  // Track tab changes as screen views
+  useEffect(() => {
+    trackScreen(activeTab)
+  }, [activeTab])
+
+  // Load shots, config, and display name from Supabase when user signs in.
+  // If the user has no display_name yet (first sign-in), prompt for one.
   useEffect(() => {
     if (!state.userId) return
     fetchShots(state.userId).then((shots) => {
@@ -52,6 +64,18 @@ export function App() {
       if (config) {
         dispatch({ type: 'HYDRATE', payload: { ...state, ...config } })
       }
+    }).catch(() => {})
+    fetchDisplayName(state.userId).then((name) => {
+      if (name) {
+        dispatch({ type: 'SET_DISPLAY_NAME', payload: name })
+      } else if (!state.baristaMode) {
+        // First sign-in: open the modal in nickname-capture mode.
+        // Don't interrupt an active barista session.
+        setShowAuthModal(true)
+      }
+    }).catch(() => {})
+    fetchTier(state.userId).then((tier) => {
+      dispatch({ type: 'SET_TIER', payload: tier })
     }).catch(() => {})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])
@@ -77,18 +101,24 @@ export function App() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'setup':
-        return <SetupScreen state={state} dispatch={dispatch} />
+        return <SetupScreen state={state} dispatch={dispatch} onSignIn={() => setShowAuthModal(true)} />
       case 'brew':
-        return <BrewScreen state={state} dispatch={dispatch} onNavigateToSetup={() => setActiveTab('setup')} weather={weather} algoParams={algoParams} />
+        return <BrewScreen state={state} dispatch={dispatch} onNavigateToSetup={() => setActiveTab('setup')} onSignIn={() => setShowAuthModal(true)} weather={weather} algoParams={algoParams} />
       case 'insights':
-        return <InsightsScreen state={state} dispatch={dispatch} />
+        return <InsightsScreen state={state} dispatch={dispatch} onSignIn={() => setShowAuthModal(true)} />
     }
   }
 
   return (
     <div className="app">
-      <Header state={state} dispatch={dispatch} onSignIn={() => setShowAuthModal(true)} />
-      <SubHeader activeTab={activeTab} state={state} weather={weather} />
+      <Hero
+        activeTab={activeTab}
+        state={state}
+        dispatch={dispatch}
+        weather={weather}
+        onSignIn={() => setShowAuthModal(true)}
+        onHome={() => setActiveTab('brew')}
+      />
       <main className="screen-content" role="main">
         {renderScreen()}
       </main>
@@ -97,8 +127,10 @@ export function App() {
         open={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         dispatch={dispatch}
+        nicknameForUser={state.userId && !state.displayName ? state.userId : null}
       />
       <ConsentBanner />
+      <DevTierPill />
     </div>
   )
 }

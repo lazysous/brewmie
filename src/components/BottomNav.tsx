@@ -1,4 +1,5 @@
 import type { AppTab } from '../types'
+import { useTranslation } from '../hooks/useTranslation'
 
 interface BottomNavProps {
   activeTab: AppTab
@@ -8,14 +9,9 @@ interface BottomNavProps {
 // ─── SVG icons ────────────────────────────────────────────────────────────────
 
 function SetupIcon({ active }: { active: boolean }) {
-  return active ? (
-    // Filled wrench for active state
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M15.5 2.1a6 6 0 0 0-5.78 7.67L2.44 17.05A2.5 2.5 0 1 0 6 20.6l7.23-7.28A6 6 0 1 0 15.5 2.1zm0 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM4.5 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-    </svg>
-  ) : (
-    // Stroke wrench for inactive
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  // Use stroke wrench in both states; only the colour changes. Keeps weight consistent with other tabs.
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
     </svg>
   )
@@ -40,16 +36,8 @@ function BrewIcon({ active }: { active: boolean }) {
 }
 
 function InsightsIcon({ active }: { active: boolean }) {
-  return active ? (
-    // Filled bars for active state
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <rect x="16" y="4" width="4" height="16" rx="1" />
-      <rect x="10" y="9" width="4" height="11" rx="1" />
-      <rect x="4" y="13" width="4" height="7" rx="1" />
-    </svg>
-  ) : (
-    // Stroke bars for inactive
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2 : 1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <line x1="18" y1="20" x2="18" y2="10" />
       <line x1="12" y1="20" x2="12" y2="4" />
       <line x1="6" y1="20" x2="6" y2="14" />
@@ -61,23 +49,25 @@ function InsightsIcon({ active }: { active: boolean }) {
 
 interface TabConfig {
   id: AppTab
-  label: string
+  labelKey: string
   isCta: boolean
 }
 
 const TABS: TabConfig[] = [
-  { id: 'setup', label: 'Setup', isCta: false },
-  { id: 'brew', label: 'Brew', isCta: true },
-  { id: 'insights', label: 'Insights', isCta: false },
+  { id: 'setup', labelKey: 'nav.setup', isCta: false },
+  { id: 'brew', labelKey: 'nav.brew', isCta: true },
+  { id: 'insights', labelKey: 'nav.insights', isCta: false },
 ]
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+  const { t } = useTranslation()
   return (
-    <nav className="bottom-nav" aria-label="Main navigation">
+    <nav className="bottom-nav" aria-label={t('nav.mainNav')}>
       {TABS.map((tab) => {
         const isActive = activeTab === tab.id
+        const label = t(tab.labelKey)
 
         if (tab.isCta) {
           return (
@@ -91,7 +81,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 .join(' ')}
               onClick={() => onTabChange(tab.id)}
               aria-current={isActive ? 'page' : undefined}
-              aria-label={tab.label}
+              aria-label={label}
             >
               <BrewIcon active={isActive} />
             </button>
@@ -109,7 +99,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
               .join(' ')}
             onClick={() => onTabChange(tab.id)}
             aria-current={isActive ? 'page' : undefined}
-            aria-label={tab.label}
+            aria-label={label}
           >
             <span className="bottom-nav__icon">
               {tab.id === 'setup' && <SetupIcon active={isActive} />}
@@ -127,9 +117,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           align-items: center;
           height: calc(72px + var(--safe-bottom));
           padding-bottom: var(--safe-bottom);
-          background: var(--white);
-          border-top: 1px solid var(--border-light);
-          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+          background: linear-gradient(180deg, rgba(250,247,242,0.7) 0%, var(--cream) 60%);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          border-top: 1px solid rgba(184, 116, 74, 0.12);
+          box-shadow: 0 -2px 14px rgba(60, 40, 20, 0.05);
           flex-shrink: 0;
           z-index: 10;
         }
@@ -147,7 +139,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           border: none;
           background: none;
           cursor: pointer;
-          color: var(--grey-light);
+          color: #8A857C;
           -webkit-tap-highlight-color: transparent;
           outline: none;
           transition: color 0.2s ease-out;
@@ -160,7 +152,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         }
 
         .bottom-nav__tab--active {
-          color: var(--black);
+          color: var(--accent-green);
         }
 
         .bottom-nav__icon {
@@ -200,16 +192,20 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
 
         .bottom-nav__brew-btn > svg {
           display: block;
-          width: 56px;
-          height: 56px;
+          width: 58px;
+          height: 58px;
           padding: 14px;
           border-radius: var(--radius-full);
-          background: var(--accent-green);
+          background: linear-gradient(180deg, #7A9A6A 0%, #5F834F 100%);
           color: var(--white);
-          box-shadow: 0 4px 16px rgba(45, 80, 22, 0.45);
+          box-shadow:
+            0 0 0 4px var(--cream),
+            inset 0 1px 0 rgba(255, 255, 255, 0.20),
+            0 2px 6px rgba(60, 40, 20, 0.14),
+            0 8px 22px rgba(107, 142, 92, 0.36);
           transition: background 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
           /* Lift above nav surface */
-          margin-bottom: -10px;
+          margin-bottom: -8px;
           position: relative;
         }
 
@@ -219,8 +215,8 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         }
 
         .bottom-nav__brew-btn--active > svg {
-          background: #3a6b1e;
-          box-shadow: 0 6px 20px rgba(45, 80, 22, 0.6);
+          background: #5C7E4D;
+          box-shadow: 0 3px 10px rgba(60, 40, 20, 0.12), 0 8px 22px rgba(107, 142, 92, 0.36);
         }
       `}</style>
     </nav>

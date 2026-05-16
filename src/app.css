@@ -3,7 +3,7 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 :root {
-  /* Palette */
+  /* Palette — shared with Lazy Sous (sage + cream studio language) */
   --black: #1A1A1A;
   --charcoal: #2C2C2C;
   --grey-dark: #4A4A4A;
@@ -11,33 +11,41 @@
   --grey-light: #9A9A9A;
   --white: #FFFFFF;
   --off-white: #F5F2EE;
-  --cream: #FAF8F5;
+  --cream: #FAF7F2;
 
-  /* Brand accent */
-  --accent-green: #2D5016;
+  /* Brand accent — sage from Lazy Sous, with one Brewmie-only copper note */
+  --accent-green: #6B8E5C;       /* matches Lazy Sous --green-dark */
+  --accent-green-soft: #8FA57F;  /* matches Lazy Sous --green */
+  --accent-green-tint: rgba(107, 142, 92, 0.10);
+  --copper: #B8744A;             /* Brewmie's single distinctive note: crema/copper */
+  --copper-deep: #8B5A36;
   --gold: #FFD700;
   --gold-dark: #D4A017;
 
-  /* Score tier colors */
-  --score-perfect: #D4A017;
-  --score-excellent: #2D5016;
-  --score-good: #6B7280;
-  --score-poor: #8B1A1A;
+  /* Score tier colors — copper for the brand moment, sage for the supporting tier */
+  --score-perfect: var(--copper);
+  --score-excellent: var(--accent-green);
+  --score-good: #8A8A85;
+  --score-poor: #A05050;
 
   /* Roast age colors */
-  --roast-fresh: #D97706;
-  --roast-prime: #2D5016;
-  --roast-stale: #9CA3AF;
-  --roast-old: #8B1A1A;
+  --roast-fresh: #C77A2C;
+  --roast-prime: var(--accent-green);
+  --roast-stale: #9A9A95;
+  --roast-old: #A05050;
 
   /* Semantic text */
-  --text-primary: #1A1A1A;
+  --text-primary: #2C2C2C;
   --text-secondary: #4A4A4A;
   --text-tertiary: #6A6A6A;
 
-  /* Borders */
-  --border: #DDD9D4;          /* warmer border -- less blue-grey */
-  --border-light: #EDE9E4;    /* warmer dividers */
+  /* Borders — warm, subtle */
+  --border: #E5E0D8;
+  --border-light: #EDE9E2;
+
+  /* Shadow — match Lazy Sous's warm subtle elevation */
+  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow-warm: rgba(60, 40, 20, 0.08);
 
   /* Motion */
   --transition: all 0.2s ease;
@@ -169,11 +177,11 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--accent-green) !important;
-  box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+  box-shadow: 0 0 0 3px rgba(107, 142, 92, 0.15);
 }
 
 ::selection {
-  background: rgba(45, 80, 22, 0.2);
+  background: rgba(107, 142, 92, 0.22);
 }
 
 /* ─── Typography ────────────────────────────────────────────────────────────── */
@@ -280,8 +288,8 @@ a {
 .card {
   background: var(--white);
   border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px var(--shadow-warm), 0 4px 12px rgba(60, 40, 20, 0.04);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -325,7 +333,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.3px;
 }
-.pill-badge--green { background: rgba(45, 80, 22, 0.1);  color: var(--accent-green); }
-.pill-badge--gold  { background: rgba(212, 160, 23, 0.12); color: var(--gold-dark); }
-.pill-badge--red   { background: rgba(139, 26, 26, 0.08); color: #8B1A1A; }
+.pill-badge--green { background: var(--accent-green-tint); color: var(--accent-green); }
+.pill-badge--gold  { background: rgba(184, 116, 74, 0.12); color: var(--copper-deep); }
+.pill-badge--red   { background: rgba(160, 80, 80, 0.10); color: #8A4040; }
 .pill-badge--grey  { background: rgba(107, 114, 128, 0.08); color: var(--grey-medium); }

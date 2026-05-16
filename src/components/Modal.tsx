@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useTranslation } from '../hooks/useTranslation'
 
 interface ModalProps {
   isOpen: boolean
@@ -19,6 +20,7 @@ export function Modal({
   variant = 'sheet',
   preventBackdropClose = false,
 }: ModalProps) {
+  const { t } = useTranslation()
   const dialogRef = useRef<HTMLDivElement>(null)
 
   // Close on Escape
@@ -76,7 +78,7 @@ export function Modal({
             <button
               className="modal__close-btn"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t('modal.close')}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
                 <line x1="18" y1="6" x2="6" y2="18" />

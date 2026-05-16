@@ -1,0 +1,49 @@
+# Brewmie | Espresso Dialling-In Assistant
+
+## About
+Brewmie is a free home-barista app that helps users dial in espresso shot by shot. After each shot, the user logs the time, yield, and a taste rating (sour, balanced, or bitter, plus optional weak/strong). Brewmie returns the next grind, dose, or yield adjustment in the grinder's actual units, with a one-line reason. The product is a coach for the dialling-in process, not just a logbook. Built for prosumer machines and standalone grinders.
+
+## Sister product
+Brewmie is published by the team behind Lazy Sous (lazysous.app), a weekly meal-planning app. Brewmie lives at lazysous.app/brewmie. Same studio voice: punchy, anti-ceremony, second-person, no subscription, no AI marketing.
+
+## Key features
+- Per-shot logging: dose, time, yield, taste
+- Live recommendation that updates the moment you rate taste
+- Grind adjustments in actual grinder units (e.g. 0.4 finer on a 0-50 grinder), not abstract steps
+- Conflict resolution: when volume disagrees with time or taste, an explicit priority hierarchy decides
+- Channelling detection: long time + low yield is flagged as a prep issue, not a grind one
+- Roast-level time offsets derived from 19,000+ community shots
+- Bean-age modifier (fresh beans coarser, stale beans finer)
+- Personalisation: after 8 shots, the user's own data starts to outweigh the population prior
+- Built-in equipment library: 31 machine brands, 25 grinder brands, 100+ specific models with known setting ranges
+- Works fully offline
+- Optional sign-in syncs shots across devices
+
+## Pricing
+Free. No subscription. No ads. Optional sign-in (free) syncs shots across web, iOS, and Android.
+
+## Who it's for
+Home baristas with a prosumer espresso machine ($500-$3000 class) and a standalone grinder, who want to stop wasting beans on the dial-in process for every new bag. Skill level: knows the difference between sour and bitter, owns a scale, can read a brew ratio. Not for pod machines or super-automatics.
+
+## How it's different
+Unlike PuckYeah and BeanConquerer (excellent shot trackers), Brewmie tells you what to change after every shot. The recommendation appears as a direction pill (finer/coarser), a concrete new setting, and a one-line reason. Unlike apps that suggest abstract step deltas (+0.5 steps), Brewmie's recommendation is in your grinder's own units, derived from its configured min/max range.
+
+## Algorithm summary
+Decision priority for grind adjustment: 1) volume signal if more than 5ml off target; 2) taste (sour=finer, bitter=coarser) when volume is on target; 3) time delta. Modifiers added: bean age (0-3 days: +1% coarser, 22+ days: -0.5% finer), weather (high humidity: coarser, high temp: finer), roast level (dark roasts naturally run 4s longer than baseline, baked into time offset). Population time_window comes from a 19,546-shot Visualizer.coffee dataset. Personal time_window blends in via n/(n+8) once you log shots.
+
+## Technical
+- Built with Vite, React 18, TypeScript, Capacitor v6
+- One codebase ships PWA, iOS, and Android
+- Supabase for optional auth and shot sync
+- Open-meteo for opt-in weather correlation
+- Under 1MB JS bundle, sub-second cold start on Wi-Fi
+
+## Privacy
+All shot data stays local by default. Anonymous shot data shared to the population dataset only if you opt in (off by default in settings under Privacy). No third-party trackers. No ads.
+
+## Links
+- Web app: https://brewmie.app/
+- Sister app (meal planning): https://lazysous.app/
+- iOS App Store: TBA
+- Android Google Play: TBA
+- Contact: hello@lazysous.app

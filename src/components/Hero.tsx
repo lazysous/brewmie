@@ -214,16 +214,13 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         </div>
       </div>
 
-      {/* Editorial copy — hidden on the insights tab where the stats grid
-          owns the screen and the editorial title would just push content
-          down for no payoff. */}
-      {activeTab !== 'insights' && (
-        <div className="hero__body">
-          <h1 className="hero__big">
-            {copy.big}
-            {copy.rest && <span className="hero__big-rest"> {copy.rest}</span>}
-          </h1>
-          {copy.meta && <p className="hero__meta">{copy.meta}</p>}
+      {/* Editorial title is gone from every tab — direct copy beats decorative
+          headers in this product. The recipe card, setup cards, and stats
+          grid carry the meaning on their own. Weather meta surfaces inline
+          on the brew tab only. */}
+      {activeTab === 'brew' && copy.meta && (
+        <div className="hero__body hero__body--meta-only">
+          <p className="hero__meta">{copy.meta}</p>
         </div>
       )}
 
@@ -352,6 +349,12 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           margin-top: clamp(8px, 2vh, 22px);
           margin-bottom: clamp(0px, 0.4vh, 6px);
           min-height: clamp(40px, 8vh, 72px);
+        }
+        /* Meta-only variant: just the weather line, no editorial title slot. */
+        .hero__body--meta-only {
+          margin-top: clamp(4px, 1vh, 10px);
+          margin-bottom: clamp(2px, 0.4vh, 6px);
+          min-height: 0;
         }
 
         .hero__big {

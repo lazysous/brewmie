@@ -214,14 +214,18 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         </div>
       </div>
 
-      {/* Editorial copy */}
-      <div className="hero__body">
-        <h1 className="hero__big">
-          {copy.big}
-          {copy.rest && <span className="hero__big-rest"> {copy.rest}</span>}
-        </h1>
-        {copy.meta && <p className="hero__meta">{copy.meta}</p>}
-      </div>
+      {/* Editorial copy — hidden on the insights tab where the stats grid
+          owns the screen and the editorial title would just push content
+          down for no payoff. */}
+      {activeTab !== 'insights' && (
+        <div className="hero__body">
+          <h1 className="hero__big">
+            {copy.big}
+            {copy.rest && <span className="hero__big-rest"> {copy.rest}</span>}
+          </h1>
+          {copy.meta && <p className="hero__meta">{copy.meta}</p>}
+        </div>
+      )}
 
       <div className="hero__rule" aria-hidden="true" />
 
@@ -229,7 +233,7 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         .hero {
           position: relative;
           flex-shrink: 0;
-          padding: 0 22px 6px;
+          padding: 0 22px 0;
           background:
             radial-gradient(120% 80% at 0% 0%, rgba(184, 116, 74, 0.06) 0%, transparent 55%),
             linear-gradient(180deg, #FBF8F1 0%, var(--cream) 100%);

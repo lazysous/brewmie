@@ -1274,9 +1274,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       {/* ── Taste feedback card (inline, below results) ── */}
       {phase === 'taste' && renderTasteCard()}
 
-      {/* Flex spacer — pushes BREW to the bottom of the visible area. */}
-      <div className="bs-spacer" aria-hidden="true" />
-
       {/* ── BREW button ── */}
       <button
         className={`bs-brew-btn${phase === 'brewing' ? ' bs-brew-btn--brewing' : ''}`}
@@ -1541,8 +1538,12 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Card transition wrapper ──────────────────────────────────── */
         .bs-card-wrap {
           transition: opacity 180ms ease-out, transform 280ms ease-out;
-          /* Sit at top — the BREW button absorbs the remaining slack. */
-          flex-shrink: 0;
+          /* Grow to absorb the slack between the hero/setup-pill and BREW.
+             The card's internal sections distribute rows evenly. */
+          flex: 1 1 auto;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
         }
         .bs-card-wrap--visible {
           opacity: 1;
@@ -1560,6 +1561,10 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           border: 1px solid var(--border-light);
           box-shadow: 0 1px 3px rgba(60, 40, 20, 0.06), 0 6px 18px rgba(60, 40, 20, 0.05);
           overflow: hidden;
+          /* Fill .bs-card-wrap so sections + rows distribute evenly. */
+          flex: 1 1 auto;
+          display: flex;
+          flex-direction: column;
         }
 
         /* ── Inline section headers (used in results card) ─────────────── */

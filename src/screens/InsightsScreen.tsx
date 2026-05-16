@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { useState } from 'react'
 import { useTranslation } from '../hooks/useTranslation'
@@ -146,7 +146,6 @@ interface InsightsScreenProps {
 
 export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProps) {
   const { t } = useTranslation()
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const tier = useTier(state)
   const isFree = tier === 'free'
   const [premiumTrigger, setPremiumTrigger] = useState<'history' | 'benchmarks' | null>(null)
@@ -234,69 +233,6 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
     for (const shot of shots) {
       dispatch({ type: 'DELETE_SHOT', payload: shot.id })
     }
-  }
-
-  function handleExport() {
-    const data = {
-      shots: state.shots,
-      machine: state.machine,
-      grinder: state.grinder,
-    }
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `brewmie-insights-${new Date().toISOString().slice(0, 10)}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  function handleExportCsv() {
-    const cols = [
-      'timestamp', 'inputGrind', 'inputDose', 'inputTamp',
-      'targetVolume', 'targetTime', 'actualVolume', 'actualTime',
-      'score', 'grindAdjust', 'doseAdjust', 'tampAdjust',
-      'tasteFlavor', 'tasteStrength', 'beanAge', 'roastLevel',
-      'temp', 'humidity',
-    ] as const
-    const escape = (v: unknown): string => {
-      if (v === null || v === undefined) return ''
-      const s = String(v)
-      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
-    }
-    const rows = state.shots.map((s) =>
-      cols.map((c) => escape((s as unknown as Record<string, unknown>)[c])).join(',')
-    )
-    const csv = [cols.join(','), ...rows].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      try {
-        const parsed = JSON.parse(ev.target?.result as string) as BrewmieState
-        dispatch({ type: 'HYDRATE', payload: parsed })
-      } catch {
-        alert(t('insights.importInvalid'))
-      }
-    }
-    reader.readAsText(file)
-    // Reset so the same file can be re-imported
-    e.target.value = ''
-  }
-
-  function handleReset() {
-    if (!window.confirm(t('insights.confirmReset'))) return
-    dispatch({ type: 'RESET' })
   }
 
   // ── Recent shots (last 20, newest first) ──────────────────────────────────

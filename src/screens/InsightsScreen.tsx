@@ -67,13 +67,6 @@ function optimalGrind(shots: ShotEntry[]): number | null {
   return Math.round((total / highScoring.length) * 10) / 10
 }
 
-function bestGrindRange(shots: ShotEntry[]): [number, number] | null {
-  const highScoring = shots.filter((s) => s.score !== null && s.score >= 85)
-  if (highScoring.length === 0) return null
-  const settings = highScoring.map((s) => s.inputGrind)
-  return [Math.min(...settings), Math.max(...settings)]
-}
-
 function stdDev(values: number[]): number {
   if (values.length === 0) return 0
   const mean = values.reduce((a, b) => a + b, 0) / values.length

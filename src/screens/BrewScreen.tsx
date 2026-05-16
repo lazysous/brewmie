@@ -1446,7 +1446,10 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           display: flex;
           flex-direction: column;
           gap: clamp(4px, 0.8vh, 10px);
-          min-height: 100%;
+          /* Parent (.screen-content) is flex-column with flex:1; we claim the
+             full visible height so margin-top:auto on the BREW button pins it
+             to the bottom regardless of param-card height. */
+          flex: 1 0 auto;
         }
 
         /* ── Setup nudge ─────────────────────────────────────────────── */

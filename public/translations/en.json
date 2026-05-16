@@ -1,4 +1,9 @@
 {
+  "common": {
+    "save": "Save",
+    "close": "Close",
+    "cancel": "Cancel"
+  },
   "nav": {
     "setup": "Setup",
     "brew": "Brew",
@@ -370,6 +375,15 @@
     "shotClubTooltip": "{count}/100 shot club",
     "recentPerformance": "Recent Performance",
     "clear": "Clear",
+    "viewAll": "View all {count}",
+    "allShotsTitle": "All shots ({count})",
+    "editShot": "Edit shot",
+    "editTime": "Time",
+    "editVolume": "Volume",
+    "editTaste": "Taste",
+    "editStrength": "Strength",
+    "deleteShot": "Delete",
+    "confirmDeleteShot": "Delete this shot? This can't be undone.",
     "emptyHeading": "No shots yet.",
     "emptySub": "Pull one. Log it. Watch this fill up.",
     "adjOnTarget": "✓ On target",

@@ -144,6 +144,113 @@ interface InsightsScreenProps {
   onSignIn: () => void
 }
 
+// ── Shot edit bottom-sheet ──────────────────────────────────────────────────
+// Lets the user retag taste + correct actuals on any historical shot. Saved
+// updates flow through UPDATE_SHOT, which the algorithm picks up next time
+// personalTimeWindow recomputes from state.shots.
+function ShotEditSheet({
+  shot, t, onClose, onSave, onDelete,
+}: {
+  shot: ShotEntry
+  t: (k: string, p?: Record<string, string | number>) => string
+  onClose: () => void
+  onSave: (updates: Partial<ShotEntry>) => void
+  onDelete: () => void
+}) {
+  const [flavor, setFlavor] = useState<'sour' | 'balanced' | 'bitter' | null>(shot.tasteFlavor)
+  const [strength, setStrength] = useState<'weak' | 'perfect' | 'strong' | null>(shot.tasteStrength)
+  const [actualTime, setActualTime] = useState<string>(shot.actualTime !== null ? String(shot.actualTime) : '')
+  const [actualVolume, setActualVolume] = useState<string>(shot.actualVolume !== null ? String(shot.actualVolume) : '')
+
+  function handleSave() {
+    const updates: Partial<ShotEntry> = {
+      tasteFlavor: flavor,
+      tasteStrength: strength,
+    }
+    const t1 = parseFloat(actualTime)
+    if (Number.isFinite(t1)) updates.actualTime = Math.round(t1 * 10) / 10
+    const v1 = parseFloat(actualVolume)
+    if (Number.isFinite(v1)) updates.actualVolume = Math.round(v1 * 10) / 10
+    onSave(updates)
+  }
+
+  return (
+    <div className="ix-sheet-backdrop" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="ix-sheet" onClick={(e) => e.stopPropagation()}>
+        <div className="ix-sheet__header">
+          <span className="ix-sheet__title">{t('insights.editShot')}</span>
+          <button className="ix-sheet__close" type="button" onClick={onClose} aria-label={t('common.close')}>×</button>
+        </div>
+        <div className="ix-sheet__body">
+
+          <div className="ix-edit-row">
+            <label className="ix-edit-row__label">{t('insights.editTime')}</label>
+            <input
+              className="ix-edit-row__input"
+              type="text" inputMode="decimal"
+              value={actualTime}
+              onChange={(e) => /^[0-9.]*$/.test(e.target.value) && setActualTime(e.target.value)}
+            />
+            <span className="ix-edit-row__unit">s</span>
+          </div>
+
+          <div className="ix-edit-row">
+            <label className="ix-edit-row__label">{t('insights.editVolume')}</label>
+            <input
+              className="ix-edit-row__input"
+              type="text" inputMode="decimal"
+              value={actualVolume}
+              onChange={(e) => /^[0-9.]*$/.test(e.target.value) && setActualVolume(e.target.value)}
+            />
+            <span className="ix-edit-row__unit">ml</span>
+          </div>
+
+          <div className="ix-edit-group">
+            <span className="ix-edit-group__label">{t('insights.editTaste')}</span>
+            <div className="ix-edit-pills">
+              {(['sour', 'balanced', 'bitter'] as const).map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  className={`ix-edit-pill${flavor === f ? ' ix-edit-pill--on' : ''}`}
+                  onClick={() => setFlavor(flavor === f ? null : f)}
+                >
+                  {t(`taste.${f}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="ix-edit-group">
+            <span className="ix-edit-group__label">{t('insights.editStrength')}</span>
+            <div className="ix-edit-pills">
+              {(['weak', 'perfect', 'strong'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`ix-edit-pill${strength === s ? ' ix-edit-pill--on' : ''}`}
+                  onClick={() => setStrength(strength === s ? null : s)}
+                >
+                  {t(`taste.${s}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="ix-edit-actions">
+            <button type="button" className="ix-edit-delete" onClick={onDelete}>
+              {t('insights.deleteShot')}
+            </button>
+            <button type="button" className="ix-edit-save" onClick={handleSave}>
+              {t('common.save')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProps) {
   const { t } = useTranslation()
   const tier = useTier(state)
@@ -235,17 +342,69 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
     }
   }
 
-  // ── Recent shots (last 20, newest first) ──────────────────────────────────
+  // ── Shots (newest first). Limit visible to 3; "View all" opens the modal.
 
-  const recentShots = [...shots]
+  const allShotsSorted = [...shots]
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-    .slice(0, 20)
+  const recentShots = allShotsSorted.slice(0, 3)
+  const [allShotsOpen, setAllShotsOpen] = useState(false)
+  const [editingShotId, setEditingShotId] = useState<string | null>(null)
+  const editingShot = editingShotId ? shots.find((s) => s.id === editingShotId) ?? null : null
 
   // ── 100-shot club progress ─────────────────────────────────────────────────
 
   const shotClubPct = Math.min(100, (shotCount / 100) * 100)
 
   // ─── Render ───────────────────────────────────────────────────────────────
+
+  // Reusable row renderer: used in both the recent (3) and the View-all modal.
+  function renderShotRow(shot: ShotEntry, idx: number, listLength: number) {
+    const adj = adjustmentLabel(shot)
+    const beanLabel = state.beans?.brand ?? formatDate(shot.timestamp)
+    const params = [
+      `${shot.inputDose}g`,
+      `${shot.actualVolume ?? shot.targetVolume}g`,
+      `${shot.actualTime ?? shot.targetTime}s`,
+      `grind ${shot.inputGrind}`,
+    ].join(' · ')
+    const isExcellent = shot.score !== null && shot.score >= 85
+    const isEvenRow = idx % 2 === 1
+    return (
+      <button
+        key={shot.id}
+        type="button"
+        className="ix-shot-row"
+        onClick={() => setEditingShotId(shot.id)}
+        style={{
+          borderBottom: idx < listLength - 1 ? '1px solid var(--border-light)' : 'none',
+          background: isExcellent
+            ? 'rgba(107, 142, 92, 0.02)'
+            : isEvenRow
+            ? 'var(--cream)'
+            : undefined,
+        }}
+      >
+        <span className="ix-score-pill" style={scorePillStyle(shot.score)}>
+          {shot.score !== null ? shot.score : '–'}
+        </span>
+        <span className="ix-shot-row__bean">{beanLabel}</span>
+        <span className="ix-shot-row__params">{params}</span>
+        <span
+          className="ix-adj-badge"
+          style={{
+            color: adj.neutral ? '#6A9A6A' : adj.positive ? '#6B8E5C' : '#8B1A1A',
+            background: adj.neutral
+              ? 'rgba(107, 142, 92, 0.07)'
+              : adj.positive
+              ? 'rgba(107, 142, 92, 0.1)'
+              : 'rgba(139, 26, 26, 0.08)',
+          }}
+        >
+          {t(adj.textKey)}
+        </span>
+      </button>
+    )
+  }
 
   return (
     <div className="ix-screen">
@@ -317,68 +476,20 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
             <p className="ix-empty-state__sub">{t('insights.emptySub')}</p>
           </div>
         ) : (
-          <div className="ix-shot-list">
-            {recentShots.map((shot, idx) => {
-              const adj = adjustmentLabel(shot)
-              const beanLabel = state.beans?.brand ?? formatDate(shot.timestamp)
-              const params = [
-                `${shot.inputDose}g`,
-                `${shot.actualVolume ?? shot.targetVolume}g`,
-                `${shot.actualTime ?? shot.targetTime}s`,
-                `grind ${shot.inputGrind}`,
-              ].join(' · ')
-              const isExcellent = shot.score !== null && shot.score >= 85
-              const isEvenRow = idx % 2 === 1
-              return (
-                <div
-                  key={shot.id}
-                  className="ix-shot-row"
-                  style={{
-                    borderBottom: idx < recentShots.length - 1 ? '1px solid var(--border-light)' : 'none',
-                    background: isExcellent
-                      ? 'rgba(107, 142, 92, 0.02)'
-                      : isEvenRow
-                      ? 'var(--cream)'
-                      : undefined,
-                    marginLeft: '-16px',
-                    marginRight: '-16px',
-                    paddingLeft: '16px',
-                    paddingRight: '16px',
-                  }}
-                >
-                  {/* Score pill */}
-                  <span className="ix-score-pill" style={scorePillStyle(shot.score)}>
-                    {shot.score !== null ? shot.score : '–'}
-                  </span>
-
-                  {/* Center: bean/date + params */}
-                  <div className="ix-shot-row__center">
-                    <span className="ix-shot-row__bean">{beanLabel}</span>
-                    <span className="ix-shot-row__params">{params}</span>
-                  </div>
-
-                  {/* Adjustment badge */}
-                  <span
-                    className="ix-adj-badge"
-                    style={{
-                      color: adj.neutral
-                        ? '#6A9A6A'
-                        : adj.positive
-                        ? '#6B8E5C'
-                        : '#8B1A1A',
-                      background: adj.neutral
-                        ? 'rgba(107, 142, 92,0.07)'
-                        : adj.positive
-                        ? 'rgba(107, 142, 92,0.1)'
-                        : 'rgba(139,26,26,0.08)',
-                    }}
-                  >
-                    {t(adj.textKey)}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
+          <>
+            <div className="ix-shot-list">
+              {recentShots.map((shot, idx) => renderShotRow(shot, idx, recentShots.length))}
+            </div>
+            {allShotsSorted.length > recentShots.length && (
+              <button
+                className="ix-view-all-btn"
+                type="button"
+                onClick={() => setAllShotsOpen(true)}
+              >
+                {t('insights.viewAll', { count: allShotsSorted.length })}
+              </button>
+            )}
+          </>
         )}
       </div>
 
@@ -449,6 +560,42 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           </span>
           <span className="ix-history-cap__count">+{hiddenByFreeCap}</span>
         </button>
+      )}
+
+      {/* All shots — full scrollable list, each row tap-to-edit */}
+      {allShotsOpen && (
+        <div className="ix-sheet-backdrop" role="dialog" aria-modal="true" onClick={() => setAllShotsOpen(false)}>
+          <div className="ix-sheet ix-sheet--tall" onClick={(e) => e.stopPropagation()}>
+            <div className="ix-sheet__header">
+              <span className="ix-sheet__title">{t('insights.allShotsTitle', { count: allShotsSorted.length })}</span>
+              <button className="ix-sheet__close" type="button" onClick={() => setAllShotsOpen(false)} aria-label={t('common.close')}>×</button>
+            </div>
+            <div className="ix-sheet__body ix-sheet__body--scroll">
+              <div className="ix-shot-list">
+                {allShotsSorted.map((shot, idx) => renderShotRow(shot, idx, allShotsSorted.length))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit shot — taste + actuals, save -> UPDATE_SHOT */}
+      {editingShot && (
+        <ShotEditSheet
+          shot={editingShot}
+          t={t}
+          onClose={() => setEditingShotId(null)}
+          onSave={(updates) => {
+            dispatch({ type: 'UPDATE_SHOT', payload: { id: editingShot.id, updates } })
+            setEditingShotId(null)
+          }}
+          onDelete={() => {
+            if (window.confirm(t('insights.confirmDeleteShot'))) {
+              dispatch({ type: 'DELETE_SHOT', payload: editingShot.id })
+              setEditingShotId(null)
+            }
+          }}
+        />
       )}
 
       <PremiumModal
@@ -681,8 +828,17 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
 
         /* Two-row layout so params have the full card width and never need
            ellipsis. Row 1: score + date (left) and outcome badge (right).
-           Row 2: full params, wrap permitted. */
+           Row 2: full params, wrap permitted. Whole row is a button so the
+           user can tap to open the edit sheet. */
         .ix-shot-row {
+          width: 100%;
+          background: none;
+          border: none;
+          font: inherit;
+          color: inherit;
+          text-align: left;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
           display: grid;
           grid-template-columns: auto 1fr auto;
           column-gap: 10px;
@@ -743,6 +899,206 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           grid-row: 1;
           grid-column: 3;
         }
+
+        /* "View all" pill below the recent-3 list */
+        .ix-view-all-btn {
+          display: block;
+          width: calc(100% - 32px);
+          margin: 10px 16px 4px;
+          padding: 10px 16px;
+          background: transparent;
+          border: 1px dashed rgba(184, 116, 74, 0.42);
+          color: var(--copper-deep);
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.2px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .ix-view-all-btn:hover {
+          background: rgba(184, 116, 74, 0.06);
+          border-color: var(--copper);
+        }
+        .ix-view-all-btn:active { transform: scale(0.98); }
+
+        /* ── Bottom sheet (All shots + Edit shot) ───────────────────────── */
+        .ix-sheet-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 110;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          animation: ix-sheet-fade 0.2s ease-out both;
+        }
+        @keyframes ix-sheet-fade {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .ix-sheet {
+          width: 100%;
+          max-width: var(--app-max-width);
+          background: var(--white);
+          border-radius: 20px 20px 0 0;
+          padding: 16px 16px calc(24px + var(--safe-bottom));
+          box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+          animation: ix-sheet-up 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+          max-height: 85vh;
+          display: flex;
+          flex-direction: column;
+        }
+        .ix-sheet--tall { max-height: 90vh; }
+        @keyframes ix-sheet-up {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        .ix-sheet__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 14px;
+          border-bottom: 1px solid var(--border-light);
+        }
+        .ix-sheet__title {
+          font-family: var(--font-brand);
+          font-size: 22px;
+          font-weight: 600;
+          color: var(--text-primary);
+          letter-spacing: -0.3px;
+        }
+        .ix-sheet__close {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: var(--off-white);
+          border: 1px solid var(--border);
+          font-size: 18px;
+          color: var(--text-secondary);
+          cursor: pointer;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .ix-sheet__close:hover { background: var(--border); }
+        .ix-sheet__body {
+          padding-top: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .ix-sheet__body--scroll {
+          overflow-y: auto;
+          padding-top: 0;
+          gap: 0;
+        }
+
+        /* ── Edit shot form ─────────────────────────────────────────────── */
+        .ix-edit-row {
+          display: grid;
+          grid-template-columns: 1fr auto 20px;
+          column-gap: 10px;
+          align-items: center;
+          padding: 10px 0;
+          border-bottom: 1px solid var(--border-light);
+        }
+        .ix-edit-row__label {
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.8px;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+        }
+        .ix-edit-row__input {
+          width: 80px;
+          font-size: 22px;
+          font-weight: 800;
+          font-variant-numeric: tabular-nums;
+          text-align: right;
+          background: transparent;
+          border: none;
+          padding: 0;
+          color: var(--text-primary);
+          outline: none;
+        }
+        .ix-edit-row__input:focus { color: var(--accent-green); }
+        .ix-edit-row__unit {
+          font-size: 12px;
+          color: var(--text-tertiary);
+          font-weight: 500;
+        }
+        .ix-edit-group {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .ix-edit-group__label {
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.8px;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+        }
+        .ix-edit-pills {
+          display: flex;
+          gap: 6px;
+        }
+        .ix-edit-pill {
+          flex: 1;
+          padding: 9px 4px;
+          font-size: 13px;
+          font-weight: 600;
+          background: var(--off-white);
+          border: 1.5px solid var(--border);
+          color: var(--text-secondary);
+          border-radius: 10px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .ix-edit-pill--on {
+          background: rgba(107, 142, 92, 0.08);
+          border-color: var(--accent-green);
+          color: var(--accent-green);
+        }
+        .ix-edit-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: 6px;
+        }
+        .ix-edit-delete {
+          flex: 0 0 auto;
+          padding: 12px 18px;
+          background: transparent;
+          color: #8B1A1A;
+          border: 1.5px solid rgba(139, 26, 26, 0.32);
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .ix-edit-save {
+          flex: 1;
+          padding: 12px 18px;
+          background: var(--accent-green);
+          color: #fff;
+          border: none;
+          border-radius: 9999px;
+          font-size: 14px;
+          font-weight: 800;
+          letter-spacing: 0.6px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .ix-edit-save:hover { background: #5C7E4D; }
+        .ix-edit-save:active { transform: scale(0.985); }
 
         /* ── Benchmarks locked state ────────────────────────────────────── */
         .ix-locked {

@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brewmie. Dial in your espresso, one shot at a time.</title>
+<meta name="description" content="The home barista's dialling-in assistant. Log a shot, tell us how it tasted, get the next move. Free. Offline. No subscription. iOS, Android, web.">
+<link rel="canonical" href="https://brewmie.app/">
+
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#221C15">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brewmie.app/">
+<meta property="og:title" content="Brewmie. Dial in your espresso.">
+<meta property="og:description" content="Log a shot. Tell us how it tasted. Get the next move. Free. Offline. No subscription.">
+<meta property="og:image" content="https://brewmie.app/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://brewmie.app/assets/og-card.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #FAF7F2;
+  --dark: #221C15;
+  --copper: #B8744A;
+  --copper-deep: #8C5532;
+  --copper-light: #E5B891;
+  --green: #6B8E5C;
+  --text: #2C2C2C;
+  --text-medium: #5C5246;
+  --text-tertiary: #8B8175;
+  --border: #E8E2D8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+.topbar {
+  background: linear-gradient(180deg, #221C15 0%, #2C261E 100%);
+  border-bottom: 1px solid rgba(184, 116, 74, 0.22);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar__logo {
+  height: 26px;
+  width: auto;
+}
+.topbar__byline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--copper-light);
+  transform: translateY(1px);
+}
+.topbar__cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--copper-light);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid rgba(229, 184, 145, 0.42);
+  border-radius: 999px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.topbar__cta:hover {
+  background: var(--copper);
+  border-color: var(--copper);
+  color: #fff;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 24px 56px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.hero__eyebrow {
+  font-size: 12px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--copper);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.8px;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+.hero__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--copper);
+}
+.hero__sub {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--text-medium);
+  margin-bottom: 36px;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero__cta {
+  display: inline-block;
+  background: linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 18px 40px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1.5px solid rgba(184, 116, 74, 0.45);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+    0 14px 30px rgba(88, 125, 73, 0.36),
+    0 4px 12px rgba(88, 125, 73, 0.22);
+  transition: transform 0.12s, box-shadow 0.22s;
+}
+.hero__cta:hover { transform: translateY(-1px); }
+.hero__cta:active { transform: translateY(0); }
+.hero__note {
+  display: block;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 56px 24px;
+}
+.section__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.4px;
+  color: var(--dark);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.section__lead {
+  font-size: 17px;
+  color: var(--text-medium);
+  max-width: 620px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feature {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+}
+.feature__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.feature__copy {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-medium);
+}
+
+.steps {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  gap: 28px;
+}
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: start;
+  gap: 20px;
+}
+.step__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--copper);
+  line-height: 1;
+  font-style: italic;
+}
+.step__body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+.step__body p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-medium);
+}
+
+.band {
+  background: var(--dark);
+  color: #fff;
+  text-align: center;
+  padding: 60px 24px;
+}
+.band h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: #fff;
+}
+.band h2 em {
+  font-style: italic;
+  color: var(--copper-light);
+}
+.band p {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 540px;
+  margin: 0 auto 32px;
+}
+.band__cta {
+  display: inline-block;
+  background: var(--copper);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.band__cta:hover { background: var(--copper-deep); }
+
+.footer {
+  padding: 32px 24px 48px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+.footer a {
+  color: var(--text-tertiary);
+  text-decoration: none;
+  margin: 0 8px;
+}
+.footer a:hover { color: var(--copper); }
+
+@media (max-width: 720px) {
+  .hero { padding: 56px 22px 40px; }
+  .hero__title { font-size: 42px; }
+  .hero__sub { font-size: 16px; }
+  .section { padding: 40px 22px; }
+  .section__title, .band h2 { font-size: 30px; }
+  .features { grid-template-columns: 1fr; gap: 14px; }
+  .feature { padding: 22px 20px; }
+  .step { grid-template-columns: 44px 1fr; gap: 14px; }
+  .step__num { font-size: 36px; }
+  .topbar { padding: 12px 18px; }
+  .topbar__logo { height: 22px; }
+  .topbar__byline { font-size: 13px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  body { background: #1A1A1A; color: #E0DDD8; }
+  .hero__title, .section__title { color: #F5F1EA; }
+  .hero__sub, .section__lead, .feature__copy, .step__body p { color: #B5AFA6; }
+  .feature { background: #2C261E; border-color: #3A332B; }
+  .feature__name, .step__body h3 { color: #F5F1EA; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <img src="/assets/BM-logo-full-white.png" alt="Brewmie" class="topbar__logo" />
+    <span class="topbar__byline">by Lazy Sous</span>
+  </div>
+  <a href="/" class="topbar__cta">Launch app</a>
+</header>
+
+<section class="hero">
+  <div class="hero__eyebrow">For the home barista</div>
+  <h1 class="hero__title">Dial in every shot. <em>One pull at a time.</em></h1>
+  <p class="hero__sub">
+    Log a shot. Tell us how it tasted. Brewmie returns the next grind, dose, or yield move in plain English, with the reason. Built by baristas. Free. Offline. No subscription.
+  </p>
+  <a href="/" class="hero__cta">Open Brewmie</a>
+  <span class="hero__note">Works in your browser. Install on iOS and Android.</span>
+</section>
+
+<section class="section">
+  <h2 class="section__title">A coach, not a journal.</h2>
+  <p class="section__lead">
+    Shot trackers tell you what happened. Brewmie tells you what to change next. The recommendation comes in your grinder's actual units, with one line of context.
+  </p>
+  <div class="features">
+    <div class="feature">
+      <h3 class="feature__name">Proportional, not bucketed</h3>
+      <p class="feature__copy">A 2-second miss gets a small nudge. An 8-second miss gets a real adjustment. The size of the move matches the size of the miss.</p>
+    </div>
+    <div class="feature">
+      <h3 class="feature__name">Time and yield together</h3>
+      <p class="feature__copy">When the shot ran fast and over-yielded, both signals reinforce each other. No more "tweak grind, then realise it was dose."</p>
+    </div>
+    <div class="feature">
+      <h3 class="feature__name">Knows your grinder</h3>
+      <p class="feature__copy">25+ brands, 100+ models. Recommendations come in your actual dial units. Niche 31.5. Mazzer click 12. Encore 14.</p>
+    </div>
+    <div class="feature">
+      <h3 class="feature__name">Taste is a vote, not a guess</h3>
+      <p class="feature__copy">Mark a shot sour or bitter and the recommendation updates live. Your tongue is part of the algorithm.</p>
+    </div>
+    <div class="feature">
+      <h3 class="feature__name">Bean age and weather</h3>
+      <p class="feature__copy">Fresh beans grip harder. Humid days swell grounds. Both factor into the move so you don't chase ghosts.</p>
+    </div>
+    <div class="feature">
+      <h3 class="feature__name">No subscription</h3>
+      <p class="feature__copy">Free forever for the core. Premium unlocks lifetime, one-off. The thing you bought stays bought.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section__title">How dialling in works.</h2>
+  <p class="section__lead">Three to six shots to a recipe you can repeat every morning.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step__num">i.</div>
+      <div class="step__body">
+        <h3>Set your kit.</h3>
+        <p>Pick your machine, grinder, beans. Five minutes, done. Brewmie remembers everything.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">ii.</div>
+      <div class="step__body">
+        <h3>Pull a shot.</h3>
+        <p>Usual grind, 18g dose, 36g out. Tap Brew, log the time and yield, rate the taste.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">iii.</div>
+      <div class="step__body">
+        <h3>Read the call.</h3>
+        <p>One line of plain English. Go finer 0.5. Add 0.3g. Hold. The reason sits underneath.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">iv.</div>
+      <div class="step__body">
+        <h3>Apply and repeat.</h3>
+        <p>Hit Apply, dial in the new setting, pull again. By shot four or five you're locked in for the bag.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Stop guessing. <em>Start dialling.</em></h2>
+  <p>Free to use. Offline-first. Your shots stay on your device until you choose to sign in.</p>
+  <a href="/" class="band__cta">Open Brewmie</a>
+</section>
+
+<footer class="footer">
+  <a href="/privacy.html">Privacy</a> ·
+  <a href="https://lazysous.app/">Lazy Sous</a> ·
+  <span>brewmie.app</span>
+</footer>
+
+</body>
+</html>

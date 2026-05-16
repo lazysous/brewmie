@@ -1440,10 +1440,10 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Screen container ─────────────────────────────────────────── */
         .bs-screen {
           background: var(--cream);
-          padding: 12px 16px 20px;
+          padding: 6px 16px 12px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 6px;
           min-height: 100%;
         }
 
@@ -1574,7 +1574,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Sections: RECIPE (copper tint) and TARGETS (sage tint) ──── */
         .bs-section {
           position: relative;
-          padding: 8px 0 4px;
+          padding: 4px 0 2px;
         }
         .bs-section--recipe {
           background: linear-gradient(180deg, rgba(184, 116, 74, 0.045) 0%, rgba(184, 116, 74, 0.015) 100%);
@@ -1586,13 +1586,13 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         .bs-section__label {
           position: absolute;
-          top: 10px;
+          top: 6px;
           left: 16px;
-          font-size: 9px;
+          font-size: 8px;
           font-weight: 800;
-          letter-spacing: 1.8px;
+          letter-spacing: 1.6px;
           text-transform: uppercase;
-          padding: 2px 0;
+          padding: 1px 0;
           z-index: 1;
           background: none !important;
         }
@@ -1606,26 +1606,26 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         }
 
         .bs-section__rows {
-          padding-top: 22px;
+          padding-top: 14px;
         }
 
         /* ── Param row: tighter, label left, controls right ───────────── */
         .bs-param-row {
-          padding: 10px 16px;
+          padding: 6px 14px;
           display: grid;
-          grid-template-columns: 64px 1fr;
+          grid-template-columns: 56px 1fr;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
         .bs-param-row--sep {
           border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .bs-param-row__label {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 0.8px;
           color: var(--text-tertiary);
         }
 
@@ -1640,19 +1640,19 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
            Every row's digits land on the same vertical line. */
         .bs-param-row__value-group {
           display: grid;
-          grid-template-columns: 1fr 24px;
-          column-gap: 4px;
+          grid-template-columns: 1fr 20px;
+          column-gap: 3px;
           align-items: baseline;
-          width: 96px;
+          width: 78px;
         }
 
         .bs-param-row__value {
-          font-size: 30px;
+          font-size: 22px;
           font-weight: 800;
           color: var(--text-primary);
           line-height: 1;
           font-variant-numeric: tabular-nums;
-          letter-spacing: -0.8px;
+          letter-spacing: -0.5px;
           text-align: right;
         }
         .bs-param-row__input {
@@ -1702,14 +1702,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           -webkit-tap-highlight-color: transparent;
         }
         .bs-stepper--big {
-          width: 32px;
-          height: 32px;
-          font-size: 19px;
+          width: 28px;
+          height: 28px;
+          font-size: 17px;
         }
         .bs-stepper--fine {
-          width: 22px;
-          height: 22px;
-          font-size: 14px;
+          width: 20px;
+          height: 20px;
+          font-size: 13px;
           opacity: 0.75;
         }
         .bs-stepper--fine:hover:not(:disabled) { opacity: 1; }
@@ -2250,7 +2250,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-brew-btn {
           position: relative;
           width: 100%;
-          height: 68px;
+          height: 56px;
           border-radius: 9999px;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
@@ -2765,6 +2765,33 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           0%   { opacity: 0; transform: scale(0.5); }
           70%  { transform: scale(1.08); }
           100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Short viewport (iPhone SE / older phones): every pixel matters.
+           Compress the param card + BREW button so they fit above the fold
+           without scrolling. Triggered at <=720px viewport height. */
+        @media (max-height: 720px) {
+          .bs-screen { padding: 2px 14px 8px; gap: 4px; }
+          .bs-setup-pill { padding: 6px 14px; }
+          .bs-setup-pill__text { font-size: 12px; }
+          .bs-bean-card { padding: 6px 12px; gap: 1px; }
+          .bs-bean-card__name { font-size: 12px; }
+          .bs-bean-card__age { font-size: 11px; }
+          .bs-section { padding: 2px 0 1px; }
+          .bs-section__label { top: 4px; font-size: 8px; letter-spacing: 1.2px; }
+          .bs-section__rows { padding-top: 10px; }
+          .bs-section--targets { border-top-width: 1px; }
+          .bs-param-row { padding: 3px 12px; grid-template-columns: 48px 1fr; gap: 6px; }
+          .bs-param-row__label { font-size: 9px; letter-spacing: 0.6px; }
+          .bs-param-row__value { font-size: 18px; }
+          .bs-param-row__value-group { width: 64px; grid-template-columns: 1fr 18px; }
+          .bs-param-row__unit { font-size: 11px; }
+          .bs-stepper--big { width: 26px; height: 26px; font-size: 15px; }
+          .bs-stepper--fine { width: 18px; height: 18px; font-size: 12px; }
+          .bs-tamp-btn { padding: 5px 0; font-size: 12px; }
+          .bs-tamp-fixed__badge { width: 26px; height: 26px; font-size: 9px; }
+          .bs-brew-btn { height: 50px; font-size: 15px; letter-spacing: 3px; }
+          .bs-card-wrap { /* keep transition */ }
         }
       `}</style>
     </div>

@@ -9,8 +9,10 @@ import { DevTierPill } from './components/DevTierPill'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier } from './lib/supabase'
-import { notifyAppReady } from './lib/native'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, fetchTrialStatus } from './lib/supabase'
+import type { TrialStatus } from './lib/supabase'
+import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
+import { rescheduleAllReminders } from './lib/reminders'
 import { trackScreen, track } from './lib/analytics'
 import type { AlgoParams } from './lib/supabase'
 
@@ -22,6 +24,8 @@ export function App() {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
+  const [trial, setTrial] = useState<TrialStatus | null>(null)
+  void trial
 
   // Restore Supabase session on mount and listen for auth changes
   useEffect(() => {
@@ -43,6 +47,9 @@ export function App() {
     // Tell the Capacitor Updater the app loaded cleanly so it doesn't roll
     // back the latest OTA bundle.
     notifyAppReady()
+    // Ask once on iOS — required by Apple before any analytics SDK runs.
+    // No-op on web/Android. Result is system-cached; we don't re-prompt.
+    requestAppTrackingPermission().catch(() => {})
     track('app_open')
   }, [])
 
@@ -50,6 +57,17 @@ export function App() {
   useEffect(() => {
     trackScreen(activeTab)
   }, [activeTab])
+
+  // Reschedule local notifications whenever maintenance dates or bean roast
+  // date change. Native-only; web is a no-op.
+  useEffect(() => {
+    rescheduleAllReminders(state).catch(() => {})
+  }, [
+    state.maintenance?.lastBackflush,
+    state.maintenance?.lastDescale,
+    state.maintenance?.lastGrinderClean,
+    state.beans?.roastDate,
+  ])
 
   // Load shots, config, and display name from Supabase when user signs in.
   // If the user has no display_name yet (first sign-in), prompt for one.
@@ -76,6 +94,15 @@ export function App() {
     }).catch(() => {})
     fetchTier(state.userId).then((tier) => {
       dispatch({ type: 'SET_TIER', payload: tier })
+    }).catch(() => {})
+    // Server-side 7-day trial. Stamps trial_started_at on first call, reads
+    // effective tier from the view. Promotes to premium during the window.
+    fetchTrialStatus().then((status) => {
+      if (!status) return
+      setTrial(status)
+      if (status.effectiveTier === 'premium') {
+        dispatch({ type: 'SET_TIER', payload: 'premium' })
+      }
     }).catch(() => {})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])

@@ -17,6 +17,8 @@
     "@capacitor/core": "^6.2.0",
     "@capacitor/haptics": "^6.0.3",
     "@capacitor/ios": "^6.2.0",
+    "@capacitor/local-notifications": "^8.2.0",
+    "@capgo/capacitor-app-tracking-transparency": "^8.1.7",
     "@capgo/capacitor-updater": "^6.45.10",
     "@codetrix-studio/capacitor-google-auth": "^3.3.6",
     "@supabase/supabase-js": "^2.50.0",

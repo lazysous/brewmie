@@ -416,6 +416,18 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           .hero__big { font-size: 30px; }
           .hero__big-rest { font-size: 26px; }
         }
+
+        /* Short viewports (iPhone SE / iPhone 8 / older Android): every pixel
+           matters. Squeeze the hero so the BREW button stays above the fold. */
+        @media (max-height: 720px) {
+          .hero__top { height: 44px; margin-bottom: 6px; }
+          .hero__logo { height: 24px; }
+          .hero__body { margin-top: 8px; margin-bottom: 0; min-height: 0; }
+          .hero__big { font-size: 24px; line-height: 1.02; }
+          .hero__big-rest { font-size: 20px; }
+          .hero__status { margin-top: 3px; font-size: 12px; }
+          .hero__meta { margin-top: 4px; font-size: 11px; }
+        }
       `}</style>
     </header>
   )

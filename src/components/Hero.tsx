@@ -183,21 +183,6 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         </button>
 
         <div className="hero__auth">
-          <button
-            className={`hero__barista${state.baristaMode ? ' hero__barista--on' : ''}`}
-            onClick={() => dispatch({ type: 'SET_BARISTA_MODE', payload: !state.baristaMode })}
-            aria-label={t('barista.toggleOn')}
-            title={t('barista.toggleOn')}
-            type="button"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M17 8h1a4 4 0 0 1 0 8h-1"/>
-              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
-              <line x1="6" y1="2" x2="6" y2="4"/>
-              <line x1="10" y1="2" x2="10" y2="4"/>
-              <line x1="14" y1="2" x2="14" y2="4"/>
-            </svg>
-          </button>
           {state.userId ? (
             <button
               className="hero__signin"
@@ -286,33 +271,6 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         }
 
         .hero__auth { display: flex; align-items: center; gap: 10px; }
-
-        .hero__barista {
-          width: 28px;
-          height: 28px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.22);
-          border-radius: 50%;
-          color: rgba(255, 255, 255, 0.62);
-          cursor: pointer;
-          -webkit-tap-highlight-color: transparent;
-          transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-        }
-        .hero__barista:hover { color: #E5B891; border-color: rgba(229, 184, 145, 0.45); }
-        .hero__barista--on {
-          color: var(--copper);
-          border-color: rgba(184, 116, 74, 0.7);
-          background: rgba(184, 116, 74, 0.18);
-          animation: hbPulse 1.8s ease-out infinite;
-        }
-        @keyframes hbPulse {
-          0%   { box-shadow: 0 0 0 0 rgba(184, 116, 74, 0.5); }
-          70%  { box-shadow: 0 0 0 8px rgba(184, 116, 74, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(184, 116, 74, 0); }
-        }
 
         .hero__signin {
           font-size: 12px;

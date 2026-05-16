@@ -86,9 +86,8 @@ export function App() {
     fetchDisplayName(state.userId).then((name) => {
       if (name) {
         dispatch({ type: 'SET_DISPLAY_NAME', payload: name })
-      } else if (!state.baristaMode) {
+      } else {
         // First sign-in: open the modal in nickname-capture mode.
-        // Don't interrupt an active barista session.
         setShowAuthModal(true)
       }
     }).catch(() => {})

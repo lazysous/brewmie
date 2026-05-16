@@ -178,8 +178,14 @@
     "scoreSame": "Same as last. Steady hand.",
     "scoreFirst": "First one's in. Now we learn.",
     "apply": "Apply",
-    "applyAll": "Apply all",
-    "applyAuto": "Auto-apply next time",
+    "applyAll": "Apply for next shot",
+    "applyAuto": "Remember my decision",
+    "stop": "STOP",
+    "saveShot": "SAVE SHOT",
+    "timingReady": "Pulling",
+    "timingRunning": "Pulling",
+    "timingStopped": "Capture the shot",
+    "timingHint": "Tap to edit time or volume.",
     "editTargets": "Edit targets",
     "directionFiner": "← Finer",
     "directionCoarser": "Coarser →",
@@ -221,6 +227,18 @@
     "weak": "Weak",
     "perfect": "Perfect",
     "strong": "Strong"
+  },
+  "crema": {
+    "thin": "Thin",
+    "normal": "Normal",
+    "thick": "Thick"
+  },
+  "rating": {
+    "crema": "Crema",
+    "flavour": "Flavour",
+    "strength": "Strength",
+    "later": "Rate later",
+    "save": "Save rating"
   },
   "barista": {
     "toggleOn": "Barista mode",

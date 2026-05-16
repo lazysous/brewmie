@@ -69,6 +69,7 @@ export interface TampConfig {
 
 export type TasteFlavor = 'sour' | 'balanced' | 'bitter'
 export type TasteStrength = 'weak' | 'perfect' | 'strong'
+export type Crema = 'thin' | 'normal' | 'thick'
 
 // ─── Shot / session ───────────────────────────────────────────────────────────
 
@@ -97,7 +98,8 @@ export interface ShotEntry {
   timeAdjust: number | null
   tampAdjust: number | null
 
-  // Taste feedback (captured after drinking)
+  // Taste feedback (captured after drinking — all optional, deferrable)
+  crema: Crema | null
   tasteFlavor: TasteFlavor | null
   tasteStrength: TasteStrength | null
 
@@ -135,7 +137,6 @@ export interface BrewmieState {
   userId: string | null
   displayName: string | null
   tier: Tier
-  baristaMode: boolean
 }
 
 export type Tier = 'free' | 'premium'
@@ -157,6 +158,5 @@ export type AppAction =
   | { type: 'SET_USER'; payload: string | null }
   | { type: 'SET_DISPLAY_NAME'; payload: string | null }
   | { type: 'SET_TIER'; payload: Tier }
-  | { type: 'SET_BARISTA_MODE'; payload: boolean }
   | { type: 'HYDRATE'; payload: BrewmieState }
   | { type: 'RESET' }

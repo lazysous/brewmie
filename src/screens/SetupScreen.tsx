@@ -720,7 +720,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           complete={!!state.machine?.brand}
           icon={<IconWrench />}
         >
-          <p className="sc-card__desc">{t('setup.machineDesc')}</p>
 
           <Field label={t('setup.fieldBrand')}>
             <select
@@ -807,7 +806,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           icon={<IconDroplet />}
           locked={isLocked('grinder')}
         >
-          <p className="sc-card__desc">{t('setup.grinderDesc')}</p>
 
           <Field label={t('setup.grinderType')}>
             <div className="sc-option-group">
@@ -902,7 +900,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           icon={<IconDisc />}
           locked={isLocked('tamper')}
         >
-          <p className="sc-card__desc">So we can hold tamp steady from shot to shot.</p>
 
           <Field label={t('setup.tamperType')}>
             <div className="sc-option-group">
@@ -997,7 +994,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           icon={<IconLeaf />}
           locked={isLocked('beans')}
         >
-          <p className="sc-card__desc">{t('setup.beansDesc')}</p>
 
           <Field label={t('setup.beanRoaster')}>
             <input
@@ -1084,7 +1080,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           complete={!!(state.maintenance.lastBackflush || state.maintenance.lastDescale || state.maintenance.lastGrinderClean)}
           icon={<IconClock />}
         >
-          <p className="sc-card__desc">{t('setup.maintenanceDesc')}</p>
 
           <MaintenanceRow
             label={t('setup.maintBackflush')}
@@ -1696,20 +1691,11 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         }
 
         .sc-card__body {
-          padding: 16px 20px 20px;
+          padding: clamp(10px, 1.8vh, 16px) clamp(14px, 4vw, 18px) clamp(12px, 2vh, 18px);
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: clamp(8px, 1.4vh, 14px);
           border-top: 1px solid var(--border-light);
-        }
-
-        /* Card contextual description */
-        .sc-card__desc {
-          font-size: 12px;
-          color: var(--text-tertiary);
-          line-height: 1.5;
-          margin-bottom: 14px;
-          margin-top: -4px;
         }
 
         /* ── Chevron ── */
@@ -1731,19 +1717,19 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         }
 
         .sc-label {
-          font-size: 11px;
-          font-weight: 600;
+          font-size: 10px;
+          font-weight: 700;
           color: var(--text-tertiary);
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.6px;
         }
 
         /* ── Input ── */
         .sc-input {
           border: 1.5px solid var(--border);
           border-radius: 10px;
-          padding: 10px 12px;
-          font-size: 15px;
+          padding: 8px 12px;
+          font-size: 14px;
           font-family: var(--font-primary);
           color: var(--text-primary);
           background: var(--white);
@@ -1767,8 +1753,8 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         .sc-select {
           border: 1.5px solid var(--border);
           border-radius: 10px;
-          padding: 10px 34px 10px 12px;
-          font-size: 15px;
+          padding: 8px 34px 8px 12px;
+          font-size: 14px;
           font-family: var(--font-primary);
           color: var(--text-primary);
           background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A6A6A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;

@@ -509,7 +509,6 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
               <path d="M32 14c0-4 6-4 6-8" stroke="#C0C0C0" strokeWidth="2" strokeLinecap="round"/>
             </svg>
             <p className="ix-empty-state__heading">{t('insights.emptyHeading')}</p>
-            <p className="ix-empty-state__sub">{t('insights.emptySub')}</p>
           </div>
         ) : (
           <>

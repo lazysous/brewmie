@@ -23,7 +23,6 @@ export const defaultState: BrewmieState = {
   userId: null,
   displayName: null,
   tier: 'free',
-  baristaMode: false,
 }
 
 /**

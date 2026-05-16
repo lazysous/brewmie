@@ -3,16 +3,14 @@ import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import type { AlgoParams } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import { useTier } from '../hooks/useTier'
-import { useWakeLock } from '../hooks/useWakeLock'
 import { PremiumModal } from '../components/PremiumModal'
-import { maybeRequestReview, brewTap, shotSavedHaptic } from '../lib/native'
+import { maybeRequestReview, brewTap, shotSavedHaptic, scheduleLocalNotification } from '../lib/native'
 import { track } from '../lib/analytics'
 import type { TParams } from '../lib/i18n'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type BrewPhase = 'idle' | 'brewing' | 'logging' | 'taste' | 'rated'
-type LogTab = 'manual' | 'timer'
 
 interface BrewTargets {
   grind: number
@@ -485,27 +483,12 @@ const TARGET_ROWS = ROWS.filter((r) => r.section === 'targets')
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function BrewingDots({ label }: { label: string }) {
-  return (
-    <span className="bs-btn__dots" aria-label={label}>
-      <span className="bs-btn__dot" />
-      <span className="bs-btn__dot" />
-      <span className="bs-btn__dot" />
-    </span>
-  )
-}
-
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weather, algoParams }: BrewScreenProps) {
   const { t } = useTranslation()
   useTier(state)
 
-  // ── Barista mode: keep screen awake + auto-advance + session counter.
-  // Free users can't toggle it on, but if it's already on we still respect it
-  // (in case they downgrade) — the toggle just becomes locked.
-  const baristaActive = state.baristaMode === true
-  useWakeLock(baristaActive)
   const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null>(null)
 
   // ── Derived defaults from state
@@ -519,10 +502,8 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
   const [cardState, setCardState] = useState<'targets' | 'results'>('targets')
   const [cardVisible, setCardVisible] = useState(true)
 
-  // ── Modal / logging
-  const [logTab, setLogTab] = useState<LogTab>('manual')
+  // ── Logging (inline timer panel)
   const [manualTime, setManualTime] = useState('')
-  const [manualVolume, setManualVolume] = useState('')
 
   // ── Timer
   const [timerRunning, setTimerRunning] = useState(false)
@@ -542,6 +523,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
   const [rawActuals, setRawActuals] = useState<{ time: number; volume: number } | null>(null)
 
   // ── Taste feedback state
+  const [crema, setCrema] = useState<'thin' | 'normal' | 'thick' | null>(null)
   const [tasteFlavor, setTasteFlavor] = useState<'sour' | 'balanced' | 'bitter' | null>(null)
   const [tasteStrength, setTasteStrength] = useState<'weak' | 'perfect' | 'strong' | null>(null)
 
@@ -634,14 +616,12 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     }
     setBrewError(null)
     setResult(null)
-    setManualTime(String(targets.time))
-    setManualVolume(String(targets.volume))
-    setTimerVolume(String(targets.volume))
+    setManualTime('')
+    setTimerVolume('')
     setTimerSecs(0)
     setTimerStopped(false)
-    // BREW is the trigger. Open the log modal on the Timer tab and start
-    // the clock immediately. User can edit the captured time before saving.
-    setLogTab('timer')
+    // BREW is the trigger. Swap into the inline timer panel and start the
+    // clock. The user can edit the captured time before saving.
     setPhase('logging')
     startTimer()
     brewTap()
@@ -674,6 +654,9 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     }
     setTimerRunning(false)
     setTimerStopped(true)
+    // Mirror the captured time into the editable field so the user can
+    // correct it (e.g. forgot to stop, hit stop late).
+    setManualTime(timerSecs.toFixed(1))
   }
 
   useEffect(() => {
@@ -740,6 +723,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       volumeAdjust: adjs.volumeAdjust,
       timeAdjust: adjs.timeAdjust,
       tampAdjust: adjs.tampAdjust,
+      crema: null,
       tasteFlavor: null,
       tasteStrength: null,
       beanAge: age,
@@ -763,7 +747,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       roast_level: beans?.roastLevel ?? 'none',
       bean_age_bucket: age === null ? 'none' : age <= 7 ? '0-7' : age <= 21 ? '8-21' : age <= 30 ? '22-30' : '30+',
       taste_flavor: 'none',
-      barista_mode: baristaActive,
     })
 
     const newResult: ShotResult = {
@@ -774,6 +757,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     setResult(newResult)
     setRawActuals({ time: actualTime, volume: actualVolume })
     setSavedShotId(shotId)
+    setCrema(null)
     setTasteFlavor(null)
     setTasteStrength(null)
     stopTimer()
@@ -782,24 +766,22 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     setPhase('taste')
   }
 
-  function handleManualSave() {
-    const t = parseFloat(manualTime)
-    const v = parseFloat(manualVolume)
-    if (isNaN(t) || isNaN(v) || t <= 0 || v <= 0) return
-    handleSave(t, v)
-  }
-
   function handleTimerSave() {
     const v = parseFloat(timerVolume)
     if (isNaN(v) || v <= 0) return
-    handleSave(parseFloat(timerSecs.toFixed(1)), v)
+    // Use the editable manualTime (user may have corrected the captured timer
+    // value — e.g. they forgot to stop). Fall back to the raw timer reading.
+    const editedTime = parseFloat(manualTime)
+    const finalTime = Number.isFinite(editedTime) && editedTime > 0
+      ? Math.round(editedTime * 10) / 10
+      : parseFloat(timerSecs.toFixed(1))
+    handleSave(finalTime, Math.round(v * 10) / 10)
   }
 
   // ─── Taste phase handlers ─────────────────────────────────────────────────────
   function handleTasteDone() {
     if (savedShotId) {
-      // Persist taste + the final (taste-updated) grind/dose adjustments
-      const updates: Partial<ShotEntry> = { tasteFlavor, tasteStrength }
+      const updates: Partial<ShotEntry> = { crema, tasteFlavor, tasteStrength }
       if (result) {
         updates.grindAdjust = result.grindAdjust
         updates.doseAdjust = result.doseAdjust
@@ -807,26 +789,23 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       dispatch({ type: 'UPDATE_SHOT', payload: { id: savedShotId, updates } })
     }
     setPhase('rated')
-    if (baristaActive) autoAdvanceForBarista()
   }
 
-  // Barista mode: after a shot is rated, return to idle ready for the next pull.
-  function autoAdvanceForBarista() {
-    setTimeout(() => {
-      transitionCard('targets')
-      setPhase('idle')
-      setResult(null)
-      setRawActuals(null)
-      setSavedShotId(null)
-      setTasteFlavor(null)
-      setTasteStrength(null)
-    }, 1200)
-  }
-
-  function handleTasteSkip() {
+  // Rate later: schedule a local notification in ~8 min and dismiss the
+  // rating wizard. Espresso reads truer once it's settled; this matches
+  // barista practice and gives the user space to taste before recording.
+  function handleRateLater() {
     setPhase('rated')
-    if (baristaActive) autoAdvanceForBarista()
+    if (savedShotId) {
+      scheduleLocalNotification({
+        id: 2001,
+        title: 'How did that shot taste?',
+        body: 'Tap to rate crema, flavour, and strength.',
+        at: new Date(Date.now() + 8 * 60_000),
+      }).catch(() => {})
+    }
   }
+
 
   // Clamp + snap a target value the same way the manual stepper does, so applying
   // an adjustment can't produce out-of-range or fractional-step settings.
@@ -1197,41 +1176,68 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     )
   }
 
-  // ─── Taste card ───────────────────────────────────────────────────────────────
-  function renderTasteCard() {
+  // ─── Rating wizard (crema · flavour · strength) ─────────────────────────────
+  // Three rows of pills on one screen. Each row is optional — leave any of them
+  // un-set and the wizard still saves. "Rate later" defers and schedules a push.
+  function renderRatingWizard() {
     return (
-      <div className="bs-taste-card">
-        <div className="bs-taste-card__header">{t('brew.tasteHeader')}</div>
+      <div className="bs-rating">
+        <div className="bs-rating__header">{t('brew.tasteHeader')}</div>
 
-        <div className="bs-taste-grid">
-          {(['sour', 'balanced', 'bitter'] as const).map((f) => (
-            <button
-              key={f}
-              className={`bs-taste-btn${tasteFlavor === f ? ' bs-taste-btn--selected' : ''}`}
-              onClick={() => setTasteFlavor(tasteFlavor === f ? null : f)}
-              type="button"
-            >
-              {t(`taste.${f}`)}
-            </button>
-          ))}
-          {(['weak', 'perfect', 'strong'] as const).map((s) => (
-            <button
-              key={s}
-              className={`bs-taste-btn${tasteStrength === s ? ' bs-taste-btn--selected' : ''}`}
-              onClick={() => setTasteStrength(tasteStrength === s ? null : s)}
-              type="button"
-            >
-              {t(`taste.${s}`)}
-            </button>
-          ))}
+        <div className="bs-rating__row">
+          <span className="bs-rating__label">{t('rating.crema')}</span>
+          <div className="bs-rating__pills">
+            {(['thin', 'normal', 'thick'] as const).map((c) => (
+              <button
+                key={c}
+                className={`bs-rating-pill${crema === c ? ' bs-rating-pill--on' : ''}`}
+                onClick={() => setCrema(crema === c ? null : c)}
+                type="button"
+              >
+                {t(`crema.${c}`)}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="bs-taste-footer">
-          <button className="bs-taste-skip" onClick={handleTasteSkip} type="button">
-            {t('brew.tasteSkip')}
+        <div className="bs-rating__row">
+          <span className="bs-rating__label">{t('rating.flavour')}</span>
+          <div className="bs-rating__pills">
+            {(['sour', 'balanced', 'bitter'] as const).map((f) => (
+              <button
+                key={f}
+                className={`bs-rating-pill${tasteFlavor === f ? ' bs-rating-pill--on' : ''}`}
+                onClick={() => setTasteFlavor(tasteFlavor === f ? null : f)}
+                type="button"
+              >
+                {t(`taste.${f}`)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="bs-rating__row">
+          <span className="bs-rating__label">{t('rating.strength')}</span>
+          <div className="bs-rating__pills">
+            {(['weak', 'perfect', 'strong'] as const).map((s) => (
+              <button
+                key={s}
+                className={`bs-rating-pill${tasteStrength === s ? ' bs-rating-pill--on' : ''}`}
+                onClick={() => setTasteStrength(tasteStrength === s ? null : s)}
+                type="button"
+              >
+                {t(`taste.${s}`)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="bs-rating__footer">
+          <button className="bs-rating__later" onClick={handleRateLater} type="button">
+            {t('rating.later')}
           </button>
-          <button className="bs-taste-done" onClick={handleTasteDone} type="button">
-            {t('brew.tasteSave')}
+          <button className="bs-rating__save" onClick={handleTasteDone} type="button">
+            {t('rating.save')}
           </button>
         </div>
       </div>
@@ -1264,167 +1270,97 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         <div className="bs-error-banner" role="alert">{brewError}</div>
       )}
 
-      {/* ── Two-state card with fade-up transition ── */}
-      <div
-        className={`bs-card-wrap${cardVisible ? ' bs-card-wrap--visible' : ' bs-card-wrap--hidden'}`}
-      >
-        {cardState === 'targets' ? renderTargetsCard() : renderResultsCard()}
-      </div>
+      {/* ── Recipe / Results card. Hidden while the inline timer is open. ── */}
+      {phase !== 'logging' && (
+        <div
+          className={`bs-card-wrap${cardVisible ? ' bs-card-wrap--visible' : ' bs-card-wrap--hidden'}`}
+        >
+          {cardState === 'targets' ? renderTargetsCard() : renderResultsCard()}
+        </div>
+      )}
 
-      {/* ── Taste feedback card (inline, below results) ── */}
-      {phase === 'taste' && renderTasteCard()}
+      {/* ── Rating wizard (inline, below results) ── */}
+      {phase === 'taste' && renderRatingWizard()}
 
-      {/* ── BREW button ── */}
+      {/* ── BREW button — morphs in place: BREW → STOP → SAVE → BREW AGAIN ── */}
       <button
-        className={`bs-brew-btn${phase === 'brewing' ? ' bs-brew-btn--brewing' : ''}`}
+        className={`bs-brew-btn${phase === 'logging' && !timerStopped ? ' bs-brew-btn--running' : ''}`}
         onClick={
-          (phase === 'idle' || phase === 'rated')
-            ? (cardState === 'results' ? handleBrewAgain : handleBrew)
-            : undefined
+          phase === 'logging' && timerRunning
+            ? stopTimer
+            : phase === 'logging' && timerStopped
+              ? handleTimerSave
+              : (phase === 'idle' || phase === 'rated')
+                ? (cardState === 'results' ? handleBrewAgain : handleBrew)
+                : undefined
         }
-        disabled={phase === 'brewing' || phase === 'logging' || phase === 'taste'}
+        disabled={
+          (phase === 'logging' && timerStopped && !timerVolume) ||
+          phase === 'taste' ||
+          phase === 'brewing'
+        }
         type="button"
       >
         <span className="bs-brew-btn__label">
-          {phase === 'brewing'
-            ? <BrewingDots label={t('brew.brewingLabel')} />
-            : cardState === 'results'
-              ? t('brew.brewAgainButton')
-              : t('brew.brewButton')}
+          {phase === 'logging' && timerRunning
+            ? t('brew.stop')
+            : phase === 'logging' && timerStopped
+              ? t('brew.saveShot')
+              : cardState === 'results'
+                ? t('brew.brewAgainButton')
+                : t('brew.brewButton')}
         </span>
       </button>
 
 
-      {/* ── Data entry modal ── */}
+      {/* ── Inline timer panel — replaces the modal pattern. Sits where the
+            recipe card was, hero-style. Time + volume both editable after
+            stop, including the case where the user forgot to stop. ── */}
       {phase === 'logging' && (
-        <div className="bs-modal-backdrop" role="dialog" aria-modal="true" aria-label={t('brew.modalAriaLabel')}>
-          <div className="bs-modal">
-            <div className="bs-modal__header">
-              <span className="bs-modal__title">{t('brew.modalTitle')}</span>
-              <button
-                className="bs-modal__close"
-                onClick={handleCancel}
-                type="button"
-                aria-label={t('brew.cancel')}
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Tabs */}
-            <div className="bs-modal__tabs">
-              <button
-                className={`bs-modal__tab${logTab === 'manual' ? ' bs-modal__tab--active' : ''}`}
-                onClick={() => setLogTab('manual')}
-                type="button"
-              >
-                {t('brew.tabManual')}
-              </button>
-              <button
-                className={`bs-modal__tab${logTab === 'timer' ? ' bs-modal__tab--active' : ''}`}
-                onClick={() => setLogTab('timer')}
-                type="button"
-              >
-                {t('brew.tabTimer')}
-              </button>
-            </div>
-
-            {/* Manual entry */}
-            {logTab === 'manual' && (
-              <div className="bs-modal__body">
-                <label className="bs-modal__field">
-                  <span className="bs-modal__field-label">{t('brew.fieldTimeSec')}</span>
-                  <input
-                    className="bs-modal__input"
-                    type="number"
-                    inputMode="decimal"
-                    placeholder={t('brew.placeholderTargetTimeS', { time: targets.time })}
-                    value={manualTime}
-                    onChange={(e) => setManualTime(e.target.value)}
-                    min={1}
-                    max={120}
-                  />
-                </label>
-                <label className="bs-modal__field">
-                  <span className="bs-modal__field-label">{t('brew.fieldVolumeG')}</span>
-                  <input
-                    className="bs-modal__input"
-                    type="number"
-                    inputMode="decimal"
-                    placeholder={t('brew.placeholderTargetVolumeG', { volume: targets.volume })}
-                    value={manualVolume}
-                    onChange={(e) => setManualVolume(e.target.value)}
-                    min={1}
-                    max={200}
-                  />
-                </label>
-                <button
-                  className="bs-modal__save"
-                  onClick={handleManualSave}
-                  disabled={!manualTime || !manualVolume}
-                  type="button"
-                >
-                  {t('brew.logIt')}
-                </button>
-              </div>
-            )}
-
-            {/* Timer entry */}
-            {logTab === 'timer' && (
-              <div className="bs-modal__body">
-                <div className="bs-timer-display">
-                  {timerSecs.toFixed(1)}
-                </div>
-                <div className="bs-timer-btns">
-                  {!timerRunning && !timerStopped && (
-                    <button className="bs-timer-btn bs-timer-btn--start" onClick={startTimer} type="button">
-                      {t('brew.timerStart')}
-                    </button>
-                  )}
-                  {timerRunning && (
-                    <button className="bs-timer-btn bs-timer-btn--stop" onClick={stopTimer} type="button">
-                      {t('brew.timerStop')}
-                    </button>
-                  )}
-                  {timerStopped && (
-                    <button
-                      className="bs-timer-btn bs-timer-btn--reset"
-                      onClick={() => { setTimerSecs(0); setTimerStopped(false) }}
-                      type="button"
-                    >
-                      {t('brew.timerReset')}
-                    </button>
-                  )}
-                </div>
-
-                {timerStopped && (
-                  <>
-                    <label className="bs-modal__field">
-                      <span className="bs-modal__field-label">{t('brew.fieldVolumeG')}</span>
-                      <input
-                        className="bs-modal__input"
-                        type="number"
-                        inputMode="decimal"
-                        placeholder={t('brew.placeholderTargetVolumeG', { volume: targets.volume })}
-                        value={timerVolume}
-                        onChange={(e) => setTimerVolume(e.target.value)}
-                        min={1}
-                        max={200}
-                      />
-                    </label>
-                    <button
-                      className="bs-modal__save"
-                      onClick={handleTimerSave}
-                      disabled={!timerVolume}
-                      type="button"
-                    >
-                      {t('brew.logIt')}
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+        <div className="bs-timing">
+          <div className="bs-timing__head">
+            <span className="bs-timing__eyebrow">
+              {timerStopped ? t('brew.timingStopped') : timerRunning ? t('brew.timingRunning') : t('brew.timingReady')}
+            </span>
+            <button className="bs-timing__cancel" type="button" onClick={handleCancel}>
+              {t('brew.cancel')}
+            </button>
           </div>
+
+          {/* Big editable time + volume side-by-side */}
+          <div className="bs-timing__metrics">
+            <div className="bs-timing__metric">
+              <input
+                className="bs-timing__num"
+                type="text"
+                inputMode="decimal"
+                value={timerRunning ? timerSecs.toFixed(1) : manualTime}
+                readOnly={timerRunning}
+                onChange={(e) => {
+                  if (timerRunning) return
+                  if (/^[0-9]*\.?[0-9]*$/.test(e.target.value)) setManualTime(e.target.value)
+                }}
+                onFocus={(e) => e.target.select()}
+                aria-label={t('brew.fieldTimeSec')}
+              />
+              <span className="bs-timing__unit">s</span>
+            </div>
+            <div className="bs-timing__metric">
+              <input
+                className="bs-timing__num bs-timing__num--volume"
+                type="text"
+                inputMode="decimal"
+                placeholder={String(targets.volume)}
+                value={timerVolume}
+                onChange={(e) => /^[0-9]*\.?[0-9]*$/.test(e.target.value) && setTimerVolume(e.target.value)}
+                onFocus={(e) => e.target.select()}
+                aria-label={t('brew.fieldVolumeG')}
+              />
+              <span className="bs-timing__unit">ml</span>
+            </div>
+          </div>
+
+          <span className="bs-timing__hint">{t('brew.timingHint')}</span>
         </div>
       )}
 
@@ -1534,6 +1470,178 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           font-weight: 500;
           color: #8B1A1A;
         }
+
+        /* ── Inline timer panel (replaces the recipe card while pulling) ── */
+        .bs-timing {
+          display: flex;
+          flex-direction: column;
+          gap: clamp(10px, 1.8vh, 18px);
+          padding: clamp(16px, 2.5vh, 24px) clamp(16px, 3vw, 22px);
+          background: var(--white);
+          border: 1px solid var(--border-light);
+          border-radius: 18px;
+          box-shadow: 0 1px 3px rgba(60, 40, 20, 0.06), 0 6px 18px rgba(60, 40, 20, 0.05);
+          flex: 1 1 auto;
+        }
+        .bs-timing__head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .bs-timing__eyebrow {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.8px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+        }
+        .bs-timing__cancel {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-tertiary);
+          background: transparent;
+          border: none;
+          padding: 4px 8px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .bs-timing__cancel:hover { color: var(--text-secondary); }
+
+        .bs-timing__metrics {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          flex: 1 1 auto;
+          align-items: center;
+        }
+        .bs-timing__metric {
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+          gap: 6px;
+        }
+        .bs-timing__num {
+          width: 100%;
+          max-width: 130px;
+          font-family: var(--font-brand);
+          font-size: clamp(46px, 9.5vh, 72px);
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: -2px;
+          color: var(--text-primary);
+          background: transparent;
+          border: none;
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+          outline: none;
+          padding: 0;
+        }
+        .bs-timing__num:focus { color: var(--accent-green); }
+        .bs-timing__num--volume::placeholder { color: var(--border); }
+        .bs-timing__unit {
+          font-size: 16px;
+          font-style: italic;
+          color: var(--text-tertiary);
+          font-weight: 500;
+        }
+        .bs-timing__hint {
+          text-align: center;
+          font-size: 11px;
+          color: var(--text-tertiary);
+          letter-spacing: 0.3px;
+        }
+        .bs-brew-btn--running {
+          background:
+            radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
+            linear-gradient(180deg, #B8744A 0%, #8C5532 100%);
+          border-color: rgba(140, 85, 50, 0.7);
+        }
+
+        /* ── Rating wizard (crema · flavour · strength) ─────────────────── */
+        .bs-rating {
+          background: var(--white);
+          border: 1px solid var(--border-light);
+          border-radius: 16px;
+          padding: clamp(12px, 2vh, 18px) clamp(14px, 3vw, 18px);
+          box-shadow: 0 1px 3px rgba(60, 40, 20, 0.05);
+          display: flex;
+          flex-direction: column;
+          gap: clamp(8px, 1.4vh, 14px);
+        }
+        .bs-rating__header {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.6px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+        }
+        .bs-rating__row {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .bs-rating__label {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.8px;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+        }
+        .bs-rating__pills {
+          display: flex;
+          gap: 6px;
+        }
+        .bs-rating-pill {
+          flex: 1;
+          padding: clamp(7px, 1.2vh, 10px) 4px;
+          font-size: clamp(12px, 1.8vh, 14px);
+          font-weight: 600;
+          background: var(--off-white);
+          border: 1.5px solid var(--border);
+          color: var(--text-secondary);
+          border-radius: 10px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .bs-rating-pill--on {
+          background: rgba(107, 142, 92, 0.08);
+          border-color: var(--accent-green);
+          color: var(--accent-green);
+        }
+        .bs-rating__footer {
+          display: flex;
+          gap: 10px;
+          margin-top: 4px;
+        }
+        .bs-rating__later {
+          flex: 0 0 auto;
+          padding: 10px 18px;
+          background: transparent;
+          color: var(--text-secondary);
+          border: 1.5px solid var(--border);
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .bs-rating__later:hover { color: var(--copper); border-color: rgba(184, 116, 74, 0.4); }
+        .bs-rating__save {
+          flex: 1;
+          padding: 10px 18px;
+          background: var(--accent-green);
+          color: #fff;
+          border: none;
+          border-radius: 9999px;
+          font-size: 14px;
+          font-weight: 800;
+          letter-spacing: 0.4px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .bs-rating__save:hover { background: #5C7E4D; }
+        .bs-rating__save:active { transform: scale(0.985); }
 
         /* ── Card transition wrapper ──────────────────────────────────── */
         .bs-card-wrap {
@@ -2142,27 +2250,34 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           transform: translateX(18px);
         }
 
-        /* ── Apply all button ────────────────────────────────────────── */
+        /* ── Apply all — primary CTA: same language as BREW ──────────── */
         .bs-apply-all-wrap {
-          padding: 0 16px 4px;
+          padding: clamp(8px, 1.4vh, 14px) 16px 4px;
         }
         .bs-apply-all-btn {
           width: 100%;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(107, 142, 92, 0.08);
-          color: var(--accent-green);
-          font-size: 13px;
+          height: clamp(46px, 7vh, 56px);
+          font-family: var(--font-primary);
+          font-size: clamp(13px, 1.9vh, 15px);
           font-weight: 700;
-          border: 1px solid rgba(107, 142, 92, 0.2);
+          letter-spacing: 2.4px;
+          text-transform: uppercase;
+          border-radius: 9999px;
+          color: #fff;
+          background:
+            radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
+            linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
+          border: 1.5px solid rgba(184, 116, 74, 0.4);
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
-          transition: background 0.15s ease, transform 0.08s ease;
+          box-shadow:
+            inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+            0 2px 4px rgba(60, 40, 20, 0.10),
+            0 8px 20px rgba(88, 125, 73, 0.28);
+          transition: transform 0.12s, filter 0.18s;
         }
-        .bs-apply-all-btn:active {
-          background: rgba(107, 142, 92, 0.14);
-          transform: scale(0.98);
-        }
+        .bs-apply-all-btn:hover { filter: brightness(1.04); }
+        .bs-apply-all-btn:active { transform: scale(0.985); filter: brightness(0.96); }
 
         /* Edit targets link */
         .bs-edit-targets {

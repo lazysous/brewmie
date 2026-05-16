@@ -71,9 +71,6 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
     case 'SET_TIER':
       return { ...state, tier: action.payload }
 
-    case 'SET_BARISTA_MODE':
-      return { ...state, baristaMode: action.payload }
-
     case 'HYDRATE':
       return action.payload
 

@@ -646,7 +646,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           background: var(--white);
           border-radius: 0;
           box-shadow: none;
-          padding: 16px 16px 14px;
+          padding: clamp(10px, 1.8vh, 18px) clamp(12px, 3vw, 18px) clamp(8px, 1.5vh, 16px);
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -659,14 +659,14 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
 
         .ix-stat-card__value {
           font-family: var(--font-brand);
-          font-size: 40px;
+          font-size: clamp(28px, 5vh, 44px);
           font-weight: 500;
           color: var(--text-primary);
           line-height: 0.95;
           letter-spacing: -1px;
           display: flex;
           align-items: center;
-          min-height: 38px;
+          min-height: clamp(28px, 4.4vh, 40px);
           font-variant-numeric: tabular-nums;
         }
 
@@ -718,8 +718,8 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           background: var(--white);
           border-radius: 16px;
           box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-          padding: 16px;
-          margin: 0 16px 10px;
+          padding: clamp(10px, 1.8vh, 18px);
+          margin: 0 16px clamp(8px, 1.4vh, 14px);
           overflow: hidden;
         }
 
@@ -760,16 +760,16 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
-          padding: 24px 16px 12px;
+          gap: clamp(4px, 0.8vh, 10px);
+          padding: clamp(12px, 2.4vh, 28px) 16px clamp(6px, 1.2vh, 14px);
           text-align: center;
         }
 
         .ix-empty-state__icon {
-          width: 56px;
-          height: 56px;
+          width: clamp(36px, 6.5vh, 60px);
+          height: clamp(36px, 6.5vh, 60px);
           opacity: 0.6;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
         }
 
         .ix-empty-state__heading {

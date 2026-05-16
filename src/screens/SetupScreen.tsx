@@ -1586,7 +1586,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         .sc-cards {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: clamp(6px, 1.2vh, 12px);
         }
 
         /* ── Card ── */
@@ -1603,7 +1603,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          padding: 16px 20px;
+          padding: clamp(9px, 1.6vh, 16px) clamp(14px, 4vw, 20px);
           background: none;
           border: none;
           cursor: pointer;
@@ -1639,15 +1639,15 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          width: 34px;
-          height: 34px;
+          width: clamp(26px, 4.4vh, 36px);
+          height: clamp(26px, 4.4vh, 36px);
           border-radius: 10px;
           background: rgba(184, 116, 74, 0.10);
           border: 1px solid rgba(184, 116, 74, 0.18);
         }
 
         .sc-card__title {
-          font-size: 15px;
+          font-size: clamp(13px, 2vh, 16px);
           font-weight: 700;
           color: var(--text-primary);
         }

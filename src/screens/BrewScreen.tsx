@@ -1535,6 +1535,8 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Card transition wrapper ──────────────────────────────────── */
         .bs-card-wrap {
           transition: opacity 180ms ease-out, transform 280ms ease-out;
+          /* Sit at top — the BREW button absorbs the remaining slack. */
+          flex-shrink: 0;
         }
         .bs-card-wrap--visible {
           opacity: 1;
@@ -2252,7 +2254,9 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-brew-btn {
           position: relative;
           width: 100%;
-          height: clamp(52px, 8.5vh, 72px);
+          /* Push to bottom — claims all remaining vertical space. */
+          margin-top: auto;
+          height: clamp(56px, 9vh, 76px);
           border-radius: 9999px;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),

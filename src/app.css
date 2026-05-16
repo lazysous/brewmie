@@ -133,12 +133,14 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;        /* let flex shrink correctly */
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
-  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-bottom));
   scroll-behavior: smooth;
+  /* BottomNav is a flex sibling below us (position: relative) — it doesn't
+     overlap, so no padding-bottom is needed to clear it. */
 }
 .screen-content > * {
   /* Each screen claims the full available height so flex-positioned children

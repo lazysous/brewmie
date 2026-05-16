@@ -1,8 +1,14 @@
 import React from 'react'
+import { Capacitor } from '@capacitor/core'
 import type { AppTab, BrewmieState, AppAction } from '../types'
 import { signOut } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
+
+// Sign-in is native-only. Web users see no auth UI — the Supabase OAuth flow
+// would leak the project URL on the Google consent screen, which destroys the
+// install funnel. Native Apple/Google use signInWithIdToken, which doesn't.
+const SIGN_IN_AVAILABLE = Capacitor.isNativePlatform()
 
 interface HeroProps {
   activeTab: AppTab

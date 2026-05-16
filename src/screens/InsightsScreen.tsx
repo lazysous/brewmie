@@ -679,33 +679,35 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           margin-top: 8px;
         }
 
+        /* Two-row layout so params have the full card width and never need
+           ellipsis. Row 1: score + date (left) and outcome badge (right).
+           Row 2: full params, wrap permitted. */
         .ix-shot-row {
-          display: flex;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          column-gap: 10px;
+          row-gap: 4px;
           align-items: center;
-          gap: 10px;
-          padding: 16px;
-          min-height: 56px;
+          padding: clamp(10px, 1.6vh, 16px) 16px;
           border-radius: 0;
           transition: background 0.15s ease;
         }
 
         .ix-score-pill {
           flex-shrink: 0;
-          min-width: 44px;
+          min-width: 40px;
           text-align: center;
           border-radius: 9999px;
           padding: 5px 8px;
           font-size: 13px;
           font-weight: 800;
           line-height: 1;
+          grid-row: 1;
         }
 
         .ix-shot-row__center {
-          flex: 1;
           min-width: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
+          display: contents;
         }
 
         .ix-shot-row__bean {
@@ -715,15 +717,20 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          grid-row: 1;
+          grid-column: 2;
         }
 
         .ix-shot-row__params {
           font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
-          font-size: 12px;
+          font-size: 11.5px;
           color: var(--text-secondary);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          grid-row: 2;
+          grid-column: 1 / -1;
+          /* Wrap if ever needed, but the full card width usually fits. */
+          white-space: normal;
+          word-break: keep-all;
+          line-height: 1.4;
         }
 
         .ix-adj-badge {
@@ -733,6 +740,8 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           padding: 3px 8px;
           border-radius: 9999px;
           white-space: nowrap;
+          grid-row: 1;
+          grid-column: 3;
         }
 
         /* ── Benchmarks locked state ────────────────────────────────────── */

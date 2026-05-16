@@ -1677,7 +1677,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         /* ── Inline section headers (used in results card) ─────────────── */
         .bs-section-head {
-          padding: 14px 16px 6px;
+          padding: clamp(8px, 1.5vh, 14px) clamp(12px, 3vw, 16px) clamp(4px, 0.8vh, 8px);
           font-size: 10px;
           font-weight: 800;
           letter-spacing: 1.6px;
@@ -1925,24 +1925,24 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* ── Results score section ────────────────────────────────────── */
         /* ── Score hero ────────────────────────────────────────────────── */
         .bs-hero {
-          padding: 22px 20px 18px;
+          padding: clamp(12px, 2vh, 22px) clamp(16px, 4vw, 20px) clamp(10px, 1.6vh, 18px);
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: clamp(8px, 1.4vh, 14px);
         }
 
         .bs-hero__row {
           display: flex;
           align-items: center;
-          gap: 18px;
+          gap: clamp(12px, 3vw, 18px);
         }
 
         .bs-hero__num {
           font-family: var(--font-brand);
-          font-size: 92px;
+          font-size: clamp(52px, 11vh, 92px);
           font-weight: 500;
           line-height: 0.85;
-          letter-spacing: -3px;
+          letter-spacing: -2px;
           font-variant-numeric: tabular-nums;
         }
         .bs-hero__num--reveal { animation: bsScoreIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
@@ -2062,7 +2062,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           grid-template-columns: 60px 1fr auto;
           align-items: center;
           gap: 10px;
-          padding: 12px 16px;
+          padding: clamp(6px, 1.2vh, 12px) clamp(12px, 3vw, 16px);
           flex-direction: row;
         }
 
@@ -2098,9 +2098,9 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-adj-row {
           display: flex;
           flex-direction: column;
-          padding: 10px 16px;
+          padding: clamp(6px, 1.2vh, 12px) clamp(12px, 3vw, 16px);
           gap: 4px;
-          min-height: 44px;
+          min-height: clamp(36px, 6vh, 48px);
         }
         .bs-adj-row--sep {
           border-bottom: 1px solid var(--border-light);

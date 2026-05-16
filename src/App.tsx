@@ -3,6 +3,7 @@ import type { AppTab } from './types'
 import { useBrewmie } from './hooks/useBrewmie'
 import { Hero } from './components/Hero'
 import { BottomNav } from './components/BottomNav'
+import { GlobalShotCounter } from './components/GlobalShotCounter'
 import { AuthModal } from './components/AuthModal'
 import { ConsentBanner } from './components/ConsentBanner'
 import { DevTierPill } from './components/DevTierPill'
@@ -148,6 +149,7 @@ export function App() {
       <main className="screen-content" role="main">
         {renderScreen()}
       </main>
+      <GlobalShotCounter />
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
       <AuthModal
         open={showAuthModal}

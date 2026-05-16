@@ -127,6 +127,30 @@ export async function setTier(userId: string, tier: 'free' | 'premium') {
     .upsert({ id: userId, tier }, { onConflict: 'id' })
 }
 
+// ─── Global shot counter ─────────────────────────────────────────────────────
+// Total shots across every Brewmie user, all time. Cached briefly so the
+// footer doesn't pound the RPC on every render.
+
+let globalShotCountCache: { value: number; at: number } | null = null
+const GLOBAL_COUNT_TTL_MS = 60_000
+
+export async function fetchGlobalShotCount(): Promise<number | null> {
+  const now = Date.now()
+  if (globalShotCountCache && now - globalShotCountCache.at < GLOBAL_COUNT_TTL_MS) {
+    return globalShotCountCache.value
+  }
+  try {
+    const { data, error } = await supabase.rpc('global_shot_count')
+    if (error || data === null || data === undefined) return null
+    const n = Number(data)
+    if (!Number.isFinite(n)) return null
+    globalShotCountCache = { value: n, at: now }
+    return n
+  } catch {
+    return null
+  }
+}
+
 // ─── 7-day Premium trial ─────────────────────────────────────────────────────
 // Server-side authoritative. trial_started_at is stamped once via RPC on first
 // authenticated read. Effective tier = view that combines tier + trial window.

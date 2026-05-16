@@ -4,6 +4,9 @@
     "close": "Close",
     "cancel": "Cancel"
   },
+  "footer": {
+    "shotsDialled": "espressos dialled worldwide"
+  },
   "nav": {
     "setup": "Setup",
     "brew": "Brew",
@@ -284,17 +287,17 @@
     "bannerCta": "Continue →",
     "complete": "Complete",
     "incomplete": "Incomplete",
-    "cardUnits": "Units",
+    "cardUnits": "Temperature",
     "cardMachine": "Machine",
     "cardGrinder": "Grinder",
     "cardTamper": "Tamper",
     "cardBeans": "Beans",
     "cardMaintenance": "Maintenance",
     "cardPrivacy": "Privacy",
-    "unitsMetric": "Metric",
-    "unitsImperial": "Imperial",
-    "unitsHintMetric": "Weights in grams, temperature in °C",
-    "unitsHintImperial": "Weights in oz, temperature in °F",
+    "unitsMetric": "°C",
+    "unitsImperial": "°F",
+    "unitsHintMetric": "Temperature in Celsius. Dose and yield are always in grams — espresso is a metric discipline worldwide.",
+    "unitsHintImperial": "Temperature in Fahrenheit. Dose and yield are always in grams — espresso is a metric discipline worldwide.",
     "machineDesc": "Sets your baseline pressure and temp.",
     "grinderDesc": "The dial that moves the most. Tell us yours and our calls will fit.",
     "tamperDesc": "Keeps tamp steady, shot to shot.",

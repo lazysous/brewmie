@@ -12,6 +12,7 @@ import type {
 } from '../types'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
+import { TIER_1_LOCALES, TIER_2_LOCALES, setLocale } from '../lib/i18n'
 import { useTier } from '../hooks/useTier'
 import { PremiumModal } from '../components/PremiumModal'
 import {
@@ -130,6 +131,37 @@ function IconRuler() {
       <path d="m7.5 10.5 2 2"/><path d="m10.5 7.5 2 2"/><path d="m13.5 4.5 2 2"/>
     </svg>
   )
+}
+
+function IconGlobe() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M3 12h18"/>
+      <path d="M12 3a13.5 13.5 0 0 1 0 18"/>
+      <path d="M12 3a13.5 13.5 0 0 0 0 18"/>
+    </svg>
+  )
+}
+
+// Endonyms — each language's name in its own script. Falls back to the code
+// for any locale not listed.
+const LOCALE_NAMES: Record<string, string> = {
+  en: 'English',     es: 'Español',        fr: 'Français',     de: 'Deutsch',
+  it: 'Italiano',    pt: 'Português',      ja: '日本語',         zh: '中文',
+  ko: '한국어',       hi: 'हिन्दी',           nl: 'Nederlands',  sv: 'Svenska',
+  tr: 'Türkçe',      pl: 'Polski',         af: 'Afrikaans',    am: 'አማርኛ',
+  ar: 'العربية',      as: 'অসমীয়া',         az: 'Azərbaycan',   be: 'Беларуская',
+  cs: 'Čeština',     cy: 'Cymraeg',        da: 'Dansk',        el: 'Ελληνικά',
+  et: 'Eesti',       eu: 'Euskara',        fa: 'فارسی',         fi: 'Suomi',
+  fil: 'Filipino',   ga: 'Gaeilge',        gl: 'Galego',       gu: 'ગુજરાતી',
+  ha: 'Hausa',       he: 'עברית',           hr: 'Hrvatski',     hu: 'Magyar',
+  hy: 'Հայերեն',     ka: 'ქართული',        kk: 'Қазақша',      km: 'ខ្មែរ',
+  kn: 'ಕನ್ನಡ',       ml: 'മലയാളം',         mn: 'Монгол',       mr: 'मराठी',
+  ms: 'Melayu',      mt: 'Malti',          my: 'မြန်မာ',         ps: 'پښتو',
+  ro: 'Română',      rw: 'Kinyarwanda',    sd: 'سنڌي',          si: 'සිංහල',
+  sk: 'Slovenčina',  sw: 'Kiswahili',      ta: 'தமிழ்',         te: 'తెలుగు',
+  th: 'ไทย',          uk: 'Українська',     ur: 'اردو',
 }
 
 // Clean tamper icons (SVG, no emoji)
@@ -312,7 +344,7 @@ interface SetupScreenProps {
 
 // ─── Card keys ────────────────────────────────────────────────────────────────
 
-type CardKey = 'units' | 'machine' | 'grinder' | 'tamper' | 'beans' | 'maintenance' | 'privacy'
+type CardKey = 'units' | 'language' | 'machine' | 'grinder' | 'tamper' | 'beans' | 'maintenance' | 'privacy'
 
 const WIZARD_STEP_KEYS = ['wizard.stepMachine', 'wizard.stepGrinder', 'wizard.stepTamper', 'wizard.stepBeans'] as const
 type WizardStep = 0 | 1 | 2 | 3
@@ -339,9 +371,9 @@ function RoastAgeDisplay({ days, t }: RoastAgeDisplayProps) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const allClosed = (): Record<CardKey, boolean> => ({
-    units: false, machine: false, grinder: false, tamper: false,
+    units: false, language: false, machine: false, grinder: false, tamper: false,
     beans: false, maintenance: false, privacy: false,
   })
 
@@ -698,6 +730,35 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
               ? t('setup.unitsHintMetric')
               : t('setup.unitsHintImperial')}
           </p>
+        </Card>
+
+        {/* ── 1b. Language ── */}
+        <Card
+          title={t('setup.cardLanguage')}
+          open={openCards.language}
+          onToggle={() => toggleCard('language')}
+          complete={true}
+          icon={<IconGlobe />}
+        >
+          <Field label={t('setup.languageLabel')}>
+            <select
+              className="sc-select"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value)}
+            >
+              <optgroup label={t('setup.languageMajor')}>
+                {[...TIER_1_LOCALES].map((code) => (
+                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
+                ))}
+              </optgroup>
+              <optgroup label={t('setup.languageMore')}>
+                {[...TIER_2_LOCALES].map((code) => (
+                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
+                ))}
+              </optgroup>
+            </select>
+          </Field>
+          <p className="sc-hint">{t('setup.languageHint')}</p>
         </Card>
 
         {/* ── 2. Machine ── */}

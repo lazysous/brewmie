@@ -2,19 +2,24 @@ import { useEffect, useState } from 'react'
 import { fetchGlobalShotCount } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 
+// Backtest baseline — community shots the roast offsets were derived from.
+// The algorithm starts from this prior and refines as real shots arrive.
+// See ROAST_TIME_OFFSET in BrewScreen (19,546 Visualizer.coffee shots).
+const BACKTEST_BASELINE = 19546
+
 // Single line at the very bottom of the screen: "Brewmie has dialled in
-// X,XXX espressos worldwide." Lets users know the algorithm is learning from
-// a real cohort. Cached for ~60s; refreshes on tab focus.
+// X,XXX espressos worldwide." Always shows the backtest baseline; adds live
+// Supabase shots when the RPC is available.
 
 export function GlobalShotCounter() {
   const { t } = useTranslation()
-  const [count, setCount] = useState<number | null>(null)
+  const [liveCount, setLiveCount] = useState<number>(0)
 
   useEffect(() => {
     let cancelled = false
     function refresh() {
       fetchGlobalShotCount().then((n) => {
-        if (!cancelled && n !== null) setCount(n)
+        if (!cancelled && n !== null) setLiveCount(n)
       }).catch(() => {})
     }
     refresh()
@@ -26,11 +31,11 @@ export function GlobalShotCounter() {
     }
   }, [])
 
-  if (count === null) return null
+  const total = BACKTEST_BASELINE + liveCount
 
   return (
     <div className="global-shot-counter" role="status" aria-live="polite">
-      <span className="global-shot-counter__num">{count.toLocaleString()}</span>
+      <span className="global-shot-counter__num">{total.toLocaleString()}</span>
       <span className="global-shot-counter__sub">{t('footer.shotsDialled')}</span>
       <style>{`
         .global-shot-counter {

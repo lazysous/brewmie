@@ -371,6 +371,56 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
+  // CSV export — Title Case headers, ISO dates, clean column order matching
+  // the field names the app uses. Premium feature (open on web while we test).
+  function handleExportCsv() {
+    if (shots.length === 0) return
+    const cols: { key: keyof ShotEntry; label: string }[] = [
+      { key: 'timestamp',     label: 'Timestamp' },
+      { key: 'inputGrind',    label: 'Grind' },
+      { key: 'inputDose',     label: 'Dose (g)' },
+      { key: 'inputTamp',     label: 'Tamp' },
+      { key: 'targetVolume',  label: 'Target Volume (ml)' },
+      { key: 'targetTime',    label: 'Target Time (s)' },
+      { key: 'actualVolume',  label: 'Actual Volume (ml)' },
+      { key: 'actualTime',    label: 'Actual Time (s)' },
+      { key: 'score',         label: 'Score' },
+      { key: 'crema',         label: 'Crema' },
+      { key: 'tasteFlavor',   label: 'Flavour' },
+      { key: 'tasteStrength', label: 'Strength' },
+      { key: 'grindAdjust',   label: 'Grind Adjust' },
+      { key: 'doseAdjust',    label: 'Dose Adjust' },
+      { key: 'tampAdjust',    label: 'Tamp Adjust' },
+      { key: 'beanAge',       label: 'Bean Age (days)' },
+      { key: 'roastLevel',    label: 'Roast Level' },
+      { key: 'temp',          label: 'Ambient Temp (°C)' },
+      { key: 'humidity',      label: 'Humidity (%)' },
+    ]
+    const titleCase = (s: string) => s.replace(/(^|[\s-])([a-z])/g, (_, b, c) => b + c.toUpperCase())
+    const escape = (v: unknown): string => {
+      if (v === null || v === undefined) return ''
+      let s = String(v)
+      if (typeof v === 'string' && /^(sour|balanced|bitter|weak|perfect|strong|thin|normal|thick|light|medium|medium-light|medium-dark|dark)$/.test(v)) {
+        s = titleCase(v)
+      }
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+    }
+    const sorted = [...shots].sort(
+      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    )
+    const rows = sorted.map((s) =>
+      cols.map(({ key }) => escape((s as unknown as Record<string, unknown>)[key])).join(',')
+    )
+    const csv = [cols.map((c) => c.label).join(','), ...rows].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   function handleClearShots() {
     if (!window.confirm(t('insights.confirmClear'))) return
     for (const shot of shots) {
@@ -633,6 +683,17 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           </div>
         )}
       </div>
+
+      {/* Export history (premium — gated on native, open on web while testing) */}
+      {!isFree && shots.length > 0 && (
+        <button
+          type="button"
+          className="ix-export-btn"
+          onClick={handleExportCsv}
+        >
+          {t('insights.exportCsv')}
+        </button>
+      )}
 
       {/* Free-tier history cap tease */}
       {isFree && hiddenByFreeCap > 0 && (
@@ -1442,6 +1503,29 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           height: 18px;
           flex-shrink: 0;
         }
+
+        /* Export CSV — quiet copper outline pill */
+        .ix-export-btn {
+          display: block;
+          width: calc(100% - 32px);
+          margin: 6px 16px;
+          padding: 10px 16px;
+          background: transparent;
+          border: 1px dashed rgba(184, 116, 74, 0.42);
+          color: var(--copper-deep);
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 700;
+          letter-spacing: 0.2px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .ix-export-btn:hover {
+          background: rgba(184, 116, 74, 0.06);
+          border-color: var(--copper);
+        }
+        .ix-export-btn:active { transform: scale(0.985); }
 
         .ix-reset-btn {
           width: 100%;

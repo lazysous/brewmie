@@ -285,6 +285,7 @@ function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday, 
         <span className="sc-maint__label">{label}</span>
         <span className={pillClass}>{noteText}</span>
       </div>
+      <span className="sc-maint__sublabel">{t('setup.maintLastDone')}</span>
       <div className="sc-maint__inputs">
         <input
           type="date"
@@ -417,10 +418,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
   const shotTempDisplay = state.units === 'imperial' ? celsiusToFahrenheit(shotTempC) : shotTempC
 
   const isEquipmentConfigured = !!(state.machine?.brand && state.grinder?.brand)
-  // True when the user has filled at least one optional section (machine, grinder, tamp, beans).
-  // Used to swap the giant empty-state hero for a thin nudge banner once any progress exists.
-  const hasAnyProgress = !!(state.machine?.brand || state.grinder?.brand || state.tamp || state.beans?.brand)
-
   // ─── Dispatch helpers ─────────────────────────────────────────────────────────
 
   function dispatchMachine(overrides: Partial<MachineConfig> = {}) {
@@ -652,26 +649,17 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
     <div className="sc-screen">
 
       {/* Equipment Profile header */}
-      {isEquipmentConfigured ? (
+      {/* Wizard launcher is always visible — even after full configuration,
+          so the user can re-run the wizard to reset or change their kit. */}
+      {isEquipmentConfigured && (
         <div className="sc-profile sc-profile--set">
           <span className="sc-profile__dot" aria-hidden="true" />
           <span className="sc-profile__text">{buildProfileLabel()}</span>
         </div>
-      ) : hasAnyProgress ? (
-        <button
-          className="sc-profile sc-profile--banner"
-          type="button"
-          onClick={openWizard}
-        >
-          <span className="sc-profile__banner-eyebrow">{t('setup.bannerEyebrow')}</span>
-          <span className="sc-profile__banner-text">{t('setup.profileFinish')}</span>
-          <span className="sc-profile__banner-cta">{t('setup.bannerCta')}</span>
-        </button>
-      ) : (
-        <button className="sc-profile-cta" type="button" onClick={openWizard}>
-          {t('setup.profileCta')}
-        </button>
       )}
+      <button className="sc-profile-cta" type="button" onClick={openWizard}>
+        {isEquipmentConfigured ? t('setup.profileCtaReset') : t('setup.profileCta')}
+      </button>
 
       {/* Cards */}
       <div className="sc-cards">
@@ -922,63 +910,28 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
           {tampType === 'spring' && (
             <Field label={t('setup.tamperPressure')}>
-              <div className="sc-pressure-presets">
-                {[10, 15, 20, 25, 30].map((kg) => (
-                  <button
-                    key={kg}
-                    className={`sc-pressure-btn${springPressure === kg ? ' sc-option-btn--active' : ''}`}
-                    onClick={() => setSpringPressure(kg)}
-                    type="button"
-                  >
-                    {kg} kg
-                  </button>
-                ))}
+              <div className="sc-num-row">
                 <button
-                  className={`sc-pressure-btn${![10, 15, 20, 25, 30].includes(springPressure) ? ' sc-option-btn--active' : ''}`}
-                  onClick={() => {
-                    const val = Number(prompt(t('setup.customPrompt'), String(springPressure)))
-                    if (val > 0) setSpringPressure(val)
-                  }}
                   type="button"
-                >
-                  {t('setup.tamperCustom')}
-                </button>
+                  className="sc-num-btn"
+                  onClick={() => setSpringPressure((p) => Math.max(5, Math.round((p - 1) * 10) / 10))}
+                  aria-label="−"
+                >−</button>
+                <div className="sc-num-value">
+                  <span className="sc-num-value__n">{springPressure}</span>
+                  <span className="sc-num-value__u">kg</span>
+                </div>
+                <button
+                  type="button"
+                  className="sc-num-btn"
+                  onClick={() => setSpringPressure((p) => Math.min(50, Math.round((p + 1) * 10) / 10))}
+                  aria-label="+"
+                >+</button>
               </div>
-              {![10, 15, 20, 25, 30].includes(springPressure) && (
-                <p className="sc-hint">{t('setup.tamperPressureHint', { kg: springPressure })}</p>
-              )}
             </Field>
           )}
 
-          {tampType === 'automatic' && (
-            <Field label={t('setup.tamperPressure')}>
-              <div className="sc-pressure-presets">
-                {[10, 15, 20, 25, 30].map((kg) => (
-                  <button
-                    key={kg}
-                    className={`sc-pressure-btn${autoPressure === kg ? ' sc-option-btn--active' : ''}`}
-                    onClick={() => setAutoPressure(kg)}
-                    type="button"
-                  >
-                    {kg} kg
-                  </button>
-                ))}
-                <button
-                  className={`sc-pressure-btn${![10, 15, 20, 25, 30].includes(autoPressure) ? ' sc-option-btn--active' : ''}`}
-                  onClick={() => {
-                    const val = Number(prompt(t('setup.customPrompt'), String(autoPressure)))
-                    if (val > 0) setAutoPressure(val)
-                  }}
-                  type="button"
-                >
-                  {t('setup.tamperCustom')}
-                </button>
-              </div>
-              {![10, 15, 20, 25, 30].includes(autoPressure) && (
-                <p className="sc-hint">{t('setup.tamperPressureHint', { kg: autoPressure })}</p>
-              )}
-            </Field>
-          )}
+          {/* Auto tamp: pressure is set by the machine, no user adjustment. */}
 
           {tampType === 'manual' && (
             <p className="sc-hint">{t('setup.tamperManualHint')}</p>
@@ -1888,7 +1841,50 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           opacity: 1;
         }
 
-        /* ── Pressure preset buttons ── */
+        /* ── Single-number +/- row (spring pressure, etc.) ── */
+        .sc-num-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          justify-content: center;
+        }
+        .sc-num-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: transparent;
+          border: 1px solid var(--border);
+          color: var(--text-secondary);
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 1;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: border-color 0.15s, color 0.15s, background 0.15s;
+        }
+        .sc-num-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+        .sc-num-btn:active { transform: scale(0.92); }
+        .sc-num-value {
+          display: flex;
+          align-items: baseline;
+          gap: 4px;
+          min-width: 64px;
+          justify-content: center;
+        }
+        .sc-num-value__n {
+          font-size: 26px;
+          font-weight: 800;
+          color: var(--text-primary);
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+        .sc-num-value__u {
+          font-size: 12px;
+          color: var(--text-tertiary);
+          font-weight: 500;
+        }
+
+        /* ── Pressure preset buttons (wizard step still uses these) ── */
         .sc-pressure-presets {
           display: flex;
           flex-wrap: wrap;
@@ -2084,6 +2080,14 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           border-color: #FECACA;
         }
 
+        .sc-maint__sublabel {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+          color: var(--text-tertiary);
+          margin-top: 4px;
+        }
         .sc-maint__inputs {
           display: flex;
           align-items: center;

@@ -887,12 +887,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     })
   }
 
-  // ─── Edit targets (from results back to targets) ──────────────────────────────
-  function handleEditTargets() {
-    transitionCard('targets')
-    setPhase('idle')
-    setResult(null)
-  }
 
   // ─── Brew again — returns to the targets/recipe view, doesn't auto-start.
   // User can review applied adjustments, tweak if needed, then tap BREW.
@@ -1212,10 +1206,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           </div>
         )}
 
-        {/* Edit targets link */}
-        <button className="bs-edit-targets" onClick={handleEditTargets} type="button">
-          {t('brew.editTargets')}
-        </button>
       </div>
     )
   }

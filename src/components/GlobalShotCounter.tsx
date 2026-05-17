@@ -2,24 +2,18 @@ import { useEffect, useState } from 'react'
 import { fetchGlobalShotCount } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 
-// Backtest baseline — community shots the roast offsets were derived from.
-// The algorithm starts from this prior and refines as real shots arrive.
-// See ROAST_TIME_OFFSET in BrewScreen (19,546 Visualizer.coffee shots).
-const BACKTEST_BASELINE = 19546
-
-// Single line at the very bottom of the screen: "Brewmie has dialled in
-// X,XXX espressos worldwide." Always shows the backtest baseline; adds live
-// Supabase shots when the RPC is available.
+// Footer counter — live Supabase shots only. Hidden until the count is
+// known. Shape: "Powered by 1,234 shots globally."
 
 export function GlobalShotCounter() {
   const { t } = useTranslation()
-  const [liveCount, setLiveCount] = useState<number>(0)
+  const [count, setCount] = useState<number | null>(null)
 
   useEffect(() => {
     let cancelled = false
     function refresh() {
       fetchGlobalShotCount().then((n) => {
-        if (!cancelled && n !== null) setLiveCount(n)
+        if (!cancelled && n !== null) setCount(n)
       }).catch(() => {})
     }
     refresh()
@@ -31,12 +25,13 @@ export function GlobalShotCounter() {
     }
   }, [])
 
-  const total = BACKTEST_BASELINE + liveCount
+  if (count === null || count === 0) return null
 
   return (
     <div className="global-shot-counter" role="status" aria-live="polite">
-      <span className="global-shot-counter__num">{total.toLocaleString()}</span>
-      <span className="global-shot-counter__sub">{t('footer.shotsDialled')}</span>
+      <span className="global-shot-counter__prefix">{t('footer.poweredBy')}</span>
+      <span className="global-shot-counter__num">{count.toLocaleString()}</span>
+      <span className="global-shot-counter__sub">{t('footer.shotsGlobally')}</span>
       <style>{`
         .global-shot-counter {
           display: flex;
@@ -49,6 +44,9 @@ export function GlobalShotCounter() {
           letter-spacing: 0.2px;
           line-height: 1.4;
           text-align: center;
+        }
+        .global-shot-counter__prefix {
+          font-style: italic;
         }
         .global-shot-counter__num {
           font-family: var(--font-brand);

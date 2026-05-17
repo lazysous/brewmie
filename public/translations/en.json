@@ -5,7 +5,8 @@
     "cancel": "Cancel"
   },
   "footer": {
-    "shotsDialled": "espressos dialled worldwide"
+    "poweredBy": "Powered by",
+    "shotsGlobally": "shots globally"
   },
   "nav": {
     "setup": "Setup",

@@ -150,6 +150,7 @@ function ShotEditSheet({
   onSave: (updates: Partial<ShotEntry>) => void
   onDelete: () => void
 }) {
+  const [crema, setCrema] = useState<'thin' | 'normal' | 'thick' | null>(shot.crema)
   const [flavor, setFlavor] = useState<'sour' | 'balanced' | 'bitter' | null>(shot.tasteFlavor)
   const [strength, setStrength] = useState<'weak' | 'perfect' | 'strong' | null>(shot.tasteStrength)
   const [actualTime, setActualTime] = useState<string>(shot.actualTime !== null ? String(shot.actualTime) : '')
@@ -157,6 +158,7 @@ function ShotEditSheet({
 
   function handleSave() {
     const updates: Partial<ShotEntry> = {
+      crema,
       tasteFlavor: flavor,
       tasteStrength: strength,
     }
@@ -196,6 +198,22 @@ function ShotEditSheet({
               onChange={(e) => /^[0-9.]*$/.test(e.target.value) && setActualVolume(e.target.value)}
             />
             <span className="ix-edit-row__unit">ml</span>
+          </div>
+
+          <div className="ix-edit-group">
+            <span className="ix-edit-group__label">{t('rating.crema')}</span>
+            <div className="ix-edit-pills">
+              {(['thin', 'normal', 'thick'] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`ix-edit-pill${crema === c ? ' ix-edit-pill--on' : ''}`}
+                  onClick={() => setCrema(crema === c ? null : c)}
+                >
+                  {t(`crema.${c}`)}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="ix-edit-group">

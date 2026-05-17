@@ -42,24 +42,6 @@ function countIncompleteSections(state: BrewmieState): number {
   return n
 }
 
-function beanWindow(state: BrewmieState, t: T, includeDay: boolean): { label: string; tone: 'sage' | 'copper' } | null {
-  const roast = state.beans?.roastDate
-  if (!state.beans?.brand || !roast) return null
-  const days = Math.floor((Date.now() - new Date(roast).getTime()) / 86400000)
-  if (days < 0) return null
-  // When the headline already shows "Day N", omit the day-restating window and only show the qualifier
-  if (!includeDay) {
-    if (days <= 5) return { label: t('hero.beanRestingShort'), tone: 'copper' }
-    if (days <= 21) return { label: t('hero.beanDayShort'), tone: 'sage' }
-    if (days <= 30) return { label: t('hero.beanUseSoonShort'), tone: 'copper' }
-    return { label: t('hero.beanStaleShort'), tone: 'copper' }
-  }
-  if (days <= 5) return { label: t('hero.beanResting', { days }), tone: 'copper' }
-  if (days <= 21) return { label: t('hero.beanDay', { days }), tone: 'sage' }
-  if (days <= 30) return { label: t('hero.beanUseSoon', { days }), tone: 'copper' }
-  return { label: t('hero.beanStale', { days }), tone: 'copper' }
-}
-
 function weatherLabel(weather: HeroProps['weather'], t: T): string | null {
   if (!weather) return null
   let key = 'hero.weatherNeutral'
@@ -104,14 +86,9 @@ function brewCopy(state: BrewmieState, weather: HeroProps['weather'], t: T): Her
     accent = 'sage'
   }
 
-  // Meta line — bean window + weather. Skip restating "Day N" if the headline already shows it.
-  const headlineShowsDay = !!rest
-  const bw = beanWindow(state, t, !headlineShowsDay)
-  const wl = weatherLabel(weather, t)
-  const metaParts: string[] = []
-  if (bw) metaParts.push(bw.label)
-  if (wl) metaParts.push(wl)
-  const meta = metaParts.length ? metaParts.join(' · ') : null
+  // Meta line — temp + humidity only, no bean window prefix and no advisory
+  // suffix. One clean line.
+  const meta = weatherLabel(weather, t)
 
   return { big, rest, status, meta, accent }
 }

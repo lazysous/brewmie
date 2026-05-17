@@ -44,8 +44,8 @@
     "beanDay": "{brand} · Day {days}",
     "beanUseSoon": "{brand} · Day {days} · use soon",
     "beanStale": "{brand} · Day {days} · getting stale",
-    "weatherHumid": "{temp}°C · {humidity}% humidity · humid, grind coarser",
-    "weatherDry": "{temp}°C · {humidity}% humidity · dry, grind finer",
+    "weatherHumid": "{temp}°C · {humidity}% humidity",
+    "weatherDry": "{temp}°C · {humidity}% humidity",
     "weatherNeutral": "{temp}°C · {humidity}% humidity"
   },
   "hero": {

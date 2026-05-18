@@ -19,8 +19,8 @@ ASC_ISSUER_ID = "65fe67a4-6e1b-4762-9fd8-996d00a62b89"
 ASC_KEY_PATH = Path.home() / ".appstoreconnect" / "private_keys" / "AuthKey_QFM9X8VAL4.p8"
 PLAY_KEY_PATH = Path.home() / ".brewmie" / "play-publish.json"
 
-# Fill once the ASC app record exists. Numeric string, e.g. "6760213445".
-APP_ID = "<FILL_AFTER_ASC_APP_CREATED>"
+APP_ID = "6770472698"
+IAP_PRODUCT_INTERNAL_ID = "6770476770"  # brewmie_premium_lifetime, non-consumable, AUD 6.99
 
 BUNDLE_ID = "app.brewmie.brewmie"
 PACKAGE = "app.brewmie.brewmie"

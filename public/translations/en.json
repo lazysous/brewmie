@@ -267,6 +267,15 @@
     "cta": "Unlock Premium",
     "ctaBrewmie": "Brewmie only",
     "priceBrewmie": "$6.99",
+    "signInApple": "Sign in with Apple to unlock",
+    "signInGoogle": "Sign in with Google to unlock",
+    "webOnlyBody": "Premium is only available in the Brewmie app. Install on iOS or Android to unlock.",
+    "appStoreUrl": "https://apps.apple.com/app/brewmie",
+    "playStoreUrl": "https://play.google.com/store/apps/details?id=app.brewmie.brewmie",
+    "storeAppleSmall": "Download on the",
+    "storeAppleBig": "App Store",
+    "storeGoogleSmall": "Get it on",
+    "storeGoogleBig": "Google Play",
     "devNote": "Dev: this unlocks via the override pill. Not a real purchase."
   },
   "tierLock": {

@@ -459,5 +459,39 @@
     "genericGrinder": "Агульны млынок. Premium налад пад твой.",
     "genericTamper": "Ручны тамп. Premium дадае спружынны і аўтаматычны.",
     "genericBeans": "Агульная сярэдняя смажка. Premium адсочвае твае зерні."
+  },
+  "notifications": {
+    "maintBackflush": {
+      "title1": "Backflush time",
+      "body1": "Your group head wants a word. Two minutes with a blind basket and you're sorted.",
+      "title2": "Group head's overdue",
+      "body2": "The puck screen can't save you forever. Quick backflush and move on.",
+      "title3": "Clean me",
+      "body3": "Coffee oils are doing their best impression of tar. Backflush today."
+    },
+    "maintDescale": {
+      "title1": "Descale day",
+      "body1": "The water is judging you. Descale today and the next shot will thank you.",
+      "title2": "Limescale's winning",
+      "body2": "Your boiler's been carrying a passenger for three months. Time to evict it.",
+      "title3": "Descale overdue",
+      "body3": "Pull a kettle of citric through the boiler. Future you, mid-shot, is grateful."
+    },
+    "maintGrinder": {
+      "title1": "Grinder needs a clean",
+      "body1": "Stale fines are sitting in the burrs. Pop the hopper off and give it a brush.",
+      "title2": "Burrs are blocked",
+      "body2": "Old grounds are throwing off your dial-in. Brush, wipe, back in business.",
+      "title3": "Give the grinder a clean",
+      "body3": "Four weeks of fines have opinions about your next shot. Settle them."
+    },
+    "habitDaily": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    }
   }
 }

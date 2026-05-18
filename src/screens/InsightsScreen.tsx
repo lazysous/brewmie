@@ -467,7 +467,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
     const beanLabel = state.beans?.brand ?? formatDate(shot.timestamp)
     const params = [
       `${shot.inputDose}g`,
-      `${shot.actualVolume ?? shot.targetVolume}g`,
+      `${shot.actualVolume ?? shot.targetVolume}ml`,
       `${shot.actualTime ?? shot.targetTime}s`,
       `grind ${shot.inputGrind}`,
     ].join(' · ')

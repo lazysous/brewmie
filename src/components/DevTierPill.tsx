@@ -101,7 +101,7 @@ export function DevTierPill() {
         .dev-pill {
           position: fixed;
           right: 12px;
-          bottom: calc(80px + env(safe-area-inset-bottom));
+          top: calc(10px + env(safe-area-inset-top));
           z-index: 9999;
           display: inline-flex;
           align-items: center;

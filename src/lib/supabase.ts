@@ -30,6 +30,21 @@ export async function signOut() {
   return supabase.auth.signOut()
 }
 
+/**
+ * Permanently delete the signed-in user's account.
+ *
+ * RPC wipes the caller's rows from shots + profiles then deletes auth.users.
+ * Anonymous shot data already stripped of user_id stays in public_shots.
+ * Client side, sign out and clear localStorage so nothing lingers locally.
+ */
+export async function deleteUserAccount(): Promise<{ ok: boolean; error?: string }> {
+  const { error: rpcError } = await supabase.rpc('delete_user_account')
+  if (rpcError) return { ok: false, error: rpcError.message }
+  await supabase.auth.signOut()
+  try { localStorage.clear() } catch {}
+  return { ok: true }
+}
+
 export async function getCurrentUser() {
   const { data } = await supabase.auth.getUser()
   return data.user

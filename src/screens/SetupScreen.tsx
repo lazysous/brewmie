@@ -15,6 +15,7 @@ import type { TParams } from '../lib/i18n'
 import { TIER_1_LOCALES, TIER_2_LOCALES, setLocale } from '../lib/i18n'
 import { useTier } from '../hooks/useTier'
 import { PremiumModal } from '../components/PremiumModal'
+import { deleteUserAccount } from '../lib/supabase'
 import {
   MACHINE_BRANDS,
   MACHINE_MODELS,
@@ -389,6 +390,25 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
   const isLocked = (key: CardKey): boolean =>
     isFree && PREMIUM_CARDS.includes(key)
 
+  // ── Delete account modal state ───────────────────────────────────────────────
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
+  const [deleteBusy, setDeleteBusy] = useState<boolean>(false)
+
+  async function handleDeleteAccount() {
+    if (deleteBusy) return
+    setDeleteBusy(true)
+    const res = await deleteUserAccount()
+    setDeleteBusy(false)
+    setDeleteModalOpen(false)
+    if (res.ok) {
+      // Hard reload back to landing. Auth and local data are already cleared.
+      window.location.href = '/'
+    } else {
+      // eslint-disable-next-line no-alert
+      alert(res.error || 'Failed to delete account.')
+    }
+  }
+
   // ── Toast state ──────────────────────────────────────────────────────────────
   const [toastVisible, setToastVisible] = useState<boolean>(false)
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -696,43 +716,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
       {/* Cards */}
       <div className="sc-cards">
 
-        {/* ── 1. Units ── */}
-        <Card
-          title={t('setup.cardUnits')}
-          open={openCards.units}
-          onToggle={() => toggleCard('units')}
-          complete={true}
-          icon={<IconRuler />}
-        >
-          <div className="sc-pill-toggle">
-            <span
-              className="sc-pill-toggle__track"
-              aria-hidden="true"
-              style={{ left: state.units === 'metric' ? '3px' : 'calc(50% + 0px)' }}
-            />
-            <button
-              className={`sc-pill-option${state.units === 'metric' ? ' sc-pill-option--active' : ''}`}
-              onClick={() => dispatch({ type: 'SET_UNITS', payload: 'metric' as Units })}
-              type="button"
-            >
-              {t('setup.unitsMetric')}
-            </button>
-            <button
-              className={`sc-pill-option${state.units === 'imperial' ? ' sc-pill-option--active' : ''}`}
-              onClick={() => dispatch({ type: 'SET_UNITS', payload: 'imperial' as Units })}
-              type="button"
-            >
-              {t('setup.unitsImperial')}
-            </button>
-          </div>
-          <p className="sc-hint">
-            {state.units === 'metric'
-              ? t('setup.unitsHintMetric')
-              : t('setup.unitsHintImperial')}
-          </p>
-        </Card>
-
-        {/* ── 2. Machine ── */}
+        {/* ── 1. Machine ── */}
         <Card
           title={t('setup.cardMachine')}
           open={openCards.machine}
@@ -1092,6 +1076,37 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           />
         </Card>
 
+        {/* ── 6a. Units ── */}
+        <Card
+          title={t('setup.cardUnits')}
+          open={openCards.units}
+          onToggle={() => toggleCard('units')}
+          complete={true}
+          icon={<IconRuler />}
+        >
+          <div className="sc-pill-toggle">
+            <span
+              className="sc-pill-toggle__track"
+              aria-hidden="true"
+              style={{ left: state.units === 'metric' ? '3px' : 'calc(50% + 0px)' }}
+            />
+            <button
+              className={`sc-pill-option${state.units === 'metric' ? ' sc-pill-option--active' : ''}`}
+              onClick={() => dispatch({ type: 'SET_UNITS', payload: 'metric' as Units })}
+              type="button"
+            >
+              {t('setup.unitsMetric')}
+            </button>
+            <button
+              className={`sc-pill-option${state.units === 'imperial' ? ' sc-pill-option--active' : ''}`}
+              onClick={() => dispatch({ type: 'SET_UNITS', payload: 'imperial' as Units })}
+              type="button"
+            >
+              {t('setup.unitsImperial')}
+            </button>
+          </div>
+        </Card>
+
         {/* ── 6b. Language ── */}
         <Card
           title={t('setup.cardLanguage')}
@@ -1118,7 +1133,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
               </optgroup>
             </select>
           </Field>
-          <p className="sc-hint">{t('setup.languageHint')}</p>
         </Card>
 
         {/* ── 7. Privacy ── */}
@@ -1132,7 +1146,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           <div className="sc-privacy-row">
             <div className="sc-privacy-text">
               <span className="sc-privacy-label">{t('setup.privacyLabel')}</span>
-              <span className="sc-privacy-sub">{t('setup.privacySub')}</span>
             </div>
             <button
               className={`sc-toggle${sharingOn ? ' sc-toggle--on' : ''}`}
@@ -1153,6 +1166,15 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           >
             {t('setup.privacyPolicyLink')} →
           </a>
+          {state.userId && (
+            <button
+              className="sc-delete-account"
+              type="button"
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              {t('setup.deleteAccount')}
+            </button>
+          )}
         </Card>
 
       </div>
@@ -1367,6 +1389,33 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         isSignedIn={!!state.userId}
         onSignInRequired={onSignIn}
       />
+
+      {deleteModalOpen && (
+        <div className="sc-delete-modal" role="dialog" aria-modal="true">
+          <div className="sc-delete-modal__card">
+            <h2 className="sc-delete-modal__title">{t('setup.deleteAccountTitle')}</h2>
+            <p className="sc-delete-modal__body">{t('setup.deleteAccountWarning')}</p>
+            <div className="sc-delete-modal__actions">
+              <button
+                className="sc-delete-modal__cancel"
+                type="button"
+                onClick={() => setDeleteModalOpen(false)}
+                disabled={deleteBusy}
+              >
+                {t('setup.deleteAccountCancel')}
+              </button>
+              <button
+                className="sc-delete-modal__confirm"
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={deleteBusy}
+              >
+                {deleteBusy ? t('setup.deleteAccountBusy') : t('setup.deleteAccountConfirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         /* ── Screen ── */
@@ -2248,6 +2297,80 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         }
         .sc-privacy-link:hover { color: var(--copper-deep); }
         .sc-privacy-link:active { transform: scale(0.97); }
+
+        /* ── Delete account ── */
+        .sc-delete-account {
+          display: block;
+          margin: 20px auto 0;
+          background: none;
+          border: none;
+          padding: 8px 12px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #8B1A1A;
+          letter-spacing: 0.2px;
+          cursor: pointer;
+        }
+        .sc-delete-account:active { transform: scale(0.97); }
+
+        .sc-delete-modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.55);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          z-index: 200;
+        }
+        .sc-delete-modal__card {
+          background: var(--cream, #FAF7F2);
+          border-radius: 16px;
+          padding: 24px;
+          max-width: 360px;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        }
+        .sc-delete-modal__title {
+          font-size: 18px;
+          font-weight: 700;
+          color: #8B1A1A;
+          margin-bottom: 12px;
+        }
+        .sc-delete-modal__body {
+          font-size: 14px;
+          line-height: 1.5;
+          color: var(--text-medium, #666);
+          margin-bottom: 20px;
+        }
+        .sc-delete-modal__actions {
+          display: flex;
+          gap: 10px;
+        }
+        .sc-delete-modal__cancel,
+        .sc-delete-modal__confirm {
+          flex: 1;
+          padding: 12px 16px;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 600;
+          border: none;
+          cursor: pointer;
+        }
+        .sc-delete-modal__cancel {
+          background: var(--border, #E5E5E5);
+          color: var(--text-dark, #2C2C2C);
+        }
+        .sc-delete-modal__confirm {
+          background: #8B1A1A;
+          color: white;
+        }
+        .sc-delete-modal__confirm:disabled,
+        .sc-delete-modal__cancel:disabled {
+          opacity: 0.5;
+          cursor: default;
+        }
 
         /* ── Toggle switch ── */
         .sc-toggle {

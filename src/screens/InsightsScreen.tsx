@@ -771,27 +771,6 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         onSignInRequired={onSignIn}
       />
 
-      {/* Footer */}
-      <div className="ix-footer">
-        <a
-          href="https://lazysous.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ix-footer__pill"
-        >
-          <img
-            src="./assets/lazysous-logo.png"
-            alt="Lazy Sous"
-            className="ix-footer__logo"
-          />
-          <div className="ix-footer__text">
-            <span className="ix-footer__dinner">{t('insights.footerDinner')}</span>
-            <span className="ix-footer__cta">{t('insights.footerCta')}</span>
-          </div>
-        </a>
-        <p className="ix-footer__copy">{t('insights.footerCopy', { year: new Date().getFullYear() })}</p>
-      </div>
-
       <style>{`
         /* ── Screen wrapper ─────────────────────────────────────────────── */
         .ix-screen {
@@ -1617,65 +1596,6 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
           flex-shrink: 0;
         }
 
-        /* ── Footer ─────────────────────────────────────────────────────── */
-        .ix-footer {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-          padding: 16px 16px 8px;
-        }
-
-        .ix-footer__pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          background: var(--white);
-          border: 1px solid var(--border-light);
-          border-radius: 20px;
-          padding: 10px 18px 10px 12px;
-          text-decoration: none;
-          transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        .ix-footer__pill:hover {
-          transform: translateY(-1px);
-          background: var(--cream);
-        }
-
-        .ix-footer__logo {
-          height: 28px;
-          width: 28px;
-          flex-shrink: 0;
-          border-radius: 8px;
-        }
-
-        .ix-footer__text {
-          display: flex;
-          flex-direction: column;
-          gap: 1px;
-        }
-
-        .ix-footer__dinner {
-          font-size: 11px;
-          font-weight: 600;
-          color: var(--text-tertiary);
-          letter-spacing: 0.2px;
-          line-height: 1.2;
-        }
-
-        .ix-footer__cta {
-          font-size: 13px;
-          font-weight: 700;
-          color: var(--accent-green);
-          line-height: 1.2;
-        }
-
-        .ix-footer__copy {
-          font-size: 11px;
-          color: var(--text-tertiary);
-        }
       `}</style>
     </div>
   )

@@ -339,9 +339,6 @@
     "import": "Importovať",
     "resetAll": "Resetovať všetko",
     "dataNote": "Tvoje esprá sú tu. Exportuj ich, alebo sa prihlás na zdieľanie medzi zariadeniami.",
-    "footerDinner": "Čo na večeru?",
-    "footerCta": "Navštív Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Vymazať celú históriu esprá? Nedá sa vrátiť.",
     "confirmReset": "Resetovať VŠETKY dáta vrátane kávovara, mlynčeka a histórie? Nedá sa vrátiť.",
     "importInvalid": "Neplatný súbor. Vyber platný Brewmie export.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Porovnaj každý shot s tvojim najlepším.",
     "ctaBrewmie": "Len Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Balíček s Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: odomykanie cez dev pill. Nie je to skutočný nákup."
   },
   "tierLock": {

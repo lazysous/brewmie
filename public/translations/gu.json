@@ -339,9 +339,6 @@
     "import": "ઇમ્પોર્ટ",
     "resetAll": "બધું રીસેટ",
     "dataNote": "શોટ અહીં છે. એક્સ્પોર્ટ અથવા ઉપકરણ માટે સાઇન ઇન.",
-    "footerDinner": "રાત્રે શું?",
-    "footerCta": "Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "બધો ઇતિહાસ ક્લિઅર? રદ ન થઈ શકે.",
     "confirmReset": "બધો ડેટા રીસેટ? રદ ન થઈ શકે.",
     "importInvalid": "અમાન્ય ફાઇલ. Brewmie એક્સ્પોર્ટ.",
@@ -450,8 +447,6 @@
     "feature3Sub": "દરેક શોટની તુલના તમારા શ્રેષ્ઠ સાથે.",
     "ctaBrewmie": "માત્ર Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous બંડલ",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill થી અનલોક. વાસ્તવિક ખરીદી નથી."
   },
   "tierLock": {

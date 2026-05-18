@@ -339,9 +339,6 @@
     "import": "Import",
     "resetAll": "Resetovat vše",
     "dataNote": "Tvoje shoty jsou tady. Exportuj je, nebo se přihlas a měj je napříč zařízeními.",
-    "footerDinner": "Co k večeři?",
-    "footerCta": "Navštiv Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Vymazat celou historii shotů? Nelze vrátit.",
     "confirmReset": "Resetovat VŠECHNA data včetně konfigurace pákováku, mlýnku a historie? Nelze vrátit.",
     "importInvalid": "Neplatný soubor. Vyber platný export Brewmie.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Porovnej každý shot se svým nejlepším.",
     "ctaBrewmie": "Jen Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Balíček s Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: odemčení přes dev pill. Není to skutečný nákup."
   },
   "tierLock": {

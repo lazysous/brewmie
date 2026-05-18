@@ -105,7 +105,7 @@ export async function setDisplayName(userId: string, displayName: string) {
 // ─── Tier (free / premium) ───────────────────────────────────────────────────
 // Production entitlement flow (when StoreKit / Play Billing is wired):
 //   1. On launch, query the store for active non-consumable purchases.
-//   2. If "Brewmie Premium" (or the bundle) is owned, set tier locally to 'premium'.
+//   2. If "Brewmie Premium" is owned, set tier locally to 'premium'.
 //   3. Cache the entitlement in localStorage so the app boots premium offline.
 //   4. If a user signs in, mirror the receipt to profiles.tier for sync.
 //   5. fetchTier(userId) below is only the SERVER read path for cross-device sync.

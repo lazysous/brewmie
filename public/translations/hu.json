@@ -339,9 +339,6 @@
     "import": "Importálás",
     "resetAll": "Minden adat visszaállítása",
     "dataNote": "A shotjaid itt élnek. Exportáld őket, vagy jelentkezz be hogy minden eszközön megmaradjanak.",
-    "footerDinner": "Mi lesz vacsorára?",
-    "footerCta": "Lazy Sous meglátogatása →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Törölni az összes shot előzményt? Ez nem visszavonható.",
     "confirmReset": "Visszaállítani MINDEN adatot, beleértve gép-, daráló- és shot előzményeket? Ez nem visszavonható.",
     "importInvalid": "Érvénytelen fájl. Válassz érvényes Brewmie exportot.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Hasonlítsd minden shotot a saját legjobbadhoz.",
     "ctaBrewmie": "Csak Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Csomag a Lazy Sous-szal",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pillel nyitható. Nem valós vásárlás."
   },
   "tierLock": {

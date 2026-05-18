@@ -339,9 +339,6 @@
     "import": "インポート",
     "resetAll": "すべてリセット",
     "dataNote": "ショットはここに保存されます。エクスポートするか、サインインして端末間で共有しよう。",
-    "footerDinner": "今夜のごはんは？",
-    "footerCta": "Lazy Sous へ →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "ショット履歴をすべて削除しますか？元に戻せません。",
     "confirmReset": "マシン設定、グラインダー設定、ショット履歴を含む全データをリセットしますか？元に戻せません。",
     "importInvalid": "無効なファイルです。正しい Brewmie のエクスポートを選択してください。",
@@ -450,8 +447,6 @@
     "feature3Sub": "毎ショットを自己ベストと比較。",
     "ctaBrewmie": "Brewmieのみ",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous同梱",
-    "priceBundle": "$9.99",
     "devNote": "開発: dev pillで解放。実際の購入ではありません。"
   },
   "tierLock": {

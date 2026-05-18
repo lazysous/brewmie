@@ -339,9 +339,6 @@
     "import": "Leta",
     "resetAll": "Anzisha upya data zote",
     "dataNote": "Shots zako zinaishi hapa. Hamisha, au ingia ili kuziweka kwa vifaa vyote.",
-    "footerDinner": "Chakula cha jioni ni nini?",
-    "footerCta": "Tembelea Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Futa historia yote ya shots? Hii haiwezi kutenduliwa.",
     "confirmReset": "Anzisha upya data ZOTE ikiwa ni pamoja na mashine, kisagaji na historia? Hii haiwezi kutenduliwa.",
     "importInvalid": "Faili batili. Chagua kuhamisha Brewmie sahihi.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Linganisha kila shot na bora yako.",
     "ctaBrewmie": "Brewmie tu",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Pakiti pamoja na Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: kufunguliwa kwa dev pill. Si ununuzi halisi."
   },
   "tierLock": {

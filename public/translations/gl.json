@@ -339,9 +339,6 @@
     "import": "Importar",
     "resetAll": "Restablecer todo",
     "dataNote": "Os teus shots viven aquí. Expórtaos, ou inicia sesión para conservalos en todos os dispositivos.",
-    "footerDinner": "Que cear?",
-    "footerCta": "Visita Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Limpar todo o historial de shots? Non se pode desfacer.",
     "confirmReset": "Restablecer TODOS os datos incluído configuración de máquina, muíño e historial de shots? Non se pode desfacer.",
     "importInvalid": "Ficheiro non válido. Selecciona unha exportación de Brewmie válida.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Compara cada shot co teu mellor.",
     "ctaBrewmie": "Só Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Paquete con Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: desbloqueo polo dev pill. Non é compra real."
   },
   "tierLock": {

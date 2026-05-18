@@ -339,9 +339,6 @@
     "import": "ಇಂಪೋರ್ಟ್",
     "resetAll": "ಎಲ್ಲ ಡೇಟಾ ರೀಸೆಟ್",
     "dataNote": "ನಿಮ್ಮ ಶಾಟ್‌ಗಳು ಇಲ್ಲಿವೆ. ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿ, ಅಥವಾ ಎಲ್ಲ ಸಾಧನಗಳಲ್ಲಿ ಇಡಲು ಸೈನ್ ಇನ್.",
-    "footerDinner": "ರಾತ್ರಿ ಊಟ ಏನು?",
-    "footerCta": "Lazy Sous ಭೇಟಿ →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "ಎಲ್ಲ ಶಾಟ್ ಇತಿಹಾಸ ಅಳಿಸಿ? ರದ್ದು ಮಾಡಲಾಗದು.",
     "confirmReset": "ಮಶೀನ್, ಗ್ರೈಂಡರ್ ಮತ್ತು ಶಾಟ್ ಇತಿಹಾಸ ಸೇರಿ ಎಲ್ಲ ಡೇಟಾ ರೀಸೆಟ್ ಮಾಡಬೇಕೇ? ರದ್ದು ಮಾಡಲಾಗದು.",
     "importInvalid": "ಅಮಾನ್ಯ ಫೈಲ್. ಮಾನ್ಯ Brewmie ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಆಯ್ಕೆ ಮಾಡಿ.",
@@ -450,8 +447,6 @@
     "feature3Sub": "ಪ್ರತಿ ಶಾಟ್ ಅನ್ನು ನಿಮ್ಮ ಉತ್ತಮದೊಂದಿಗೆ ಹೋಲಿಸಿ.",
     "ctaBrewmie": "Brewmie ಮಾತ್ರ",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous ಬಂಡಲ್",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill ಮೂಲಕ ಅನ್‌ಲಾಕ್. ನಿಜವಾದ ಖರೀದಿ ಅಲ್ಲ."
   },
   "tierLock": {

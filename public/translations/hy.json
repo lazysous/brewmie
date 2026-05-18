@@ -339,9 +339,6 @@
     "import": "Nermak.",
     "resetAll": "Verakayt bolor",
     "dataNote": "Shot-erd kean. Artag. kam muts katsir skavarnerd.",
-    "footerDinner": "Inch e ereko?",
-    "footerCta": "Ancel Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Make shot ist.? Chi karar.",
     "confirmReset": "Verakayt BOLOR tatyan.? Chi karar.",
     "importInvalid": "Anver. fail. Yntrel isk Brewmie artag.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Համեմատիր յուրաքանչյուր շոթ քո լավագույնի հետ։",
     "ctaBrewmie": "Միայն Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Փաթեթ Lazy Sous-ի հետ",
-    "priceBundle": "$9.99",
     "devNote": "Dev՝ բացվում է dev pill-ով։ Իրական գնում չէ։"
   },
   "tierLock": {

@@ -339,9 +339,6 @@
     "import": "นำเข้า",
     "resetAll": "รีเซ็ตข้อมูลทั้งหมด",
     "dataNote": "ชอตของคุณอยู่ที่นี่ ส่งออก หรือเข้าสู่ระบบเพื่อใช้ข้ามอุปกรณ์",
-    "footerDinner": "เย็นนี้กินอะไร?",
-    "footerCta": "ไป Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "ล้างประวัติชอตทั้งหมด? เลิกทำไม่ได้",
     "confirmReset": "รีเซ็ตข้อมูลทั้งหมดรวมถึงเครื่อง เครื่องบด และประวัติ? เลิกทำไม่ได้",
     "importInvalid": "ไฟล์ไม่ถูกต้อง เลือกไฟล์ส่งออก Brewmie ที่ใช้ได้",
@@ -450,8 +447,6 @@
     "feature3Sub": "เปรียบเทียบทุกช็อตกับสถิติของคุณ",
     "ctaBrewmie": "Brewmie เท่านั้น",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "ชุดกับ Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: ปลดล็อกผ่าน dev pill ไม่ใช่ซื้อจริง"
   },
   "tierLock": {

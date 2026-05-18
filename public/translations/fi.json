@@ -339,9 +339,6 @@
     "import": "Tuo",
     "resetAll": "Nollaa kaikki",
     "dataNote": "Shottisi asuvat täällä. Vie ne, tai kirjaudu pitääksesi ne kaikilla laitteilla.",
-    "footerDinner": "Mitäs syötäis?",
-    "footerCta": "Käy Lazy Sousilla →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Tyhjennä koko shottihistoria? Tätä ei voi peruuttaa.",
     "confirmReset": "Nollaa KAIKKI tiedot mukaan lukien kone-, mylly- ja shottihistoria? Tätä ei voi peruuttaa.",
     "importInvalid": "Virheellinen tiedosto. Valitse kelvollinen Brewmie-vienti.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Vertaa jokaista shottia parhaaseesi.",
     "ctaBrewmie": "Vain Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Paketti Lazy Sousin kanssa",
-    "priceBundle": "$9.99",
     "devNote": "Dev: avaa dev pillin kautta. Ei oikea osto."
   },
   "tierLock": {

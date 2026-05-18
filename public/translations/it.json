@@ -339,9 +339,6 @@
     "import": "Importa",
     "resetAll": "Reset totale",
     "dataNote": "I tuoi shot vivono qui. Esportali, o accedi per tenerli su tutti i dispositivi.",
-    "footerDinner": "Cosa c'è per cena?",
-    "footerCta": "Vai a Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Cancellare tutta la cronologia degli shot? Non si può annullare.",
     "confirmReset": "Resettare TUTTI i dati inclusi macchina, macinino e cronologia? Non si può annullare.",
     "importInvalid": "File non valido. Seleziona un'esportazione Brewmie valida.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Confronta ogni shot col tuo migliore.",
     "ctaBrewmie": "Solo Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Pacchetto con Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: sblocco tramite dev pill. Non è un acquisto reale."
   },
   "tierLock": {

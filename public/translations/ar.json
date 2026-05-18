@@ -339,9 +339,6 @@
     "import": "استيراد",
     "resetAll": "إعادة تعيين كل البيانات",
     "dataNote": "جرعاتك تعيش هنا. صدّرها، أو سجّل الدخول للاحتفاظ بها عبر الأجهزة.",
-    "footerDinner": "ما العشاء؟",
-    "footerCta": "زر Lazy Sous ←",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "مسح كل سجل الجرعات؟ لا يمكن التراجع.",
     "confirmReset": "إعادة تعيين كل البيانات بما فيها إعدادات الآلة والمطحنة وسجل الجرعات؟ لا يمكن التراجع.",
     "importInvalid": "ملف غير صالح. الرجاء اختيار تصدير Brewmie صالح.",
@@ -450,8 +447,6 @@
     "feature3Sub": "قارن كل شوت بأفضل لديك.",
     "ctaBrewmie": "Brewmie فقط",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "حزمة مع Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: يُفتح عبر dev pill. ليس شراء حقيقي."
   },
   "tierLock": {

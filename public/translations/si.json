@@ -339,9 +339,6 @@
     "import": "ආනයනය",
     "resetAll": "සියලු දත්ත යළි පිහිටුවන්න",
     "dataNote": "ඔබේ ෂොට් මෙතන තිබේ. අපනයනය කරන්න, හෝ උපාංග හරහා තබා ගැනීමට පුරනය වන්න.",
-    "footerDinner": "රෑට මොකද්ද?",
-    "footerCta": "Lazy Sous බලන්න →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "සියලු ෂොට් ඉතිහාසය හිස් කරන්නද? මෙය ආපසු හැරවිය නොහැක.",
     "confirmReset": "මැෂින්, ග්‍රයින්ඩර් සහ ෂොට් ඉතිහාසය ඇතුළු සියලු දත්ත යළි පිහිටුවන්නද? මෙය ආපසු හැරවිය නොහැක.",
     "importInvalid": "අවලංගු ගොනුව. වලංගු Brewmie අපනයනයක් තෝරන්න.",
@@ -450,8 +447,6 @@
     "feature3Sub": "සෑම shot එකක්ම ඔබේ හොඳම සමඟ සංසන්දනය කරන්න.",
     "ctaBrewmie": "Brewmie පමණයි",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous සමඟ bundle",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill හරහා අගුළු හරිනවා. සැබෑ මිලදී ගැනීමක් නොවේ."
   },
   "tierLock": {

@@ -267,8 +267,6 @@
     "cta": "Unlock Premium",
     "ctaBrewmie": "Brewmie only",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundle with Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: this unlocks via the override pill. Not a real purchase."
   },
   "tierLock": {
@@ -447,9 +445,6 @@
     "resetAll": "Delete all data",
     "deleteAccountEmail": "To delete your account email chef@lazysous.app",
     "dataNote": "Your shots live on this device. Export them, or sign in to sync.",
-    "footerDinner": "What's for dinner?",
-    "footerCta": "Visit Lazy Sous →",
-    "footerCopy": "© {year} Lazy Sous",
     "confirmClear": "Clear all shot history? This cannot be undone.",
     "confirmReset": "Reset ALL data including machine config, grinder config, and shot history? This cannot be undone.",
     "importInvalid": "Invalid file. Please select a valid Brewmie export."

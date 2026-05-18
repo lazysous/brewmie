@@ -339,9 +339,6 @@
     "import": "امپورٹ",
     "resetAll": "تمام ڈیٹا ری سیٹ کریں",
     "dataNote": "آپ کے شاٹس یہاں رہتے ہیں۔ ایکسپورٹ کریں، یا آلات کے درمیان رکھنے کے لیے سائن ان کریں۔",
-    "footerDinner": "رات کے کھانے میں کیا ہے؟",
-    "footerCta": "Lazy Sous دیکھیں →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "تمام شاٹ تاریخ صاف کریں؟ یہ واپس نہیں ہو سکتا۔",
     "confirmReset": "مشین، گرائنڈر، اور شاٹ تاریخ سمیت تمام ڈیٹا ری سیٹ کریں؟ یہ واپس نہیں ہو سکتا۔",
     "importInvalid": "غلط فائل۔ درست Brewmie ایکسپورٹ منتخب کریں۔",
@@ -450,8 +447,6 @@
     "feature3Sub": "ہر شاٹ کا اپنے بہترین سے موازنہ کریں۔",
     "ctaBrewmie": "صرف Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous بنڈل",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill سے کھلتا ہے۔ حقیقی خریداری نہیں۔"
   },
   "tierLock": {

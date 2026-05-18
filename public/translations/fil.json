@@ -339,9 +339,6 @@
     "import": "I-import",
     "resetAll": "I-reset Lahat ng Datos",
     "dataNote": "Dito nakatira ang mga shot mo. I-export, o mag-sign in para mapanatili sa lahat ng device.",
-    "footerDinner": "Ano'ng ulam?",
-    "footerCta": "Bisitahin ang Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Linisin lahat ng shot history? Hindi na maibabalik.",
     "confirmReset": "I-reset LAHAT ng datos kasama ang machine config, grinder config, at shot history? Hindi na maibabalik.",
     "importInvalid": "Hindi valid na file. Pumili ng valid na Brewmie export.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Ihambing bawat shot sa best mo.",
     "ctaBrewmie": "Brewmie lang",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundle sa Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: unlock sa pamamagitan ng dev pill. Hindi tunay na pagbili."
   },
   "tierLock": {

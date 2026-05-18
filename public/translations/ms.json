@@ -339,9 +339,6 @@
     "import": "Import",
     "resetAll": "Set semula semua data",
     "dataNote": "Shot anda di sini. Eksport, atau log masuk untuk simpan merentas peranti.",
-    "footerDinner": "Makan malam apa?",
-    "footerCta": "Lawati Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Kosongkan semua sejarah shot? Ini tidak boleh dibatalkan.",
     "confirmReset": "Set semula SEMUA data termasuk konfigurasi mesin, pengisar, dan sejarah shot? Ini tidak boleh dibatalkan.",
     "importInvalid": "Fail tidak sah. Pilih eksport Brewmie yang sah.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Bandingkan setiap shot dengan terbaik anda.",
     "ctaBrewmie": "Brewmie sahaja",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundle dengan Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: buka melalui dev pill. Bukan pembelian sebenar."
   },
   "tierLock": {

@@ -339,9 +339,6 @@
     "import": "İçe aktar",
     "resetAll": "Tüm veriyi sıfırla",
     "dataNote": "Shotların burada yaşar. Dışa aktar, veya cihazlar arası tutmak için giriş yap.",
-    "footerDinner": "Akşama ne pişer?",
-    "footerCta": "Lazy Sous'a uğra →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Tüm shot geçmişini temizle? Geri alınamaz.",
     "confirmReset": "Makine, değirmen ve shot geçmişi dahil TÜM veri sıfırlansın mı? Geri alınamaz.",
     "importInvalid": "Geçersiz dosya. Geçerli bir Brewmie çıktısı seç.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Her shotu kendi rekorunla karşılaştır.",
     "ctaBrewmie": "Sadece Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous paketi",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill ile açılır. Gerçek satın alma değil."
   },
   "tierLock": {

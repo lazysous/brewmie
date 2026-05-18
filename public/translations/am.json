@@ -339,9 +339,6 @@
     "import": "አስመጣ",
     "resetAll": "ሁሉንም ውሂብ ዳግም አስጀምር",
     "dataNote": "ሾቶችዎ እዚህ ይኖራሉ። ላኳቸው፣ ወይም በመሣሪያዎች ላይ ለማቆየት ይግቡ።",
-    "footerDinner": "ለእራት ምን አለ?",
-    "footerCta": "Lazy Sous ይጎብኙ →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "ሁሉንም የሾት ታሪክ ያጽዱ? ይህ ሊቀለበስ አይችልም።",
     "confirmReset": "የማሽን ውቅር፣ የመፍጫ ውቅርና የሾት ታሪክን ጨምሮ ሁሉንም ውሂብ ዳግም ያስጀምሩ? ይህ ሊቀለበስ አይችልም።",
     "importInvalid": "ልክ ያልሆነ ፋይል። እባክዎ ትክክለኛ የBrewmie ላኪ ይምረጡ።",
@@ -450,8 +447,6 @@
     "feature3Sub": "እያንዳንዱን ሾት ከራስህ ምርጥ ጋር አወዳድር።",
     "ctaBrewmie": "Brewmie ብቻ",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "ከ Lazy Sous ጋር ጥቅል",
-    "priceBundle": "$9.99",
     "devNote": "Dev: በ dev pill ይከፈታል። እውነተኛ ግዥ አይደለም።"
   },
   "tierLock": {

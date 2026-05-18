@@ -339,9 +339,6 @@
     "import": "İdxal",
     "resetAll": "Bütün məlumatı sıfırla",
     "dataNote": "Şotların burada yaşayır. İxrac et, və ya cihazlar arası saxlamaq üçün daxil ol.",
-    "footerDinner": "Şama nə var?",
-    "footerCta": "Lazy Sous-a get →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Bütün şot tarixçəsini təmizləyəsən? Bu geri qaytarıla bilməz.",
     "confirmReset": "Maşın konfiqurasiyası, üyüdücü konfiqurasiyası və şot tarixçəsi daxil olmaqla BÜTÜN məlumatı sıfırlayasan? Bu geri qaytarıla bilməz.",
     "importInvalid": "Yararsız fayl. Lütfən, etibarlı Brewmie ixracı seç.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Hər şotu öz rekordunla müqayisə.",
     "ctaBrewmie": "Yalnız Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous paketi",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill ilə açılır. Real alış deyil."
   },
   "tierLock": {

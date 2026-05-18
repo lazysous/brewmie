@@ -339,9 +339,6 @@
     "import": "Importuj",
     "resetAll": "Zresetuj wszystko",
     "dataNote": "Twoje shoty żyją tutaj. Eksportuj je lub zaloguj, by mieć je na różnych urządzeniach.",
-    "footerDinner": "Co na obiad?",
-    "footerCta": "Odwiedź Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Wyczyścić całą historię shotów? Nie można cofnąć.",
     "confirmReset": "Zresetować WSZYSTKIE dane łącznie z konfiguracją ekspresu, młynka i historią? Nie można cofnąć.",
     "importInvalid": "Nieprawidłowy plik. Wybierz prawidłowy eksport Brewmie.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Porównuj każdy shot z własnym rekordem.",
     "ctaBrewmie": "Tylko Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Pakiet z Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: odblokowanie przez dev pill. To nie prawdziwy zakup."
   },
   "tierLock": {

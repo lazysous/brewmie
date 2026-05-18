@@ -339,9 +339,6 @@
     "import": "Uvoz",
     "resetAll": "Resetiraj sve podatke",
     "dataNote": "Tvoji shotovi žive ovdje. Izvezi ih, ili se prijavi da ih čuvaš na svim uređajima.",
-    "footerDinner": "Što za večeru?",
-    "footerCta": "Posjeti Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Obrisati svu povijest shotova? Ne može se poništiti.",
     "confirmReset": "Resetirati SVE podatke uključujući postavke aparata, mlinca i povijest shotova? Ne može se poništiti.",
     "importInvalid": "Neispravna datoteka. Odaberi valjani Brewmie izvoz.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Usporedi svaki shot s tvojim najboljim.",
     "ctaBrewmie": "Samo Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Paket s Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: otključavanje preko dev pill. Nije pravi kupnja."
   },
   "tierLock": {

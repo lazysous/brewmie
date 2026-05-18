@@ -339,9 +339,6 @@
     "import": "Iompórtáil",
     "resetAll": "Athshocraigh Gach Sonra",
     "dataNote": "Maireann do shots anseo. Easpórtáil iad, nó sínigh isteach chun iad a choinneáil ar fud na ngléasanna.",
-    "footerDinner": "Cad atá don dinnéar?",
-    "footerCta": "Tabhair cuairt ar Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Glan stair iomlán shots? Ní féidir é a chur ar ais.",
     "confirmReset": "Athshocraigh GACH sonraí lena n-áirítear cumraíocht meaisín, meilteora, agus stair shots? Ní féidir é a chur ar ais.",
     "importInvalid": "Comhad neamhbhailí. Roghnaigh easpórtáil Brewmie bhailí.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Cuir gach seat i gcomparáid le do cheann is fearr.",
     "ctaBrewmie": "Brewmie amháin",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Beart le Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dícheangail trí dev pill. Ní fíor-cheannach é."
   },
   "tierLock": {

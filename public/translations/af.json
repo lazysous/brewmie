@@ -339,9 +339,6 @@
     "import": "Voer in",
     "resetAll": "Herstel alle data",
     "dataNote": "Jou skote leef hier. Voer hulle uit, of meld aan om hulle oor toestelle te hou.",
-    "footerDinner": "Wat is vir aandete?",
-    "footerCta": "Besoek Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Vee alle skootgeskiedenis uit? Dit kan nie ongedaan gemaak word nie.",
     "confirmReset": "Herstel ALLE data insluitend masjienkonfigurasie, maler konfigurasie en skootgeskiedenis? Dit kan nie ongedaan gemaak word nie.",
     "importInvalid": "Ongeldige lêer. Kies asseblief 'n geldige Brewmie-uitvoer.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Vergelyk elke shot met jou beste.",
     "ctaBrewmie": "Net Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundel met Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: ontsluit via dev pill. Nie 'n regte aankoop nie."
   },
   "tierLock": {

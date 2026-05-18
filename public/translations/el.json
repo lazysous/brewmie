@@ -339,9 +339,6 @@
     "import": "Εισαγωγή",
     "resetAll": "Επαναφορά όλων",
     "dataNote": "Τα shots σου είναι εδώ. Εξαγωγή ή σύνδεση για να τα κρατάς σε όλες τις συσκευές.",
-    "footerDinner": "Τι έχει για δείπνο;",
-    "footerCta": "Επίσκεψη Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Διαγραφή ολόκληρου ιστορικού shots; Δεν αναιρείται.",
     "confirmReset": "Επαναφορά ΟΛΩΝ των δεδομένων συμπεριλαμβανομένης μηχανής, μύλου και ιστορικού; Δεν αναιρείται.",
     "importInvalid": "Μη έγκυρο αρχείο. Επίλεξε έγκυρη εξαγωγή Brewmie.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Σύγκρινε κάθε shot με το καλύτερό σου.",
     "ctaBrewmie": "Μόνο Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Πακέτο με Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: ξεκλείδωμα μέσω dev pill. Δεν είναι πραγματική αγορά."
   },
   "tierLock": {

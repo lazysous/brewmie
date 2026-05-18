@@ -339,9 +339,6 @@
     "import": "ייבא",
     "resetAll": "אפס הכל",
     "dataNote": "השוטים שלך כאן. ייצא אותם, או התחבר כדי לשמור אותם בכל המכשירים.",
-    "footerDinner": "מה לארוחת ערב?",
-    "footerCta": "בקר ב-Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "לנקות את כל היסטוריית השוטים? לא ניתן לבטל.",
     "confirmReset": "לאפס את כל הנתונים כולל הגדרות מכונה, מטחנה והיסטוריית שוטים? לא ניתן לבטל.",
     "importInvalid": "קובץ לא תקין. בחר ייצוא Brewmie תקין.",
@@ -450,8 +447,6 @@
     "feature3Sub": "השווה כל שוט לטוב ביותר שלך.",
     "ctaBrewmie": "Brewmie בלבד",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "חבילה עם Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: שחרור דרך dev pill. לא רכישה אמיתית."
   },
   "tierLock": {

@@ -339,9 +339,6 @@
     "import": "इंपोर्ट",
     "resetAll": "सर्व डेटा रीसेट",
     "dataNote": "तुमचे शॉट्स इथे आहेत. एक्सपोर्ट करा, किंवा सर्व डिव्हाइसेसवर ठेवण्यासाठी साइन इन.",
-    "footerDinner": "रात्री काय?",
-    "footerCta": "Lazy Sous ला भेट द्या →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "सर्व शॉट इतिहास साफ करायचा? पूर्वपदावर येणार नाही.",
     "confirmReset": "मशीन, ग्राइंडर आणि शॉट इतिहासासह सर्व डेटा रीसेट? पूर्वपदावर येणार नाही.",
     "importInvalid": "अवैध फाइल. एक वैध Brewmie एक्सपोर्ट निवडा.",
@@ -450,8 +447,6 @@
     "feature3Sub": "प्रत्येक शॉट तुमच्या सर्वोत्तमशी तुलना.",
     "ctaBrewmie": "फक्त Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous बंडल",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill द्वारे अनलॉक. खरी खरेदी नाही."
   },
   "tierLock": {

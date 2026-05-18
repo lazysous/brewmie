@@ -339,9 +339,6 @@
     "import": "Importă",
     "resetAll": "Resetează toate datele",
     "dataNote": "Cafelele tale stau aici. Exportă-le sau conectează-te ca să le ai pe toate dispozitivele.",
-    "footerDinner": "Ce mâncăm la cină?",
-    "footerCta": "Vezi Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Ștergi tot istoricul cafelelor? Nu se poate anula.",
     "confirmReset": "Resetezi TOATE datele inclusiv configurarea espressorului, râșniței și istoricul? Nu se poate anula.",
     "importInvalid": "Fișier invalid. Selectează un export Brewmie valid.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Compară fiecare shot cu cel mai bun al tău.",
     "ctaBrewmie": "Doar Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Pachet cu Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: se deblochează prin dev pill. Nu e cumpărare reală."
   },
   "tierLock": {

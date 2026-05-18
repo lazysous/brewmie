@@ -339,9 +339,6 @@
     "import": "Importer",
     "resetAll": "Tout réinitialiser",
     "dataNote": "Vos shots vivent ici. Exportez-les, ou connectez-vous pour les garder sur tous vos appareils.",
-    "footerDinner": "On mange quoi ce soir ?",
-    "footerCta": "Visiter Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Effacer tout l'historique des shots ? Action irréversible.",
     "confirmReset": "Réinitialiser TOUTES les données : machine, moulin et historique ? Action irréversible.",
     "importInvalid": "Fichier invalide. Sélectionnez une exportation Brewmie valide.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Compare chaque shot à ton meilleur.",
     "ctaBrewmie": "Brewmie seul",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Pack avec Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev : déblocage via le dev pill. Ce n'est pas un vrai achat."
   },
   "tierLock": {

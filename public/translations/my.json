@@ -339,9 +339,6 @@
     "import": "သွင်းပါ",
     "resetAll": "ဒေတာအားလုံး ပြန်လည်စတင်ပါ",
     "dataNote": "သင့် shot များ ဒီမှာ ရှိ။ ပို့ပါ၊ သို့မဟုတ် ကိရိယာများတွင် ဆက်ထားရန် ဝင်ပါ။",
-    "footerDinner": "ညစာ ဘာစားမလဲ?",
-    "footerCta": "Lazy Sous သို့ →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "shot မှတ်တမ်း အားလုံး ရှင်းမည်လား။ ဒါ ပြန်ရအောင် မလုပ်နိုင်ပါ။",
     "confirmReset": "စက်၊ ကြိတ်စက် configuration နှင့် shot မှတ်တမ်း အပါအဝင် ဒေတာ အားလုံး ပြန်လည်စတင်မည်လား။ ဒါ ပြန်ရအောင် မလုပ်နိုင်ပါ။",
     "importInvalid": "မမှန်ကန်သော ဖိုင်။ မှန်ကန်သော Brewmie ပို့မှု ဖိုင် ရွေးပါ။",
@@ -450,8 +447,6 @@
     "feature3Sub": "Shot တိုင်းကို သင့်အကောင်းဆုံးနှင့် နှိုင်းပါ။",
     "ctaBrewmie": "Brewmie တစ်ခုတည်း",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous နှင့် bundle",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill ဖြင့် ဖွင့်သည်။ စစ်မှန်သော ဝယ်ယူမှု မဟုတ်။"
   },
   "tierLock": {

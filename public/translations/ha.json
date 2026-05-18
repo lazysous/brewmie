@@ -339,9 +339,6 @@
     "import": "Shigar",
     "resetAll": "Sake saita duk bayanan",
     "dataNote": "Shots ɗin ka suna nan. Fitar ko shiga don riƙe su a duk na'urori.",
-    "footerDinner": "Mene ne abincin dare?",
-    "footerCta": "Ziyarci Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Share duk tarihin shots? Ba za a iya mayar ba.",
     "confirmReset": "Sake saita DUKKAN bayanan ciki har da na'ura, mashin grind, da tarihin shots? Ba za a iya mayar ba.",
     "importInvalid": "Fayil mara inganci. Zaɓi fitar da Brewmie mai inganci.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Kwatanta kowane shot da mafi kyawunka.",
     "ctaBrewmie": "Brewmie kawai",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Saka tare da Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: buɗewa ta dev pill. Ba ainihin saye ba."
   },
   "tierLock": {

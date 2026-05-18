@@ -339,9 +339,6 @@
     "import": "واردات",
     "resetAll": "ټول معلومات بیا تنظیم",
     "dataNote": "ستاسو shotونه دلته دي. صادر یې کړئ، یا ننوځئ ترڅو پر اړوندو وسایلو وساتل شي.",
-    "footerDinner": "د ماښام لپاره څه؟",
-    "footerCta": "د Lazy Sous څخه لیدنه →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "د shot ټوله تاریخچه پاکه کړئ؟ دا بیرته نشي راګرځیدلی.",
     "confirmReset": "ټول معلومات د ماشین، میده کوونکي تنظیم او د shot تاریخچې په شمول بیا تنظیم کړئ؟ دا بیرته نشي راګرځیدلی.",
     "importInvalid": "ناباوره فایل. مهرباني وکړئ د Brewmie یوه باوري صادرات غوره کړئ.",
@@ -450,8 +447,6 @@
     "feature3Sub": "هر شاټ د خپل غوره سره پرتله کړه.",
     "ctaBrewmie": "یوازې Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "د Lazy Sous سره بنډل",
-    "priceBundle": "$9.99",
     "devNote": "Dev: د dev pill له لارې پرانیستل کیږي. اصلي پیرودنه نه ده."
   },
   "tierLock": {

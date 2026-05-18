@@ -339,9 +339,6 @@
     "import": "وارد کردن",
     "resetAll": "ریست همه",
     "dataNote": "شات‌هات اینجا می‌مونن. خروجی بگیر، یا وارد شو تا روی همه دستگاه‌ها بمونه.",
-    "footerDinner": "شام چی بخوریم؟",
-    "footerCta": "برو به Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "همه تاریخچه شات‌ها پاک بشه؟ قابل برگشت نیست.",
     "confirmReset": "همه داده‌ها از جمله تنظیمات ماشین، آسیاب و تاریخچه شات‌ها ریست بشه؟ قابل برگشت نیست.",
     "importInvalid": "فایل نامعتبر. یه خروجی معتبر Brewmie انتخاب کن.",
@@ -450,8 +447,6 @@
     "feature3Sub": "هر شات را با بهترین خودت مقایسه کن.",
     "ctaBrewmie": "فقط Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "بسته با Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: از طریق dev pill باز می‌شود. خرید واقعی نیست."
   },
   "tierLock": {

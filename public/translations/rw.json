@@ -339,9 +339,6 @@
     "import": "Injiza",
     "resetAll": "Subiramo amakuru yose",
     "dataNote": "Kawa zawe ziri hano. Zisohore, cyangwa winjire kugira ngo uzigumane mu byuma.",
-    "footerDinner": "Iki turya nimugoroba?",
-    "footerCta": "Sura Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Siba amateka yose ya kawa? Ntibishobora gusubirwamo.",
     "confirmReset": "Subiramo amakuru YOSE harimo imashini, isekuru, n'amateka? Ntibishobora gusubirwamo.",
     "importInvalid": "Idosiye ntiyakiriwe. Hitamo idosiye ya Brewmie ifite akamaro.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Gereranya buri shot n'iyawe nziza.",
     "ctaBrewmie": "Brewmie gusa",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundle na Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: birafungukira binyuze muri dev pill. Si urugomero rwa nyaba."
   },
   "tierLock": {

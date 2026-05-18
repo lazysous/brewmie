@@ -339,9 +339,6 @@
     "import": "Importa",
     "resetAll": "Irrisettja kollox",
     "dataNote": "Ix-shots tiegħek hawn. Esportahom, jew idħol biex iżommhom fuq apparati.",
-    "footerDinner": "X'ser nieklu?",
-    "footerCta": "Żur Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Naddaf l-istorja kollha tax-shots? Dan ma jistax jitreġġa' lura.",
     "confirmReset": "Irrisettja d-DATA KOLLHA inkluż konfigurazzjoni tal-magna, grinder u storja tax-shots? Dan ma jistax jitreġġa' lura.",
     "importInvalid": "Fajl mhux validu. Agħżel esportazzjoni valida ta' Brewmie.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Qabbel kull shot mal-aqwa tiegħek.",
     "ctaBrewmie": "Brewmie biss",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundle ma' Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: jinfetaħ b'dev pill. Mhux xirja vera."
   },
   "tierLock": {

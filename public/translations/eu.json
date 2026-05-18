@@ -339,9 +339,6 @@
     "import": "Inportatu",
     "resetAll": "Berrezarri datu guztiak",
     "dataNote": "Zure shotak hemen daude. Esportatu itzazu edo hasi saioa gailu guztietan gordetzeko.",
-    "footerDinner": "Zer dago afaritarako?",
-    "footerCta": "Bisitatu Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Shot historia guztia garbitu? Ezin da desegin.",
     "confirmReset": "DATU GUZTIAK berrezarri makina, ehotzaile eta shot historia barne? Ezin da desegin.",
     "importInvalid": "Fitxategi baliogabea. Hautatu baliozko Brewmie esportazio bat.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Konparatu shot bakoitza zure onenarekin.",
     "ctaBrewmie": "Brewmie soilik",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sousekin pakete",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill bidez desblokeatzen da. Ez da benetako erosketa."
   },
   "tierLock": {

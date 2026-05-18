@@ -339,9 +339,6 @@
     "import": "Імпарт",
     "resetAll": "Скінуць усе даныя",
     "dataNote": "Твае шоты тут. Экспартуй ці ўвайдзі, каб трымаць паміж прыладамі.",
-    "footerDinner": "Што на вячэру?",
-    "footerCta": "Наведай Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Ачысціць усю гісторыю шотаў? Адмяніць нельга.",
     "confirmReset": "Скінуць УСЕ даныя, у тым ліку наладу машыны, млына і гісторыю шотаў? Адмяніць нельга.",
     "importInvalid": "Няправільны файл. Выберы сапраўдны экспарт Brewmie.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Параўнай кожны шот са сваім лепшым.",
     "ctaBrewmie": "Толькі Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Пакет з Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: разблакіроўка праз dev pill. Не сапраўдная пакупка."
   },
   "tierLock": {

@@ -339,9 +339,6 @@
     "import": "امپورٽ",
     "resetAll": "سڀ ڊيٽا ري سيٽ ڪريو",
     "dataNote": "توهان جا شاٽ هتي رهن ٿا. انهن کي ايڪسپورٽ ڪريو، يا سائن ان ڪريو ڊوائيسز جي وچ ۾.",
-    "footerDinner": "رات جي ماني ۾ ڇا آهي؟",
-    "footerCta": "Lazy Sous ڏسو →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "سڀ شاٽ تاريخ صاف ڪريو؟ هي واپس نه ٿي سگهندو.",
     "confirmReset": "مشين، گرائنڊر ۽ شاٽ تاريخ سميت سڀ ڊيٽا ري سيٽ ڪريو؟ هي واپس نه ٿي سگهندو.",
     "importInvalid": "غير قانوني فائل. صحيح Brewmie ايڪسپورٽ چونڊيو.",
@@ -450,8 +447,6 @@
     "feature3Sub": "هر شاٽ کي پنهنجي بهترين سان مقابلو ڪريو.",
     "ctaBrewmie": "صرف Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Lazy Sous سان بنڊل",
-    "priceBundle": "$9.99",
     "devNote": "Dev: dev pill ذريعي کوليو. حقيقي خريداري نه آهي."
   },
   "tierLock": {

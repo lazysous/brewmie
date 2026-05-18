@@ -339,9 +339,6 @@
     "import": "Importeren",
     "resetAll": "Alle data resetten",
     "dataNote": "Je shots staan hier. Exporteer ze, of log in om ze over apparaten te houden.",
-    "footerDinner": "Wat eten we vanavond?",
-    "footerCta": "Bezoek Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Alle shotgeschiedenis wissen? Dit kan niet ongedaan worden.",
     "confirmReset": "ALLE data resetten inclusief machine-, molenconfig en shotgeschiedenis? Dit kan niet ongedaan worden.",
     "importInvalid": "Ongeldig bestand. Kies een geldige Brewmie-export.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Vergelijk elke shot met je eigen beste.",
     "ctaBrewmie": "Alleen Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Bundel met Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: ontgrendel via dev pill. Geen echte aankoop."
   },
   "tierLock": {

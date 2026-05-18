@@ -339,9 +339,6 @@
     "import": "导入",
     "resetAll": "重置所有数据",
     "dataNote": "你的萃取数据都在这里。导出，或登录以跨设备同步。",
-    "footerDinner": "晚饭吃什么？",
-    "footerCta": "去看 Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "清空所有萃取历史？此操作无法撤销。",
     "confirmReset": "重置所有数据，包括咖啡机、磨豆机设置和萃取历史？此操作无法撤销。",
     "importInvalid": "文件无效。请选择有效的 Brewmie 导出。",
@@ -450,8 +447,6 @@
     "feature3Sub": "每杯和你的最佳对比。",
     "ctaBrewmie": "仅Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "与Lazy Sous组合",
-    "priceBundle": "$9.99",
     "devNote": "开发：通过dev pill解锁，非实际购买。"
   },
   "tierLock": {

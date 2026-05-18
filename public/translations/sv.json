@@ -339,9 +339,6 @@
     "import": "Importera",
     "resetAll": "Återställ all data",
     "dataNote": "Dina shots lever här. Exportera dem, eller logga in för att ha dem mellan enheter.",
-    "footerDinner": "Vad blir det till middag?",
-    "footerCta": "Besök Lazy Sous →",
-    "footerCopy": "© {year} Brewmie",
     "confirmClear": "Rensa hela shothistoriken? Det går inte att ångra.",
     "confirmReset": "Återställ ALL data inklusive maskin, kvarn och shothistorik? Det går inte att ångra.",
     "importInvalid": "Ogiltig fil. Välj en giltig Brewmie-export.",
@@ -450,8 +447,6 @@
     "feature3Sub": "Jämför varje shot med ditt bästa.",
     "ctaBrewmie": "Bara Brewmie",
     "priceBrewmie": "$6.99",
-    "ctaBundle": "Paket med Lazy Sous",
-    "priceBundle": "$9.99",
     "devNote": "Dev: lås upp via dev pill. Inget riktigt köp."
   },
   "tierLock": {

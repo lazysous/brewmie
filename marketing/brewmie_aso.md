@@ -1,192 +1,153 @@
 # Brewmie ASO copy
 
-Style matches Lazy Sous: brand colon descriptor in title, action verbs in
-the subtitle, plain editorial voice in the long description, sectioned
-body, no-subscription messaging up front.
-
-Where Lazy Sous sells **time** ("plan a whole week in one tap"), Brewmie
-sells **certainty** ("know what to change next").
+Mirrors Lazy Sous's live listing: pipe-separated brand title, verb-led
+subtitle, CAPS section headers, no-subscription messaging up front, no
+em dashes anywhere.
 
 ---
 
 ## App Store (iOS)
 
-### Title — 30 chars max
-`Brewmie: Espresso Dial-In Coach` — **31 chars, fails iOS limit**
+### Title (30 chars max)
+`Brewmie | Espresso Dial-In` (26 chars)
 
-Trimmed options:
+Pipe matches Lazy Sous. Brand first, primary keyword second.
 
-| Option | Chars | Note |
-|---|---|---|
-| `Brewmie: Espresso Dial-In` | 25 | Brand + primary keyword. Clean. |
-| `Brewmie: Dial in Espresso` | 25 | Same length, verb-first feels active. |
-| `Brewmie · Dial in Espresso` | 26 | Middle-dot separator. Brand identity. |
-| `Espresso Dial-In: Brewmie` | 25 | Primary keyword first. Best for ranking, worst for brand. |
-| `Espresso Coach: Brewmie` | 23 | "Coach" is a softer secondary keyword. |
+### Subtitle (30 chars max)
+`Espresso shot timer & tracker` (29 chars)
 
-**Pick: `Brewmie · Dial in Espresso`** (26 chars).
-- Brand front, primary keyword "espresso" present, "dial in" is a
-  high-intent niche query.
-- Middle-dot matches Brewmie's typographic style elsewhere in the app.
+Two keywords. "Shot timer" is the second-most-searched espresso query.
+"Tracker" is on-target once "espresso" disambiguates it from basketball
+and golf apps. Dropped "coach". Too crowded by fitness and life-coach
+apps to rank in the coffee category.
 
-### Subtitle — 30 chars max
-| Option | Chars | Note |
-|---|---|---|
-| `Pull. Log. Adjust. One shot at a time.` | 38 | Too long. |
-| `Pull. Log. Adjust.` | 18 | On-brand, no keywords. |
-| `Shot timer + dial-in coach` | 26 | Two keywords. |
-| `Espresso shot timer & coach` | 27 | "Shot timer" is high-volume. |
-| `Espresso timer with dial-in coach` | 33 | Too long. |
-| `Shot logger that coaches you` | 28 | Editorial, "shot logger" niche keyword. |
+### Promotional text (170 chars, refreshes without review)
+> Pull a shot. Tell us how it tasted. Brewmie tells you exactly what to
+> grind next. Built by baristas. Free, with optional one-time Premium.
+> No subscription.
 
-**Pick: `Espresso shot timer & coach`** (27 chars).
-- "Espresso" repeated for the algorithm.
-- "Shot timer" is the second-most-searched espresso-app query after "espresso".
-- "Coach" frames the differentiator — Brewmie doesn't just log, it tells
-  you what to change.
+(160 chars.)
 
-### Promotional text — 170 chars max (refreshes without review)
-> Log a shot, rate the taste, get the next grind, dose, or yield move in
-> plain English. Built by baristas. Free. Offline. Optional one-off
+### Long description
+
+**Lead (first 252 chars are indexed):**
+
+> Brewmie is the espresso dial-in coach for home baristas. Pull a shot,
+> rate the taste, and Brewmie tells you the next grind, dose, or yield
+> move in your grinder's own units. Free to use, with optional one-time
 > Premium. No subscription.
 
-(167 chars.)
+(245 chars. Indexes: espresso, dial-in, coach, home baristas, pull a
+shot, grind, dose, yield, grinder, free, one-time, no subscription.)
 
-### Long description (first 252 chars are indexed)
-**Lead:** keyword-loaded, editorial, no AI-slop.
+**Body:**
 
-> Brewmie is the espresso dial-in coach for home baristas. Log a shot,
-> tell us how it tasted, and we tell you the next grind, dose, or yield
-> move — in your grinder's actual units, with the reason in plain English.
-> Free. Offline. No subscription.
+```
+Built by baristas. Tuned to your gear, your beans, the air in your kitchen.
 
-(249 chars. Includes: espresso, dial-in, coach, home baristas, log a shot,
-grind, dose, yield, grinder, free, offline, no subscription.)
-
-**Body, sectioned in Lazy Sous's pattern:**
-
----
+No grind-by-percentages. No "go finer a bit." No subscription. Free to use, with optional one-time Premium.
 
 PULL
-
-Set your grind, dose, tamp, and target yield. Hit BREW. The button counts
-you in, then the timer takes over. Stop when the shot's done. Edit the
-time if you forgot. Volume defaults to your target — adjust with +/- if
-it landed somewhere else.
+- Set your grind, dose, tamp, and target yield. Hit BREW.
+- The button counts you in. The timer takes over.
+- Stop when the shot is done. Edit the time if you forgot.
+- Volume defaults to your target. Adjust with plus or minus if it landed somewhere else.
 
 RATE
-
-How was the crema? How does it taste — sour, balanced, bitter? Strength
-weak, perfect, or strong? Rate now or get a push at +8 minutes once the
-shot's settled. Skip any of them. Your tongue is part of the algorithm.
+- How was the crema? Sour, balanced, or bitter? Weak, perfect, or strong?
+- Rate now, or get a push at plus 8 minutes once the shot has settled.
+- Skip any of them. Your tongue is part of the algorithm.
 
 DIAL IN
-
-Brewmie tells you the next move in one line, in your grinder's actual
-units. Not "go finer by 2%" — `Grind 31.5 → 30.5`. With the reason
-sitting underneath. Apply for the next shot with one tap, or set
-"Always do this" and stop tapping.
+- One line. One next move. In your grinder's actual units.
+- Not "go finer by 2%." Grind 31.5 to 30.5, with the reason underneath.
+- Apply for the next shot with one tap. Or set "Always do this" and stop tapping.
 
 COACH
-
-The recommendations use your latest pull, your gear, your beans, the air
-in your room. Time signal and yield signal combined, weighted, capped.
-Bean age and humidity baked in. When your grinder hits its limit, the
-algorithm pivots to dose instead. When your trend repeats, it knows.
+- Uses your latest pull, your gear, your beans, the room.
+- Time signal and yield signal, weighted and capped so it never overshoots.
+- Bean age and humidity baked in. When the grinder hits its limit, the recommendation pivots to dose.
 
 GEAR
-
-Pick from 25+ machine brands, 100+ grinder models with known dial ranges.
-Spring or auto tamper pressure modelled directly. Bean profile travels
-across bags — switch beans, pick up where you left off. Premium unlocks
-your full grinder/tamper/beans setup.
+- 25 plus machine brands. 100 plus grinder models with known dial ranges.
+- Spring or auto tamper pressure modelled directly.
+- Bean profiles travel across bags. Switch beans, pick up where you left off.
+- Premium unlocks the full grinder, tamper, and beans setup.
 
 INSIGHTS
-
-Every shot tracked. Personal best, consistency score, time window, this
-week's pace. Your sweet-spot recipe surfaces once you've logged enough
-85-plus shots. Export the lot as CSV anytime. Edit any historical shot —
-retag taste, fix a missed timer — and the algorithm learns from the
-correction.
+- Every shot tracked. Personal best, consistency score, time window, this week's pace.
+- Your sweet-spot recipe surfaces once you have logged enough 85-plus shots.
+- Export the lot as CSV anytime.
+- Edit any past shot. Retag the taste, fix a missed timer. The algorithm learns from the correction.
 
 PRIVACY
-
-Your shots live on your device by default. Sign in to sync. Anonymous
-shot data feeds the algorithm for everyone — opt out any time in Setup.
-Account deletion is one email away.
+- Shots live on your device by default.
+- Sign in to sync.
+- Anonymous shot data feeds the algorithm for every Brewmie user. Opt out anytime in Setup.
+- Account deletion is one email away.
 
 PRICING
+- One payment for Premium. Yours forever.
+- No ads. No subscription. No upsells.
+- Free covers the core dial-in flow.
 
-Premium is a one-off. Free forever for the core dial-in flow. No ads,
-no subscription, no upsells.
+Built for baristas who got tired of guessing at the grinder.
+```
 
-### Keyword field — 100 chars, comma-separated, no spaces, no duplicates from title/subtitle
-> dial,grind,dose,yield,brew,ratio,barista,pour,extraction,puckyeah,beanconqueror,timer,log
+### Keyword field (100 chars, comma-separated, no spaces, no duplicates from title/subtitle)
+> dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log
 
-(97 chars. Includes competitor brand names — common ASO move; Apple
-doesn't penalise.)
+(100 chars, right at the limit. Dropped `brew` and `pour`. Too generic;
+they lose to mainstream coffee apps. Added `tracker`, `crema`, `tamper`.
+On-target, low competition.)
 
-### What's new (for v1.0)
-> First release. Pull a shot, log the time and yield, rate the taste —
-> Brewmie tells you exactly what to change next. Built by baristas, in
-> your grinder's units. Free.
+### What's New (v1.0)
+> First release. Pull a shot, log the time and yield, rate the taste.
+> Brewmie tells you exactly what to change next. In your grinder's units.
 
 ### Category
-Primary: **Food & Drink** (same as Lazy Sous; espresso fits here).
-Secondary candidate: **Lifestyle** (less crowded, but Food & Drink is
-where coffee enthusiasts browse).
+Primary: **Food & Drink** (matches Lazy Sous).
+Secondary candidate: **Lifestyle**.
 
 ---
 
 ## Google Play
 
-Title is shorter on Play (30 chars same as iOS), short description is the
-key conversion line (80 chars max).
+### Title (30 chars max)
+Same as iOS: `Brewmie | Espresso Dial-In` (26 chars).
 
-### Title — 30 chars max
-Use the same as iOS: `Brewmie · Dial in Espresso` (26 chars).
+### Short description (80 chars max)
+`Espresso shot timer and dial-in tracker. Free. No subscription.` (63 chars)
 
-### Short description — 80 chars max
-| Option | Chars | Note |
-|---|---|---|
-| `Log a shot, tell us how it tasted — we'll tell you what to change next.` | 71 | Hook-y. |
-| `Espresso dial-in coach. Free. Offline. No subscription.` | 55 | Punchy. |
-| `Pull a shot. Log it. Brewmie tells you what to grind next.` | 57 | Verb-driven. |
-| `Espresso shot timer + dial-in coach. Free. No subscription.` | 59 | Two keywords + USP. |
+Punchy. Three Tier 1–2 keywords up front, USP at the back.
 
-**Pick: `Espresso shot timer + dial-in coach. Free. No subscription.`** (59).
-
-### Long description (Play allows 4000 chars; first ~200 indexed heavily)
-Same body as App Store. Play handles markdown loosely — keep section
-headings in ALL CAPS as Lazy Sous does. No emojis (matches user
-preference from memory: no AI slop, no decorative emoji).
+### Long description (4000 chars)
+Same body as App Store. Play renders the CAPS headings cleanly, same as
+Lazy Sous's live listing.
 
 ### Tags / Category
 Primary: **Food & Drink**.
-Tags (Play allows 5): `espresso`, `coffee`, `barista`, `recipe`, `timer`.
+Tags (5 max): `espresso`, `coffee`, `barista`, `recipe`, `timer`.
 
 ---
 
 ## Notes
 
-- The competitor brand names in the iOS keyword field (`puckyeah`,
-  `beanconqueror`) are a tactical move: a fraction of users searching
-  those names will see Brewmie in results. Apple has been lax here; it's
-  a known indie-friendly trick. Drop if either competitor sends a
-  legal nudge.
-- The "Built by baristas" phrase appears in promo text + description.
-  If that's not literally true, replace with "Built for home baristas"
-  (which is unambiguous).
-- The first 252 chars of the description don't share keywords with the
-  title or subtitle — Apple ranks all three independently, so this is a
-  multiplier, not a redundancy.
+- "Built by baristas" appears in promo text and the body. If that is not
+  literally true, swap to "Built for baristas."
+- Competitor brand names (`puckyeah`, `beanconqueror`) in the iOS keyword
+  field are a standard indie ASO tactic. Drop them if either competitor
+  sends a legal nudge.
+- The first 252 chars of the description deliberately do not repeat any
+  word from the title or subtitle. Apple ranks the three fields
+  separately, so this multiplies coverage rather than wasting it.
 
 ## Action items
 
 | Action | Effort | Notes |
 |---|---|---|
-| Lock title + subtitle copy with founders | 10 min | Then it's set in App Store Connect / Play Console. |
-| Capture 4 screenshots (Brew screen / Result + coaching / Insights / Setup) | 1 hr | Match Lazy Sous's screenshot aesthetic if there is one — same border, copper accent. |
-| Generate App Preview video (optional, iOS) | 2 hr | 15-30 sec, show the pull → log → recommendation loop. Big conversion lift on iOS. |
-| Write 4 review-response templates | 30 min | For 1-star, 3-star, 5-star, and "where's feature X" categories. |
-| Stand up Apple Search Ads with a $100 cap | 30 min | Test bid on "espresso dial in" and "barista timer". |
+| Lock the copy with the founders | 10 min | Then set it in App Store Connect and Play Console. |
+| Capture 4 screenshots (Brew, Result and coaching, Insights, Setup) | 1 hr | Match Lazy Sous's screenshot frame and copper accent if there is a shared template. |
+| App Preview video (optional, iOS only) | 2 hr | 15 to 30 sec. Pull, log, recommendation. Big conversion lift on iOS. |
+| Review-response templates | 30 min | Four: 1-star, 3-star, 5-star, "where is feature X". |
+| Apple Search Ads, $100 cap | 30 min | Test bids on "espresso dial in" and "barista timer". |

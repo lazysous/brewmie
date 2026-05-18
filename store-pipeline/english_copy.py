@@ -5,7 +5,10 @@ No em dashes anywhere. Built-by-baristas voice. Espresso-shot focus.
 # Shared brand strings
 TITLE = "Brewmie: Espresso Shot Dial-In"  # 30 chars
 IOS_SUBTITLE = "Coffee shot timer & grind log"  # 29 chars
-PLAY_SHORT_DESC = "Espresso shot timer, grind log, dial-in coach. Free. No subscription."  # 69 chars
+# Play rejects "Free." and "No subscription." in short descriptions as
+# promotional keywords. Long description still carries both phrases; Play
+# permits them there.
+PLAY_SHORT_DESC = "Espresso shot timer, grind log, and dial-in coach. Built by baristas."  # 69 chars
 IOS_PROMO_TEXT = (
     "Pull a shot. Rate the taste. Brewmie tells you exactly what to grind, "
     "dose, or pour next. Built by baristas. Free, with optional one-time "

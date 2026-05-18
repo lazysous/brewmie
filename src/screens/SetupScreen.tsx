@@ -732,35 +732,6 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           </p>
         </Card>
 
-        {/* ── 1b. Language ── */}
-        <Card
-          title={t('setup.cardLanguage')}
-          open={openCards.language}
-          onToggle={() => toggleCard('language')}
-          complete={true}
-          icon={<IconGlobe />}
-        >
-          <Field label={t('setup.languageLabel')}>
-            <select
-              className="sc-select"
-              value={locale}
-              onChange={(e) => setLocale(e.target.value)}
-            >
-              <optgroup label={t('setup.languageMajor')}>
-                {[...TIER_1_LOCALES].map((code) => (
-                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
-                ))}
-              </optgroup>
-              <optgroup label={t('setup.languageMore')}>
-                {[...TIER_2_LOCALES].map((code) => (
-                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
-                ))}
-              </optgroup>
-            </select>
-          </Field>
-          <p className="sc-hint">{t('setup.languageHint')}</p>
-        </Card>
-
         {/* ── 2. Machine ── */}
         <Card
           title={t('setup.cardMachine')}
@@ -1119,6 +1090,35 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
             onToday={() => setMaintenanceDate('lastGrinderClean', TODAY_ISO)}
             t={t}
           />
+        </Card>
+
+        {/* ── 6b. Language ── */}
+        <Card
+          title={t('setup.cardLanguage')}
+          open={openCards.language}
+          onToggle={() => toggleCard('language')}
+          complete={true}
+          icon={<IconGlobe />}
+        >
+          <Field label={t('setup.languageLabel')}>
+            <select
+              className="sc-select"
+              value={locale}
+              onChange={(e) => setLocale(e.target.value)}
+            >
+              <optgroup label={t('setup.languageMajor')}>
+                {[...TIER_1_LOCALES].map((code) => (
+                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
+                ))}
+              </optgroup>
+              <optgroup label={t('setup.languageMore')}>
+                {[...TIER_2_LOCALES].map((code) => (
+                  <option key={code} value={code}>{LOCALE_NAMES[code] ?? code}</option>
+                ))}
+              </optgroup>
+            </select>
+          </Field>
+          <p className="sc-hint">{t('setup.languageHint')}</p>
         </Card>
 
         {/* ── 7. Privacy ── */}

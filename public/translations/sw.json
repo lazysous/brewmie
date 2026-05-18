@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Siku {days}",
     "beanUseSoon": "{brand} · Siku {days} · itumie hivi karibuni",
     "beanStale": "{brand} · Siku {days} · inakuwa kuukuu",
-    "weatherHumid": "{temp}°C · {humidity}% RH · unyevu, saga nyembamba zaidi",
-    "weatherDry": "{temp}°C · {humidity}% RH · kavu, saga laini zaidi",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

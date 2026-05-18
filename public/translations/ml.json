@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ദിവസം {days}",
     "beanUseSoon": "{brand} · ദിവസം {days} · ഉടൻ ഉപയോഗിക്കൂ",
     "beanStale": "{brand} · ദിവസം {days} · പഴകുന്നു",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ഈർപ്പം, കൂടുതൽ മോട ഗ്രൈൻഡ്",
-    "weatherDry": "{temp}°C · {humidity}% RH · വരൾച്ച, നേർത്ത ഗ്രൈൻഡ്",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

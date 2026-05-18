@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Umunsi wa {days}",
     "beanUseSoon": "{brand} · Umunsi wa {days} · ikoreshe vuba",
     "beanStale": "{brand} · Umunsi wa {days} · iratangiye gusaza",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ubuhehere, sya bikomeye",
-    "weatherDry": "{temp}°C · {humidity}% RH · gukakara, sya bito",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

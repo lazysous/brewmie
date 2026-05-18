@@ -35,8 +35,8 @@
     "beanDay": "{brand} · 第 {days} 天",
     "beanUseSoon": "{brand} · 第 {days} 天 · 尽快用完",
     "beanStale": "{brand} · 第 {days} 天 · 已老化",
-    "weatherHumid": "{temp}°C · 湿度{humidity}% · 潮湿，研磨粗一点",
-    "weatherDry": "{temp}°C · 湿度{humidity}% · 干燥，研磨细一点",
+    "weatherHumid": "{temp}°C · 湿度{humidity}%",
+    "weatherDry": "{temp}°C · 湿度{humidity}%",
     "weatherNeutral": "{temp}°C · 湿度{humidity}%"
   },
   "consent": {

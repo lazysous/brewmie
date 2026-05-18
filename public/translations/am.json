@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ቀን {days}",
     "beanUseSoon": "{brand} · ቀን {days} · በቅርቡ ይጠቀሙ",
     "beanStale": "{brand} · ቀን {days} · እያረጀ",
-    "weatherHumid": "{temp}°C · {humidity}% RH · እርጥበት፣ ጎርፍ ይፍጩ",
-    "weatherDry": "{temp}°C · {humidity}% RH · ደረቅ፣ ጥሩ ይፍጩ",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Ziua {days}",
     "beanUseSoon": "{brand} · Ziua {days} · folosește curând",
     "beanStale": "{brand} · Ziua {days} · învechită",
-    "weatherHumid": "{temp}°C · {humidity}% RH · umed, macină mai grosier",
-    "weatherDry": "{temp}°C · {humidity}% RH · uscat, macină mai fin",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

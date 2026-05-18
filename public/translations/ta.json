@@ -35,8 +35,8 @@
     "beanDay": "{brand} · நாள் {days}",
     "beanUseSoon": "{brand} · நாள் {days} · விரைவில் பயன்படுத்தவும்",
     "beanStale": "{brand} · நாள் {days} · பழையதாகிறது",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ஈரப்பதம், பருத்த அரைப்பு",
-    "weatherDry": "{temp}°C · {humidity}% RH · உலர், நுணுக்கமான அரைப்பு",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

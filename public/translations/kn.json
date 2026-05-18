@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ದಿನ {days}",
     "beanUseSoon": "{brand} · ದಿನ {days} · ಬೇಗ ಬಳಸಿ",
     "beanStale": "{brand} · ದಿನ {days} · ಹಳೆಯದಾಗುತ್ತಿದೆ",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ತೇವ, ದಪ್ಪ ಗ್ರೈಂಡ್",
-    "weatherDry": "{temp}°C · {humidity}% RH · ಶುಷ್ಕ, ನುಣ್ಣನೆ ಗ್ರೈಂಡ್",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

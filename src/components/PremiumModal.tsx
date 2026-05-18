@@ -6,19 +6,11 @@ import { track } from '../lib/analytics'
 interface PremiumModalProps {
   open: boolean
   onClose: () => void
+  // Trigger is kept for analytics (which surface opened the modal), but no
+  // longer shown to the user — restating "you tapped grinder" was redundant.
   trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null
-  // True when the user is signed in. Premium requires sign-in (same model as
-  // Lazy Sous) — if false, the modal routes to sign-in first.
   isSignedIn?: boolean
   onSignInRequired?: () => void
-}
-
-const TRIGGER_KEYS: Record<NonNullable<PremiumModalProps['trigger']>, string> = {
-  grinder: 'premium.triggerGrinder',
-  tamper: 'premium.triggerTamper',
-  beans: 'premium.triggerBeans',
-  history: 'premium.triggerHistory',
-  benchmarks: 'premium.triggerBenchmarks',
 }
 
 export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSignInRequired }: PremiumModalProps) {
@@ -28,9 +20,8 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
   }, [open, trigger, isSignedIn])
   if (!open) return null
 
-  // In dev, the CTAs just flip the override so designers can test without a real purchase.
   const isDev = import.meta.env.DEV
-  const handleBuyBrewmie = () => {
+  const handleUnlock = () => {
     track('premium_cta_click', { product: 'brewmie_only', signed_in: isSignedIn })
     if (!isSignedIn && onSignInRequired) {
       onSignInRequired()
@@ -39,17 +30,6 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
     }
     if (isDev) setTierOverride('premium')
     track('premium_purchased', { product: 'brewmie_only' })
-    onClose()
-  }
-  const handleBuyBundle = () => {
-    track('premium_cta_click', { product: 'bundle', signed_in: isSignedIn })
-    if (!isSignedIn && onSignInRequired) {
-      onSignInRequired()
-      onClose()
-      return
-    }
-    if (isDev) setTierOverride('premium')
-    track('premium_purchased', { product: 'bundle' })
     onClose()
   }
 
@@ -65,44 +45,25 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
 
         <h2 className="pm-title">{t('premium.title')}</h2>
 
-        {trigger && (
-          <p className="pm-trigger">{t(TRIGGER_KEYS[trigger])}</p>
-        )}
-
         <ul className="pm-list">
           <li className="pm-list__item">
             <span className="pm-list__check" aria-hidden="true">✓</span>
-            <div className="pm-list__text">
-              <span className="pm-list__head">{t('premium.feature1Head')}</span>
-              <span className="pm-list__sub">{t('premium.feature1Sub')}</span>
-            </div>
+            <span className="pm-list__head">{t('premium.feature1Head')}</span>
           </li>
           <li className="pm-list__item">
             <span className="pm-list__check" aria-hidden="true">✓</span>
-            <div className="pm-list__text">
-              <span className="pm-list__head">{t('premium.feature2Head')}</span>
-              <span className="pm-list__sub">{t('premium.feature2Sub')}</span>
-            </div>
+            <span className="pm-list__head">{t('premium.feature2Head')}</span>
           </li>
           <li className="pm-list__item">
             <span className="pm-list__check" aria-hidden="true">✓</span>
-            <div className="pm-list__text">
-              <span className="pm-list__head">{t('premium.feature3Head')}</span>
-              <span className="pm-list__sub">{t('premium.feature3Sub')}</span>
-            </div>
+            <span className="pm-list__head">{t('premium.feature3Head')}</span>
           </li>
         </ul>
 
-        <div className="pm-buttons">
-          <button className="pm-btn pm-btn--primary" onClick={handleBuyBrewmie} type="button">
-            <span className="pm-btn__label">{t('premium.ctaBrewmie')}</span>
-            <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>
-          </button>
-          <button className="pm-btn pm-btn--bundle" onClick={handleBuyBundle} type="button">
-            <span className="pm-btn__label">{t('premium.ctaBundle')}</span>
-            <span className="pm-btn__price">{t('premium.priceBundle')}</span>
-          </button>
-        </div>
+        <button className="pm-btn pm-btn--primary" onClick={handleUnlock} type="button">
+          <span className="pm-btn__label">{t('premium.cta')}</span>
+          <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>
+        </button>
 
         {isDev && (
           <p className="pm-devnote">{t('premium.devNote')}</p>
@@ -183,8 +144,8 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
         }
         .pm-list__item {
           display: flex;
-          align-items: flex-start;
-          gap: 10px;
+          align-items: center;
+          gap: 12px;
         }
         .pm-list__check {
           width: 22px;
@@ -198,35 +159,20 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
           font-size: 12px;
           font-weight: 800;
           flex-shrink: 0;
-          margin-top: 2px;
-        }
-        .pm-list__text {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
         }
         .pm-list__head {
-          font-size: 14px;
-          font-weight: 700;
+          font-size: 15px;
+          font-weight: 600;
           color: var(--text-primary);
           line-height: 1.3;
         }
-        .pm-list__sub {
-          font-size: 12px;
-          color: var(--text-tertiary);
-          line-height: 1.4;
-        }
 
-        .pm-buttons {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
         .pm-btn {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 14px 18px;
+          width: 100%;
+          padding: 16px 20px;
           border-radius: 14px;
           border: none;
           cursor: pointer;
@@ -239,22 +185,16 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, onSign
           color: #fff;
           box-shadow: 0 6px 14px rgba(107, 142, 92, 0.22);
         }
-        .pm-btn--bundle {
-          background: linear-gradient(180deg, #2C261E 0%, #221C15 100%);
-          color: #fff;
-          box-shadow: 0 6px 14px rgba(34, 28, 21, 0.22);
-        }
         .pm-btn__label {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 700;
-          letter-spacing: 0.1px;
+          letter-spacing: 0.2px;
         }
         .pm-btn__price {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 800;
           font-variant-numeric: tabular-nums;
         }
-        .pm-btn--bundle .pm-btn__price { color: #E5B891; }
 
         .pm-devnote {
           font-size: 11px;

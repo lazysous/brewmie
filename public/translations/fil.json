@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Araw {days}",
     "beanUseSoon": "{brand} · Araw {days} · gamitin na agad",
     "beanStale": "{brand} · Araw {days} · paluma na",
-    "weatherHumid": "{temp}°C · {humidity}% RH · mahalumigmig, mas magaspang",
-    "weatherDry": "{temp}°C · {humidity}% RH · tuyo, mas pino",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

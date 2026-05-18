@@ -35,8 +35,8 @@
     "beanDay": "{brand} · День {days}",
     "beanUseSoon": "{brand} · День {days} · використай скоро",
     "beanStale": "{brand} · День {days} · застаріває",
-    "weatherHumid": "{temp}°C · {humidity}% RH · волого, мели грубіше",
-    "weatherDry": "{temp}°C · {humidity}% RH · сухо, мели дрібніше",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

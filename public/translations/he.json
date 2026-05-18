@@ -35,8 +35,8 @@
     "beanDay": "{brand} · יום {days}",
     "beanUseSoon": "{brand} · יום {days} · להשתמש בקרוב",
     "beanStale": "{brand} · יום {days} · מתחיל להתיישן",
-    "weatherHumid": "{temp}°C · {humidity}% לחות · לח, לטחון גס יותר",
-    "weatherDry": "{temp}°C · {humidity}% לחות · יבש, לטחון דק יותר",
+    "weatherHumid": "{temp}°C · {humidity}% לחות",
+    "weatherDry": "{temp}°C · {humidity}% לחות",
     "weatherNeutral": "{temp}°C · {humidity}% לחות"
   },
   "consent": {

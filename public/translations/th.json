@@ -35,8 +35,8 @@
     "beanDay": "{brand} · วันที่ {days}",
     "beanUseSoon": "{brand} · วันที่ {days} · รีบใช้",
     "beanStale": "{brand} · วันที่ {days} · เริ่มเก่า",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ชื้น บดหยาบขึ้น",
-    "weatherDry": "{temp}°C · {humidity}% RH · แห้ง บดละเอียดขึ้น",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -1026,7 +1026,8 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     const tier = t(scoreTierKey(result.score))
     const hasAnyAdjust = ROWS.some((row) => (result[row.adjustKey] as number) !== 0)
     const reasonText = renderReason(result.reasonKey, result.reasonParams)
-    const doseReasonText = result.doseReasonKey ? t(result.doseReasonKey, result.doseReasonParams) : ''
+    // doseReasonKey is no longer surfaced — the numeric adjustment speaks
+    // for itself ("Dose 18 → 18.5g" doesn't need "Watery. Add 0.5g.").
 
     // Hero context: how does this score compare to recent shots?
     // state.shots[0] is the just-saved current shot; [1] is the previous one.
@@ -1107,7 +1108,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
                 const recommendedVal = clampSnap(row.key, targetVal + adjVal)
                 const isLast = idx === inputRows.length - 1
                 const isGrind = row.key === 'grind'
-                const isDose = row.key === 'dose'
                 const grindDirection = adjVal < 0 ? t('brew.directionFiner') : adjVal > 0 ? t('brew.directionCoarser') : null
 
                 return (
@@ -1138,9 +1138,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
                     </div>
                     {isGrind && adjVal !== 0 && reasonText && (
                       <p className="bs-adj-row__reason">{reasonText}</p>
-                    )}
-                    {isDose && doseReasonText && (
-                      <p className="bs-adj-row__reason">{doseReasonText}</p>
                     )}
                   </div>
                 )
@@ -1317,40 +1314,6 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       {/* ── Rating wizard (inline, below results) ── */}
       {phase === 'taste' && renderRatingWizard()}
 
-      {/* ── BREW button — morphs in place: BREW → STOP → SAVE → BREW AGAIN.
-            Hidden entirely during the 3-2-1 countdown (the countdown panel
-            owns the screen). The rating wizard handles its own footer. ── */}
-      {phase !== 'countdown' && phase !== 'taste' && (
-      <button
-        className={`bs-brew-btn${phase === 'logging' && !timerStopped ? ' bs-brew-btn--running' : ''}`}
-        onClick={
-          phase === 'logging' && timerRunning
-            ? stopTimer
-            : phase === 'logging' && timerStopped
-              ? handleTimerSave
-              : (phase === 'idle' || phase === 'rated')
-                ? (cardState === 'results' ? handleBrewAgain : handleBrew)
-                : undefined
-        }
-        disabled={
-          (phase === 'logging' && timerStopped && !timerVolume) ||
-          phase === 'brewing'
-        }
-        type="button"
-      >
-        <span className="bs-brew-btn__label">
-          {phase === 'logging' && timerRunning
-            ? t('brew.stop')
-            : phase === 'logging' && timerStopped
-              ? t('brew.saveShot')
-              : cardState === 'results'
-                ? t('brew.brewAgainButton')
-                : t('brew.brewButton')}
-        </span>
-      </button>
-      )}
-
-
       {/* ── 3-2-1 countdown — runs before the timer starts ── */}
       {phase === 'countdown' && (
         <div className="bs-countdown">
@@ -1376,25 +1339,74 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
             </button>
           </div>
 
-          {/* Time — big serif numeral. Captured by timer, editable after stop. */}
+          {/* Time — big serif numeral while running. Editable after stop,
+              with +/- steppers (big = 1s, fine = 0.1s) for quick fixes. */}
           <div className="bs-timing__metric-block">
             <span className="bs-timing__label">{t('brew.fieldTimeSec')}</span>
-            <div className="bs-timing__metric">
-              <input
-                className="bs-timing__num"
-                type="text"
-                inputMode="decimal"
-                value={timerRunning ? timerSecs.toFixed(1) : manualTime}
-                readOnly={timerRunning}
-                onChange={(e) => {
-                  if (timerRunning) return
-                  if (/^[0-9]*\.?[0-9]*$/.test(e.target.value)) setManualTime(e.target.value)
-                }}
-                onFocus={(e) => e.target.select()}
-                aria-label={t('brew.fieldTimeSec')}
-              />
-              <span className="bs-timing__unit">s</span>
-            </div>
+            {timerRunning ? (
+              <div className="bs-timing__metric">
+                <input
+                  className="bs-timing__num"
+                  type="text"
+                  inputMode="decimal"
+                  value={timerSecs.toFixed(1)}
+                  readOnly
+                  aria-label={t('brew.fieldTimeSec')}
+                />
+                <span className="bs-timing__unit">s</span>
+              </div>
+            ) : (
+              <div className="bs-timing__stepper-row">
+                <button
+                  type="button"
+                  className="bs-stepper bs-stepper--big"
+                  onClick={() => {
+                    const cur = parseFloat(manualTime) || timerSecs
+                    setManualTime(String(Math.max(0, Math.round((cur - 1) * 10) / 10)))
+                  }}
+                  aria-label={t('brew.decrease', { label: t('brew.fieldTimeSec') })}
+                >−</button>
+                <button
+                  type="button"
+                  className="bs-stepper bs-stepper--fine"
+                  onClick={() => {
+                    const cur = parseFloat(manualTime) || timerSecs
+                    setManualTime(String(Math.max(0, Math.round((cur - 0.1) * 10) / 10)))
+                  }}
+                  aria-label={t('brew.decreaseFine', { label: t('brew.fieldTimeSec') })}
+                >−</button>
+                <div className="bs-timing__metric bs-timing__metric--inline">
+                  <input
+                    className="bs-timing__num bs-timing__num--small"
+                    type="text"
+                    inputMode="decimal"
+                    value={manualTime}
+                    onChange={(e) => /^[0-9]*\.?[0-9]*$/.test(e.target.value) && setManualTime(e.target.value)}
+                    onFocus={(e) => e.target.select()}
+                    aria-label={t('brew.fieldTimeSec')}
+                  />
+                  <span className="bs-timing__unit">s</span>
+                </div>
+                <button
+                  type="button"
+                  className="bs-stepper bs-stepper--fine bs-stepper--plus"
+                  onClick={() => {
+                    const cur = parseFloat(manualTime) || timerSecs
+                    setManualTime(String(Math.round((cur + 0.1) * 10) / 10))
+                  }}
+                  aria-label={t('brew.increaseFine', { label: t('brew.fieldTimeSec') })}
+                >+</button>
+                <button
+                  type="button"
+                  className="bs-stepper bs-stepper--big bs-stepper--plus"
+                  onClick={() => {
+                    const cur = parseFloat(manualTime) || timerSecs
+                    setManualTime(String(Math.round((cur + 1) * 10) / 10))
+                  }}
+                  aria-label={t('brew.increase', { label: t('brew.fieldTimeSec') })}
+                >+</button>
+              </div>
+            )}
           </div>
 
           {/* Volume — defaults to the target, +/- steppers do the rest. */}
@@ -1454,6 +1466,40 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
             </div>
           )}
         </div>
+      )}
+
+      {/* ── BREW button — last in the flex column so it pins to the bottom.
+            Morphs in place: BREW → STOP → SAVE SHOT → BREW AGAIN. Hidden
+            during the 3-2-1 countdown and the rating wizard (each owns the
+            screen on its own). ── */}
+      {phase !== 'countdown' && phase !== 'taste' && (
+        <button
+          className={`bs-brew-btn${phase === 'logging' && !timerStopped ? ' bs-brew-btn--running' : ''}`}
+          onClick={
+            phase === 'logging' && timerRunning
+              ? stopTimer
+              : phase === 'logging' && timerStopped
+                ? handleTimerSave
+                : (phase === 'idle' || phase === 'rated')
+                  ? (cardState === 'results' ? handleBrewAgain : handleBrew)
+                  : undefined
+          }
+          disabled={
+            (phase === 'logging' && timerStopped && !timerVolume) ||
+            phase === 'brewing'
+          }
+          type="button"
+        >
+          <span className="bs-brew-btn__label">
+            {phase === 'logging' && timerRunning
+              ? t('brew.stop')
+              : phase === 'logging' && timerStopped
+                ? t('brew.saveShot')
+                : cardState === 'results'
+                  ? t('brew.brewAgainButton')
+                  : t('brew.brewButton')}
+          </span>
+        </button>
       )}
 
       <PremiumModal

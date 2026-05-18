@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Μέρα {days}",
     "beanUseSoon": "{brand} · Μέρα {days} · χρησιμοποίησε σύντομα",
     "beanStale": "{brand} · Μέρα {days} · παλιώνει",
-    "weatherHumid": "{temp}°C · {humidity}% ΣΥ · υγρό, χοντρότερο άλεσμα",
-    "weatherDry": "{temp}°C · {humidity}% ΣΥ · ξηρό, λεπτότερο άλεσμα",
+    "weatherHumid": "{temp}°C · {humidity}% ΣΥ",
+    "weatherDry": "{temp}°C · {humidity}% ΣΥ",
     "weatherNeutral": "{temp}°C · {humidity}% ΣΥ"
   },
   "consent": {

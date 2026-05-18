@@ -35,8 +35,8 @@
     "beanDay": "{brand} · {days}-р өдөр",
     "beanUseSoon": "{brand} · {days}-р өдөр · удахгүй ашигла",
     "beanStale": "{brand} · {days}-р өдөр · хуучирч байна",
-    "weatherHumid": "{temp}°C · {humidity}% RH · чийглэг, бүдүүн нунтагла",
-    "weatherDry": "{temp}°C · {humidity}% RH · хуурай, нарийн нунтагла",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

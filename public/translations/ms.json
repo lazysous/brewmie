@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Hari {days}",
     "beanUseSoon": "{brand} · Hari {days} · guna segera",
     "beanStale": "{brand} · Hari {days} · semakin basi",
-    "weatherHumid": "{temp}°C · {humidity}% RH · lembap, kisar lebih kasar",
-    "weatherDry": "{temp}°C · {humidity}% RH · kering, kisar lebih halus",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

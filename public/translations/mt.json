@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Jum {days}",
     "beanUseSoon": "{brand} · Jum {days} · uża dalwaqt",
     "beanStale": "{brand} · Jum {days} · qed jixjieħ",
-    "weatherHumid": "{temp}°C · {humidity}% RH · umdu, itħan eħxen",
-    "weatherDry": "{temp}°C · {humidity}% RH · niexef, itħan eqreb",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

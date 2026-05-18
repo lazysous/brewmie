@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Dag {days}",
     "beanUseSoon": "{brand} · Dag {days} · gebruik gou",
     "beanStale": "{brand} · Dag {days} · word oud",
-    "weatherHumid": "{temp}°C · {humidity}% RH · klam, maal growwer",
-    "weatherDry": "{temp}°C · {humidity}% RH · droog, maal fyner",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

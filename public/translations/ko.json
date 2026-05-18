@@ -35,8 +35,8 @@
     "beanDay": "{brand} · {days}일차",
     "beanUseSoon": "{brand} · {days}일차 · 곧 사용",
     "beanStale": "{brand} · {days}일차 · 신선도 저하",
-    "weatherHumid": "{temp}°C · {humidity}% RH · 습함, 굵게 분쇄",
-    "weatherDry": "{temp}°C · {humidity}% RH · 건조, 가늘게 분쇄",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

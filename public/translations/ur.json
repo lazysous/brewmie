@@ -35,8 +35,8 @@
     "beanDay": "{brand} · دن {days}",
     "beanUseSoon": "{brand} · دن {days} · جلد استعمال کریں",
     "beanStale": "{brand} · دن {days} · پرانا ہو رہا",
-    "weatherHumid": "{temp}°C · {humidity}% RH · نمی، موٹا پیسیں",
-    "weatherDry": "{temp}°C · {humidity}% RH · خشک، باریک پیسیں",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

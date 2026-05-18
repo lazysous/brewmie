@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Día {days}",
     "beanUseSoon": "{brand} · Día {days} · úsalo pronto",
     "beanStale": "{brand} · Día {days} · envejeciendo",
-    "weatherHumid": "{temp}°C · {humidity}% HR · húmedo, molido más grueso",
-    "weatherDry": "{temp}°C · {humidity}% HR · seco, molido más fino",
+    "weatherHumid": "{temp}°C · {humidity}% HR",
+    "weatherDry": "{temp}°C · {humidity}% HR",
     "weatherNeutral": "{temp}°C · {humidity}% HR"
   },
   "consent": {

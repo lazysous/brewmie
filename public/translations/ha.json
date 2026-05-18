@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Rana {days}",
     "beanUseSoon": "{brand} · Rana {days} · yi amfani da shi da wuri",
     "beanStale": "{brand} · Rana {days} · tana tsufa",
-    "weatherHumid": "{temp}°C · {humidity}% RH · dan damshi, yi grind mai kauri",
-    "weatherDry": "{temp}°C · {humidity}% RH · bushe, yi grind mai laushi",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

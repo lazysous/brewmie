@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Dag {days}",
     "beanUseSoon": "{brand} · Dag {days} · snel gebruiken",
     "beanStale": "{brand} · Dag {days} · wordt oud",
-    "weatherHumid": "{temp}°C · {humidity}% RV · vochtig, grover malen",
-    "weatherDry": "{temp}°C · {humidity}% RV · droog, fijner malen",
+    "weatherHumid": "{temp}°C · {humidity}% RV",
+    "weatherDry": "{temp}°C · {humidity}% RV",
     "weatherNeutral": "{temp}°C · {humidity}% RV"
   },
   "consent": {

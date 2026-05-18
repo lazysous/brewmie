@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Օր {days}",
     "beanUseSoon": "{brand} · Օր {days} · շուտ օգտագործիր",
     "beanStale": "{brand} · Օր {days} · հնանում է",
-    "weatherHumid": "{temp}°C · {humidity}% Խ · խոնավ, կոպտիր ավելի",
-    "weatherDry": "{temp}°C · {humidity}% Խ · չոր, նրբիր ավելի",
+    "weatherHumid": "{temp}°C · {humidity}% Խ",
+    "weatherDry": "{temp}°C · {humidity}% Խ",
     "weatherNeutral": "{temp}°C · {humidity}% Խ"
   },
   "consent": {

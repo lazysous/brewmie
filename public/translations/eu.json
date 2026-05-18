@@ -35,8 +35,8 @@
     "beanDay": "{brand} · {days}. eguna",
     "beanUseSoon": "{brand} · {days}. eguna · erabili laster",
     "beanStale": "{brand} · {days}. eguna · zahartzen ari",
-    "weatherHumid": "{temp}°C · {humidity}% HE · hezea, eho lodiago",
-    "weatherDry": "{temp}°C · {humidity}% HE · lehorra, eho finago",
+    "weatherHumid": "{temp}°C · {humidity}% HE",
+    "weatherDry": "{temp}°C · {humidity}% HE",
     "weatherNeutral": "{temp}°C · {humidity}% HE"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Dan {days}",
     "beanUseSoon": "{brand} · Dan {days} · iskoristi uskoro",
     "beanStale": "{brand} · Dan {days} · gubi svježinu",
-    "weatherHumid": "{temp}°C · {humidity}% RH · vlažno, melji krupnije",
-    "weatherDry": "{temp}°C · {humidity}% RH · suho, melji finije",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

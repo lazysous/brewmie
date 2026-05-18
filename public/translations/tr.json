@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Gün {days}",
     "beanUseSoon": "{brand} · Gün {days} · yakında kullan",
     "beanStale": "{brand} · Gün {days} · bayatlıyor",
-    "weatherHumid": "{temp}°C · %{humidity} nem · nemli, daha iri öğüt",
-    "weatherDry": "{temp}°C · %{humidity} nem · kuru, daha ince öğüt",
+    "weatherHumid": "{temp}°C · %{humidity} nem",
+    "weatherDry": "{temp}°C · %{humidity} nem",
     "weatherNeutral": "{temp}°C · %{humidity} nem"
   },
   "consent": {

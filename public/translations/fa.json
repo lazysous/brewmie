@@ -35,8 +35,8 @@
     "beanDay": "{brand} · روز {days}",
     "beanUseSoon": "{brand} · روز {days} · زود مصرف کن",
     "beanStale": "{brand} · روز {days} · داره کهنه می‌شه",
-    "weatherHumid": "{temp}°C · {humidity}% رطوبت · مرطوب، درشت‌تر آسیاب کن",
-    "weatherDry": "{temp}°C · {humidity}% رطوبت · خشک، ریزتر آسیاب کن",
+    "weatherHumid": "{temp}°C · {humidity}% رطوبت",
+    "weatherDry": "{temp}°C · {humidity}% رطوبت",
     "weatherNeutral": "{temp}°C · {humidity}% رطوبت"
   },
   "consent": {

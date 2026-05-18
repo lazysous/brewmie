@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import { setTierOverride } from '../hooks/useTier'
 import type { Tier } from '../types'
 
-// Floating tier-override pill, bottom-right. Cycles:  off → free → premium → off
+// Floating tier-override pill, top-right. Two-state toggle: FREE / PREMIUM.
+//
+// (There used to be a third "auto" state that returned the real tier — but
+// since web gating is disabled, auto and premium are identical on web, so
+// having three states was just an extra tap for no payoff. Two states only.)
 //
 // Visibility:
 //   - Always visible in dev (import.meta.env.DEV)
@@ -15,7 +19,6 @@ import type { Tier } from '../types'
 // TODO: remove this component (and its mount in App.tsx) before shipping
 // the public production build.
 
-const ORDER: (Tier | null)[] = [null, 'free', 'premium']
 const OPT_IN_KEY = 'brewmie_devtest'
 
 function readOverride(): Tier | null {
@@ -51,13 +54,22 @@ export function DevTierPill() {
     }
   }, [])
 
+  // On first render in test mode, force an explicit override so the pill is
+  // never in the ambiguous "auto" state. Default to premium (the real-user
+  // path on web today) until the user flips to free.
+  useEffect(() => {
+    if (override === null) setTierOverride('premium')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const visible = import.meta.env.DEV || readProdOptIn()
   if (!visible) return null
 
+  // Two-state flip: free ↔ premium. Effective override is "premium" until
+  // the user taps to switch to "free".
+  const effective: Tier = override === 'free' ? 'free' : 'premium'
   const next = () => {
-    const idx = ORDER.indexOf(override)
-    const nextVal = ORDER[(idx + 1) % ORDER.length]
-    setTierOverride(nextVal)
+    setTierOverride(effective === 'free' ? 'premium' : 'free')
   }
 
   // Long-press (1s) in production exits test mode entirely.
@@ -80,8 +92,8 @@ export function DevTierPill() {
     }
   }
 
-  const label = override === null ? 'auto' : override
-  const colorClass = override === 'premium' ? 'dev-pill--premium' : override === 'free' ? 'dev-pill--free' : 'dev-pill--auto'
+  const label = effective
+  const colorClass = effective === 'premium' ? 'dev-pill--premium' : 'dev-pill--free'
 
   return (
     <button

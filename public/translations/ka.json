@@ -35,8 +35,8 @@
     "beanDay": "{brand} · დღე {days}",
     "beanUseSoon": "{brand} · დღე {days} · მალე გამოიყენე",
     "beanStale": "{brand} · დღე {days} · ძველდება",
-    "weatherHumid": "{temp}°C · {humidity}% RH · ნოტიო, დაფქვი უხეშად",
-    "weatherDry": "{temp}°C · {humidity}% RH · მშრალი, დაფქვი წვრილად",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

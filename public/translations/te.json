@@ -35,8 +35,8 @@
     "beanDay": "{brand} · రోజు {days}",
     "beanUseSoon": "{brand} · రోజు {days} · త్వరగా వాడండి",
     "beanStale": "{brand} · రోజు {days} · పాతబడుతోంది",
-    "weatherHumid": "{temp}°C · {humidity}% RH · తేమ, ముతకగా రుబ్బండి",
-    "weatherDry": "{temp}°C · {humidity}% RH · పొడి, సన్నగా రుబ్బండి",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · {days}. nap",
     "beanUseSoon": "{brand} · {days}. nap · használd hamar",
     "beanStale": "{brand} · {days}. nap · öregszik",
-    "weatherHumid": "{temp}°C · {humidity}% RH · párás, durvábbra őrölj",
-    "weatherDry": "{temp}°C · {humidity}% RH · száraz, finomabbra őrölj",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

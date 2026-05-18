@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ថ្ងៃទី {days}",
     "beanUseSoon": "{brand} · ថ្ងៃទី {days} · ប្រើឆាប់",
     "beanStale": "{brand} · ថ្ងៃទី {days} · កំពុងចាស់",
-    "weatherHumid": "{temp}°C · {humidity}% RH · សើម កិនធំ",
-    "weatherDry": "{temp}°C · {humidity}% RH · ស្ងួត កិនល្អិត",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ڏينهن {days}",
     "beanUseSoon": "{brand} · ڏينهن {days} · جلد استعمال ڪريو",
     "beanStale": "{brand} · ڏينهن {days} · پراڻو ٿي رهيو",
-    "weatherHumid": "{temp}°C · {humidity}% RH · گرم، ٿلهو پيهيو",
-    "weatherDry": "{temp}°C · {humidity}% RH · خشڪ، باريڪ پيهيو",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

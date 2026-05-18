@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ورځ {days}",
     "beanUseSoon": "{brand} · ورځ {days} · ژر یې وکاروئ",
     "beanStale": "{brand} · ورځ {days} · زاړه کیږي",
-    "weatherHumid": "{temp}°C · {humidity}% RH · لمد، ضخیم وکاروئ",
-    "weatherDry": "{temp}°C · {humidity}% RH · وچ، نری وکاروئ",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · {days} 日目",
     "beanUseSoon": "{brand} · {days} 日目 · 早めに使って",
     "beanStale": "{brand} · {days} 日目 · 鮮度落ち気味",
-    "weatherHumid": "{temp}°C · 湿度{humidity}% · 湿気あり、粗めに",
-    "weatherDry": "{temp}°C · 湿度{humidity}% · 乾燥、細かめに",
+    "weatherHumid": "{temp}°C · 湿度{humidity}%",
+    "weatherDry": "{temp}°C · 湿度{humidity}%",
     "weatherNeutral": "{temp}°C · 湿度{humidity}%"
   },
   "consent": {

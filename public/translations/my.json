@@ -35,8 +35,8 @@
     "beanDay": "{brand} · ရက် {days}",
     "beanUseSoon": "{brand} · ရက် {days} · မကြာမီသုံးပါ",
     "beanStale": "{brand} · ရက် {days} · ဟောင်းနေပြီ",
-    "weatherHumid": "{temp}°C · {humidity}% RH · စိုထိုင်း၊ ပိုကြမ်းအောင် ကြိတ်ပါ",
-    "weatherDry": "{temp}°C · {humidity}% RH · ခြောက်သွေ့၊ ပိုနုအောင် ကြိတ်ပါ",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Päev {days}",
     "beanUseSoon": "{brand} · Päev {days} · kasuta peagi",
     "beanStale": "{brand} · Päev {days} · vananeb",
-    "weatherHumid": "{temp}°C · {humidity}% RH · niiske, jahvata jämedamalt",
-    "weatherDry": "{temp}°C · {humidity}% RH · kuiv, jahvata peenelt",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

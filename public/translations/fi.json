@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Päivä {days}",
     "beanUseSoon": "{brand} · Päivä {days} · käytä pian",
     "beanStale": "{brand} · Päivä {days} · alkaa vanheta",
-    "weatherHumid": "{temp}°C · {humidity}% RH · kostea, jauha karkeammaksi",
-    "weatherDry": "{temp}°C · {humidity}% RH · kuiva, jauha hienommaksi",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

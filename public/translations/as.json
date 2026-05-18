@@ -35,8 +35,8 @@
     "beanDay": "{brand} · দিন {days}",
     "beanUseSoon": "{brand} · দিন {days} · সোনকালে ব্যৱহাৰ কৰক",
     "beanStale": "{brand} · দিন {days} · পুৰণা হৈছে",
-    "weatherHumid": "{temp}°C · {humidity}% RH · আৰ্দ্ৰ, বেছি মোটাকৈ গুড়ি কৰক",
-    "weatherDry": "{temp}°C · {humidity}% RH · শুকান, বেছি মিহিকৈ গুড়ি কৰক",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

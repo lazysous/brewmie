@@ -35,8 +35,8 @@
     "beanDay": "{brand} · දින {days}",
     "beanUseSoon": "{brand} · දින {days} · ඉක්මනින් භාවිතා කරන්න",
     "beanStale": "{brand} · දින {days} · පරණ වෙමින්",
-    "weatherHumid": "{temp}°C · {humidity}% RH · තෙත්, රළු ලෙස ඇඹරුම් කරන්න",
-    "weatherDry": "{temp}°C · {humidity}% RH · වියළි, සියුම් ලෙස ඇඹරුම් කරන්න",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

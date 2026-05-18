@@ -35,8 +35,8 @@
     "beanDay": "{brand} · Diwrnod {days}",
     "beanUseSoon": "{brand} · Diwrnod {days} · defnyddia'n fuan",
     "beanStale": "{brand} · Diwrnod {days} · yn mynd yn hen",
-    "weatherHumid": "{temp}°C · {humidity}% RH · llaith, malu'n fwy bras",
-    "weatherDry": "{temp}°C · {humidity}% RH · sych, malu'n fwy mân",
+    "weatherHumid": "{temp}°C · {humidity}% RH",
+    "weatherDry": "{temp}°C · {humidity}% RH",
     "weatherNeutral": "{temp}°C · {humidity}% RH"
   },
   "consent": {

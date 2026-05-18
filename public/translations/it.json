@@ -363,7 +363,10 @@
     "noShotsYet": "ancora nessun dato",
     "daysActive": "Attivo {count} giorni",
     "exportCsv": "Esporta CSV",
-    "deleteAccountEmail": "Per eliminare l'account scrivi a chef@lazysous.app"
+    "deleteAccountEmail": "Per eliminare l'account scrivi a chef@lazysous.app",
+    "footerDinner": "Cosa c'è per cena?",
+    "footerCta": "Vai a Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Salva",

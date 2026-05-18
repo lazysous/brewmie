@@ -363,7 +363,10 @@
     "noShotsYet": "għad m'hemmx data",
     "daysActive": "Attiv {count} ġranet",
     "exportCsv": "Esporta CSV",
-    "deleteAccountEmail": "Biex tħassar l-account, ibgħat email lil chef@lazysous.app"
+    "deleteAccountEmail": "Biex tħassar l-account, ibgħat email lil chef@lazysous.app",
+    "footerDinner": "X'ser nieklu?",
+    "footerCta": "Żur Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Issejvja",

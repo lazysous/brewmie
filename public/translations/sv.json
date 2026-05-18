@@ -363,7 +363,10 @@
     "noShotsYet": "ingen data än",
     "daysActive": "Aktiv {count} dagar",
     "exportCsv": "Exportera CSV",
-    "deleteAccountEmail": "Radera konto? Mejla chef@lazysous.app"
+    "deleteAccountEmail": "Radera konto? Mejla chef@lazysous.app",
+    "footerDinner": "Vad blir det till middag?",
+    "footerCta": "Besök Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Spara",

@@ -363,7 +363,10 @@
     "noShotsYet": "データなし",
     "daysActive": "{count}日アクティブ",
     "exportCsv": "CSVエクスポート",
-    "deleteAccountEmail": "アカウント削除はchef@lazysous.appまで"
+    "deleteAccountEmail": "アカウント削除はchef@lazysous.appまで",
+    "footerDinner": "今夜のごはんは？",
+    "footerCta": "Lazy Sous へ →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "保存",

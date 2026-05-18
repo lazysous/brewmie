@@ -363,7 +363,10 @@
     "noShotsYet": "өгөгдөл алга",
     "daysActive": "{count} өдөр идэвхтэй",
     "exportCsv": "CSV экспорт",
-    "deleteAccountEmail": "Бүртгэлийг устгах: chef@lazysous.app"
+    "deleteAccountEmail": "Бүртгэлийг устгах: chef@lazysous.app",
+    "footerDinner": "Орой юу идэх вэ?",
+    "footerCta": "Lazy Sous-д очих →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Хадгалах",

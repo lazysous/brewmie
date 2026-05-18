@@ -363,7 +363,10 @@
     "noShotsYet": "tiada data lagi",
     "daysActive": "Aktif {count} hari",
     "exportCsv": "Eksport CSV",
-    "deleteAccountEmail": "Untuk padam akaun, e-mel chef@lazysous.app"
+    "deleteAccountEmail": "Untuk padam akaun, e-mel chef@lazysous.app",
+    "footerDinner": "Makan malam apa?",
+    "footerCta": "Lawati Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Simpan",

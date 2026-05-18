@@ -363,7 +363,10 @@
     "noShotsYet": "gan sonraí fós",
     "daysActive": "{count} lá gníomhach",
     "exportCsv": "Easpórtáil CSV",
-    "deleteAccountEmail": "Le cuntas a scriosadh, déan teagmháil le chef@lazysous.app"
+    "deleteAccountEmail": "Le cuntas a scriosadh, déan teagmháil le chef@lazysous.app",
+    "footerDinner": "Cad atá don dinnéar?",
+    "footerCta": "Tabhair cuairt ar Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Sábháil",

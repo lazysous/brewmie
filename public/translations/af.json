@@ -363,7 +363,10 @@
     "noShotsYet": "nog geen data",
     "daysActive": "Aktief vir {count} dae",
     "exportCsv": "Voer CSV uit",
-    "deleteAccountEmail": "Verwyder rekening: stuur e-pos na chef@lazysous.app"
+    "deleteAccountEmail": "Verwyder rekening: stuur e-pos na chef@lazysous.app",
+    "footerDinner": "Wat is vir aandete?",
+    "footerCta": "Besoek Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Stoor",

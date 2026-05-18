@@ -363,7 +363,10 @@
     "noShotsYet": "még nincs adat",
     "daysActive": "Aktív {count} napja",
     "exportCsv": "CSV export",
-    "deleteAccountEmail": "Fiók törléséhez írj a chef@lazysous.app-ra"
+    "deleteAccountEmail": "Fiók törléséhez írj a chef@lazysous.app-ra",
+    "footerDinner": "Mi lesz vacsorára?",
+    "footerCta": "Lazy Sous meglátogatása →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Mentés",

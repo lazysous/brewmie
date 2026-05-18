@@ -363,7 +363,10 @@
     "noShotsYet": "데이터 없음",
     "daysActive": "{count}일 활동",
     "exportCsv": "CSV 내보내기",
-    "deleteAccountEmail": "계정 삭제는 chef@lazysous.app로"
+    "deleteAccountEmail": "계정 삭제는 chef@lazysous.app로",
+    "footerDinner": "오늘 저녁 뭐 먹지?",
+    "footerCta": "Lazy Sous 방문하기 →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "저장",

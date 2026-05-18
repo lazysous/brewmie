@@ -363,7 +363,10 @@
     "noShotsYet": "暂无数据",
     "daysActive": "活跃{count}天",
     "exportCsv": "导出CSV",
-    "deleteAccountEmail": "删除账户请发邮件至chef@lazysous.app"
+    "deleteAccountEmail": "删除账户请发邮件至chef@lazysous.app",
+    "footerDinner": "晚饭吃什么？",
+    "footerCta": "去看 Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "保存",

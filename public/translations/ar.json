@@ -363,7 +363,10 @@
     "noShotsYet": "لا بيانات بعد",
     "daysActive": "نشط لـ {count} أيام",
     "exportCsv": "تصدير CSV",
-    "deleteAccountEmail": "لحذف الحساب راسل chef@lazysous.app"
+    "deleteAccountEmail": "لحذف الحساب راسل chef@lazysous.app",
+    "footerDinner": "ما العشاء؟",
+    "footerCta": "زر Lazy Sous ←",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "حفظ",

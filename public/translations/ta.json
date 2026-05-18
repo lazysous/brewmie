@@ -363,7 +363,10 @@
     "noShotsYet": "இன்னும் தரவு இல்லை",
     "daysActive": "{count} நாட்கள் செயலில்",
     "exportCsv": "CSV ஏற்றுமதி",
-    "deleteAccountEmail": "கணக்கை அழிக்க chef@lazysous.app-க்கு மின்னஞ்சல் அனுப்பு"
+    "deleteAccountEmail": "கணக்கை அழிக்க chef@lazysous.app-க்கு மின்னஞ்சல் அனுப்பு",
+    "footerDinner": "இரவு உணவுக்கு என்ன?",
+    "footerCta": "Lazy Sous க்கு செல்லவும் →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "சேமி",

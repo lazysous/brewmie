@@ -363,7 +363,10 @@
     "noShotsYet": "andmeid pole veel",
     "daysActive": "Aktiivne {count} päeva",
     "exportCsv": "Ekspordi CSV",
-    "deleteAccountEmail": "Konto kustutamiseks kirjuta chef@lazysous.app"
+    "deleteAccountEmail": "Konto kustutamiseks kirjuta chef@lazysous.app",
+    "footerDinner": "Mis on õhtusöögiks?",
+    "footerCta": "Külasta Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Salvesta",

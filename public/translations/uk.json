@@ -363,7 +363,10 @@
     "noShotsYet": "поки немає даних",
     "daysActive": "Активний {count} днів",
     "exportCsv": "Експорт CSV",
-    "deleteAccountEmail": "Для видалення акаунта пиши chef@lazysous.app"
+    "deleteAccountEmail": "Для видалення акаунта пиши chef@lazysous.app",
+    "footerDinner": "Що на вечерю?",
+    "footerCta": "Відвідай Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Зберегти",

@@ -363,7 +363,10 @@
     "noShotsYet": "još bez podataka",
     "daysActive": "Aktivan {count} dana",
     "exportCsv": "Izvoz CSV",
-    "deleteAccountEmail": "Za brisanje računa piši chef@lazysous.app"
+    "deleteAccountEmail": "Za brisanje računa piši chef@lazysous.app",
+    "footerDinner": "Što za večeru?",
+    "footerCta": "Posjeti Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Spremi",

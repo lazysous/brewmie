@@ -363,7 +363,10 @@
     "noShotsYet": "ምንም ውሂብ የለም",
     "daysActive": "ለ {count} ቀናት ንቁ",
     "exportCsv": "CSV ላክ",
-    "deleteAccountEmail": "መለያ ለመሰረዝ ኢሜል: chef@lazysous.app"
+    "deleteAccountEmail": "መለያ ለመሰረዝ ኢሜል: chef@lazysous.app",
+    "footerDinner": "ለእራት ምን አለ?",
+    "footerCta": "Lazy Sous ይጎብኙ →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "አስቀምጥ",

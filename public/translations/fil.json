@@ -363,7 +363,10 @@
     "noShotsYet": "wala pang data",
     "daysActive": "Active sa {count} araw",
     "exportCsv": "I-export CSV",
-    "deleteAccountEmail": "Para mag-delete ng account, i-email ang chef@lazysous.app"
+    "deleteAccountEmail": "Para mag-delete ng account, i-email ang chef@lazysous.app",
+    "footerDinner": "Ano'ng ulam?",
+    "footerCta": "Bisitahin ang Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "I-save",

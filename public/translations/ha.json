@@ -363,7 +363,10 @@
     "noShotsYet": "babu bayanai tukuna",
     "daysActive": "Aiki kwanaki {count}",
     "exportCsv": "Fitar CSV",
-    "deleteAccountEmail": "Don share asusu, aika imel zuwa chef@lazysous.app"
+    "deleteAccountEmail": "Don share asusu, aika imel zuwa chef@lazysous.app",
+    "footerDinner": "Mene ne abincin dare?",
+    "footerCta": "Ziyarci Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Ajiye",

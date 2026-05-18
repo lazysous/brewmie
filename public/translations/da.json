@@ -363,7 +363,10 @@
     "noShotsYet": "ingen data endnu",
     "daysActive": "Aktiv {count} dage",
     "exportCsv": "Eksportér CSV",
-    "deleteAccountEmail": "Slet konto: skriv til chef@lazysous.app"
+    "deleteAccountEmail": "Slet konto: skriv til chef@lazysous.app",
+    "footerDinner": "Hvad er der til aften?",
+    "footerCta": "Besøg Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Gem",

@@ -363,7 +363,10 @@
     "noShotsYet": "hakuna data bado",
     "daysActive": "{count} siku za kazi",
     "exportCsv": "Hamisha CSV",
-    "deleteAccountEmail": "Kufuta akaunti, tuma barua pepe kwa chef@lazysous.app"
+    "deleteAccountEmail": "Kufuta akaunti, tuma barua pepe kwa chef@lazysous.app",
+    "footerDinner": "Chakula cha jioni ni nini?",
+    "footerCta": "Tembelea Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Hifadhi",

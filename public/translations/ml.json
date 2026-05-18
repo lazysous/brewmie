@@ -363,7 +363,10 @@
     "noShotsYet": "ഡാറ്റ ഇല്ല",
     "daysActive": "{count} ദിവസം സജീവം",
     "exportCsv": "CSV എക്സ്പോർട്ട്",
-    "deleteAccountEmail": "അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്യാൻ chef@lazysous.app ലേക്ക് ഇമെയിൽ"
+    "deleteAccountEmail": "അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്യാൻ chef@lazysous.app ലേക്ക് ഇമെയിൽ",
+    "footerDinner": "രാത്രി ഭക്ഷണം?",
+    "footerCta": "Lazy Sous സന്ദർശിക്കൂ →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "സേവ് ചെയ്യുക",

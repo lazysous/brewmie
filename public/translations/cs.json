@@ -363,7 +363,10 @@
     "noShotsYet": "zatím bez dat",
     "daysActive": "Aktivní {count} dní",
     "exportCsv": "Exportovat CSV",
-    "deleteAccountEmail": "Pro smazání účtu napiš chef@lazysous.app"
+    "deleteAccountEmail": "Pro smazání účtu napiš chef@lazysous.app",
+    "footerDinner": "Co k večeři?",
+    "footerCta": "Navštiv Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Uložit",

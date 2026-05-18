@@ -363,7 +363,10 @@
     "noShotsYet": "dim data eto",
     "daysActive": "Yn weithgar {count} dydd",
     "exportCsv": "Allforio CSV",
-    "deleteAccountEmail": "I ddileu cyfrif e-bostia chef@lazysous.app"
+    "deleteAccountEmail": "I ddileu cyfrif e-bostia chef@lazysous.app",
+    "footerDinner": "Beth am swper?",
+    "footerCta": "Ymwela â Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Cadw",

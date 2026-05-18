@@ -363,7 +363,10 @@
     "noShotsYet": "деректер әлі жоқ",
     "daysActive": "{count} күн белсенді",
     "exportCsv": "CSV экспорт",
-    "deleteAccountEmail": "Аккаунтты жою үшін chef@lazysous.app"
+    "deleteAccountEmail": "Аккаунтты жою үшін chef@lazysous.app",
+    "footerDinner": "Кешкі асқа не дайындаймыз?",
+    "footerCta": "Lazy Sous-қа кіру →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Сақтау",

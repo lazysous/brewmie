@@ -363,7 +363,10 @@
     "noShotsYet": "მონაცემები ჯერ არ არის",
     "daysActive": "აქტიური {count} დღე",
     "exportCsv": "CSV ექსპორტი",
-    "deleteAccountEmail": "ანგარიშის წასაშლელად მისწერე chef@lazysous.app"
+    "deleteAccountEmail": "ანგარიშის წასაშლელად მისწერე chef@lazysous.app",
+    "footerDinner": "სადილზე რა გვაქვს?",
+    "footerCta": "ეწვიე Lazy Sous-ს →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "შენახვა",

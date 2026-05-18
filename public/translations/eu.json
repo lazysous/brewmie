@@ -363,7 +363,10 @@
     "noShotsYet": "oraindik daturik ez",
     "daysActive": "{count} egunez aktibo",
     "exportCsv": "CSV esportatu",
-    "deleteAccountEmail": "Kontua ezabatzeko: chef@lazysous.app"
+    "deleteAccountEmail": "Kontua ezabatzeko: chef@lazysous.app",
+    "footerDinner": "Zer dago afaritarako?",
+    "footerCta": "Bisitatu Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Gorde",

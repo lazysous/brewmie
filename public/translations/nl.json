@@ -363,7 +363,10 @@
     "noShotsYet": "nog geen data",
     "daysActive": "{count} dagen actief",
     "exportCsv": "CSV exporteren",
-    "deleteAccountEmail": "Account verwijderen? Mail chef@lazysous.app"
+    "deleteAccountEmail": "Account verwijderen? Mail chef@lazysous.app",
+    "footerDinner": "Wat eten we vanavond?",
+    "footerCta": "Bezoek Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Opslaan",

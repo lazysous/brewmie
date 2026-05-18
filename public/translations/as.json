@@ -363,7 +363,10 @@
     "noShotsYet": "এতিয়াও তথ্য নাই",
     "daysActive": "{count} দিন সক্ৰিয়",
     "exportCsv": "CSV ৰপ্তানি",
-    "deleteAccountEmail": "একাউণ্ট মচিবলৈ chef@lazysous.app-লৈ ইমেইল"
+    "deleteAccountEmail": "একাউণ্ট মচিবলৈ chef@lazysous.app-লৈ ইমেইল",
+    "footerDinner": "ৰাতিৰ আহাৰত কি?",
+    "footerCta": "Lazy Sous চাওক →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "সংৰক্ষণ",

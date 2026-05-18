@@ -363,7 +363,10 @@
     "noShotsYet": "هنوز داده‌ای نیست",
     "daysActive": "{count} روز فعال",
     "exportCsv": "صادر کردن CSV",
-    "deleteAccountEmail": "برای حذف حساب: chef@lazysous.app"
+    "deleteAccountEmail": "برای حذف حساب: chef@lazysous.app",
+    "footerDinner": "شام چی بخوریم؟",
+    "footerCta": "برو به Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "ذخیره",

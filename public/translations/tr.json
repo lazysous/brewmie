@@ -363,7 +363,10 @@
     "noShotsYet": "henüz veri yok",
     "daysActive": "{count} gün aktif",
     "exportCsv": "CSV dışa aktar",
-    "deleteAccountEmail": "Hesabı silmek için chef@lazysous.app"
+    "deleteAccountEmail": "Hesabı silmek için chef@lazysous.app",
+    "footerDinner": "Akşama ne pişer?",
+    "footerCta": "Lazy Sous'a uğra →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Kaydet",

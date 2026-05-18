@@ -363,7 +363,10 @@
     "noShotsYet": "اڃا تائين ڊيٽا نه",
     "daysActive": "{count} ڏينهن سرگرم",
     "exportCsv": "CSV ايڪسپورٽ",
-    "deleteAccountEmail": "اڪائونٽ ڊاهڻ لاءِ chef@lazysous.app کي اي ميل ڪريو"
+    "deleteAccountEmail": "اڪائونٽ ڊاهڻ لاءِ chef@lazysous.app کي اي ميل ڪريو",
+    "footerDinner": "رات جي ماني ۾ ڇا آهي؟",
+    "footerCta": "Lazy Sous ڏسو →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "محفوظ ڪريو",

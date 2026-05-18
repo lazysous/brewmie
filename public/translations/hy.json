@@ -363,7 +363,10 @@
     "noShotsYet": "դեռ տվյալներ չկան",
     "daysActive": "Ակտիվ {count} օր",
     "exportCsv": "Արտահանել CSV",
-    "deleteAccountEmail": "Հաշիվը ջնջելու համար գրեք chef@lazysous.app"
+    "deleteAccountEmail": "Հաշիվը ջնջելու համար գրեք chef@lazysous.app",
+    "footerDinner": "Inch e ereko?",
+    "footerCta": "Ancel Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Պահպանել",

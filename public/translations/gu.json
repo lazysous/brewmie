@@ -363,7 +363,10 @@
     "noShotsYet": "હજુ ડેટા નથી",
     "daysActive": "{count} દિવસ સક્રિય",
     "exportCsv": "CSV એક્સપોર્ટ",
-    "deleteAccountEmail": "એકાઉન્ટ કાઢવા chef@lazysous.app પર ઇમેઇલ"
+    "deleteAccountEmail": "એકાઉન્ટ કાઢવા chef@lazysous.app પર ઇમેઇલ",
+    "footerDinner": "રાત્રે શું?",
+    "footerCta": "Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "સાચવો",

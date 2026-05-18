@@ -363,7 +363,10 @@
     "noShotsYet": "nta makuru aracyari",
     "daysActive": "Igikora iminsi {count}",
     "exportCsv": "Sohora CSV",
-    "deleteAccountEmail": "Kugira ngo usibe konti, ohereza email kuri chef@lazysous.app"
+    "deleteAccountEmail": "Kugira ngo usibe konti, ohereza email kuri chef@lazysous.app",
+    "footerDinner": "Iki turya nimugoroba?",
+    "footerCta": "Sura Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Bika",

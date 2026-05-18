@@ -363,7 +363,10 @@
     "noShotsYet": "ei vielä dataa",
     "daysActive": "Aktiivinen {count} päivää",
     "exportCsv": "Vie CSV",
-    "deleteAccountEmail": "Tilin poisto: kirjoita chef@lazysous.app"
+    "deleteAccountEmail": "Tilin poisto: kirjoita chef@lazysous.app",
+    "footerDinner": "Mitäs syötäis?",
+    "footerCta": "Käy Lazy Sousilla →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Tallenna",

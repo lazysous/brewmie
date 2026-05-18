@@ -447,6 +447,9 @@
     "dataNote": "Your shots live on this device. Export them, or sign in to sync.",
     "confirmClear": "Clear all shot history? This cannot be undone.",
     "confirmReset": "Reset ALL data including machine config, grinder config, and shot history? This cannot be undone.",
-    "importInvalid": "Invalid file. Please select a valid Brewmie export."
+    "importInvalid": "Invalid file. Please select a valid Brewmie export.",
+    "footerDinner": "What's for dinner?",
+    "footerCta": "Visit Lazy Sous →",
+    "footerCopy": "© {year} Lazy Sous"
   }
 }

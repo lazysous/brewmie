@@ -363,7 +363,10 @@
     "noShotsYet": "încă nu sunt date",
     "daysActive": "Activ {count} zile",
     "exportCsv": "Exportă CSV",
-    "deleteAccountEmail": "Pentru ștergerea contului trimite email la chef@lazysous.app"
+    "deleteAccountEmail": "Pentru ștergerea contului trimite email la chef@lazysous.app",
+    "footerDinner": "Ce mâncăm la cină?",
+    "footerCta": "Vezi Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Salvează",

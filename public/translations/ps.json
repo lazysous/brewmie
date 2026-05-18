@@ -363,7 +363,10 @@
     "noShotsYet": "لاهم ډاټا نشته",
     "daysActive": "{count} ورځې فعال",
     "exportCsv": "CSV صادرول",
-    "deleteAccountEmail": "د حساب د لرې کولو لپاره chef@lazysous.app ته بریښنالیک واستوه"
+    "deleteAccountEmail": "د حساب د لرې کولو لپاره chef@lazysous.app ته بریښنالیک واستوه",
+    "footerDinner": "د ماښام لپاره څه؟",
+    "footerCta": "د Lazy Sous څخه لیدنه →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "ساتل",

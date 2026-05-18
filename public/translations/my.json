@@ -363,7 +363,10 @@
     "noShotsYet": "ဒေတာ မရှိသေး",
     "daysActive": "{count} ရက် တက်ကြွ",
     "exportCsv": "CSV export",
-    "deleteAccountEmail": "Account ဖျက်ရန် chef@lazysous.app သို့ email"
+    "deleteAccountEmail": "Account ဖျက်ရန် chef@lazysous.app သို့ email",
+    "footerDinner": "ညစာ ဘာစားမလဲ?",
+    "footerCta": "Lazy Sous သို့ →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "သိမ်းမည်",

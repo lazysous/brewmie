@@ -363,7 +363,10 @@
     "noShotsYet": "δεν υπάρχουν δεδομένα",
     "daysActive": "Ενεργός {count} ημέρες",
     "exportCsv": "Εξαγωγή CSV",
-    "deleteAccountEmail": "Διαγραφή λογαριασμού: chef@lazysous.app"
+    "deleteAccountEmail": "Διαγραφή λογαριασμού: chef@lazysous.app",
+    "footerDinner": "Τι έχει για δείπνο;",
+    "footerCta": "Επίσκεψη Lazy Sous →",
+    "footerCopy": "© {year} Brewmie"
   },
   "common": {
     "save": "Αποθήκευση",

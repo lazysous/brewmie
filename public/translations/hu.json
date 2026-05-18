@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Milyen volt?",
+      "body1": "Savanyú, kiegyensúlyozott vagy keserű? A Brewmie várja az ítéletet.",
+      "title2": "Ízellenőrzés",
+      "body2": "A crema leülepedett. Mondd el, milyen volt.",
+      "title3": "Ítélet?",
+      "body3": "Ne hagyd a shotot értékelés nélkül. Az algoritmus mindegyikből tanul."
     }
   }
 }

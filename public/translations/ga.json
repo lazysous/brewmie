@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Conas a bhí sé?",
+      "body1": "Géar, cothrom, nó searbh? Tá Brewmie ag fanacht ar bhreith.",
+      "title2": "Seiceáil bhlas",
+      "body2": "Tá an crema socraithe. Inis dúinn cén blas a bhí air.",
+      "title3": "Breith?",
+      "body3": "Ná fág an shot sin gan rátáil. Foghlaimíonn an t-algartam ó gach ceann."
     }
   }
 }

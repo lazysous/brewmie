@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "ያ እንዴት ነበር?",
+      "body1": "ጎምዛዛ፣ ሚዛናዊ ወይስ መራራ? Brewmie ፍርዱን እየጠበቀ ነው።",
+      "title2": "ጣዕም ምርመራ",
+      "body2": "ክሬማው ተረጋግቷል። እንዴት ጣፋጭ እንደነበር ይንገሩን።",
+      "title3": "ፍርድ?",
+      "body3": "ያንን ሾት ሳይገመግሙ አይተዉት። አልጎሪዝሙ ከእያንዳንዱ ይማራል።"
     }
   }
 }

@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "តើវាយ៉ាងម៉េច?",
+      "body1": "ជូរ តុល្យភាព ឬល្វីង? Brewmie កំពុងរង់ចាំសេចក្ដីសម្រេច។",
+      "title2": "ត្រួតពិនិត្យរស់ជាតិ",
+      "body2": "ក្រេមាបានដាក់ចុះ។ ប្រាប់យើងពីរស់ជាតិ។",
+      "title3": "សេចក្ដីសម្រេច?",
+      "body3": "កុំទុកការបាញ់នោះដោយមិនវាយតម្លៃ។ ក្បួនដោះស្រាយរៀនពីម្នាក់ៗ។"
     }
   }
 }

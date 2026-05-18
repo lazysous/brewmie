@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "అది ఎలా ఉంది?",
+      "body1": "పుల్లని, బ్యాలెన్స్‌గా, లేదా చేదుగా? Brewmie తీర్పు కోసం వేచి ఉంది.",
+      "title2": "రుచి తనిఖీ",
+      "body2": "క్రీమా స్థిరపడింది. ఎలా ఉందో చెప్పండి.",
+      "title3": "తీర్పు?",
+      "body3": "ఆ షాట్‌ను రేటింగ్ లేకుండా వదిలేయకండి. అల్గోరిథమ్ ప్రతిదాని నుండి నేర్చుకుంటుంది."
     }
   }
 }

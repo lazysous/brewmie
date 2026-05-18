@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "როგორი იყო?",
+      "body1": "მჟავე, დაბალანსებული თუ მწარე? Brewmie განაჩენს ელოდება.",
+      "title2": "გემოს შემოწმება",
+      "body2": "კრემამ დასტერა. გვითხარი როგორი იყო.",
+      "title3": "განაჩენი?",
+      "body3": "ის შოტი შეუფასებელი არ დატოვო. ალგორითმი თითოეულიდან სწავლობს."
     }
   }
 }

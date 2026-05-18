@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Kakav je bio?",
+      "body1": "Kiseo, uravnotežen ili gorak? Brewmie čeka presudu.",
+      "title2": "Provjera okusa",
+      "body2": "Crema se slegla. Reci nam kakav je bio.",
+      "title3": "Presuda?",
+      "body3": "Ne ostavljaj taj shot bez ocjene. Algoritam uči iz svakog."
     }
   }
 }

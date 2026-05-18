@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Cum a fost?",
+      "body1": "Acru, echilibrat sau amar? Brewmie așteaptă verdictul.",
+      "title2": "Verificare gust",
+      "body2": "Crema s-a așezat. Spune-ne cum a fost.",
+      "title3": "Verdictul?",
+      "body3": "Nu lăsa shot-ul fără notă. Algoritmul învață din fiecare."
     }
   }
 }

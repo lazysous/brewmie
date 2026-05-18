@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "איך הוא היה?",
+      "body1": "חמוץ, מאוזן או מר? Brewmie מחכה לפסיקה.",
+      "title2": "בדיקת טעם",
+      "body2": "הקרמה הותיישבה. ספר לנו איך הוא היה.",
+      "title3": "הפסיקה?",
+      "body3": "אל תשאיר את השוט בלי ציון. האלגוריתם לומד מכל אחד."
     }
   }
 }

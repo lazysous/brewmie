@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Kif kien dak?",
+      "body1": "Qares, ibbilanċjat, jew morr? Brewmie qed jistenna l-verdett.",
+      "title2": "Iċċekkja t-togħma",
+      "body2": "Il-crema poġġiet. Għidilna kif kienet.",
+      "title3": "Verdett?",
+      "body3": "Tħallix dak ix-shot bla rating. L-algoritmu jitgħallem minn kull wieħed."
     }
   }
 }

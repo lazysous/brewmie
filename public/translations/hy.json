@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Ինչպե՞ս էր:",
+      "body1": "Թթու, հավասարակշռված, թե՞ դառը: Brewmie-ն սպասում է վճռին:",
+      "title2": "Համի ստուգում",
+      "body2": "Կրեման նստել է: Ասա, թե ինչպիսին էր:",
+      "title3": "Վճիռը՞:",
+      "body3": "Մի՛ թող այդ շոթը առանց գնահատման: Ալգորիթմը սովորում է յուրաքանչյուրից:"
     }
   }
 }

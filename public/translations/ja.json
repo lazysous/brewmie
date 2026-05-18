@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "どうだった?",
+      "body1": "酸味、バランス、苦味？Brewmieが判定を待ってる。",
+      "title2": "味チェック",
+      "body2": "クレマが落ち着いた。どうだったか教えて。",
+      "title3": "判定は？",
+      "body3": "そのショット、評価せずに放置しないで。アルゴリズムは一杯ずつ学んでる。"
     }
   }
 }

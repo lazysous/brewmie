@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "એ કેવો હતો?",
+      "body1": "ખાટો, સંતુલિત, કે કડવો? Brewmie ચુકાદાની રાહ જુએ છે.",
+      "title2": "સ્વાદ તપાસ",
+      "body2": "ક્રીમા સ્થિર થઈ ગયો. અમને કહો કેવો સ્વાદ હતો.",
+      "title3": "ચુકાદો?",
+      "body3": "એ શોટને રેટ કર્યા વગર ન છોડો. એલ્ગોરિધમ દરેકમાંથી શીખે છે."
     }
   }
 }

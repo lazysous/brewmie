@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Zer moduzkoa zen?",
+      "body1": "Mingotsa, orekatua ala garratza? Brewmie epaiketa zain dago.",
+      "title2": "Zapore proba",
+      "body2": "Krema kokatu da. Esan iezaguzu nolakoa izan den.",
+      "title3": "Epaia?",
+      "body3": "Ez utzi tiro hori puntuazio gabe. Algoritmoa bakoitzetik ikasten du."
     }
   }
 }

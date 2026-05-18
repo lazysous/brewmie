@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Macam mana yang tadi?",
+      "body1": "Masam, seimbang, atau pahit? Brewmie tunggu keputusan.",
+      "title2": "Semak rasa",
+      "body2": "Krema dah duduk. Beritahu kami rasanya macam mana.",
+      "title3": "Keputusan?",
+      "body3": "Jangan tinggalkan shot tu tanpa rating. Algoritma belajar dari setiap satu."
     }
   }
 }

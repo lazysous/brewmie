@@ -1,12 +1,13 @@
 // Brewmie notification scheduler.
 //
-// Four kinds of local notification, each with three copy variants in
+// Five kinds of local notification, each with three copy variants in
 // public/translations/*.json under the `notifications.*` namespace:
 //
 //   1001 maintBackflush  fires at 09:00 on the backflush due day
 //   1002 maintDescale    fires at 09:00 on the descale due day
 //   1003 maintGrinder    fires at 09:00 on the grinder clean due day
 //   1004 habitDaily      repeats every day at the user's usual brew time
+//   1005 rateReminder    fires 10 min after a shot is logged if not rated
 //
 // Variants are picked at schedule time so the message is fixed for that
 // scheduled fire. Variant selection is uniform random across the three.
@@ -26,6 +27,7 @@ export type NotificationType =
   | 'maintDescale'
   | 'maintGrinder'
   | 'habitDaily'
+  | 'rateReminder'
 
 export type MaintReminderType = 'maintBackflush' | 'maintDescale' | 'maintGrinder'
 
@@ -34,7 +36,10 @@ export const NOTIFICATION_IDS = {
   maintDescale: 1002,
   maintGrinder: 1003,
   habitDaily: 1004,
+  rateReminder: 1005,
 } as const
+
+const RATE_REMINDER_DELAY_MS = 10 * 60 * 1000
 
 const VARIANT_COUNT = 3
 
@@ -145,6 +150,24 @@ export async function scheduleHabitNudge(
   await scheduleLocalNotification({ id, title, body, at })
 }
 
+/**
+ * Schedule the rate-the-taste reminder. Call this right after a shot is
+ * logged. Fires 10 minutes later if the user hasn't already rated. The
+ * caller must call cancelRateReminder() the moment the user rates so
+ * the notification is suppressed.
+ */
+export async function scheduleRateReminder(t?: Translator): Promise<void> {
+  await getEnDict()
+  const id = NOTIFICATION_IDS.rateReminder
+  const at = new Date(Date.now() + RATE_REMINDER_DELAY_MS)
+  const { title, body } = pickVariant('rateReminder', t)
+  await scheduleLocalNotification({ id, title, body, at })
+}
+
+export async function cancelRateReminder(): Promise<void> {
+  await cancelLocalNotification(NOTIFICATION_IDS.rateReminder)
+}
+
 export interface HabitSettings {
   enabled: boolean
   hour: number
@@ -183,7 +206,8 @@ export async function rescheduleAllReminders(
   t?: Translator,
 ): Promise<void> {
   // Always cancel first so a state with no maintenance dates leaves nothing
-  // pending from a previous run.
+  // pending from a previous run. rateReminder is event-driven (scheduled by
+  // BrewScreen when a shot lands) so it is NOT cancelled here.
   await Promise.all([
     cancelLocalNotification(NOTIFICATION_IDS.maintBackflush),
     cancelLocalNotification(NOTIFICATION_IDS.maintDescale),

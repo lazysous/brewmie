@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "هي ڪيئن هو؟",
+      "body1": "تيز، متوازن، يا ڪڙو؟ Brewmie فيصلي جو منتظر آهي.",
+      "title2": "ذائقي جي پرک",
+      "body2": "ڪريما ويهي رهي. ٻڌايو ته ڪيئن لڳو.",
+      "title3": "فيصلو؟",
+      "body3": "اھو شاٽ بنا درجي بندي جي نه ڇڏ. الگورٿم ھر ھڪ کان سکي ٿو."
     }
   }
 }

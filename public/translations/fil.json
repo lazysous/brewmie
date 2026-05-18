@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Kumusta yun?",
+      "body1": "Maasim, balanced, o mapait? Hinihintay ng Brewmie ang hatol mo.",
+      "title2": "Lasa check",
+      "body2": "Tumira na ang crema. Sabihin kung kumusta ang lasa.",
+      "title3": "Hatol?",
+      "body3": "Wag iwan na walang rating ang shot na yan. May matututunan ang algorithm sa bawat isa."
     }
   }
 }

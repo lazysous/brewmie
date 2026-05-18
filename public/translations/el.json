@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Πώς ήταν αυτός;",
+      "body1": "Όξινος, ισορροπημένος ή πικρός; Το Brewmie περιμένει την ετυμηγορία.",
+      "title2": "Έλεγχος γεύσης",
+      "body2": "Η κρέμα κάθισε. Πες μας πώς ήταν.",
+      "title3": "Ετυμηγορία;",
+      "body3": "Μην αφήσεις τη δόση χωρίς βαθμολογία. Ο αλγόριθμος μαθαίνει από κάθε μία."
     }
   }
 }

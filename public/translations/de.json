@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Wie war der?",
+      "body1": "Sauer, ausgewogen oder bitter? Brewmie wartet auf das Urteil.",
+      "title2": "Geschmackscheck",
+      "body2": "Die Crema hat sich gesetzt. Sag uns, wie er geschmeckt hat.",
+      "title3": "Urteil?",
+      "body3": "Lass den Shot nicht ohne Bewertung. Der Algorithmus lernt aus jedem."
     }
   }
 }

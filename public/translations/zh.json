@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "那杯怎么样?",
+      "body1": "酸、均衡，还是苦? Brewmie 等着评分。",
+      "title2": "口味检查",
+      "body2": "克丽玛已沉淀。告诉我们味道如何。",
+      "title3": "判定?",
+      "body3": "别让那杯没评分就放着。算法从每一杯里学习。"
     }
   }
 }

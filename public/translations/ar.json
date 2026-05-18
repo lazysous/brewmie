@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "كيف كانت تلك القهوة؟",
+      "body1": "حامضة، متوازنة، أم مُرّة؟ Brewmie ينتظر حُكمك.",
+      "title2": "فحص الذوق",
+      "body2": "استقرت الكريما. أخبرنا كيف كان مذاقها.",
+      "title3": "ما الحكم؟",
+      "body3": "لا تترك هذه القهوة دون تقييم. الخوارزمية تتعلم من كل واحدة."
     }
   }
 }

@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "وہ کیسا تھا؟",
+      "body1": "کھٹا، متوازن، یا کڑوا؟ Brewmie فیصلے کا منتظر ہے۔",
+      "title2": "ذائقہ چیک",
+      "body2": "کریما بیٹھ گئی۔ بتائیں کیسا تھا۔",
+      "title3": "فیصلہ؟",
+      "body3": "اس شاٹ کو ریٹنگ کے بغیر مت چھوڑیں۔ الگورتھم ہر ایک سے سیکھتا ہے۔"
     }
   }
 }

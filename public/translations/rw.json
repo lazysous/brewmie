@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Wari umeze ute?",
+      "body1": "Mu kibyimba, mu rwanyamu, cyangwa kirakaze? Brewmie ategereje icyemezo.",
+      "title2": "Kugenzura uburyohe",
+      "body2": "Crema yarashize. Tubwire uko byari bimeze.",
+      "title3": "Icyemezo?",
+      "body3": "Ntugasige iyo shot itarapimwa. Algorithm yiga kuri buri imwe."
     }
   }
 }

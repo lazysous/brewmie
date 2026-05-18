@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "هغه څنګه و؟",
+      "body1": "ترش، توازن لرونکی، یا تریخ؟ Brewmie د حکم انتظار کوي.",
+      "title2": "د خوند چک",
+      "body2": "کریما ناسته. ووایه چې څنګه وه.",
+      "title3": "حکم؟",
+      "body3": "هغه شاټ بې درجې مه پریږده. الګوریتم له هر یوه څخه زده کوي."
     }
   }
 }

@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "어땠어요?",
+      "body1": "신맛, 균형, 쓴맛? Brewmie가 평가를 기다려요.",
+      "title2": "맛 체크",
+      "body2": "크레마가 가라앉았어요. 어떤 맛이었는지 알려주세요.",
+      "title3": "평가는요?",
+      "body3": "그 샷을 평가하지 않은 채 두지 마세요. 알고리즘은 하나하나에서 배워요."
     }
   }
 }

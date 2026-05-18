@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Хэр байсан бэ?",
+      "body1": "Исгэлэн, тэнцвэртэй, эсвэл гашуун? Brewmie шийдвэр хүлээж байна.",
+      "title2": "Амт шалгах",
+      "body2": "Крема тогтжээ. Ямар байсныг хэлээрэй.",
+      "title3": "Шийдвэр?",
+      "body3": "Тэр шотыг үнэлэлгүй битгий орхи. Алгоритм нэг бүрээс суралцдаг."
     }
   }
 }

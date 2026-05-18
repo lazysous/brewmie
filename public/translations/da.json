@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Hvordan var den?",
+      "body1": "Sur, balanceret eller bitter? Brewmie venter på din dom.",
+      "title2": "Smagstjek",
+      "body2": "Cremaen har lagt sig. Fortæl os, hvordan den smagte.",
+      "title3": "Dommen?",
+      "body3": "Lad ikke den shot stå uden bedømmelse. Algoritmen lærer af hver enkelt."
     }
   }
 }

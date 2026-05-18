@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Yaya yake?",
+      "body1": "Mai tsami, daidaitacce, ko mai daci? Brewmie na jiran hukunci.",
+      "title2": "Bincike dandano",
+      "body2": "Crema ya zauna. Ka gaya mana yadda yake.",
+      "title3": "Hukunci?",
+      "body3": "Kar ka bar shot din ba tare da kima ba. Algorithm na koyon kowane."
     }
   }
 }

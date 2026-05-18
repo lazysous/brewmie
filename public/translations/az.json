@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "O necə idi?",
+      "body1": "Turş, balanslı, yoxsa acı? Brewmie qərarını gözləyir.",
+      "title2": "Dad yoxlanışı",
+      "body2": "Krema oturdu. Necə olduğunu söylə.",
+      "title3": "Hökm?",
+      "body3": "Həmin atışı qiymətləndirməmiş qoyma. Alqoritm hər birindən öyrənir."
     }
   }
 }

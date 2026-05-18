@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Ile ilikuwaje?",
+      "body1": "Chachu, uwiano, au chungu? Brewmie inasubiri uamuzi.",
+      "title2": "Ukaguzi wa ladha",
+      "body2": "Krema imekaa. Tuambie ilivyokuwa.",
+      "title3": "Uamuzi?",
+      "body3": "Usiache shot hiyo bila kupiga alama. Algoriti hujifunza kutoka kila moja."
     }
   }
 }

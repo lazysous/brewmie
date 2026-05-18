@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "آن یکی چطور بود؟",
+      "body1": "ترش، متعادل، یا تلخ؟ Brewmie منتظر داوری است.",
+      "title2": "بررسی طعم",
+      "body2": "کرما نشست. بگو چه طعمی داشت.",
+      "title3": "حکم؟",
+      "body3": "آن شات را بدون امتیاز نگذار. الگوریتم از هر کدام یاد می‌گیرد."
     }
   }
 }

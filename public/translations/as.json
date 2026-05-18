@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "সেইটো কেনেকুৱা আছিল?",
+      "body1": "টেঙা, সন্তুলিত, নে তিতা? Brewmie-এ ৰায়ৰ অপেক্ষাত আছে।",
+      "title2": "স্বাদ পৰীক্ষা",
+      "body2": "ক্ৰিমা থিতাপি ল'লে। স্বাদ কেনে আছিল ক'ব।",
+      "title3": "ৰায়?",
+      "body3": "সেই শ্বটটো মূল্যায়ন নকৰাকৈ এৰি নিদিব। এলগৰিদমে প্ৰতিটোৰ পৰা শিকে।"
     }
   }
 }

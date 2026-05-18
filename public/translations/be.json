@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Як быў той кубак?",
+      "body1": "Кіслы, збалансаваны ці горкі? Brewmie чакае вердыкту.",
+      "title2": "Праверка смаку",
+      "body2": "Крэма ўлеглася. Раскажы, як ён на смак.",
+      "title3": "Вердыкт?",
+      "body3": "Не пакідай той шот неацэненым. Алгарытм вучыцца з кожнага."
     }
   }
 }

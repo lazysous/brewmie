@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Sut oedd hwnna?",
+      "body1": "Sur, cytbwys, neu chwerw? Mae Brewmie'n disgwyl barn.",
+      "title2": "Profi blas",
+      "body2": "Mae'r crema wedi setlo. Dwed wrthon ni sut flas oedd e.",
+      "title3": "Y dyfarniad?",
+      "body3": "Paid â gadael y shot heb ei sgorio. Mae'r algorithm yn dysgu o bob un."
     }
   }
 }

@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Jaké to bylo?",
+      "body1": "Kyselé, vyvážené, nebo hořké? Brewmie čeká na verdikt.",
+      "title2": "Kontrola chuti",
+      "body2": "Crema se usadila. Řekni nám, jaký byl.",
+      "title3": "Verdikt?",
+      "body3": "Nenechávej ten šot bez hodnocení. Algoritmus se učí z každého."
     }
   }
 }

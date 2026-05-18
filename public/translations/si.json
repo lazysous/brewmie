@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "අර එක මොකද්ද වගේ?",
+      "body1": "ඇඹුල්, සමබර, හෝ තිත්ත? Brewmie තීන්දුව බලාගෙන ඉන්නවා.",
+      "title2": "රස පරීක්ෂාව",
+      "body2": "ක්‍රීමා පහත් වෙලා. රස කොහොමද කියන්න.",
+      "title3": "තීන්දුව?",
+      "body3": "ඒ ෂොට් ශ්‍රේණිගත නොකර තියන්න එපා. ඇල්ගොරිතම් හැම එකකින්ම ඉගෙන ගන්නවා."
     }
   }
 }

@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Miltä se maistui?",
+      "body1": "Hapan, tasapainoinen vai katkera? Brewmie odottaa tuomiota.",
+      "title2": "Makutarkistus",
+      "body2": "Crema asettui. Kerro, miltä se maistui.",
+      "title3": "Tuomio?",
+      "body3": "Älä jätä shottia arvioimatta. Algoritmi oppii jokaisesta."
     }
   }
 }

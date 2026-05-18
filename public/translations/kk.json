@@ -492,6 +492,14 @@
       "body2": "Same time, same machine. Pull one.",
       "title3": "Your daily shot",
       "body3": "Beans are waiting. So is the timer."
+    },
+    "rateReminder": {
+      "title1": "Ол қалай еді?",
+      "body1": "Қышқыл, теңдестірілген, әлде ащы ма? Brewmie шешімді күтуде.",
+      "title2": "Дәм тексеру",
+      "body2": "Крема орнықты. Қалай болғанын айт.",
+      "title3": "Шешім?",
+      "body3": "Сол шотты бағаламай қалдырма. Алгоритм әрбірінен үйренеді."
     }
   }
 }

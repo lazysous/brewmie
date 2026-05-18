@@ -151,52 +151,6 @@ export async function fetchGlobalShotCount(): Promise<number | null> {
   }
 }
 
-// ─── 7-day Premium trial ─────────────────────────────────────────────────────
-// Server-side authoritative. trial_started_at is stamped once via RPC on first
-// authenticated read. Effective tier = view that combines tier + trial window.
-
-export interface TrialStatus {
-  effectiveTier: 'free' | 'premium'
-  baseTier: 'free' | 'premium'
-  trialStartedAt: string | null
-  trialEndsAt: string | null
-  inTrial: boolean
-  daysRemaining: number | null
-}
-
-/**
- * Idempotent. Returns the user's trial state after ensuring trial_started_at
- * is set (server stamps it the first time only).
- */
-export async function fetchTrialStatus(): Promise<TrialStatus | null> {
-  // 1. Make sure trial_started_at is set (no-op on subsequent calls).
-  try { await supabase.rpc('start_trial') } catch { /* RPC may not exist yet */ }
-
-  // 2. Read the effective_tier view.
-  const { data, error } = await supabase
-    .from('effective_tier')
-    .select('effective_tier, base_tier, trial_started_at, trial_ends_at')
-    .single()
-
-  if (error || !data) return null
-
-  const trialStartedAt = (data.trial_started_at as string | null) ?? null
-  const trialEndsAt = (data.trial_ends_at as string | null) ?? null
-  const inTrial = data.effective_tier === 'premium' && data.base_tier === 'free'
-  const daysRemaining = trialEndsAt
-    ? Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - Date.now()) / 86_400_000))
-    : null
-
-  return {
-    effectiveTier: (data.effective_tier as 'free' | 'premium') ?? 'free',
-    baseTier: (data.base_tier as 'free' | 'premium') ?? 'free',
-    trialStartedAt,
-    trialEndsAt,
-    inTrial,
-    daysRemaining,
-  }
-}
-
 // ─── Shot sync helpers ────────────────────────────────────────────────────────
 
 /**

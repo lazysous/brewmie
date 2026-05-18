@@ -10,8 +10,7 @@ import { DevTierPill } from './components/DevTierPill'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, fetchTrialStatus } from './lib/supabase'
-import type { TrialStatus } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier } from './lib/supabase'
 import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
 import { rescheduleAllReminders } from './lib/reminders'
 import { trackScreen, track } from './lib/analytics'
@@ -25,8 +24,6 @@ export function App() {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
-  const [trial, setTrial] = useState<TrialStatus | null>(null)
-  void trial
 
   // Restore Supabase session on mount and listen for auth changes
   useEffect(() => {
@@ -94,15 +91,6 @@ export function App() {
     }).catch(() => {})
     fetchTier(state.userId).then((tier) => {
       dispatch({ type: 'SET_TIER', payload: tier })
-    }).catch(() => {})
-    // Server-side 7-day trial. Stamps trial_started_at on first call, reads
-    // effective tier from the view. Promotes to premium during the window.
-    fetchTrialStatus().then((status) => {
-      if (!status) return
-      setTrial(status)
-      if (status.effectiveTier === 'premium') {
-        dispatch({ type: 'SET_TIER', payload: 'premium' })
-      }
     }).catch(() => {})
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])

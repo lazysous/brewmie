@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "সেইটো কেনেকুৱা আছিল?",
       "body1": "টেঙা, সন্তুলিত, নে তিতা? Brewmie-এ ৰায়ৰ অপেক্ষাত আছে।",
@@ -500,6 +492,30 @@
       "body2": "ক্ৰিমা থিতাপি ল'লে। স্বাদ কেনে আছিল ক'ব।",
       "title3": "ৰায়?",
       "body3": "সেই শ্বটটো মূল্যায়ন নকৰাকৈ এৰি নিদিব। এলগৰিদমে প্ৰতিটোৰ পৰা শিকে।"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "ব'ন প্ৰস্তুত",
+      "body1": "ভজাৰ পৰা ৭ দিন। আপোনাৰ ব'ন আজি শীৰ্ষত আছে। গান গাই থকা সময়তে টানক।",
+      "title2": "শীৰ্ষ খিৰিকী",
+      "body2": "আপোনাৰ ব'ন মিঠা স্থানত আছে। ব্যক্তিগত শ্ৰেষ্ঠৰ পাছত যাওক।",
+      "title3": "ভজা যোগ সাত",
+      "body3": "ব'ন ক্ষেত্ৰত আছে। শ্ৰেষ্ঠ অৱস্থাত থকা সময়তে টানক।"
+    },
+    "beansStale": {
+      "title1": "ব'ন পাৰ হ'ল",
+      "body1": "ভজাৰ পৰা ত্ৰিশ দিন। এই বেগ অৱসৰ ল'বলৈ সময়।",
+      "title2": "পুৰণা আগত",
+      "body2": "আপোনাৰ ব'নে শক্তি হেৰুৱাইছে। নতুনে ভালকৈ ডায়েল ইন হ'ব।",
+      "title3": "বেগৰ সময় শেষ",
+      "body3": "এমহীয়া ব'ন বিদায় লৈছে। নতুন বেগ, নতুন ডায়েল।"
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Zer moduzkoa zen?",
       "body1": "Mingotsa, orekatua ala garratza? Brewmie epaiketa zain dago.",
@@ -500,6 +492,30 @@
       "body2": "Krema kokatu da. Esan iezaguzu nolakoa izan den.",
       "title3": "Epaia?",
       "body3": "Ez utzi tiro hori puntuazio gabe. Algoritmoa bakoitzetik ikasten du."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Aleak prest daude",
+      "body1": "7. eguna erretzetik. Zure aleak gaur gailurrean daude. Atera kantatzen ari diren bitartean.",
+      "title2": "Gailur leihoa",
+      "body2": "Zure aleak puntu gozoan daude. Pertsonal onena bilatu.",
+      "title3": "Erretze gehi zazpi",
+      "body3": "Aleak gunean daude. Tiro azkarra euren onenean dauden bitartean."
+    },
+    "beansStale": {
+      "title1": "Aleak pasatu dira",
+      "body1": "Hogeita hamar egun erretzetik. Boltsa hau erretiratzeko ordua.",
+      "title2": "Zaharrak aurrera",
+      "body2": "Zure aleek hozka galtzen dute. Freskoek garbiago doitzen dute.",
+      "title3": "Boltsaren denbora amaitu da",
+      "body3": "Hilabeteko aleak agur esaten dute. Boltsa berria, doiketa berria."
     }
   }
 }

@@ -12,7 +12,7 @@ import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
 import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier } from './lib/supabase'
 import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
-import { rescheduleAllReminders } from './lib/reminders'
+import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
 import type { AlgoParams } from './lib/supabase'
 

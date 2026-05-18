@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "അത് എങ്ങനെയായിരുന്നു?",
       "body1": "പുളിയോ, ബാലൻസോ, കയ്പ്പോ? Brewmie വിധിക്കായി കാത്തിരിക്കുന്നു.",
@@ -500,6 +492,30 @@
       "body2": "ക്രീമ സ്ഥിരപ്പെട്ടു. എങ്ങനെയായിരുന്നു എന്ന് പറയൂ.",
       "title3": "വിധി?",
       "body3": "ആ ഷോട്ട് റേറ്റ് ചെയ്യാതെ ഉപേക്ഷിക്കരുത്. അൽഗോരിതം ഓരോന്നിൽ നിന്നും പഠിക്കുന്നു."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "ബീൻസ് ഡയൽ ഇൻ ആയി",
+      "body1": "റോസ്റ്റിന് ശേഷം ദിവസം 7. നിങ്ങളുടെ ബീൻസ് ഇന്ന് ഉച്ചസ്ഥായിയിലാണ്. പാടുമ്പോൾ വലിക്കൂ.",
+      "title2": "ഉച്ച ജാലകം",
+      "body2": "നിങ്ങളുടെ ബീൻസ് സ്വീറ്റ് സ്പോട്ടിലാണ്. വ്യക്തിഗത മികച്ചതിനെ പിന്തുടരൂ.",
+      "title3": "റോസ്റ്റ് കൂട്ടി ഏഴ്",
+      "body3": "ബീൻസ് സോണിലാണ്. മികച്ച സമയത്ത് വേഗത്തിലുള്ള ഷോട്ട്."
+    },
+    "beansStale": {
+      "title1": "ബീൻസ് കടന്നുപോയി",
+      "body1": "റോസ്റ്റിന് ശേഷം മുപ്പത് ദിവസം. ഈ ബാഗിനെ വിശ്രമിപ്പിക്കാൻ സമയം.",
+      "title2": "പഴകിയത് മുന്നിൽ",
+      "body2": "നിങ്ങളുടെ ബീൻസ് മൂർച്ച നഷ്ടപ്പെടുത്തുന്നു. പുതിയത് വൃത്തിയായി ഡയൽ ചെയ്യും.",
+      "title3": "ബാഗിന്റെ സമയം കഴിഞ്ഞു",
+      "body3": "ഒരു മാസം പഴകിയ ബീൻസ് യാത്രയാകുന്നു. പുതിയ ബാഗ്, പുതിയ ഡയൽ."
     }
   }
 }

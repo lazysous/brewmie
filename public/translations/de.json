@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Wie war der?",
       "body1": "Sauer, ausgewogen oder bitter? Brewmie wartet auf das Urteil.",
@@ -500,6 +492,30 @@
       "body2": "Die Crema hat sich gesetzt. Sag uns, wie er geschmeckt hat.",
       "title3": "Urteil?",
       "body3": "Lass den Shot nicht ohne Bewertung. Der Algorithmus lernt aus jedem."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Bohnen sind eingestellt",
+      "body1": "Tag 7 nach der Röstung. Deine Bohnen sind heute am Peak. Ziehen, solange sie singen.",
+      "title2": "Peak-Fenster",
+      "body2": "Deine Bohnen sind im Sweet Spot. Jag eine persönliche Bestzeit.",
+      "title3": "Röstung plus sieben",
+      "body3": "Bohnen sind in der Zone. Schneller Shot, solange sie am besten sind."
+    },
+    "beansStale": {
+      "title1": "Bohnen sind durch",
+      "body1": "Dreissig Tage nach Röstung. Zeit, diese Tüte zu pensionieren.",
+      "title2": "Abgestanden voraus",
+      "body2": "Deine Bohnen verlieren den Biss. Frische lassen sich sauberer einstellen.",
+      "title3": "Tüte ist durch",
+      "body3": "Monatsalte Bohnen verabschieden sich. Neue Tüte, neues Dial-in."
     }
   }
 }

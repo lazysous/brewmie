@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Como foi essa?",
       "body1": "Ácido, equilibrado ou amargo? Brewmie aguarda o veredicto.",
@@ -500,6 +492,30 @@
       "body2": "A crema assentou. Conta como ficou.",
       "title3": "Veredicto?",
       "body3": "Não deixes esse shot sem nota. O algoritmo aprende com cada um."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Os grãos estão calibrados",
+      "body1": "Dia 7 da torra. Os teus grãos estão no pico hoje. Puxa enquanto cantam.",
+      "title2": "Janela do pico",
+      "body2": "Os teus grãos estão no ponto doce. Persegue um recorde pessoal.",
+      "title3": "Torra mais sete",
+      "body3": "Os grãos estão na zona. Shot rápido enquanto estão no melhor."
+    },
+    "beansStale": {
+      "title1": "Os grãos passaram",
+      "body1": "Trinta dias desde a torra. Hora de reformar esta saca.",
+      "title2": "Velho à vista",
+      "body2": "Os teus grãos perdem mordida. Frescos calibram mais limpo.",
+      "title3": "Saca cumpriu o seu",
+      "body3": "Grãos de um mês despedem-se. Saca nova, calibração nova."
     }
   }
 }

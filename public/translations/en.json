@@ -486,14 +486,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "How was that one?",
       "body1": "Sour, balanced, or bitter? Brewmie's waiting on a verdict.",
@@ -501,6 +493,30 @@
       "body2": "The crema's settled. Tell us how it tasted.",
       "title3": "Verdict?",
       "body3": "Don't leave that shot unrated. The algorithm learns from every one."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Beans are dialled in",
+      "body1": "Day 7 from roast. Your beans hit peak today. Pull while they're singing.",
+      "title2": "Peak window",
+      "body2": "Your beans are in the sweet spot. Chase a personal best.",
+      "title3": "Roast plus seven",
+      "body3": "Beans are in the zone. Quick pull while they're at their best."
+    },
+    "beansStale": {
+      "title1": "Beans are past it",
+      "body1": "Thirty days from roast. Time to retire this bag.",
+      "title2": "Stale ahead",
+      "body2": "Your beans are losing their snap. Fresh ones will dial in cleaner.",
+      "title3": "Bag's done its time",
+      "body3": "Month-old beans are bowing out. New bag, new dial-in."
     }
   }
 }

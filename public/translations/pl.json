@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Jak było?",
       "body1": "Kwaśne, zbalansowane, czy gorzkie? Brewmie czeka na werdykt.",
@@ -500,6 +492,30 @@
       "body2": "Crema osiadła. Powiedz, jak smakowało.",
       "title3": "Werdykt?",
       "body3": "Nie zostawiaj tego shota bez oceny. Algorytm uczy się z każdego."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Ziarna są dostrojone",
+      "body1": "Dzień 7 od palenia. Twoje ziarna są dziś u szczytu. Wyciągaj póki śpiewają.",
+      "title2": "Okno szczytu",
+      "body2": "Twoje ziarna są w słodkim punkcie. Goń osobisty rekord.",
+      "title3": "Palenie plus siedem",
+      "body3": "Ziarna są w strefie. Szybki shot póki są najlepsze."
+    },
+    "beansStale": {
+      "title1": "Ziarna minęły szczyt",
+      "body1": "Trzydzieści dni od palenia. Czas wysłać tę torebkę na emeryturę.",
+      "title2": "Wietrzenie przed nami",
+      "body2": "Twoje ziarna tracą pazur. Świeże dostroją się czyściej.",
+      "title3": "Czas torebki minął",
+      "body3": "Miesięczne ziarna się żegnają. Nowa torebka, nowe ustawienia."
     }
   }
 }

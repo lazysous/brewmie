@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Kakav je bio?",
       "body1": "Kiseo, uravnotežen ili gorak? Brewmie čeka presudu.",
@@ -500,6 +492,30 @@
       "body2": "Crema se slegla. Reci nam kakav je bio.",
       "title3": "Presuda?",
       "body3": "Ne ostavljaj taj shot bez ocjene. Algoritam uči iz svakog."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Zrna su naštimana",
+      "body1": "Dan 7 od pečenja. Tvoja zrna su na vrhuncu danas. Vuci dok pjevaju.",
+      "title2": "Vršni prozor",
+      "body2": "Tvoja zrna su u slatkoj točki. Lovi osobni rekord.",
+      "title3": "Pečenje plus sedam",
+      "body3": "Zrna su u zoni. Brzi shot dok su najbolja."
+    },
+    "beansStale": {
+      "title1": "Zrna su prošla",
+      "body1": "Trideset dana od pečenja. Vrijeme za umiroviti ovu vrećicu.",
+      "title2": "Bajata ispred",
+      "body2": "Tvoja zrna gube ugriz. Svježa će se naštimati čišće.",
+      "title3": "Vrećici je vrijeme",
+      "body3": "Mjesec dana stara zrna se opraštaju. Nova vrećica, novo štimanje."
     }
   }
 }

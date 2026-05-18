@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Hoe was daardie een?",
       "body1": "Suur, gebalanseerd of bitter? Brewmie wag op 'n uitspraak.",
@@ -500,6 +492,30 @@
       "body2": "Die crema het gerus. Sê vir ons hoe dit gesmaak het.",
       "title3": "Wat sê jy?",
       "body3": "Moenie daardie skoot ongegradeer los nie. Die algoritme leer van elke een."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Boontjies is geskryf",
+      "body1": "Dag 7 vandat geroes. Jou boontjies is op hul piek vandag. Trek terwyl hulle sing.",
+      "title2": "Piek venster",
+      "body2": "Jou boontjies is op die soet plek. Jaag 'n persoonlike beste na.",
+      "title3": "Roes plus sewe",
+      "body3": "Boontjies is in die sone. Vinnige trek terwyl hulle op hul beste is."
+    },
+    "beansStale": {
+      "title1": "Boontjies is verby",
+      "body1": "Dertig dae vanaf roes. Tyd om hierdie sak af te tree.",
+      "title2": "Slap voor",
+      "body2": "Jou boontjies verloor hul knip. Vars boontjies sal skoner instel.",
+      "title3": "Sak se tyd is op",
+      "body3": "Maand-oue boontjies is besig om te buig. Nuwe sak, nuwe instel."
     }
   }
 }

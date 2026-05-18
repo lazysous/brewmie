@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Ол қалай еді?",
       "body1": "Қышқыл, теңдестірілген, әлде ащы ма? Brewmie шешімді күтуде.",
@@ -500,6 +492,30 @@
       "body2": "Крема орнықты. Қалай болғанын айт.",
       "title3": "Шешім?",
       "body3": "Сол шотты бағаламай қалдырма. Алгоритм әрбірінен үйренеді."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Бұршақтар реттелген",
+      "body1": "Қуырудан 7-ші күн. Бұршақтарың бүгін шыңында. Әні шыққанша тарт.",
+      "title2": "Шың терезесі",
+      "body2": "Бұршақтарың тәтті нүктеде. Жеке рекордты қу.",
+      "title3": "Қуыру плюс жеті",
+      "body3": "Бұршақтар аймақта. Ең жақсы күйінде жылдам шот."
+    },
+    "beansStale": {
+      "title1": "Бұршақтар өтті",
+      "body1": "Қуырудан отыз күн. Бұл қапты зейнетке шығару уақыты.",
+      "title2": "Бузылған алда",
+      "body2": "Бұршақтарың тісіне ие емес. Жаңалары тазарақ ретеледі.",
+      "title3": "Қап уақыты бітті",
+      "body3": "Айлық бұршақтар қош айтуда. Жаңа қап, жаңа реттеу."
     }
   }
 }

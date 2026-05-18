@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Macam mana yang tadi?",
       "body1": "Masam, seimbang, atau pahit? Brewmie tunggu keputusan.",
@@ -500,6 +492,30 @@
       "body2": "Krema dah duduk. Beritahu kami rasanya macam mana.",
       "title3": "Keputusan?",
       "body3": "Jangan tinggalkan shot tu tanpa rating. Algoritma belajar dari setiap satu."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Biji kopi dah dial in",
+      "body1": "Hari 7 dari roast. Biji kopi awak pada puncak hari ini. Tarik masa dia menyanyi.",
+      "title2": "Tetingkap puncak",
+      "body2": "Biji kopi awak di sweet spot. Kejar rekod peribadi.",
+      "title3": "Roast tambah tujuh",
+      "body3": "Biji kopi dalam zon. Shot pantas masa dia paling baik."
+    },
+    "beansStale": {
+      "title1": "Biji kopi dah lepas",
+      "body1": "Tiga puluh hari dari roast. Masa nak persarakan beg ini.",
+      "title2": "Basi di depan",
+      "body2": "Biji kopi awak hilang gigitan. Yang segar akan dial in lebih bersih.",
+      "title3": "Masa beg dah habis",
+      "body3": "Biji sebulan ucap selamat tinggal. Beg baru, dial baru."
     }
   }
 }

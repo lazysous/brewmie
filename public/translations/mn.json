@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Хэр байсан бэ?",
       "body1": "Исгэлэн, тэнцвэртэй, эсвэл гашуун? Brewmie шийдвэр хүлээж байна.",
@@ -500,6 +492,30 @@
       "body2": "Крема тогтжээ. Ямар байсныг хэлээрэй.",
       "title3": "Шийдвэр?",
       "body3": "Тэр шотыг үнэлэлгүй битгий орхи. Алгоритм нэг бүрээс суралцдаг."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Шош тохирсон",
+      "body1": "Шарагдаснаас 7 хоног. Шошны таны өнөөдөр оргилд байна. Дуулж байх зуур татна уу.",
+      "title2": "Оргил цонх",
+      "body2": "Шошнь чихэрлэг цэгт байна. Хувийн дээд амжилтыг хөөгөөрэй.",
+      "title3": "Шарагдсан нэмэх долоо",
+      "body3": "Шошнь бүсэд байна. Шилдэг үед нь хурдан шот."
+    },
+    "beansStale": {
+      "title1": "Шош өнгөрсөн",
+      "body1": "Шарагдаснаас гуч хоног. Энэ уут тэтгэвэрт гаргах цаг.",
+      "title2": "Хөгшин урагшаа",
+      "body2": "Шошнь хүч чадлаа алдаж байна. Шинэ нь цэвэр тохируулагдана.",
+      "title3": "Уутны цаг дууссан",
+      "body3": "Сарын настай шош үдэж байна. Шинэ уут, шинэ тохиргоо."
     }
   }
 }

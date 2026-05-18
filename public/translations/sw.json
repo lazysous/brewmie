@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Ile ilikuwaje?",
       "body1": "Chachu, uwiano, au chungu? Brewmie inasubiri uamuzi.",
@@ -500,6 +492,30 @@
       "body2": "Krema imekaa. Tuambie ilivyokuwa.",
       "title3": "Uamuzi?",
       "body3": "Usiache shot hiyo bila kupiga alama. Algoriti hujifunza kutoka kila moja."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Maharage yamewekwa sawa",
+      "body1": "Siku ya 7 toka kuchoma. Maharage yako leo yapo kileleni. Vuta wakati yanaimba.",
+      "title2": "Dirisha la kilele",
+      "body2": "Maharage yako yapo eneo tamu. Fuatilia rekodi binafsi.",
+      "title3": "Kuchoma jumlisha saba",
+      "body3": "Maharage yapo eneo. Shoti ya haraka wakati yapo bora."
+    },
+    "beansStale": {
+      "title1": "Maharage yamepita",
+      "body1": "Siku thelathini toka kuchoma. Wakati wa kustaafisha mfuko huu.",
+      "title2": "Yamechoka mbele",
+      "body2": "Maharage yako yanapoteza nguvu. Mapya yatasawazika safi zaidi.",
+      "title3": "Muda wa mfuko umeisha",
+      "body3": "Maharage ya mwezi yanaaga. Mfuko mpya, mpangilio mpya."
     }
   }
 }

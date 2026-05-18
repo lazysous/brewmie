@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Sut oedd hwnna?",
       "body1": "Sur, cytbwys, neu chwerw? Mae Brewmie'n disgwyl barn.",
@@ -500,6 +492,30 @@
       "body2": "Mae'r crema wedi setlo. Dwed wrthon ni sut flas oedd e.",
       "title3": "Y dyfarniad?",
       "body3": "Paid â gadael y shot heb ei sgorio. Mae'r algorithm yn dysgu o bob un."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Mae'r ffa wedi'u tiwnio",
+      "body1": "Dydd 7 ar ôl rhostio. Mae dy ffa ar eu hanterth heddiw. Tynna tra'u bod nhw'n canu.",
+      "title2": "Ffenestr anterth",
+      "body2": "Mae dy ffa yn y man melys. Cer ar ôl record bersonol.",
+      "title3": "Rhostio plus saith",
+      "body3": "Mae'r ffa yn y sŵn. Tyn cyflym tra'u bod nhw ar eu gorau."
+    },
+    "beansStale": {
+      "title1": "Mae'r ffa wedi mynd heibio",
+      "body1": "Tri deg diwrnod ar ôl rhostio. Mae'n bryd ymddeol y bag yma.",
+      "title2": "Stelflyd ar y gorwel",
+      "body2": "Mae dy ffa'n colli eu min. Bydd rhai ffres yn tiwnio'n lanach.",
+      "title3": "Mae'r bag wedi gwneud",
+      "body3": "Mae ffa mis oed yn ymadael. Bag newydd, tiwn newydd."
     }
   }
 }

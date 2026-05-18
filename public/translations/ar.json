@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "كيف كانت تلك القهوة؟",
       "body1": "حامضة، متوازنة، أم مُرّة؟ Brewmie ينتظر حُكمك.",
@@ -500,6 +492,30 @@
       "body2": "استقرت الكريما. أخبرنا كيف كان مذاقها.",
       "title3": "ما الحكم؟",
       "body3": "لا تترك هذه القهوة دون تقييم. الخوارزمية تتعلم من كل واحدة."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "البن جاهز",
+      "body1": "اليوم السابع من التحميص. البن في ذروته. اسحب وهو يغني.",
+      "title2": "نافذة الذروة",
+      "body2": "البن في النقطة الحلوة. اطارد أفضل أداء شخصي.",
+      "title3": "تحميص زائد سبعة",
+      "body3": "البن في المنطقة. اسحب سريعاً وهو في أفضل حالاته."
+    },
+    "beansStale": {
+      "title1": "البن انتهى",
+      "body1": "ثلاثون يوماً من التحميص. حان وقت إحالة هذا الكيس للتقاعد.",
+      "title2": "قادم بائت",
+      "body2": "البن يفقد حدته. الطازج سيُضبط أنظف.",
+      "title3": "الكيس انتهى وقته",
+      "body3": "حبوب عمرها شهر تنحني. كيس جديد، ضبط جديد."
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "वो कैसा था?",
       "body1": "खट्टा, संतुलित, या कड़वा? Brewmie फैसले का इंतज़ार कर रहा है।",
@@ -500,6 +492,30 @@
       "body2": "क्रीमा बैठ गई। बताएं कैसा लगा।",
       "title3": "फैसला?",
       "body3": "उस शॉट को बिना रेट किए मत छोड़ें। एल्गोरिथम हर एक से सीखता है।"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "बीन्स तैयार हैं",
+      "body1": "रोस्ट से दिन 7। आपकी बीन्स आज पीक पर हैं। गाते समय पुल करें।",
+      "title2": "पीक विंडो",
+      "body2": "आपकी बीन्स स्वीट स्पॉट पर हैं। पर्सनल बेस्ट का पीछा करें।",
+      "title3": "रोस्ट प्लस सात",
+      "body3": "बीन्स ज़ोन में हैं। बेस्ट समय पर तेज़ शॉट।"
+    },
+    "beansStale": {
+      "title1": "बीन्स बीत गईं",
+      "body1": "रोस्ट से तीस दिन। इस बैग को रिटायर करने का समय।",
+      "title2": "बासी आगे है",
+      "body2": "आपकी बीन्स धार खो रही हैं। ताज़ी क्लीनर डायल होंगी।",
+      "title3": "बैग का समय खत्म",
+      "body3": "महीने पुरानी बीन्स विदा ले रही हैं। नया बैग, नया डायल।"
     }
   }
 }

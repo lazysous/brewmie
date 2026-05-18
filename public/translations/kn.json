@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "ಅದು ಹೇಗಿತ್ತು?",
       "body1": "ಹುಳಿ, ಸಮತೋಲನ, ಅಥವಾ ಕಹಿ? Brewmie ತೀರ್ಪಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ.",
@@ -500,6 +492,30 @@
       "body2": "ಕ್ರೀಮಾ ನೆಲೆಸಿದೆ. ಹೇಗಿತ್ತು ಎಂದು ಹೇಳಿ.",
       "title3": "ತೀರ್ಪು?",
       "body3": "ಆ ಶಾಟ್ ಅನ್ನು ರೇಟ್ ಮಾಡದೆ ಬಿಡಬೇಡಿ. ಅಲ್ಗಾರಿದಮ್ ಪ್ರತಿಯೊಂದರಿಂದ ಕಲಿಯುತ್ತದೆ."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "ಬೀನ್ಸ್ ಡಯಲ್ ಇನ್",
+      "body1": "ರೋಸ್ಟ್ ನಿಂದ ದಿನ 7. ನಿಮ್ಮ ಬೀನ್ಸ್ ಇಂದು ಶಿಖರದಲ್ಲಿವೆ. ಹಾಡುತ್ತಿರುವಾಗ ಎಳೆಯಿರಿ.",
+      "title2": "ಶಿಖರದ ಕಿಟಕಿ",
+      "body2": "ನಿಮ್ಮ ಬೀನ್ಸ್ ಸಿಹಿ ಸ್ಥಳದಲ್ಲಿವೆ. ವೈಯಕ್ತಿಕ ಶ್ರೇಷ್ಠವನ್ನು ಬೆನ್ನಟ್ಟಿ.",
+      "title3": "ರೋಸ್ಟ್ ಜೊತೆ ಏಳು",
+      "body3": "ಬೀನ್ಸ್ ವಲಯದಲ್ಲಿವೆ. ಶ್ರೇಷ್ಠವಾಗಿರುವಾಗ ತ್ವರಿತ ಶಾಟ್."
+    },
+    "beansStale": {
+      "title1": "ಬೀನ್ಸ್ ಮುಗಿದಿವೆ",
+      "body1": "ರೋಸ್ಟ್ ನಿಂದ ಮೂವತ್ತು ದಿನ. ಈ ಚೀಲವನ್ನು ನಿವೃತ್ತಿಗೊಳಿಸುವ ಸಮಯ.",
+      "title2": "ಬಿಸಿಯಿಲ್ಲದ್ದು ಮುಂದೆ",
+      "body2": "ನಿಮ್ಮ ಬೀನ್ಸ್ ಬೈಟ್ ಕಳೆದುಕೊಳ್ಳುತ್ತಿವೆ. ತಾಜಾವು ಸ್ವಚ್ಛವಾಗಿ ಡಯಲ್ ಆಗುತ್ತದೆ.",
+      "title3": "ಚೀಲದ ಸಮಯ ಮುಗಿಯಿತು",
+      "body3": "ತಿಂಗಳ ಬೀನ್ಸ್ ಬೀಳ್ಕೊಡುತ್ತಿವೆ. ಹೊಸ ಚೀಲ, ಹೊಸ ಡಯಲ್."
     }
   }
 }

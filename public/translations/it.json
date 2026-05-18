@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Com'era?",
       "body1": "Acido, bilanciato o amaro? Brewmie aspetta il verdetto.",
@@ -500,6 +492,30 @@
       "body2": "La crema si è posata. Dicci com'era.",
       "title3": "Verdetto?",
       "body3": "Non lasciare quello shot senza voto. L'algoritmo impara da ognuno."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "I chicchi sono in tiro",
+      "body1": "Giorno 7 dalla tostatura. I chicchi sono al picco oggi. Tira mentre cantano.",
+      "title2": "Finestra del picco",
+      "body2": "I tuoi chicchi sono nello sweet spot. Cerca un record personale.",
+      "title3": "Tostatura più sette",
+      "body3": "I chicchi sono nella zona. Shot veloce mentre sono al meglio."
+    },
+    "beansStale": {
+      "title1": "I chicchi sono passati",
+      "body1": "Trenta giorni dalla tostatura. Ora di mandare in pensione il sacchetto.",
+      "title2": "Stantii in arrivo",
+      "body2": "I tuoi chicchi perdono mordente. Quelli freschi si calibrano più puliti.",
+      "title3": "Il sacchetto ha fatto il suo",
+      "body3": "Chicchi di un mese si congedano. Nuovo sacchetto, nuovo dial."
     }
   }
 }

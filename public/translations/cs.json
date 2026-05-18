@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Jaké to bylo?",
       "body1": "Kyselé, vyvážené, nebo hořké? Brewmie čeká na verdikt.",
@@ -500,6 +492,30 @@
       "body2": "Crema se usadila. Řekni nám, jaký byl.",
       "title3": "Verdikt?",
       "body3": "Nenechávej ten šot bez hodnocení. Algoritmus se učí z každého."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Zrna jsou naladěná",
+      "body1": "7 dní od pražení. Zrna jsou dnes na vrcholu. Vytáhni, dokud zpívají.",
+      "title2": "Vrcholné okno",
+      "body2": "Zrna jsou ve sladkém bodě. Honěj osobní rekord.",
+      "title3": "Pražení plus sedm",
+      "body3": "Zrna jsou v zóně. Rychlý shot, dokud jsou nejlepší."
+    },
+    "beansStale": {
+      "title1": "Zrna jsou za zenitem",
+      "body1": "Třicet dní od pražení. Čas odložit tenhle sáček.",
+      "title2": "Brzy zvětrají",
+      "body2": "Zrna ztrácejí šťávu. Čerstvá se naladí čistěji.",
+      "title3": "Sáček dosloužil",
+      "body3": "Měsíc stará zrna se loučí. Nový sáček, nové ladění."
     }
   }
 }

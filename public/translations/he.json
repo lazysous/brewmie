@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "איך הוא היה?",
       "body1": "חמוץ, מאוזן או מר? Brewmie מחכה לפסיקה.",
@@ -500,6 +492,30 @@
       "body2": "הקרמה הותיישבה. ספר לנו איך הוא היה.",
       "title3": "הפסיקה?",
       "body3": "אל תשאיר את השוט בלי ציון. האלגוריתם לומד מכל אחד."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "הפולים מכוונים",
+      "body1": "יום 7 מהקלייה. הפולים שלך בשיא היום. תמשוך בזמן שהם שרים.",
+      "title2": "חלון השיא",
+      "body2": "הפולים שלך בנקודה המתוקה. רדוף אחר שיא אישי.",
+      "title3": "קלייה ועוד שבע",
+      "body3": "הפולים באזור. שוט מהיר בזמן שהם במיטבם."
+    },
+    "beansStale": {
+      "title1": "הפולים עברו",
+      "body1": "שלושים יום מהקלייה. הזמן לפנסיון לשקית הזו.",
+      "title2": "מתיישנים מקדימה",
+      "body2": "הפולים שלך מאבדים נשיכה. טריים יכווננו נקי יותר.",
+      "title3": "זמן השקית נגמר",
+      "body3": "פולים בני חודש נפרדים. שקית חדשה, כיוון חדש."
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "C'était comment ?",
       "body1": "Acide, équilibré ou amer ? Brewmie attend ton verdict.",
@@ -500,6 +492,30 @@
       "body2": "La crème s'est posée. Dis-nous comment c'était.",
       "title3": "Verdict ?",
       "body3": "Ne laisse pas ce shot sans note. L'algorithme apprend de chacun."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Les grains sont calés",
+      "body1": "Jour 7 du torréfiage. Tes grains sont au pic aujourd'hui. Tire tant qu'ils chantent.",
+      "title2": "Fenêtre du pic",
+      "body2": "Tes grains sont dans le sweet spot. Vise un record perso.",
+      "title3": "Torréfaction plus sept",
+      "body3": "Les grains sont dans la zone. Shot rapide tant qu'ils sont au mieux."
+    },
+    "beansStale": {
+      "title1": "Les grains sont passés",
+      "body1": "Trente jours depuis la torréfaction. L'heure de retirer ce sac.",
+      "title2": "Éventés en vue",
+      "body2": "Tes grains perdent du mordant. Les frais se calent plus net.",
+      "title3": "Le sac a fait son temps",
+      "body3": "Grains d'un mois prennent leur retraite. Nouveau sac, nouveau réglage."
     }
   }
 }

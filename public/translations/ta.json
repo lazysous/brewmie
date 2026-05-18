@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "அது எப்படி இருந்தது?",
       "body1": "புளிப்பு, சமச்சீர், அல்லது கசப்பு? Brewmie தீர்ப்புக்காக காத்திருக்கிறது.",
@@ -500,6 +492,30 @@
       "body2": "க்ரீமா அமர்ந்துவிட்டது. எப்படி இருந்தது சொல்லுங்கள்.",
       "title3": "தீர்ப்பு?",
       "body3": "அந்த ஷாட்டை மதிப்பீடு செய்யாமல் விட்டுவிடாதீர்கள். அல்காரிதம் ஒவ்வொன்றிலிருந்தும் கற்கிறது."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "பீன்ஸ் டயல் ஆகிவிட்டது",
+      "body1": "வறுத்த நாள் 7. உங்கள் பீன்ஸ் இன்று உச்சத்தில் உள்ளன. பாடும் போது இழுங்கள்.",
+      "title2": "உச்ச சாளரம்",
+      "body2": "உங்கள் பீன்ஸ் இனிமையான இடத்தில் உள்ளன. தனிப்பட்ட சிறந்ததைப் பின்தொடரவும்.",
+      "title3": "வறுத்த கூட்டுதல் ஏழு",
+      "body3": "பீன்ஸ் மண்டலத்தில் உள்ளன. சிறப்பாக இருக்கும் போது விரைவான ஷாட்."
+    },
+    "beansStale": {
+      "title1": "பீன்ஸ் கடந்துவிட்டது",
+      "body1": "வறுத்தலிலிருந்து முப்பது நாட்கள். இந்த பையை ஓய்வு பெறச் செய்ய நேரம்.",
+      "title2": "பழையது முன்னால்",
+      "body2": "உங்கள் பீன்ஸ் கடிப்பை இழக்கிறது. புதியவை சுத்தமாக டயல் ஆகும்.",
+      "title3": "பையின் நேரம் முடிந்தது",
+      "body3": "ஒரு மாத பீன்ஸ் விடைபெறுகிறது. புதிய பை, புதிய டயல்."
     }
   }
 }

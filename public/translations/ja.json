@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "どうだった?",
       "body1": "酸味、バランス、苦味？Brewmieが判定を待ってる。",
@@ -500,6 +492,30 @@
       "body2": "クレマが落ち着いた。どうだったか教えて。",
       "title3": "判定は？",
       "body3": "そのショット、評価せずに放置しないで。アルゴリズムは一杯ずつ学んでる。"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "豆が決まってる",
+      "body1": "焙煎から7日目。今日が豆のピーク。歌ってるうちに引いて。",
+      "title2": "ピーク窓",
+      "body2": "豆がスイートスポットに。ベスト更新狙おう。",
+      "title3": "焙煎プラス7",
+      "body3": "豆はゾーンに入ってる。最高潮のうちにサッと一杯。"
+    },
+    "beansStale": {
+      "title1": "豆は過ぎた",
+      "body1": "焙煎から30日。この袋を引退させる時。",
+      "title2": "劣化が近い",
+      "body2": "豆が切れを失ってる。新しいのがクリーンに決まる。",
+      "title3": "袋は寿命",
+      "body3": "ひと月の豆は退場。新しい袋、新しいダイヤル。"
     }
   }
 }

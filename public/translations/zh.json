@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "那杯怎么样?",
       "body1": "酸、均衡，还是苦? Brewmie 等着评分。",
@@ -500,6 +492,30 @@
       "body2": "克丽玛已沉淀。告诉我们味道如何。",
       "title3": "判定?",
       "body3": "别让那杯没评分就放着。算法从每一杯里学习。"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "豆子调好了",
+      "body1": "烘焙第7天。今天豆子达到峰值。趁它们唱歌时拉。",
+      "title2": "峰值窗口",
+      "body2": "豆子在甜蜜点。追个人最佳。",
+      "title3": "烘焙加七",
+      "body3": "豆子在状态里。最佳时来一杯快的。"
+    },
+    "beansStale": {
+      "title1": "豆子过期了",
+      "body1": "烘焙满30天。是时候让这袋退役。",
+      "title2": "陈味临近",
+      "body2": "豆子在失去咬劲。新鲜的会调得更干净。",
+      "title3": "袋子的时间到了",
+      "body3": "满月的豆子在告别。新袋子，新调试。"
     }
   }
 }

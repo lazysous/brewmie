@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Yaya yake?",
       "body1": "Mai tsami, daidaitacce, ko mai daci? Brewmie na jiran hukunci.",
@@ -500,6 +492,30 @@
       "body2": "Crema ya zauna. Ka gaya mana yadda yake.",
       "title3": "Hukunci?",
       "body3": "Kar ka bar shot din ba tare da kima ba. Algorithm na koyon kowane."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Wake na shirye",
+      "body1": "Rana 7 daga gasawa. Wake naka yana saman a yau. Ja yayin da suke waƙa.",
+      "title2": "Tagar kololuwa",
+      "body2": "Wake naka yana wuri mai daɗi. Bi rikodin kanka.",
+      "title3": "Gasawa hada da bakwai",
+      "body3": "Wake na cikin yanki. Shot mai sauri yayin da suke mafi kyau."
+    },
+    "beansStale": {
+      "title1": "Wake ya wuce",
+      "body1": "Kwana talatin daga gasawa. Lokaci ya yi a daina amfani da wannan jaka.",
+      "title2": "Tsoho a gaba",
+      "body2": "Wake naka na rasa karfinsa. Sabbi za su daidaita tsabta.",
+      "title3": "Jaka ta gama",
+      "body3": "Wake na wata daya na ban kwana. Sabuwar jaka, sabon daidaitawa."
     }
   }
 }

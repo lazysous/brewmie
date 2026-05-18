@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "అది ఎలా ఉంది?",
       "body1": "పుల్లని, బ్యాలెన్స్‌గా, లేదా చేదుగా? Brewmie తీర్పు కోసం వేచి ఉంది.",
@@ -500,6 +492,30 @@
       "body2": "క్రీమా స్థిరపడింది. ఎలా ఉందో చెప్పండి.",
       "title3": "తీర్పు?",
       "body3": "ఆ షాట్‌ను రేటింగ్ లేకుండా వదిలేయకండి. అల్గోరిథమ్ ప్రతిదాని నుండి నేర్చుకుంటుంది."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "బీన్స్ డయల్ ఇన్ అయ్యాయి",
+      "body1": "రోస్ట్ నుండి 7వ రోజు. మీ బీన్స్ ఈరోజు పీక్‌లో ఉన్నాయి. పాడుతున్నప్పుడు లాగండి.",
+      "title2": "పీక్ విండో",
+      "body2": "మీ బీన్స్ స్వీట్ స్పాట్‌లో ఉన్నాయి. వ్యక్తిగత ఉత్తమాన్ని వెంబడించండి.",
+      "title3": "రోస్ట్ ప్లస్ ఏడు",
+      "body3": "బీన్స్ జోన్‌లో ఉన్నాయి. ఉత్తమంగా ఉన్నప్పుడు త్వరిత షాట్."
+    },
+    "beansStale": {
+      "title1": "బీన్స్ గడిచిపోయాయి",
+      "body1": "రోస్ట్ నుండి ముప్పై రోజులు. ఈ సంచిని విశ్రాంతిలోకి పంపే సమయం.",
+      "title2": "పాతబడిపోతున్నాయి",
+      "body2": "మీ బీన్స్ పదును కోల్పోతున్నాయి. తాజావి శుభ్రంగా డయల్ అవుతాయి.",
+      "title3": "సంచి సమయం ముగిసింది",
+      "body3": "నెల వయసు బీన్స్ వీడ్కోలు తీసుకుంటున్నాయి. కొత్త సంచి, కొత్త డయల్."
     }
   }
 }

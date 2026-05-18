@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Πώς ήταν αυτός;",
       "body1": "Όξινος, ισορροπημένος ή πικρός; Το Brewmie περιμένει την ετυμηγορία.",
@@ -500,6 +492,30 @@
       "body2": "Η κρέμα κάθισε. Πες μας πώς ήταν.",
       "title3": "Ετυμηγορία;",
       "body3": "Μην αφήσεις τη δόση χωρίς βαθμολογία. Ο αλγόριθμος μαθαίνει από κάθε μία."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Οι κόκκοι είναι ρυθμισμένοι",
+      "body1": "Ημέρα 7 από το ψήσιμο. Οι κόκκοι σου είναι στην κορυφή σήμερα. Τράβα όσο τραγουδάνε.",
+      "title2": "Παράθυρο κορυφής",
+      "body2": "Οι κόκκοι σου είναι στο γλυκό σημείο. Κυνήγα προσωπικό ρεκόρ.",
+      "title3": "Ψήσιμο συν επτά",
+      "body3": "Οι κόκκοι είναι στη ζώνη. Γρήγορο σοτ όσο είναι στα καλύτερά τους."
+    },
+    "beansStale": {
+      "title1": "Οι κόκκοι πέρασαν",
+      "body1": "Τριάντα μέρες από το ψήσιμο. Ώρα να συνταξιοδοτηθεί αυτή η σακούλα.",
+      "title2": "Μπαγιάτικα μπροστά",
+      "body2": "Οι κόκκοι σου χάνουν το τσίμπημα. Οι φρέσκοι θα ρυθμιστούν καθαρότερα.",
+      "title3": "Η σακούλα τελείωσε",
+      "body3": "Κόκκοι ενός μήνα αποχωρούν. Νέα σακούλα, νέα ρύθμιση."
     }
   }
 }

@@ -1,13 +1,15 @@
 // Brewmie notification scheduler.
 //
-// Five kinds of local notification, each with three copy variants in
+// Seven kinds of local notification, each with three copy variants in
 // public/translations/*.json under the `notifications.*` namespace:
 //
 //   1001 maintBackflush  fires at 09:00 on the backflush due day
 //   1002 maintDescale    fires at 09:00 on the descale due day
 //   1003 maintGrinder    fires at 09:00 on the grinder clean due day
-//   1004 habitDaily      repeats every day at the user's usual brew time
+//   1004 dailyPing       fires 24h after the most recent shot save
 //   1005 rateReminder    fires 10 min after a shot is logged if not rated
+//   1006 beansPeak       fires at 09:00 on day 7 from roastDate (positive)
+//   1007 beansStale      fires at 09:00 on day 30 from roastDate
 //
 // Variants are picked at schedule time so the message is fixed for that
 // scheduled fire. Variant selection is uniform random across the three.
@@ -26,8 +28,10 @@ export type NotificationType =
   | 'maintBackflush'
   | 'maintDescale'
   | 'maintGrinder'
-  | 'habitDaily'
+  | 'dailyPing'
   | 'rateReminder'
+  | 'beansPeak'
+  | 'beansStale'
 
 export type MaintReminderType = 'maintBackflush' | 'maintDescale' | 'maintGrinder'
 
@@ -35,11 +39,16 @@ export const NOTIFICATION_IDS = {
   maintBackflush: 1001,
   maintDescale: 1002,
   maintGrinder: 1003,
-  habitDaily: 1004,
+  dailyPing: 1004,
   rateReminder: 1005,
+  beansPeak: 1006,
+  beansStale: 1007,
 } as const
 
 const RATE_REMINDER_DELAY_MS = 10 * 60 * 1000
+const DAILY_PING_DELAY_MS = 24 * 60 * 60 * 1000
+const BEANS_PEAK_DAYS = 7
+const BEANS_STALE_DAYS = 30
 
 const VARIANT_COUNT = 3
 
@@ -93,13 +102,6 @@ function atTimeOnDay(day: Date, hour: number, minute: number): Date {
   return r
 }
 
-function nextOccurrenceOf(hour: number, minute: number, from: Date = new Date()): Date {
-  const today = atTimeOnDay(from, hour, minute)
-  if (today.getTime() > from.getTime()) return today
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  return tomorrow
-}
 
 /**
  * Schedule a one-shot maintenance reminder at 09:00 local on the due day.
@@ -126,28 +128,44 @@ export async function scheduleMaintReminder(
 }
 
 /**
- * Schedule a daily habit nudge at the user's usual brew time. If enabled is
- * false, cancels any previously scheduled habit nudge instead.
- *
- * Capacitor LocalNotifications doesn't expose a true cross-platform "daily
- * repeat" via our thin wrapper, so we schedule the next single occurrence
- * here. The caller is expected to re-run rescheduleAllReminders() on app
- * open, which will roll the nudge forward to the next day.
+ * Schedule the 24-hour-after-coffee daily ping. Call this every time a shot
+ * is saved. Stable ID means each new shot overwrites the previous schedule,
+ * so the ping naturally rolls forward to fire 24h after the most recent shot.
+ * If the user keeps brewing daily, it never fires. If they stop, it lands once.
  */
-export async function scheduleHabitNudge(
-  timeOfDay: { hour: number; minute: number },
-  enabled: boolean,
+export async function scheduleDailyPing(t?: Translator): Promise<void> {
+  await getEnDict()
+  const id = NOTIFICATION_IDS.dailyPing
+  const at = new Date(Date.now() + DAILY_PING_DELAY_MS)
+  const { title, body } = pickVariant('dailyPing', t)
+  await scheduleLocalNotification({ id, title, body, at })
+}
+
+export async function cancelDailyPing(): Promise<void> {
+  await cancelLocalNotification(NOTIFICATION_IDS.dailyPing)
+}
+
+/**
+ * Schedule bean-age reminders relative to the current bag's roast date.
+ * Two notifications: a positive ping at day 7 (peak window) and a swap-out
+ * nudge at day 30 (stale). Both at 09:00 local.
+ */
+export async function scheduleBeanReminders(
+  roastDate: Date,
   t?: Translator,
 ): Promise<void> {
-  const id = NOTIFICATION_IDS.habitDaily
-  if (!enabled) {
-    await cancelLocalNotification(id)
-    return
-  }
   await getEnDict()
-  const at = nextOccurrenceOf(timeOfDay.hour, timeOfDay.minute)
-  const { title, body } = pickVariant('habitDaily', t)
-  await scheduleLocalNotification({ id, title, body, at })
+  const now = Date.now()
+  const peakAt = atTimeOnDay(addDays(roastDate, BEANS_PEAK_DAYS), 9, 0)
+  const staleAt = atTimeOnDay(addDays(roastDate, BEANS_STALE_DAYS), 9, 0)
+  if (peakAt.getTime() > now) {
+    const { title, body } = pickVariant('beansPeak', t)
+    await scheduleLocalNotification({ id: NOTIFICATION_IDS.beansPeak, title, body, at: peakAt })
+  }
+  if (staleAt.getTime() > now) {
+    const { title, body } = pickVariant('beansStale', t)
+    await scheduleLocalNotification({ id: NOTIFICATION_IDS.beansStale, title, body, at: staleAt })
+  }
 }
 
 /**
@@ -168,12 +186,6 @@ export async function cancelRateReminder(): Promise<void> {
   await cancelLocalNotification(NOTIFICATION_IDS.rateReminder)
 }
 
-export interface HabitSettings {
-  enabled: boolean
-  hour: number
-  minute: number
-}
-
 const BACKFLUSH_INTERVAL_DAYS = 14
 const DESCALE_INTERVAL_DAYS = 90
 const GRINDER_CLEAN_INTERVAL_DAYS = 28
@@ -191,28 +203,25 @@ function isoToDate(iso: string | null | undefined): Date | null {
 }
 
 /**
- * Top-level idempotent scheduler. Cancels all four notification IDs and
- * re-schedules based on the current maintenance dates plus the supplied
- * habit settings. Safe to call repeatedly (on app open, after maintenance
- * edits, after habit-time change).
+ * Top-level idempotent scheduler. Cancels the date-driven notification IDs
+ * and re-schedules based on the current maintenance dates and roast date.
+ * Safe to call repeatedly (on app open, after maintenance edits, after
+ * roast date change).
  *
- * Habit settings are not yet part of BrewmieState; pass them in until the
- * setup screen lands its own field. If omitted, the habit nudge is left
- * cancelled.
+ * The two event-driven notifications (rateReminder and dailyPing) are NOT
+ * cancelled here: they're scheduled by the shot-save path with stable IDs
+ * that overwrite on each new shot.
  */
 export async function rescheduleAllReminders(
   state: BrewmieState,
-  habit?: HabitSettings,
   t?: Translator,
 ): Promise<void> {
-  // Always cancel first so a state with no maintenance dates leaves nothing
-  // pending from a previous run. rateReminder is event-driven (scheduled by
-  // BrewScreen when a shot lands) so it is NOT cancelled here.
   await Promise.all([
     cancelLocalNotification(NOTIFICATION_IDS.maintBackflush),
     cancelLocalNotification(NOTIFICATION_IDS.maintDescale),
     cancelLocalNotification(NOTIFICATION_IDS.maintGrinder),
-    cancelLocalNotification(NOTIFICATION_IDS.habitDaily),
+    cancelLocalNotification(NOTIFICATION_IDS.beansPeak),
+    cancelLocalNotification(NOTIFICATION_IDS.beansStale),
   ])
 
   const m = state.maintenance
@@ -228,7 +237,8 @@ export async function rescheduleAllReminders(
   if (lastGrinderClean) {
     await scheduleMaintReminder('maintGrinder', addDays(lastGrinderClean, GRINDER_CLEAN_INTERVAL_DAYS), t)
   }
-  if (habit) {
-    await scheduleHabitNudge({ hour: habit.hour, minute: habit.minute }, habit.enabled, t)
+  const roastDate = isoToDate(state.beans?.roastDate)
+  if (roastDate) {
+    await scheduleBeanReminders(roastDate, t)
   }
 }

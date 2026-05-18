@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Hvordan var den?",
       "body1": "Sur, balanceret eller bitter? Brewmie venter på din dom.",
@@ -500,6 +492,30 @@
       "body2": "Cremaen har lagt sig. Fortæl os, hvordan den smagte.",
       "title3": "Dommen?",
       "body3": "Lad ikke den shot stå uden bedømmelse. Algoritmen lærer af hver enkelt."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Bønnerne er dialed in",
+      "body1": "Dag 7 fra ristning. Dine bønner topper i dag. Træk mens de synger.",
+      "title2": "Topvindue",
+      "body2": "Dine bønner er i sweet spot. Jagt en personlig rekord.",
+      "title3": "Ristning plus syv",
+      "body3": "Bønnerne er i zonen. Hurtigt shot mens de er bedst."
+    },
+    "beansStale": {
+      "title1": "Bønnerne er forbi",
+      "body1": "Tredive dage fra ristning. Tid til at pensionere posen.",
+      "title2": "Slap forude",
+      "body2": "Dine bønner mister biddet. Friske vil dial in renere.",
+      "title3": "Posens tid er ude",
+      "body3": "Måneds gamle bønner takker af. Ny pose, ny indstilling."
     }
   }
 }

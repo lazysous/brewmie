@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "როგორი იყო?",
       "body1": "მჟავე, დაბალანსებული თუ მწარე? Brewmie განაჩენს ელოდება.",
@@ -500,6 +492,30 @@
       "body2": "კრემამ დასტერა. გვითხარი როგორი იყო.",
       "title3": "განაჩენი?",
       "body3": "ის შოტი შეუფასებელი არ დატოვო. ალგორითმი თითოეულიდან სწავლობს."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "მარცვლები მზადაა",
+      "body1": "შემწვრიდან მე-7 დღე. შენი მარცვლები დღეს მწვერვალზე არიან. გამოაცალე, სანამ მღერიან.",
+      "title2": "მწვერვალის ფანჯარა",
+      "body2": "შენი მარცვლები ტკბილ წერტილში არიან. გადადგი პირადი რეკორდის გზაზე.",
+      "title3": "შემწვა პლუს შვიდი",
+      "body3": "მარცვლები ზონაშია. სწრაფი შოტი, სანამ საუკეთესოა."
+    },
+    "beansStale": {
+      "title1": "მარცვლები გავიდა",
+      "body1": "შემწვრიდან ოცდაათი დღე. დროა გავაგზავნოთ პენსიაში ეს ჩანთა.",
+      "title2": "შემოდის გაცვეთა",
+      "body2": "შენი მარცვლები კარგავენ ძალას. ახლები უფრო სუფთად დარეგულირდება.",
+      "title3": "ჩანთის დრო ამოიწურა",
+      "body3": "თვის მარცვლები გვემშვიდობებიან. ახალი ჩანთა, ახალი რეგულირება."
     }
   }
 }

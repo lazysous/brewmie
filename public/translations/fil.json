@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Kumusta yun?",
       "body1": "Maasim, balanced, o mapait? Hinihintay ng Brewmie ang hatol mo.",
@@ -500,6 +492,30 @@
       "body2": "Tumira na ang crema. Sabihin kung kumusta ang lasa.",
       "title3": "Hatol?",
       "body3": "Wag iwan na walang rating ang shot na yan. May matututunan ang algorithm sa bawat isa."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Naka-dial in na ang beans",
+      "body1": "Araw 7 mula sa pag-ihaw. Nasa peak ang beans mo ngayon. Pull habang umaawit pa.",
+      "title2": "Peak window",
+      "body2": "Nasa sweet spot ang beans mo. Habulin ang personal best.",
+      "title3": "Ihaw plus pito",
+      "body3": "Nasa zone ang beans. Mabilisang shot habang nasa best pa."
+    },
+    "beansStale": {
+      "title1": "Lampas na ang beans",
+      "body1": "Tatlumpung araw mula sa pag-ihaw. Oras na para retiruhin yung bag.",
+      "title2": "Stale na paparating",
+      "body2": "Nawawalan ng bite ang beans mo. Mas malinis i-dial in ng mga fresh.",
+      "title3": "Tapos na ang bag",
+      "body3": "Buwang gulang na beans, nagpapaalam na. Bagong bag, bagong dial."
     }
   }
 }

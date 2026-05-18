@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "O necə idi?",
       "body1": "Turş, balanslı, yoxsa acı? Brewmie qərarını gözləyir.",
@@ -500,6 +492,30 @@
       "body2": "Krema oturdu. Necə olduğunu söylə.",
       "title3": "Hökm?",
       "body3": "Həmin atışı qiymətləndirməmiş qoyma. Alqoritm hər birindən öyrənir."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Lobya hazırdır",
+      "body1": "Qovurmadan 7-ci gün. Lobyalarınız bu gün zirvədə. Mahnı oxuyarkən çəkin.",
+      "title2": "Zirvə pəncərə",
+      "body2": "Lobyalarınız şirin nöqtədədir. Şəxsi rekordun ardınca düşün.",
+      "title3": "Qovurma üstəgəl yeddi",
+      "body3": "Lobyalar zonadadır. Ən yaxşı vaxtda tez çək."
+    },
+    "beansStale": {
+      "title1": "Lobyalar keçib",
+      "body1": "Qovurmadan otuz gün. Bu çantanı təqaüdə göndərmə vaxtıdır.",
+      "title2": "Bayatlıq qabaqda",
+      "body2": "Lobyalarınız qıtlığını itirir. Təzələri daha təmiz qurulacaq.",
+      "title3": "Çantanın vaxtı bitdi",
+      "body3": "Bir ay yaşlı lobyalar əyilir. Yeni çanta, yeni qurulma."
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Nasıldı?",
       "body1": "Ekşi, dengeli, yoksa acı mı? Brewmie kararını bekliyor.",
@@ -500,6 +492,30 @@
       "body2": "Krema oturdu. Nasıl olduğunu söyle.",
       "title3": "Karar?",
       "body3": "O shotu puanlamadan bırakma. Algoritma her birinden öğreniyor."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Çekirdekler ayarlandı",
+      "body1": "Kavurmadan 7. gün. Çekirdeklerin bugün zirvede. Şarkı söylerken çek.",
+      "title2": "Zirve penceresi",
+      "body2": "Çekirdeklerin tatlı noktada. Kişisel rekoru kovala.",
+      "title3": "Kavurma artı yedi",
+      "body3": "Çekirdekler bölgede. En iyi haldeyken hızlı shot."
+    },
+    "beansStale": {
+      "title1": "Çekirdekler geçti",
+      "body1": "Kavurmadan otuz gün. Bu paketi emekliye ayırma zamanı.",
+      "title2": "Bayatlık önde",
+      "body2": "Çekirdeklerin ısırığını kaybediyor. Tazeler daha temiz ayarlanır.",
+      "title3": "Paketin süresi doldu",
+      "body3": "Aylık çekirdekler veda ediyor. Yeni paket, yeni ayar."
     }
   }
 }

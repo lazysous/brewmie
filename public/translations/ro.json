@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Cum a fost?",
       "body1": "Acru, echilibrat sau amar? Brewmie așteaptă verdictul.",
@@ -500,6 +492,30 @@
       "body2": "Crema s-a așezat. Spune-ne cum a fost.",
       "title3": "Verdictul?",
       "body3": "Nu lăsa shot-ul fără notă. Algoritmul învață din fiecare."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Boabele sunt calibrate",
+      "body1": "Ziua 7 de la prăjire. Boabele tale sunt la vârf azi. Trage cât cântă.",
+      "title2": "Fereastra de vârf",
+      "body2": "Boabele tale sunt în punctul dulce. Urmărește un record personal.",
+      "title3": "Prăjire plus șapte",
+      "body3": "Boabele sunt în zonă. Shot rapid cât sunt la cel mai bun."
+    },
+    "beansStale": {
+      "title1": "Boabele au trecut",
+      "body1": "Treizeci de zile de la prăjire. Timpul să pensionezi punga.",
+      "title2": "Învechite în față",
+      "body2": "Boabele tale pierd din mușcătură. Cele proaspete se calibrează mai curat.",
+      "title3": "Punga și-a făcut timpul",
+      "body3": "Boabe de o lună își iau rămas-bun. Pungă nouă, calibrare nouă."
     }
   }
 }

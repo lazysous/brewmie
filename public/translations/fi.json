@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Miltä se maistui?",
       "body1": "Hapan, tasapainoinen vai katkera? Brewmie odottaa tuomiota.",
@@ -500,6 +492,30 @@
       "body2": "Crema asettui. Kerro, miltä se maistui.",
       "title3": "Tuomio?",
       "body3": "Älä jätä shottia arvioimatta. Algoritmi oppii jokaisesta."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Pavut on viritetty",
+      "body1": "Päivä 7 paahdosta. Pavut ovat huipussaan tänään. Vedä kun ne laulavat.",
+      "title2": "Huippuikkuna",
+      "body2": "Pavut ovat sweet spotissa. Tavoittele henkilökohtaista ennätystä.",
+      "title3": "Paahto plus seitsemän",
+      "body3": "Pavut ovat vyöhykkeellä. Nopea shotti kun ne ovat parhaimmillaan."
+    },
+    "beansStale": {
+      "title1": "Pavut menivät ohi",
+      "body1": "Kolmekymmentä päivää paahdosta. Aika eläköittää tämä pussi.",
+      "title2": "Vanhentumassa",
+      "body2": "Pavut menettävät puruaan. Tuoreet säätyvät puhtaammin.",
+      "title3": "Pussin aika on ohi",
+      "body3": "Kuukauden vanhat pavut väistyvät. Uusi pussi, uusi säätö."
     }
   }
 }

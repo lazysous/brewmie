@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "តើវាយ៉ាងម៉េច?",
       "body1": "ជូរ តុល្យភាព ឬល្វីង? Brewmie កំពុងរង់ចាំសេចក្ដីសម្រេច។",
@@ -500,6 +492,30 @@
       "body2": "ក្រេមាបានដាក់ចុះ។ ប្រាប់យើងពីរស់ជាតិ។",
       "title3": "សេចក្ដីសម្រេច?",
       "body3": "កុំទុកការបាញ់នោះដោយមិនវាយតម្លៃ។ ក្បួនដោះស្រាយរៀនពីម្នាក់ៗ។"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "គ្រាប់ស្រួលហើយ",
+      "body1": "ថ្ងៃទី ៧ ពីការអាំង។ គ្រាប់របស់អ្នកនៅកំពូលថ្ងៃនេះ។ ទាញចេញពេលដែលពួកគេច្រៀង។",
+      "title2": "បង្អួចកំពូល",
+      "body2": "គ្រាប់របស់អ្នកនៅចំណុចផ្អែម។ ដេញតាមកំណត់ត្រាផ្ទាល់ខ្លួន។",
+      "title3": "អាំងបូកប្រាំពីរ",
+      "body3": "គ្រាប់នៅក្នុងតំបន់។ ការបាញ់រហ័សពេលនៅល្អបំផុត។"
+    },
+    "beansStale": {
+      "title1": "គ្រាប់ហួសហើយ",
+      "body1": "សាមសិបថ្ងៃពីការអាំង។ ដល់ពេលត្រូវចូលនិវត្តន៍កាបូបនេះ។",
+      "title2": "ហួសសម័យពីមុខ",
+      "body2": "គ្រាប់របស់អ្នកបាត់បង់ការខាំ។ ស្រស់នឹងលៃតម្រូវស្អាតជាង។",
+      "title3": "ពេលកាបូបបានបញ្ចប់",
+      "body3": "គ្រាប់មួយខែចាស់នៅលាហើយ។ កាបូបថ្មី លៃតម្រូវថ្មី។"
     }
   }
 }

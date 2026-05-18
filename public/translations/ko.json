@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "어땠어요?",
       "body1": "신맛, 균형, 쓴맛? Brewmie가 평가를 기다려요.",
@@ -500,6 +492,30 @@
       "body2": "크레마가 가라앉았어요. 어떤 맛이었는지 알려주세요.",
       "title3": "평가는요?",
       "body3": "그 샷을 평가하지 않은 채 두지 마세요. 알고리즘은 하나하나에서 배워요."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "원두가 다이얼링됐어",
+      "body1": "로스팅 7일차. 원두가 오늘 정점에 있어요. 노래할 때 뽑아요.",
+      "title2": "피크 윈도우",
+      "body2": "원두가 스위트 스팟에 있어요. 개인 최고 기록을 노려봐요.",
+      "title3": "로스팅 플러스 7",
+      "body3": "원두가 존에 있어요. 최상일 때 빠르게 한 잔."
+    },
+    "beansStale": {
+      "title1": "원두가 지났어요",
+      "body1": "로스팅 30일차. 이 봉지를 은퇴시킬 시간.",
+      "title2": "상미 직전",
+      "body2": "원두가 펀치를 잃고 있어요. 새 원두가 더 깔끔하게 다이얼 돼요.",
+      "title3": "봉지의 시간 끝",
+      "body3": "한 달된 원두는 작별 인사. 새 봉지, 새 다이얼."
     }
   }
 }

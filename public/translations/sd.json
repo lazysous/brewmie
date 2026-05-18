@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "هي ڪيئن هو؟",
       "body1": "تيز، متوازن، يا ڪڙو؟ Brewmie فيصلي جو منتظر آهي.",
@@ -500,6 +492,30 @@
       "body2": "ڪريما ويهي رهي. ٻڌايو ته ڪيئن لڳو.",
       "title3": "فيصلو؟",
       "body3": "اھو شاٽ بنا درجي بندي جي نه ڇڏ. الگورٿم ھر ھڪ کان سکي ٿو."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "دانا تيار آهن",
+      "body1": "تور کان 7 ڏينهن. توهان جا دانا اڄ چوٽي تي آهن. ڳائڻ دوران ڇڪيو.",
+      "title2": "چوٽي ونڊو",
+      "body2": "توهان جا دانا مٺي جڳھ تي آهن. ذاتي بھترين جو تعاقب ڪريو.",
+      "title3": "تور جمع ستن",
+      "body3": "دانا زون ۾ آهن. بھترين دوران تيز شاٽ."
+    },
+    "beansStale": {
+      "title1": "دانا گذري ويا",
+      "body1": "تور کان ٽيهه ڏينهن. هي ٿلهو رٽائر ڪرڻ جو وقت.",
+      "title2": "پراڻا اڳيان",
+      "body2": "توهان جا دانا تيزي وڃائي رهيا آهن. تازا صاف ٺھندا.",
+      "title3": "ٿلهي جو وقت پورو",
+      "body3": "مهيني پراڻا دانا الوداع چوي رهيا آهن. نئون ٿلهو، نئون سيٽ اپ."
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "ያ እንዴት ነበር?",
       "body1": "ጎምዛዛ፣ ሚዛናዊ ወይስ መራራ? Brewmie ፍርዱን እየጠበቀ ነው።",
@@ -500,6 +492,30 @@
       "body2": "ክሬማው ተረጋግቷል። እንዴት ጣፋጭ እንደነበር ይንገሩን።",
       "title3": "ፍርድ?",
       "body3": "ያንን ሾት ሳይገመግሙ አይተዉት። አልጎሪዝሙ ከእያንዳንዱ ይማራል።"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "ቡናው ተዘጋጅቷል",
+      "body1": "ከመጠበስ 7 ቀን። ቡናው ዛሬ ጫፉ ላይ ነው። እየዘፈነ ሳለ ጠብቀው ቅሩ።",
+      "title2": "ጫፍ መስኮት",
+      "body2": "ቡናው ጥሩ ቦታ ላይ ነው። የግል ምርጥ ይከታተሉ።",
+      "title3": "ጠብሶ ሰባት",
+      "body3": "ቡናው በተገቢው ቀጠና ላይ ነው። ምርጥ ሲሆን ቶሎ ያውጡ።"
+    },
+    "beansStale": {
+      "title1": "ቡናው አልፏል",
+      "body1": "ከመጠበስ ሠላሳ ቀን። ይህን ከረጢት ለማስወገድ ጊዜው ነው።",
+      "title2": "መከርከስ ይመጣል",
+      "body2": "ቡናው እየደከመ ነው። አዲሶቹ ይበልጥ ንፁህ ይዘጋጃሉ።",
+      "title3": "ከረጢቱ ጊዜው አበቃ",
+      "body3": "የወር ቡና እየተንቀጠቀጠ ነው። አዲስ ከረጢት፣ አዲስ ማስተካከያ።"
     }
   }
 }

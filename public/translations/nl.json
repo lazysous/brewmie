@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Hoe was die?",
       "body1": "Zuur, gebalanceerd of bitter? Brewmie wacht op het oordeel.",
@@ -500,6 +492,30 @@
       "body2": "De crema is gezakt. Vertel ons hoe hij smaakte.",
       "title3": "Oordeel?",
       "body3": "Laat die shot niet zonder beoordeling. Het algoritme leert van elke."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Bonen zijn ingesteld",
+      "body1": "Dag 7 vanaf roosteren. Je bonen pieken vandaag. Trek terwijl ze zingen.",
+      "title2": "Piekvenster",
+      "body2": "Je bonen zitten in de sweet spot. Jaag op een persoonlijk record.",
+      "title3": "Roosteren plus zeven",
+      "body3": "Bonen zitten in de zone. Snelle shot terwijl ze op hun best zijn."
+    },
+    "beansStale": {
+      "title1": "Bonen zijn voorbij",
+      "body1": "Dertig dagen vanaf roosteren. Tijd om dit zakje te pensioneren.",
+      "title2": "Slap op komst",
+      "body2": "Je bonen verliezen hun bite. Verse stellen schoner in.",
+      "title3": "Tijd van het zakje is om",
+      "body3": "Maand-oude bonen nemen afscheid. Nieuw zakje, nieuwe afstelling."
     }
   }
 }

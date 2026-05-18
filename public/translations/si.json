@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "අර එක මොකද්ද වගේ?",
       "body1": "ඇඹුල්, සමබර, හෝ තිත්ත? Brewmie තීන්දුව බලාගෙන ඉන්නවා.",
@@ -500,6 +492,30 @@
       "body2": "ක්‍රීමා පහත් වෙලා. රස කොහොමද කියන්න.",
       "title3": "තීන්දුව?",
       "body3": "ඒ ෂොට් ශ්‍රේණිගත නොකර තියන්න එපා. ඇල්ගොරිතම් හැම එකකින්ම ඉගෙන ගන්නවා."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "බෝංචි සකස් වෙලා",
+      "body1": "රෝස්ට් වෙච්ච දා සිට දින 7. ඔයාගේ බෝංචි අද උපරිමයේ. ගී ගයන කාලයේ අදින්න.",
+      "title2": "උපරිම කවුළුව",
+      "body2": "ඔයාගේ බෝංචි මිහිරි ස්ථානයේ. පුද්ගලික හොඳම පසුපස ලුහුබැඳ යන්න.",
+      "title3": "රෝස්ට් එකතු කරන්න හතක්",
+      "body3": "බෝංචි කලාපයේ. හොඳම අවස්ථාවේ ක්ෂණික ෂොට්."
+    },
+    "beansStale": {
+      "title1": "බෝංචි පහුවුණා",
+      "body1": "රෝස්ට් එකේ සිට දින තිහ. මේ බෑගය විශ්‍රාම යවන්න වෙලාව.",
+      "title2": "පරණ වුණා ඉස්සරහ",
+      "body2": "ඔයාගේ බෝංචි ශක්තිය නැති වෙනවා. නැවුම් එව්වා පිරිසිදුව ඩයල් වෙයි.",
+      "title3": "බෑගයේ කාලය ඉවරයි",
+      "body3": "මාසයක් පරණ බෝංචි සමු දෙනවා. අලුත් බෑගයක්, අලුත් ඩයල් එකක්."
     }
   }
 }

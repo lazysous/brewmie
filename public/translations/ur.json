@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "وہ کیسا تھا؟",
       "body1": "کھٹا، متوازن، یا کڑوا؟ Brewmie فیصلے کا منتظر ہے۔",
@@ -500,6 +492,30 @@
       "body2": "کریما بیٹھ گئی۔ بتائیں کیسا تھا۔",
       "title3": "فیصلہ؟",
       "body3": "اس شاٹ کو ریٹنگ کے بغیر مت چھوڑیں۔ الگورتھم ہر ایک سے سیکھتا ہے۔"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "دانے تیار ہیں",
+      "body1": "بھوننے کے 7 دن بعد۔ آپ کے دانے آج چوٹی پر ہیں۔ گاتے ہوئے کھینچیں۔",
+      "title2": "چوٹی کی کھڑکی",
+      "body2": "آپ کے دانے میٹھے مقام پر ہیں۔ ذاتی بہترین کا تعاقب کریں۔",
+      "title3": "بھوننے میں سات کا اضافہ",
+      "body3": "دانے زون میں ہیں۔ بہترین حالت میں تیز شاٹ۔"
+    },
+    "beansStale": {
+      "title1": "دانے گزر گئے",
+      "body1": "بھوننے سے تیس دن۔ اس تھیلے کو ریٹائر کرنے کا وقت۔",
+      "title2": "باسی سامنے",
+      "body2": "آپ کے دانے کاٹ کھو رہے ہیں۔ تازے صاف ڈائل ہوں گے۔",
+      "title3": "تھیلے کا وقت ختم",
+      "body3": "ماہ پرانے دانے رخصت ہو رہے ہیں۔ نیا تھیلا، نیا ڈائل۔"
     }
   }
 }

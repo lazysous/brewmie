@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "तो कसा होता?",
       "body1": "आंबट, संतुलित, की कडू? Brewmie निकालाची वाट पाहत आहे.",
@@ -500,6 +492,30 @@
       "body2": "क्रीमा बसली. कसा होता ते सांगा.",
       "title3": "निकाल?",
       "body3": "तो शॉट रेट केल्याशिवाय सोडू नका. अल्गोरिदम प्रत्येकातून शिकतो."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "बीन्स तयार आहेत",
+      "body1": "रोस्टपासून दिवस 7. तुमचे बीन्स आज शिखरावर आहेत. गाताना ओढा.",
+      "title2": "पीक विंडो",
+      "body2": "तुमचे बीन्स गोड स्थानावर आहेत. वैयक्तिक सर्वोत्तमचा पाठलाग करा.",
+      "title3": "रोस्ट अधिक सात",
+      "body3": "बीन्स झोनमध्ये आहेत. सर्वोत्तम असताना जलद शॉट."
+    },
+    "beansStale": {
+      "title1": "बीन्स गेले",
+      "body1": "रोस्टपासून तीस दिवस. ही पिशवी निवृत्त करण्याची वेळ.",
+      "title2": "शिळे पुढे",
+      "body2": "तुमचे बीन्स ताकद गमावत आहेत. ताजे क्लीनर डायल होतील.",
+      "title3": "पिशवीची वेळ संपली",
+      "body3": "महिनाभराचे बीन्स निरोप घेत आहेत. नवीन पिशवी, नवीन डायल."
     }
   }
 }

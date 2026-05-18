@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Conas a bhí sé?",
       "body1": "Géar, cothrom, nó searbh? Tá Brewmie ag fanacht ar bhreith.",
@@ -500,6 +492,30 @@
       "body2": "Tá an crema socraithe. Inis dúinn cén blas a bhí air.",
       "title3": "Breith?",
       "body3": "Ná fág an shot sin gan rátáil. Foghlaimíonn an t-algartam ó gach ceann."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Tá na pónairí ag obair",
+      "body1": "Lá 7 ón rósta. Tá do phónairí ag a mbuaic inniu. Tarraing fad atá siad ag canadh.",
+      "title2": "Fuinneog buaic",
+      "body2": "Tá do phónairí sa spota milis. Téigh sa tóir ar churiarracht phearsanta.",
+      "title3": "Rósta móide a seacht",
+      "body3": "Tá na pónairí sa chrios. Shot tapa fad atá siad ag a mbarr."
+    },
+    "beansStale": {
+      "title1": "Tá na pónairí thart",
+      "body1": "Tríocha lá ón rósta. Am an mála seo a chur ar scor.",
+      "title2": "Stálaithe romhainn",
+      "body2": "Tá do phónairí ag cailliúint a ngreim. Glanfar na cinn úra níos glaine.",
+      "title3": "Tá am an mhála thart",
+      "body3": "Pónairí míosa ag fágáil slán. Mála nua, suíomh nua."
     }
   }
 }

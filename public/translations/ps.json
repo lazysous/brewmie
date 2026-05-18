@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "هغه څنګه و؟",
       "body1": "ترش، توازن لرونکی، یا تریخ؟ Brewmie د حکم انتظار کوي.",
@@ -500,6 +492,30 @@
       "body2": "کریما ناسته. ووایه چې څنګه وه.",
       "title3": "حکم؟",
       "body3": "هغه شاټ بې درجې مه پریږده. الګوریتم له هر یوه څخه زده کوي."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "لوبیا چمتو دی",
+      "body1": "له بریښلو 7 ورځې. ستاسو لوبیا نن د قله په حالت کې دي. کله چې سندرې وایي راوباسئ.",
+      "title2": "د قله کړکۍ",
+      "body2": "ستاسو لوبیا په خوږ ځای کې دي. شخصي ریکارډ تعقیب کړئ.",
+      "title3": "بریښل جمع اوه",
+      "body3": "لوبیا په زون کې دي. کله چې غوره وي ګړندی شاټ."
+    },
+    "beansStale": {
+      "title1": "لوبیا تېر شو",
+      "body1": "له بریښلو دېرش ورځې. وخت دی چې دا کڅوړه تقاعد ته واستوئ.",
+      "title2": "زاړه مخکې",
+      "body2": "ستاسو لوبیا خپله غاښ ورکوي. تازه به پاک ډایل کیږي.",
+      "title3": "د کڅوړې وخت پای ته ورسید",
+      "body3": "د یوې میاشتې زاړه لوبیا د جدا کیدو ویل کوي. نوې کڅوړه، نوی ډایل."
     }
   }
 }

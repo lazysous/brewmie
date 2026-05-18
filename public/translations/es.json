@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "¿Cómo estuvo?",
       "body1": "¿Ácido, equilibrado o amargo? Brewmie espera tu veredicto.",
@@ -500,6 +492,30 @@
       "body2": "La crema se asentó. Cuéntanos cómo sabía.",
       "title3": "¿Veredicto?",
       "body3": "No dejes ese shot sin puntuar. El algoritmo aprende de cada uno."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Los granos están dialed in",
+      "body1": "Día 7 del tueste. Tus granos están en su pico hoy. Saca mientras cantan.",
+      "title2": "Ventana pico",
+      "body2": "Tus granos están en el punto dulce. Persigue un récord personal.",
+      "title3": "Tueste más siete",
+      "body3": "Los granos están en la zona. Shot rápido mientras están en su mejor momento."
+    },
+    "beansStale": {
+      "title1": "Los granos pasaron",
+      "body1": "Treinta días desde el tueste. Hora de jubilar esta bolsa.",
+      "title2": "Rancios a la vista",
+      "body2": "Tus granos pierden mordida. Frescos dialarán más limpio.",
+      "title3": "Bolsa terminada",
+      "body3": "Granos de un mes se despiden. Bolsa nueva, dial nuevo."
     }
   }
 }

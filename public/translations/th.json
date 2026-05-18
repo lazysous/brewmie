@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "เป็นไงบ้าง?",
       "body1": "เปรี้ยว สมดุล หรือขม? Brewmie รอคำตัดสินอยู่.",
@@ -500,6 +492,30 @@
       "body2": "เครมาเซตตัวแล้ว บอกหน่อยว่าเป็นยังไง.",
       "title3": "คำตัดสิน?",
       "body3": "อย่าทิ้งช็อตนั้นโดยไม่ให้คะแนน อัลกอริทึมเรียนรู้จากทุกแก้ว."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "เมล็ดเข้าที่แล้ว",
+      "body1": "วันที่ 7 จากคั่ว เมล็ดของคุณอยู่จุดสูงสุดวันนี้ ดึงตอนที่มันร้องเพลง",
+      "title2": "หน้าต่างยอด",
+      "body2": "เมล็ดของคุณอยู่ในจุดหวาน ตามล่าสถิติส่วนตัว",
+      "title3": "คั่วบวกเจ็ด",
+      "body3": "เมล็ดอยู่ในโซน ช็อตเร็วๆ ขณะที่ดีที่สุด"
+    },
+    "beansStale": {
+      "title1": "เมล็ดเลยจุดแล้ว",
+      "body1": "สามสิบวันจากคั่ว เวลาปลดเกษียณถุงนี้",
+      "title2": "ใกล้เก่าแล้ว",
+      "body2": "เมล็ดของคุณกำลังเสียคม เมล็ดใหม่จะตั้งได้คลีนกว่า",
+      "title3": "หมดเวลาของถุง",
+      "body3": "เมล็ดอายุเดือนกำลังจะลา ถุงใหม่ ตั้งใหม่"
     }
   }
 }

@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Як быў той кубак?",
       "body1": "Кіслы, збалансаваны ці горкі? Brewmie чакае вердыкту.",
@@ -500,6 +492,30 @@
       "body2": "Крэма ўлеглася. Раскажы, як ён на смак.",
       "title3": "Вердыкт?",
       "body3": "Не пакідай той шот неацэненым. Алгарытм вучыцца з кожнага."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Зёрны гатовыя",
+      "body1": "7 дзён ад абсмажвання. Сёння зёрны на піку. Цягні, пакуль спяваюць.",
+      "title2": "Акно піка",
+      "body2": "Зёрны ў салодкай кропцы. Ганіся за асабістым рэкордам.",
+      "title3": "Абсмажванне плюс сем",
+      "body3": "Зёрны ў зоне. Хуткі шот, пакуль яны лепшыя."
+    },
+    "beansStale": {
+      "title1": "Зёрны прайшлі",
+      "body1": "Трыццаць дзён ад абсмажвання. Час адставіць гэту торбу.",
+      "title2": "Несвежыя наперадзе",
+      "body2": "Зёрны губляюць рэзкасць. Свежыя наладзяцца чысцей.",
+      "title3": "Час торбы выйшаў",
+      "body3": "Зёрны месячнай даўнасці адыходзяць. Новая торба, новая наладка."
     }
   }
 }

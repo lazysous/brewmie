@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Como foi ese?",
       "body1": "Acedo, equilibrado ou amargo? Brewmie agarda o veredicto.",
@@ -500,6 +492,30 @@
       "body2": "A crema asentou. Cóntanos como soubo.",
       "title3": "Veredicto?",
       "body3": "Non deixes ese shot sen puntuar. O algoritmo aprende de cada un."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Os grans están a punto",
+      "body1": "Día 7 do tostado. Os teus grans están no pico hoxe. Saca mentres cantan.",
+      "title2": "Ventá pico",
+      "body2": "Os teus grans están no punto doce. Persegue un récord persoal.",
+      "title3": "Tostado máis sete",
+      "body3": "Os grans están na zona. Shot rápido mentres están no mellor."
+    },
+    "beansStale": {
+      "title1": "Os grans pasaron",
+      "body1": "Trinta días do tostado. Hora de xubilar esta bolsa.",
+      "title2": "Rancios á vista",
+      "body2": "Os teus grans perden mordedura. Frescos axustarán máis limpo.",
+      "title3": "A bolsa rematou",
+      "body3": "Grans dun mes despídense. Bolsa nova, axuste novo."
     }
   }
 }

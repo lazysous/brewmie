@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "အဲဒါဘယ်လိုလဲ?",
       "body1": "ချဉ်တယ်၊ မျှတတယ်၊ ဒါမှမဟုတ် ခါးတယ်? Brewmie က စစ်ဆေးချက်ကို စောင့်နေတယ်။",
@@ -500,6 +492,30 @@
       "body2": "ခရီးမားက အေးငြိမ်ပြီ။ ဘယ်လို အရသာရှိလဲ ပြောပါ။",
       "title3": "ဆုံးဖြတ်ချက်?",
       "body3": "အဲဒီရှော့ကို အဆင့်မပေးဘဲ မထားခဲ့ပါနဲ့။ အယ်လ်ဂိုရစ်သမ်က တစ်ခုစီကနေ သင်ယူနေတယ်။"
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "ပဲတွေ ချိန်ပြီး",
+      "body1": "မိုးကြိုးထဲက 7 ရက်။ မင်းရဲ့ပဲတွေ ဒီနေ့အထွတ်အထိပ်မှာ။ သီချင်းဆိုနေတုန်း ဆွဲထုတ်လိုက်ပါ။",
+      "title2": "အထွတ်အထိပ် ပြတင်းပေါက်",
+      "body2": "မင်းရဲ့ပဲတွေ ချိုမြိန်တဲ့နေရာမှာ။ ကိုယ်ပိုင်အကောင်းဆုံးကို ရှာဖွေပါ။",
+      "title3": "မိုးကြိုး အပေါင်း ခုနစ်",
+      "body3": "ပဲတွေ ဇုံထဲမှာ။ အကောင်းဆုံးအခိုက်အတံ့မှာ မြန်ဆန်တဲ့ ရှော့။"
+    },
+    "beansStale": {
+      "title1": "ပဲတွေ လွန်သွားပြီ",
+      "body1": "မိုးကြိုးထဲက ရက်ပေါင်း သုံးဆယ်။ ဒီအိတ်ကို ပင်စင်ပေးဖို့ အချိန်တန်ပြီ။",
+      "title2": "ဟောင်းနွမ်းခြင်း ရှေ့မှာ",
+      "body2": "မင်းရဲ့ပဲတွေ စွမ်းအား ဆုံးရှုံးနေပြီ။ အသစ်တွေက ပိုသန့်ရှင်းစွာ ချိန်ညှိနိုင်တယ်။",
+      "title3": "အိတ်ရဲ့ အချိန် ကုန်ပြီ",
+      "body3": "တစ်လသား ပဲတွေ နှုတ်ဆက်နေပြီ။ အိတ်အသစ်၊ ချိန်ညှိမှု အသစ်။"
     }
   }
 }

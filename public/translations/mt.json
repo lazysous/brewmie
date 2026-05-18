@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Kif kien dak?",
       "body1": "Qares, ibbilanċjat, jew morr? Brewmie qed jistenna l-verdett.",
@@ -500,6 +492,30 @@
       "body2": "Il-crema poġġiet. Għidilna kif kienet.",
       "title3": "Verdett?",
       "body3": "Tħallix dak ix-shot bla rating. L-algoritmu jitgħallem minn kull wieħed."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Iż-żerriegħa ddejjielata",
+      "body1": "Jum 7 mit-tisjir. Iż-żerriegħa tiegħek illum hi fil-quċċata. Iġbed waqt li tkanta.",
+      "title2": "Tieqa tal-quċċata",
+      "body2": "Iż-żerriegħa tiegħek hi fil-post ħelu. Iddoqq rekord personali.",
+      "title3": "Tisjir flimkien sebgħa",
+      "body3": "Iż-żerriegħa qiegħda fiż-żona. Shot ta' malajr waqt li hi l-aktar tajba."
+    },
+    "beansStale": {
+      "title1": "Iż-żerriegħa għaddiet",
+      "body1": "Tletin jum mit-tisjir. Wasal iż-żmien li tirtira din il-borża.",
+      "title2": "Stantew quddiem",
+      "body2": "Iż-żerriegħa tiegħek qed titlef il-qawwa. Friski jiddejjelaw aktar nadif.",
+      "title3": "Il-ħin tal-borża spiċċa",
+      "body3": "Żerriegħa ta' xahar tgħid sliem. Borża ġdida, dial ġdid."
     }
   }
 }

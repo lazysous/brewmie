@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Milyen volt?",
       "body1": "Savanyú, kiegyensúlyozott vagy keserű? A Brewmie várja az ítéletet.",
@@ -500,6 +492,30 @@
       "body2": "A crema leülepedett. Mondd el, milyen volt.",
       "title3": "Ítélet?",
       "body3": "Ne hagyd a shotot értékelés nélkül. Az algoritmus mindegyikből tanul."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "A bab be van állítva",
+      "body1": "7. nap a pörköléstől. A babod ma a csúcson van. Húzd, amíg énekel.",
+      "title2": "Csúcsablak",
+      "body2": "A babod a sweet spotban van. Hajszolj személyes csúcsot.",
+      "title3": "Pörkölés plusz hét",
+      "body3": "A bab a zónában van. Gyors shot, amíg a legjobb formában."
+    },
+    "beansStale": {
+      "title1": "A bab elmúlt",
+      "body1": "Harminc nap a pörköléstől. Itt az ideje nyugdíjazni ezt a zacskót.",
+      "title2": "Állott jön",
+      "body2": "A babod veszít az erejéből. Frissek tisztábban hangolódnak.",
+      "title3": "A zacskó ideje lejárt",
+      "body3": "Egy hónapos bab búcsúzik. Új zacskó, új beállítás."
     }
   }
 }

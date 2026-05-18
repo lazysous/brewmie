@@ -485,14 +485,6 @@
       "title3": "Give the grinder a clean",
       "body3": "Four weeks of fines have opinions about your next shot. Settle them."
     },
-    "habitDaily": {
-      "title1": "Time for a coffee",
-      "body1": "The machine's ready when you are.",
-      "title2": "Coffee o'clock",
-      "body2": "Same time, same machine. Pull one.",
-      "title3": "Your daily shot",
-      "body3": "Beans are waiting. So is the timer."
-    },
     "rateReminder": {
       "title1": "Kuidas see oli?",
       "body1": "Hapu, tasakaalus või mõru? Brewmie ootab otsust.",
@@ -500,6 +492,30 @@
       "body2": "Crema settis. Ütle, kuidas maitses.",
       "title3": "Otsus?",
       "body3": "Ära jäta seda šotti hindamata. Algoritm õpib igaühest."
+    },
+    "dailyPing": {
+      "title1": "Time for a coffee",
+      "body1": "The machine's ready when you are.",
+      "title2": "Coffee o'clock",
+      "body2": "Same time, same machine. Pull one.",
+      "title3": "Your daily shot",
+      "body3": "Beans are waiting. So is the timer."
+    },
+    "beansPeak": {
+      "title1": "Oad on häälestatud",
+      "body1": "7. päev röstist. Su oad on täna tipus. Tõmba, kuni nad laulavad.",
+      "title2": "Tipuaken",
+      "body2": "Su oad on magusas kohas. Jälita isiklikku rekordit.",
+      "title3": "Röst pluss seitse",
+      "body3": "Oad on tsoonis. Kiire shott, kuni nad on parimad."
+    },
+    "beansStale": {
+      "title1": "Oad on möödas",
+      "body1": "Kolmkümmend päeva röstist. Aeg see kott pensionile saata.",
+      "title2": "Vananenud ees",
+      "body2": "Su oad kaotavad hammustuse. Värsked seadistuvad puhtamaks.",
+      "title3": "Koti aeg on otsas",
+      "body3": "Kuu vanad oad lahkuvad. Uus kott, uus häälestus."
     }
   }
 }

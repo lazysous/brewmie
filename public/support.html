@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="robots" content="noarchive">
+<meta name="format-detection" content="telephone=no">
+<title>Support | Brewmie</title>
+<meta name="description" content="Get help with Brewmie. Common questions, contact, and account management.">
+
+<link rel="icon" type="image/png" href="/assets/icon-192.png">
+<link rel="apple-touch-icon" href="/assets/icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --copper: #B8744A;
+    --copper-deep: #8C5532;
+    --green: #6B8E5C;
+    --cream: #FAF7F2;
+    --text-dark: #2C2C2C;
+    --text-medium: #666666;
+    --border: #E5E5E5;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid var(--border);
+}
+
+.logo { height: 36px; margin-bottom: 18px; }
+
+h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--copper-deep);
+    margin-bottom: 8px;
+}
+
+.subtitle { font-size: 16px; color: var(--text-medium); }
+
+.content h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 30px 0 12px;
+}
+
+.content h2:first-child { margin-top: 0; }
+
+.content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.content strong { font-weight: 600; }
+.content a { color: var(--copper-deep); }
+
+.return-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 40px auto 0;
+    padding: 14px 24px;
+    background: var(--copper);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.return-btn:hover {
+    background: var(--copper-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(184, 116, 74, 0.3);
+}
+
+@media (max-width: 600px) {
+    .container { padding: 30px 20px; }
+    h1 { font-size: 36px; }
+    .content h2 { font-size: 17px; }
+    .content p { font-size: 14px; }
+}
+
+@media (prefers-color-scheme: dark) {
+    body { background: #1a1a1a; color: #e0ddd8; }
+    .container { background: #221C15; }
+    h1 { color: #E5B891; }
+    .content h2 { color: #ccc; }
+    .content p { color: #e0ddd8; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="/assets/BM-logo-full-black.png" alt="Brewmie" class="logo">
+        <h1>Support</h1>
+        <p class="subtitle">Help with Brewmie. Real reply within 48 hours.</p>
+    </div>
+
+    <div class="content">
+        <h2>Get in touch.</h2>
+        <p>
+            Stuck on a dial-in, found a bug, lost your shots after switching phones? Email <strong><a href="mailto:chef@lazysous.app">chef@lazysous.app</a></strong>. One of us reads every message.
+        </p>
+
+        <h2>My recommendation feels off.</h2>
+        <p>
+            Brewmie improves with each shot you log. Rate the taste honestly. Within 10 to 20 shots, the algorithm tunes to your kitchen. If a single recommendation seems wrong, tap it for the reasoning underneath.
+        </p>
+
+        <h2>I lost my shots after reinstalling.</h2>
+        <p>
+            Shots live on your device by default. Reinstalling wipes them unless you signed in. Signed-in users get an automatic restore on the next sign-in.
+        </p>
+
+        <h2>My grinder isn't in the list.</h2>
+        <p>
+            Email us the make and model. We add new grinders weekly. In the meantime, pick the closest match or use a generic preset; the algorithm adapts either way.
+        </p>
+
+        <h2>Premium and refunds.</h2>
+        <p>
+            Brewmie Premium is a one-time purchase. Apple and Google handle refunds inside their own systems. iOS users open reportaproblem.apple.com; Play users tap "Purchase history" in the Play Store app.
+        </p>
+
+        <h2>Delete my account.</h2>
+        <p>
+            Go to <a href="/delete-account">brewmie.app/delete-account</a> for the steps.
+        </p>
+
+        <h2>Privacy.</h2>
+        <p>
+            Full policy at <a href="/privacy">brewmie.app/privacy</a>.
+        </p>
+    </div>
+
+    <a href="/" class="return-btn">← Return to Brewmie</a>
+</div>
+</body>
+</html>

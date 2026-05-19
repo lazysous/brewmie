@@ -510,7 +510,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         return {
           grind:  Number.isFinite(parsed.grind  as number) ? parsed.grind  as number : seed.grind,
           dose:   Number.isFinite(parsed.dose   as number) ? parsed.dose   as number : seed.dose,
-          tamp:   (typeof parsed.tamp === 'string' ? parsed.tamp as BrewTargets['tamp'] : seed.tamp),
+          tamp:   Number.isFinite(parsed.tamp   as number) ? parsed.tamp   as number : seed.tamp,
           volume: Number.isFinite(parsed.volume as number) ? parsed.volume as number : seed.volume,
           time:   Number.isFinite(parsed.time   as number) ? parsed.time   as number : seed.time,
         }

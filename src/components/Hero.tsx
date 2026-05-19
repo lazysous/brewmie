@@ -9,11 +9,6 @@ import type { TParams } from '../lib/i18n'
 // would leak the project URL on the Google consent screen, which destroys the
 // install funnel. Native Apple/Google use signInWithIdToken, which doesn't.
 const SIGN_IN_AVAILABLE = Capacitor.isNativePlatform()
-// Platform-specific signed-out header button. Apple HIG / Google branding both
-// permit a logo-only variant in space-constrained slots like a top-app-bar.
-const SIGNIN_PLATFORM: 'apple' | 'google' | 'web' = Capacitor.isNativePlatform()
-  ? (Capacitor.getPlatform() === 'android' ? 'google' : 'apple')
-  : 'web'
 
 interface HeroProps {
   activeTab: AppTab

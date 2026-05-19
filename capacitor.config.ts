@@ -21,15 +21,17 @@ const config: CapacitorConfig = {
   },
   plugins: {
     GoogleAuth: {
-      // TODO before launch: replace these placeholders with Brewmie's Google
-      // OAuth client IDs from the Firebase console (Project Settings > Your
-      // apps > iOS / Android). The serverClientId is the Web Client ID — used
-      // by Supabase to verify the Google idToken on the server side.
+      // Web client ID from GCP project 'notional-gist-496404-q9' (Brewmie).
+      // Same value used by Supabase's Google provider to verify ID tokens.
+      //
+      // TODO when ready to ship native UX: create iOS + Android OAuth clients
+      // in GCP and set iosClientId + androidClientId respectively. Until then
+      // the plugin falls back to the Web client which still authenticates
+      // correctly against Supabase, just via a web consent screen rather
+      // than the platform-native sheet.
       scopes: ['email', 'profile'],
-      clientId: 'REPLACE-WITH-BREWMIE-WEB-CLIENT-ID.apps.googleusercontent.com',
-      serverClientId: 'REPLACE-WITH-BREWMIE-WEB-CLIENT-ID.apps.googleusercontent.com',
-      iosClientId: 'REPLACE-WITH-BREWMIE-IOS-CLIENT-ID.apps.googleusercontent.com',
-      androidClientId: 'REPLACE-WITH-BREWMIE-ANDROID-CLIENT-ID.apps.googleusercontent.com',
+      clientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
+      serverClientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
       forceCodeForRefreshToken: false,
     },
     CapacitorUpdater: {

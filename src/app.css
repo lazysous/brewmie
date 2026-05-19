@@ -54,7 +54,9 @@
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-brand: 'Cormorant Garamond', Georgia, serif;
 
-  /* Layout */
+  /* Layout: 428px frame for the web preview, full-bleed on touch devices
+     (which includes every phone/tablet running Brewmie natively). The
+     pointer:coarse override below flips the cap. */
   --app-max-width: 428px;
   --header-height: 56px;
   --bottom-nav-height: 64px;
@@ -79,6 +81,14 @@
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
+}
+
+/* Touch devices (iPhone, iPad, Android) — let the app fill the screen.
+   The 428px cap only applies to mouse-driven web preview. */
+@media (pointer: coarse) {
+  :root {
+    --app-max-width: 100%;
+  }
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */

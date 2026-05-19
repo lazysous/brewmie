@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import type {
   BrewmieState,
   AppAction,
@@ -1184,8 +1185,9 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         {t('setup.toastSaved')}
       </div>
 
-      {/* ── Setup Wizard ── */}
-      {wizardOpen && (
+      {/* ── Setup Wizard (portaled to body so it escapes the .app stacking
+            context and reliably covers the BottomNav) ── */}
+      {wizardOpen && createPortal(
         <div className="wz-backdrop" role="dialog" aria-modal="true" aria-label={t('wizard.ariaLabel')}>
           <div className="wz-sheet">
 
@@ -1379,7 +1381,8 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
             </div>
 
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <PremiumModal

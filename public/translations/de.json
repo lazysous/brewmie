@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Deine Shots, dein Equipment und dein Profil werden von unseren Servern gelöscht. Das lässt sich nicht rückgängig machen.",
     "deleteAccountCancel": "Abbrechen",
     "deleteAccountConfirm": "Löschen",
-    "deleteAccountBusy": "Lösche..."
+    "deleteAccountBusy": "Lösche...",
+    "deleteAccountFailed": "Konto konnte nicht gelöscht werden. Bitte erneut versuchen."
   },
   "wizard": {
     "ariaLabel": "Setup-Assistent",

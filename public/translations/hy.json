@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Ձեր շոթերը, սարքավորումները և պրոֆիլը կջնջվեն մեր սերվերներից: Սա չի կարող հետադարձվել:",
     "deleteAccountCancel": "Չեղարկել",
     "deleteAccountConfirm": "Ջնջել",
-    "deleteAccountBusy": "Ջնջվում է..."
+    "deleteAccountBusy": "Ջնջվում է...",
+    "deleteAccountFailed": "Հաշիվը չհաջողվեց ջնջել: Կրկին փորձիր:"
   },
   "wizard": {
     "ariaLabel": "Kargat. voghch.",

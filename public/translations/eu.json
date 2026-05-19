@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Zure tiroak, ekipoa eta profila gure zerbitzarietatik ezabatuko dira. Hau ezin da desegin.",
     "deleteAccountCancel": "Utzi",
     "deleteAccountConfirm": "Ezabatu",
-    "deleteAccountBusy": "Ezabatzen..."
+    "deleteAccountBusy": "Ezabatzen...",
+    "deleteAccountFailed": "Ezin izan da kontua ezabatu. Saiatu berriro."
   },
   "wizard": {
     "ariaLabel": "Konfigurazio laguntzailea",

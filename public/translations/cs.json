@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Tvoje shoty, vybavení a profil budou smazány z našich serverů. Toto nelze vrátit zpět.",
     "deleteAccountCancel": "Zrušit",
     "deleteAccountConfirm": "Smazat",
-    "deleteAccountBusy": "Mažu..."
+    "deleteAccountBusy": "Mažu...",
+    "deleteAccountFailed": "Účet se nepodařilo smazat. Zkus to znovu."
   },
   "wizard": {
     "ariaLabel": "Průvodce nastavením",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Shottisi, kalustosi ja profiilisi pyyhitään palvelimiltamme. Tätä ei voi peruuttaa.",
     "deleteAccountCancel": "Peruuta",
     "deleteAccountConfirm": "Poista",
-    "deleteAccountBusy": "Poistetaan..."
+    "deleteAccountBusy": "Poistetaan...",
+    "deleteAccountFailed": "Tilin poisto epäonnistui. Yritä uudelleen."
   },
   "wizard": {
     "ariaLabel": "Asennusvelho",

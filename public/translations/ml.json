@@ -277,7 +277,8 @@
     "deleteAccountWarning": "നിങ്ങളുടെ ഷോട്ടുകൾ, ഉപകരണങ്ങൾ, പ്രൊഫൈൽ ഞങ്ങളുടെ സെർവറുകളിൽ നിന്ന് മായ്ച്ചുകളയും. ഇത് റദ്ദാക്കാനാവില്ല.",
     "deleteAccountCancel": "റദ്ദാക്കുക",
     "deleteAccountConfirm": "ഇല്ലാതാക്കുക",
-    "deleteAccountBusy": "ഇല്ലാതാക്കുന്നു..."
+    "deleteAccountBusy": "ഇല്ലാതാക്കുന്നു...",
+    "deleteAccountFailed": "അക്കൗണ്ട് ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക."
   },
   "wizard": {
     "ariaLabel": "സെറ്റപ്പ് വിസാർഡ്",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Twoje shoty, sprzęt i profil zostaną usunięte z naszych serwerów. Tego nie da się cofnąć.",
     "deleteAccountCancel": "Anuluj",
     "deleteAccountConfirm": "Usuń",
-    "deleteAccountBusy": "Usuwanie..."
+    "deleteAccountBusy": "Usuwanie...",
+    "deleteAccountFailed": "Nie udało się usunąć konta. Spróbuj ponownie."
   },
   "wizard": {
     "ariaLabel": "Kreator konfiguracji",

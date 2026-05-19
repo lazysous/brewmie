@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ሾቶችህ፣ ቁሳቁስህ እና መገለጫህ ከአገልጋዮቻችን ይጠፋሉ። ይህ መቀልበስ አይቻልም።",
     "deleteAccountCancel": "ሰርዝ",
     "deleteAccountConfirm": "ሰርዝ",
-    "deleteAccountBusy": "በመሰረዝ ላይ..."
+    "deleteAccountBusy": "በመሰረዝ ላይ...",
+    "deleteAccountFailed": "መለያ ለመሰረዝ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
   },
   "wizard": {
     "ariaLabel": "የማዋቀር አዋቂ",

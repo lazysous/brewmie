@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ستاسو شاټونه، توکي او پروفایل به زموږ له سرورونو څخه پاک شي. دا نه شي بیرته راګرځیدلی.",
     "deleteAccountCancel": "لغوه کول",
     "deleteAccountConfirm": "ړنګ کړئ",
-    "deleteAccountBusy": "ړنګیږي..."
+    "deleteAccountBusy": "ړنګیږي...",
+    "deleteAccountFailed": "حساب ړنګ نشو. بیا هڅه وکړئ."
   },
   "wizard": {
     "ariaLabel": "د تنظیم ویزارډ",

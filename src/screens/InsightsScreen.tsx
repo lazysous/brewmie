@@ -729,8 +729,9 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         </button>
       )}
 
-      {/* All shots — full scrollable list, each row tap-to-edit */}
-      {allShotsOpen && (
+      {/* All shots — full scrollable list, each row tap-to-edit. Portaled so
+          the sheet's fixed position is viewport-relative and covers BottomNav. */}
+      {allShotsOpen && createPortal(
         <div className="ix-sheet-backdrop" role="dialog" aria-modal="true" onClick={() => setAllShotsOpen(false)}>
           <div className="ix-sheet ix-sheet--tall" onClick={(e) => e.stopPropagation()}>
             <div className="ix-sheet__header">
@@ -743,7 +744,8 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Edit shot — taste + actuals, save -> UPDATE_SHOT */}

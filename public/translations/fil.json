@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Mawawala ang iyong shots, gear, at profile sa aming mga server. Hindi ito maaaring bawiin.",
     "deleteAccountCancel": "Kanselahin",
     "deleteAccountConfirm": "Tanggalin",
-    "deleteAccountBusy": "Tinatanggal..."
+    "deleteAccountBusy": "Tinatanggal...",
+    "deleteAccountFailed": "Hindi natanggal ang account. Subukan ulit."
   },
   "wizard": {
     "ariaLabel": "Setup wizard",

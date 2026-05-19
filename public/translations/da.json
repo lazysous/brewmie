@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Dine shots, dit udstyr og din profil bliver slettet fra vores servere. Det kan ikke fortrydes.",
     "deleteAccountCancel": "Annuller",
     "deleteAccountConfirm": "Slet",
-    "deleteAccountBusy": "Sletter..."
+    "deleteAccountBusy": "Sletter...",
+    "deleteAccountFailed": "Kunne ikke slette kontoen. Prøv igen."
   },
   "wizard": {
     "ariaLabel": "Opsætningsguide",

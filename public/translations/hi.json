@@ -277,7 +277,8 @@
     "deleteAccountWarning": "आपके शॉट्स, गियर और प्रोफाइल हमारे सर्वर से मिटा दिए जाएंगे। यह वापस नहीं किया जा सकता।",
     "deleteAccountCancel": "रद्द",
     "deleteAccountConfirm": "हटाएं",
-    "deleteAccountBusy": "हटाया जा रहा है..."
+    "deleteAccountBusy": "हटाया जा रहा है...",
+    "deleteAccountFailed": "अकाउंट डिलीट नहीं हो सका। फिर से प्रयास करें।"
   },
   "wizard": {
     "ariaLabel": "सेटअप विज़ार्ड",

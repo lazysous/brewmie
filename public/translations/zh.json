@@ -277,7 +277,8 @@
     "deleteAccountWarning": "你的咖啡、装备和个人资料将从我们的服务器上抹去。无法撤销。",
     "deleteAccountCancel": "取消",
     "deleteAccountConfirm": "删除",
-    "deleteAccountBusy": "删除中..."
+    "deleteAccountBusy": "删除中...",
+    "deleteAccountFailed": "删除账户失败。请再试一次。"
   },
   "wizard": {
     "ariaLabel": "设置向导",

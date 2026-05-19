@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Οι δόσεις, ο εξοπλισμός και το προφίλ σου θα διαγραφούν από τους διακομιστές μας. Αυτό δεν αναιρείται.",
     "deleteAccountCancel": "Άκυρο",
     "deleteAccountConfirm": "Διαγραφή",
-    "deleteAccountBusy": "Διαγραφή..."
+    "deleteAccountBusy": "Διαγραφή...",
+    "deleteAccountFailed": "Αποτυχία διαγραφής λογαριασμού. Δοκιμάστε ξανά."
   },
   "wizard": {
     "ariaLabel": "Οδηγός ρύθμισης",

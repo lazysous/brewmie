@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Atışlarınız, avadanlıqlarınız və profiliniz serverlərimizdən silinəcək. Bu geri qaytarıla bilməz.",
     "deleteAccountCancel": "Ləğv et",
     "deleteAccountConfirm": "Sil",
-    "deleteAccountBusy": "Silinir..."
+    "deleteAccountBusy": "Silinir...",
+    "deleteAccountFailed": "Hesabı silmək alınmadı. Yenidən cəhd edin."
   },
   "wizard": {
     "ariaLabel": "Quraşdırma sehrbazı",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Sinu šotid, varustus ja profiil kustutatakse meie serveritest. Seda ei saa tagasi võtta.",
     "deleteAccountCancel": "Tühista",
     "deleteAccountConfirm": "Kustuta",
-    "deleteAccountBusy": "Kustutan..."
+    "deleteAccountBusy": "Kustutan...",
+    "deleteAccountFailed": "Konto kustutamine ebaõnnestus. Proovi uuesti."
   },
   "wizard": {
     "ariaLabel": "Seadistusviisard",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "شات‌ها، تجهیزات و پروفایل شما از سرورهای ما پاک می‌شود. این عمل قابل بازگشت نیست.",
     "deleteAccountCancel": "لغو",
     "deleteAccountConfirm": "حذف",
-    "deleteAccountBusy": "در حال حذف..."
+    "deleteAccountBusy": "در حال حذف...",
+    "deleteAccountFailed": "حذف حساب ناموفق بود. لطفاً دوباره تلاش کنید."
   },
   "wizard": {
     "ariaLabel": "ویزارد تنظیمات",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Os teus shots, equipamento e perfil serão apagados dos nossos servidores. Isto não pode ser revertido.",
     "deleteAccountCancel": "Cancelar",
     "deleteAccountConfirm": "Excluir",
-    "deleteAccountBusy": "Excluindo..."
+    "deleteAccountBusy": "Excluindo...",
+    "deleteAccountFailed": "Falha ao excluir conta. Tenta novamente."
   },
   "wizard": {
     "ariaLabel": "Assistente de configuração",

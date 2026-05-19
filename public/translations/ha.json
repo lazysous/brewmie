@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Ana share shots dinka, kayan aikinka, da bayanan martabarka daga sabar mu. Ba a iya juyar da wannan ba.",
     "deleteAccountCancel": "Soke",
     "deleteAccountConfirm": "Share",
-    "deleteAccountBusy": "Ana sharewa..."
+    "deleteAccountBusy": "Ana sharewa...",
+    "deleteAccountFailed": "Sharewa ya kasa. Sake gwadawa."
   },
   "wizard": {
     "ariaLabel": "Mataimakin saiti",

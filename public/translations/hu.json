@@ -277,7 +277,8 @@
     "deleteAccountWarning": "A shotjaid, felszerelésed és profilod törlődik a szervereinkről. Ezt nem lehet visszavonni.",
     "deleteAccountCancel": "Mégse",
     "deleteAccountConfirm": "Törlés",
-    "deleteAccountBusy": "Törlés..."
+    "deleteAccountBusy": "Törlés...",
+    "deleteAccountFailed": "A fiók törlése sikertelen. Próbáld újra."
   },
   "wizard": {
     "ariaLabel": "Beállítás varázsló",

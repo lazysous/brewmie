@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ನಿಮ್ಮ ಶಾಟ್‌ಗಳು, ಸಲಕರಣೆ ಮತ್ತು ಪ್ರೊಫೈಲ್ ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದ ಅಳಿಸಲ್ಪಡುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗದು.",
     "deleteAccountCancel": "ರದ್ದು",
     "deleteAccountConfirm": "ಅಳಿಸಿ",
-    "deleteAccountBusy": "ಅಳಿಸಲಾಗುತ್ತಿದೆ..."
+    "deleteAccountBusy": "ಅಳಿಸಲಾಗುತ್ತಿದೆ...",
+    "deleteAccountFailed": "ಖಾತೆ ಅಳಿಸಲು ವಿಫಲವಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
   },
   "wizard": {
     "ariaLabel": "ಸೆಟಪ್ ವಿಝಾರ್ಡ್",

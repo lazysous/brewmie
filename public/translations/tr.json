@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Shot'ların, ekipmanın ve profilin sunucularımızdan silinecek. Bu geri alınamaz.",
     "deleteAccountCancel": "İptal",
     "deleteAccountConfirm": "Sil",
-    "deleteAccountBusy": "Siliniyor..."
+    "deleteAccountBusy": "Siliniyor...",
+    "deleteAccountFailed": "Hesap silinemedi. Tekrar dene."
   },
   "wizard": {
     "ariaLabel": "Kurulum sihirbazı",

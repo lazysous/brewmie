@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Scriosfar do shots, do threalamh, agus do phróifíl ónár bhfreastalaithe. Ní féidir é seo a chealú.",
     "deleteAccountCancel": "Cealaigh",
     "deleteAccountConfirm": "Scrios",
-    "deleteAccountBusy": "Á scriosadh..."
+    "deleteAccountBusy": "Á scriosadh...",
+    "deleteAccountFailed": "Theip ar an gcuntas a scriosadh. Bain triail eile as."
   },
   "wizard": {
     "ariaLabel": "Draíodóir socraithe",

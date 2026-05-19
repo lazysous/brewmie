@@ -277,7 +277,8 @@
     "deleteAccountWarning": "توهان جا شاٽ، اوزار ۽ پروفائل اسان جي سرورن مان مٽجي ويندا. هي واپس نه ٿو ٿي سگهي.",
     "deleteAccountCancel": "رد",
     "deleteAccountConfirm": "ختم",
-    "deleteAccountBusy": "ختم ٿي رهيو..."
+    "deleteAccountBusy": "ختم ٿي رهيو...",
+    "deleteAccountFailed": "اڪائونٽ ختم نه ٿيو. ٻيهر ڪوشش ڪريو."
   },
   "wizard": {
     "ariaLabel": "سيٽ اپ وزرڊ",

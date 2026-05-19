@@ -277,7 +277,8 @@
     "deleteAccountWarning": "உங்கள் ஷாட்கள், கருவிகள் மற்றும் சுயவிவரம் எங்கள் சேவையகங்களில் இருந்து அழிக்கப்படும். இதை மீட்க முடியாது.",
     "deleteAccountCancel": "ரத்து",
     "deleteAccountConfirm": "நீக்கு",
-    "deleteAccountBusy": "நீக்குகிறது..."
+    "deleteAccountBusy": "நீக்குகிறது...",
+    "deleteAccountFailed": "கணக்கை நீக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
   },
   "wizard": {
     "ariaLabel": "அமைப்பு வழிகாட்டி",

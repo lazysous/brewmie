@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ショット、機材、プロフィールがサーバーから削除されます。元に戻せません。",
     "deleteAccountCancel": "キャンセル",
     "deleteAccountConfirm": "削除",
-    "deleteAccountBusy": "削除中..."
+    "deleteAccountBusy": "削除中...",
+    "deleteAccountFailed": "アカウントを削除できませんでした。もう一度試してください。"
   },
   "wizard": {
     "ariaLabel": "セットアップウィザード",

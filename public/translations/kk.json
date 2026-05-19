@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Сіздің шоттарыңыз, жабдықтарыңыз және профиліңіз серверлерімізден жойылады. Бұны қайтару мүмкін емес.",
     "deleteAccountCancel": "Бас тарту",
     "deleteAccountConfirm": "Жою",
-    "deleteAccountBusy": "Жойылуда..."
+    "deleteAccountBusy": "Жойылуда...",
+    "deleteAccountFailed": "Тіркелгіні жою сәтсіз аяқталды. Қайта көріңіз."
   },
   "wizard": {
     "ariaLabel": "Баптау шебері",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Вашы шоты, абсталяванне і профіль будуць выдалены з нашых сервераў. Гэта незваротна.",
     "deleteAccountCancel": "Адмена",
     "deleteAccountConfirm": "Выдаліць",
-    "deleteAccountBusy": "Выдаленне..."
+    "deleteAccountBusy": "Выдаленне...",
+    "deleteAccountFailed": "Не атрымалася выдаліць акаўнт. Паспрабуйце яшчэ раз."
   },
   "wizard": {
     "ariaLabel": "Майстар налады",

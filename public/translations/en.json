@@ -370,7 +370,8 @@
     "deleteAccountWarning": "Your shots, gear, and profile will be wiped from our servers. This can't be undone.",
     "deleteAccountCancel": "Cancel",
     "deleteAccountConfirm": "Delete",
-    "deleteAccountBusy": "Deleting..."
+    "deleteAccountBusy": "Deleting...",
+    "deleteAccountFailed": "Failed to delete account. Please try again."
   },
   "wizard": {
     "ariaLabel": "Setup wizard",

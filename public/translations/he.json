@@ -277,7 +277,8 @@
     "deleteAccountWarning": "השוטים, הציוד והפרופיל שלך יימחקו מהשרתים שלנו. לא ניתן לבטל.",
     "deleteAccountCancel": "ביטול",
     "deleteAccountConfirm": "מחק",
-    "deleteAccountBusy": "מוחק..."
+    "deleteAccountBusy": "מוחק...",
+    "deleteAccountFailed": "מחיקת החשבון נכשלה. נסה שוב."
   },
   "wizard": {
     "ariaLabel": "אשף הגדרה",

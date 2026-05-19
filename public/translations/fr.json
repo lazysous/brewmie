@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Tes shots, ton matériel et ton profil seront effacés de nos serveurs. C'est irréversible.",
     "deleteAccountCancel": "Annuler",
     "deleteAccountConfirm": "Supprimer",
-    "deleteAccountBusy": "Suppression..."
+    "deleteAccountBusy": "Suppression...",
+    "deleteAccountFailed": "Échec de la suppression du compte. Réessaie."
   },
   "wizard": {
     "ariaLabel": "Assistant de configuration",

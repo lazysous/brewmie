@@ -277,7 +277,8 @@
     "deleteAccountWarning": "سيتم محو قهواتك ومعداتك وملفك الشخصي من خوادمنا. لا يمكن التراجع عن هذا.",
     "deleteAccountCancel": "إلغاء",
     "deleteAccountConfirm": "حذف",
-    "deleteAccountBusy": "جارٍ الحذف..."
+    "deleteAccountBusy": "جارٍ الحذف...",
+    "deleteAccountFailed": "فشل حذف الحساب. يرجى المحاولة مرة أخرى."
   },
   "wizard": {
     "ariaLabel": "معالج الإعداد",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "I tuoi shot, l'attrezzatura e il profilo saranno cancellati dai nostri server. Non è reversibile.",
     "deleteAccountCancel": "Annulla",
     "deleteAccountConfirm": "Elimina",
-    "deleteAccountBusy": "Eliminazione..."
+    "deleteAccountBusy": "Eliminazione...",
+    "deleteAccountFailed": "Eliminazione account non riuscita. Riprova."
   },
   "wizard": {
     "ariaLabel": "Setup guidato",

@@ -406,7 +406,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
       window.location.href = '/'
     } else {
       // eslint-disable-next-line no-alert
-      alert(res.error || 'Failed to delete account.')
+      alert(res.error || t('setup.deleteAccountFailed'))
     }
   }
 
@@ -1180,10 +1180,13 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
       </div>
 
-      {/* Saved toast */}
-      <div className={`sc-toast${toastVisible ? ' sc-toast--visible' : ''}`} aria-live="polite" aria-atomic="true">
-        {t('setup.toastSaved')}
-      </div>
+      {/* Saved toast — portaled so it floats over BottomNav cleanly */}
+      {createPortal(
+        <div className={`sc-toast${toastVisible ? ' sc-toast--visible' : ''}`} aria-live="polite" aria-atomic="true">
+          {t('setup.toastSaved')}
+        </div>,
+        document.body
+      )}
 
       {/* ── Setup Wizard (portaled to body so it escapes the .app stacking
             context and reliably covers the BottomNav) ── */}

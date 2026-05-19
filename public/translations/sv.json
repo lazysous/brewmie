@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Dina shots, din utrustning och din profil raderas från våra servrar. Detta kan inte ångras.",
     "deleteAccountCancel": "Avbryt",
     "deleteAccountConfirm": "Radera",
-    "deleteAccountBusy": "Raderar..."
+    "deleteAccountBusy": "Raderar...",
+    "deleteAccountFailed": "Det gick inte att radera kontot. Försök igen."
   },
   "wizard": {
     "ariaLabel": "Inställningsguide",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "તમારા શોટ્સ, ગિયર અને પ્રોફાઇલ અમારા સર્વર્સમાંથી ભૂંસી નાખવામાં આવશે. આ પાછું ફેરવી શકાતું નથી.",
     "deleteAccountCancel": "રદ કરો",
     "deleteAccountConfirm": "ડિલીટ",
-    "deleteAccountBusy": "ડિલીટ થઈ રહ્યું છે..."
+    "deleteAccountBusy": "ડિલીટ થઈ રહ્યું છે...",
+    "deleteAccountFailed": "એકાઉન્ટ ડિલીટ થયું નહીં. ફરી પ્રયત્ન કરો."
   },
   "wizard": {
     "ariaLabel": "સેટઅપ વિઝાર્ડ",

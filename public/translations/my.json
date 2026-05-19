@@ -277,7 +277,8 @@
     "deleteAccountWarning": "သင်၏ ရှော့များ၊ ပစ္စည်းများ၊ ပရိုဖိုင်တို့ကို ကျွန်ုပ်တို့၏ ဆာဗာများမှ ဖျက်ပါမည်။ ပြန်လည်ပြောင်းလဲ၍ မရပါ။",
     "deleteAccountCancel": "ပယ်ဖျက်",
     "deleteAccountConfirm": "ဖျက်",
-    "deleteAccountBusy": "ဖျက်နေသည်..."
+    "deleteAccountBusy": "ဖျက်နေသည်...",
+    "deleteAccountFailed": "အကောင့်ဖျက်ခြင်း မအောင်မြင်ပါ။ ထပ်စမ်းကြည့်ပါ။"
   },
   "wizard": {
     "ariaLabel": "စနစ်ထည့်ခြင်း ဝစ်ဇတ်",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "آپ کے شاٹس، گیئر، اور پروفائل ہمارے سرورز سے مٹا دیے جائیں گے۔ یہ واپس نہیں کیا جا سکتا۔",
     "deleteAccountCancel": "منسوخ",
     "deleteAccountConfirm": "ڈیلیٹ",
-    "deleteAccountBusy": "ڈیلیٹ ہو رہا..."
+    "deleteAccountBusy": "ڈیلیٹ ہو رہا...",
+    "deleteAccountFailed": "اکاؤنٹ ڈیلیٹ نہیں ہوا۔ دوبارہ کوشش کریں۔"
   },
   "wizard": {
     "ariaLabel": "سیٹ اپ وزرڈ",

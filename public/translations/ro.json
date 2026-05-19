@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Shoturile, echipamentul și profilul tău vor fi șterse de pe serverele noastre. Nu se poate anula.",
     "deleteAccountCancel": "Anulează",
     "deleteAccountConfirm": "Șterge",
-    "deleteAccountBusy": "Se șterge..."
+    "deleteAccountBusy": "Se șterge...",
+    "deleteAccountFailed": "Ștergerea contului a eșuat. Încearcă din nou."
   },
   "wizard": {
     "ariaLabel": "Asistent configurare",

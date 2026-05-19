@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Bydd dy shots, dy gêr a dy broffil yn cael eu dileu o'n gweinyddwyr. All hyn ddim cael ei ddadwneud.",
     "deleteAccountCancel": "Canslo",
     "deleteAccountConfirm": "Dileu",
-    "deleteAccountBusy": "Dileu..."
+    "deleteAccountBusy": "Dileu...",
+    "deleteAccountFailed": "Methwyd dileu'r cyfrif. Rho gynnig arall."
   },
   "wizard": {
     "ariaLabel": "Dewin gosod",

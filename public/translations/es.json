@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Tus shots, equipo y perfil se borrarán de nuestros servidores. Esto no se puede deshacer.",
     "deleteAccountCancel": "Cancelar",
     "deleteAccountConfirm": "Eliminar",
-    "deleteAccountBusy": "Eliminando..."
+    "deleteAccountBusy": "Eliminando...",
+    "deleteAccountFailed": "No se pudo eliminar la cuenta. Inténtalo de nuevo."
   },
   "wizard": {
     "ariaLabel": "Asistente de configuración",

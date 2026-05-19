@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Shot, peralatan, dan profil anda akan dipadam dari pelayan kami. Tindakan ini tidak boleh dibatalkan.",
     "deleteAccountCancel": "Batal",
     "deleteAccountConfirm": "Padam",
-    "deleteAccountBusy": "Memadam..."
+    "deleteAccountBusy": "Memadam...",
+    "deleteAccountFailed": "Gagal padam akaun. Sila cuba lagi."
   },
   "wizard": {
     "ariaLabel": "Wizard persediaan",

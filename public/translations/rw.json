@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Shots zawe, ibikoresho, na umwirondoro byanyu bizasibwa kuri serveri zacu. Ibi ntibishobora gusubizwa.",
     "deleteAccountCancel": "Hagarika",
     "deleteAccountConfirm": "Siba",
-    "deleteAccountBusy": "Kuvanaho..."
+    "deleteAccountBusy": "Kuvanaho...",
+    "deleteAccountFailed": "Gusiba konti byanze. Ongera ugerageze."
   },
   "wizard": {
     "ariaLabel": "Umufasha mu igenamiterere",

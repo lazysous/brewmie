@@ -277,7 +277,8 @@
     "deleteAccountWarning": "আপোনাৰ শ্বট, সঁজুলি আৰু প্ৰফাইল আমাৰ চাৰ্ভাৰৰ পৰা মচা হ'ব। ইয়াক উভতাব নোৱাৰি।",
     "deleteAccountCancel": "বাতিল",
     "deleteAccountConfirm": "মচক",
-    "deleteAccountBusy": "মচা হৈছে..."
+    "deleteAccountBusy": "মচা হৈছে...",
+    "deleteAccountFailed": "একাউণ্ট মচিব নোৱাৰিলে। অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।"
   },
   "wizard": {
     "ariaLabel": "ছেটআপ উইজাৰ্ড",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ඔබේ ෂොට්, උපකරණ සහ පැතිකඩ අපගේ සේවාදායකවලින් මකා දැමෙනවා. මෙය ආපසු කළ නොහැක.",
     "deleteAccountCancel": "අවලංගු",
     "deleteAccountConfirm": "මකන්න",
-    "deleteAccountBusy": "මකමින්..."
+    "deleteAccountBusy": "මකමින්...",
+    "deleteAccountFailed": "ගිණුම මැකීමට අසමත් විය. නැවත උත්සාහ කරන්න."
   },
   "wizard": {
     "ariaLabel": "සැකසුම් වැඩසටහන",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "თქვენი შოტები, აღჭურვილობა და პროფილი წაიშლება ჩვენი სერვერებიდან. ეს არ შეიძლება გაუქმდეს.",
     "deleteAccountCancel": "გაუქმება",
     "deleteAccountConfirm": "წაშლა",
-    "deleteAccountBusy": "წაშლა..."
+    "deleteAccountBusy": "წაშლა...",
+    "deleteAccountFailed": "ანგარიშის წაშლა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან."
   },
   "wizard": {
     "ariaLabel": "დაყენების მრჩეველი",

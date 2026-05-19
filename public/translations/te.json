@@ -277,7 +277,8 @@
     "deleteAccountWarning": "మీ షాట్‌లు, పరికరాలు మరియు ప్రొఫైల్ మా సర్వర్‌ల నుండి తొలగించబడతాయి. దీనిని వెనక్కి తీసుకోలేరు.",
     "deleteAccountCancel": "రద్దు",
     "deleteAccountConfirm": "తొలగించు",
-    "deleteAccountBusy": "తొలగిస్తోంది..."
+    "deleteAccountBusy": "తొలగిస్తోంది...",
+    "deleteAccountFailed": "ఖాతా తొలగించడం విఫలమైంది. మళ్ళీ ప్రయత్నించండి."
   },
   "wizard": {
     "ariaLabel": "సెటప్ విజార్డ్",

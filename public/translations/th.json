@@ -277,7 +277,8 @@
     "deleteAccountWarning": "ช็อต อุปกรณ์ และโปรไฟล์ของคุณจะถูกลบจากเซิร์ฟเวอร์ของเรา การกระทำนี้ไม่สามารถย้อนกลับได้",
     "deleteAccountCancel": "ยกเลิก",
     "deleteAccountConfirm": "ลบ",
-    "deleteAccountBusy": "กำลังลบ..."
+    "deleteAccountBusy": "กำลังลบ...",
+    "deleteAccountFailed": "ลบบัญชีไม่สำเร็จ ลองอีกครั้ง"
   },
   "wizard": {
     "ariaLabel": "ตัวช่วยตั้งค่า",

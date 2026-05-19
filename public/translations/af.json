@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Jou skote, toerusting en profiel sal van ons bedieners gewis word. Dit kan nie ongedaan gemaak word nie.",
     "deleteAccountCancel": "Kanselleer",
     "deleteAccountConfirm": "Verwyder",
-    "deleteAccountBusy": "Verwyder..."
+    "deleteAccountBusy": "Verwyder...",
+    "deleteAccountFailed": "Kon nie rekening verwyder nie. Probeer asseblief weer."
   },
   "wizard": {
     "ariaLabel": "Opstellingstowenaar",

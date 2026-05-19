@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Tvoji shoteri, oprema i profil bit će obrisani s naših poslužitelja. Ovo se ne može poništiti.",
     "deleteAccountCancel": "Odustani",
     "deleteAccountConfirm": "Izbriši",
-    "deleteAccountBusy": "Brisanje..."
+    "deleteAccountBusy": "Brisanje...",
+    "deleteAccountFailed": "Brisanje računa nije uspjelo. Pokušaj ponovno."
   },
   "wizard": {
     "ariaLabel": "Čarobnjak postavljanja",

@@ -277,7 +277,8 @@
     "deleteAccountWarning": "L-iskali, l-għodda, u l-profil tiegħek se jitħassru mis-servers tagħna. Dan ma jistax jiġi mreġġa' lura.",
     "deleteAccountCancel": "Ikkanċella",
     "deleteAccountConfirm": "Ħassar",
-    "deleteAccountBusy": "Qed jitħassar..."
+    "deleteAccountBusy": "Qed jitħassar...",
+    "deleteAccountFailed": "Tnaqqis tal-kont falla. Erġa' pprova."
   },
   "wizard": {
     "ariaLabel": "Wizard tat-tħejjija",

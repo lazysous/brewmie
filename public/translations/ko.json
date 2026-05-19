@@ -277,7 +277,8 @@
     "deleteAccountWarning": "샷, 장비, 프로필이 서버에서 지워집니다. 되돌릴 수 없어요.",
     "deleteAccountCancel": "취소",
     "deleteAccountConfirm": "삭제",
-    "deleteAccountBusy": "삭제 중..."
+    "deleteAccountBusy": "삭제 중...",
+    "deleteAccountFailed": "계정을 삭제하지 못했습니다. 다시 시도해 주세요."
   },
   "wizard": {
     "ariaLabel": "설정 마법사",

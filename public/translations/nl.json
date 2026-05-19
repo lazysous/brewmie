@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Je shots, gear en profiel worden van onze servers gewist. Dit is niet terug te draaien.",
     "deleteAccountCancel": "Annuleren",
     "deleteAccountConfirm": "Verwijderen",
-    "deleteAccountBusy": "Verwijderen..."
+    "deleteAccountBusy": "Verwijderen...",
+    "deleteAccountFailed": "Account verwijderen mislukt. Probeer opnieuw."
   },
   "wizard": {
     "ariaLabel": "Setup-wizard",

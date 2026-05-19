@@ -277,7 +277,8 @@
     "deleteAccountWarning": "Таны шот, тоног төхөөрөмж, профайл серверээс устгагдана. Үүнийг буцаах боломжгүй.",
     "deleteAccountCancel": "Цуцлах",
     "deleteAccountConfirm": "Устгах",
-    "deleteAccountBusy": "Устгаж байна..."
+    "deleteAccountBusy": "Устгаж байна...",
+    "deleteAccountFailed": "Бүртгэлийг устгаж чадсангүй. Дахин оролдоно уу."
   },
   "wizard": {
     "ariaLabel": "Тохиргооны шидтэн",

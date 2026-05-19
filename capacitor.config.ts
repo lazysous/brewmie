@@ -8,7 +8,11 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
   },
   ios: {
-    contentInset: 'automatic',
+    // Edge-to-edge: WebView fills the safe area, CSS handles the inset via
+    // env(safe-area-inset-*) variables. The legacy 'automatic' value also
+    // applied UIScrollView insets, which on iOS 17+ double-pushed content
+    // and clipped the header on Pro Max devices.
+    contentInset: 'never',
     backgroundColor: '#FAF7F2',
     preferredContentMode: 'mobile',
   },

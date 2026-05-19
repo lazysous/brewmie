@@ -1,0 +1,12 @@
+{
+  "language": "Spanish (Latin America)",
+  "ios_locale": "es-MX",
+  "play_locale": "es-419",
+  "name": "Brewmie: Ajuste de espresso",
+  "subtitle": "Timer y diario de molienda",
+  "short_description": "Cronómetro de espresso, registro de molienda y coach de ajuste. Por baristas.",
+  "promotional_text": "Deja de adivinarle al molino. Saca un shot, califica el sabor, Brewmie te dice qué cambiar. Hecho por baristas.",
+  "description": "Coach de ajuste de espresso para baristas en casa.\n\nDeja de adivinarle al molino. Saca un shot, dile a Brewmie a qué supo, y recibe un solo paso claro para el siguiente. Molienda, dosis o rendimiento, en las unidades reales de tu molino, con la razón debajo.\n\nHecho por baristas. Afinado a tu equipo, tu café y el aire de tu cocina.\n\nLO QUE HACES\nArma tu shot. Toca BREW. El cronómetro se encarga. Para cuando esté listo. Califica crema y sabor. Brewmie hace el resto.\n\nLO QUE BREWMIE SABE\nMás de 25 marcas de máquinas y 100 modelos de molinos, con los rangos reales. Presión de tamper, edad del grano, tueste, temperatura, humedad, todo entra. Los perfiles de grano viajan de bolsa en bolsa.\n\nUNA LÍNEA, UN MOVIMIENTO\nNada de \"un poco más fino.\" De 31,5 a 30,5, con la razón abajo. Aplica al siguiente shot con un toque.\n\nINSIGHTS\nCada shot registrado. Récord personal, puntaje de consistencia, ritmo de la semana. Las recetas del punto justo aparecen cuando llevas suficientes. Exporta tu bitácora cuando quieras.\n\nPREMIUM\nUn solo pago desbloquea todos los molinos, todos los tampers, perfiles completos, exportación CSV y sincronización entre dispositivos.\n\nPRIVACIDAD\nLos shots quedan en tu dispositivo por defecto. Inicia sesión para sincronizar entre teléfonos. Los datos anónimos nutren al algoritmo. Desactiva cuando quieras.\n\nPara baristas cansados de adivinar.",
+  "whats_new": "Primera versión. Saca un shot, registra tiempo y rendimiento, califica el sabor. Brewmie te dice qué cambiar, en las unidades reales de tu molino.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

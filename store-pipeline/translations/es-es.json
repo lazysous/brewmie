@@ -1,0 +1,12 @@
+{
+  "language": "Spanish (Spain)",
+  "ios_locale": "es-ES",
+  "play_locale": "es-ES",
+  "name": "Brewmie: Ajuste de espresso",
+  "subtitle": "Timer y diario de molienda",
+  "short_description": "Cronómetro de espresso, registro de molienda y coach de ajuste. Por baristas.",
+  "promotional_text": "Deja de adivinar con el molinillo. Saca un shot, valora el sabor, Brewmie te dice qué cambiar. Hecho por baristas.",
+  "description": "Coach de ajuste de espresso para baristas en casa.\n\nDeja de adivinar con el molinillo. Saca un shot, dile a Brewmie a qué supo, y recibe un solo movimiento claro para el siguiente. Molienda, dosis o rendimiento, en las unidades reales de tu molinillo, con la razón debajo.\n\nHecho por baristas. Afinado a tu equipo, tus granos y el aire de tu cocina.\n\nLO QUE HACES\nPrepara tu shot. Pulsa BREW. El cronómetro toma el mando. Para cuando esté listo. Valora la crema y el sabor. Brewmie hace el resto.\n\nLO QUE BREWMIE SABE\nMás de 25 marcas de máquinas y 100 modelos de molinillos, con los rangos reales. Presión de tampeo, edad del grano, tueste, temperatura ambiente, humedad, todo cuenta. Los perfiles de grano viajan de bolsa en bolsa.\n\nUNA LÍNEA, UN MOVIMIENTO\nNada de \"un poco más fino.\" De 31,5 a 30,5, con la razón debajo. Aplica al siguiente shot con un toque.\n\nINSIGHTS\nCada shot registrado. Récord personal, puntuación de constancia, ritmo de la semana. Las recetas del punto dulce salen cuando ya has logueado las suficientes. Exporta tu registro cuando quieras.\n\nPREMIUM\nUn solo pago desbloquea todos los molinillos, todos los tampers, perfiles completos de grano, exportación CSV y sincronización entre dispositivos.\n\nPRIVACIDAD\nLos shots se quedan en tu dispositivo por defecto. Inicia sesión para sincronizar entre teléfonos. Los datos anónimos alimentan el algoritmo. Desactiva cuando quieras.\n\nPara baristas cansados de adivinar.",
+  "whats_new": "Primera versión. Saca un shot, registra tiempo y rendimiento, valora el sabor. Brewmie te dice qué cambiar, en las unidades reales de tu molinillo.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

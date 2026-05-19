@@ -1,0 +1,12 @@
+{
+  "language": "Vietnamese",
+  "ios_locale": "vi",
+  "play_locale": "vi",
+  "name": "Brewmie: căn chỉnh espresso",
+  "subtitle": "Timer shot và nhật ký xay",
+  "short_description": "Bộ đếm giờ espresso, nhật ký xay và huấn luyện căn chỉnh. Do barista làm.",
+  "promotional_text": "Đừng đoán mò ở máy xay nữa. Chiết một shot, chấm điểm vị, Brewmie nói bước kế tiếp. Do barista làm.",
+  "description": "Huấn luyện viên căn chỉnh espresso cho barista tại nhà.\n\nĐừng đoán mò ở máy xay nữa. Chiết một shot, kể cho Brewmie nó có vị thế nào, rồi nhận một bước rõ ràng cho shot kế tiếp. Độ xay, lượng cà phê hoặc lượng nước ra, theo đơn vị thực của máy xay, kèm lý do bên dưới.\n\nDo barista làm. Tinh chỉnh theo thiết bị, hạt cà phê và không khí trong bếp của bạn.\n\nBẠN LÀM GÌ\nĐặt thông số shot. Nhấn BREW. Timer tiếp quản. Dừng khi xong. Chấm crema và vị. Brewmie lo phần còn lại.\n\nBREWMIE BIẾT NHỮNG GÌ\nHơn 25 hãng máy và 100 mẫu máy xay, kèm dải chỉnh thật. Lực nén tamper, tuổi hạt, độ rang, nhiệt độ phòng, độ ẩm, tất cả đều được đưa vào. Hồ sơ hạt theo bạn từ túi này sang túi khác.\n\nMỘT DÒNG, MỘT BƯỚC\nKhông có kiểu \"xay mịn hơn chút\". Chỉnh độ xay 31,5 xuống 30,5, lý do nằm ngay dưới. Một chạm để áp dụng cho shot kế tiếp.\n\nINSIGHTS\nMỗi shot đều được ghi. Kỷ lục cá nhân, điểm ổn định, nhịp độ tuần này. Công thức điểm ngọt sẽ nổi lên khi bạn ghi đủ shot ngon. Xuất nhật ký bất cứ lúc nào.\n\nPREMIUM\nMột lần trả mở khóa mọi máy xay, mọi tamper, hồ sơ hạt đầy đủ, xuất CSV và đồng bộ trong nhà.\n\nQUYỀN RIÊNG TƯ\nMặc định shot nằm trên thiết bị của bạn. Đăng nhập để đồng bộ giữa các điện thoại. Dữ liệu shot ẩn danh giúp thuật toán học. Tắt bất kỳ lúc nào.\n\nDành cho barista đã ngán việc đoán mò.",
+  "whats_new": "Bản đầu tiên. Chiết một shot, ghi thời gian và lượng ra, chấm điểm vị. Brewmie nói bước kế tiếp theo đơn vị thực của máy xay.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

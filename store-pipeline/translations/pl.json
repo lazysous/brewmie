@@ -1,0 +1,12 @@
+{
+  "language": "Polish",
+  "ios_locale": "pl",
+  "play_locale": "pl-PL",
+  "name": "Brewmie: dial-in espresso",
+  "subtitle": "Stoper shotów i log mielenia",
+  "short_description": "Stoper espresso, log mielenia i coach dial-in. Od baristów.",
+  "promotional_text": "Przestań zgadywać przy młynku. Wyciągnij shot, oceń smak, Brewmie powie, co zmienić. Od baristów.",
+  "description": "Coach dial-in espresso dla baristów w domu.\n\nPrzestań zgadywać przy młynku. Wyciągnij shot, powiedz Brewmie, jak smakował, i dostań jeden jasny ruch na kolejny. Zmielenie, doza albo yield w prawdziwych jednostkach twojego młynka, z uzasadnieniem pod spodem.\n\nZrobione przez baristów. Dostrojone do twojego sprzętu, twoich ziaren i powietrza w twojej kuchni.\n\nCO ROBISZ\nUstaw shot. Stuknij w BREW. Stoper przejmuje. Zatrzymaj, gdy gotowe. Oceń cremę i smak. Resztę robi Brewmie.\n\nCO BREWMIE WIE\nPonad 25 marek ekspresów i 100 modeli młynków z prawdziwymi zakresami. Docisk tampera, wiek ziarna, stopień wypalenia, temperatura, wilgotność, wszystko wchodzi do równania. Profile ziaren wędrują z paczki do paczki.\n\nJEDNA LINIA, JEDEN RUCH\nŻadnego \"odrobinę drobniej\". Zmielenie z 31,5 na 30,5, uzasadnienie tuż pod. Zastosuj na kolejnym shocie jednym stuknięciem.\n\nINSIGHTS\nKażdy shot zapisany. Rekord osobisty, ocena spójności, tempo tygodnia. Przepisy ze sweet spot pojawiają się, gdy uzbierasz dość dobrych. Log eksportujesz, kiedy chcesz.\n\nPREMIUM\nJedna płatność odblokowuje wszystkie młynki, wszystkie tampery, pełne profile ziaren, eksport CSV i synchronizację domową.\n\nPRYWATNOŚĆ\nShoty domyślnie zostają na twoim urządzeniu. Zaloguj się, żeby synchronizować między telefonami. Anonimowe dane shotów karmią algorytm. Wyłączysz, kiedy zechcesz.\n\nDla baristów zmęczonych zgadywaniem.",
+  "whats_new": "Pierwsze wydanie. Wyciągnij shot, zapisz czas i yield, oceń smak. Brewmie powie, co zmienić, w prawdziwych jednostkach twojego młynka.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

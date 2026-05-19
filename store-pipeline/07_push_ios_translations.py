@@ -49,7 +49,10 @@ def push_one(t, info_by_locale, ver_by_locale):
     attrs = {"description": t["description"]}
     if t.get("keywords"): attrs["keywords"] = t["keywords"]
     if t.get("promotional_text"): attrs["promotionalText"] = t["promotional_text"]
-    if t.get("whats_new"): attrs["whatsNew"] = t["whats_new"]
+    # whatsNew is locked on initial version (no prior version to compare to);
+    # ASC returns STATE_ERROR. Skip; Apple uses the English version's whatsNew
+    # for all locales on a first release.
+    # if t.get("whats_new"): attrs["whatsNew"] = t["whats_new"]
 
     asc_request("PATCH", f"/v1/appStoreVersionLocalizations/{ver_id}", {
         "data": {"type": "appStoreVersionLocalizations", "id": ver_id, "attributes": attrs},

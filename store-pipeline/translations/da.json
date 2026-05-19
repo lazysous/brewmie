@@ -1,0 +1,12 @@
+{
+  "language": "Danish",
+  "ios_locale": "da",
+  "play_locale": "da-DK",
+  "name": "Brewmie: Indstil espressoen",
+  "subtitle": "Shottimer og kværn-log",
+  "short_description": "Espressotimer, kværnlog og indstillingscoach. Bygget af baristaer.",
+  "promotional_text": "Stop med at gætte ved kværnen. Træk et shot, vurder smagen, Brewmie siger hvad du ændrer. Bygget af baristaer.",
+  "description": "Espresso-indstillingscoach for hjemmebaristaer.\n\nStop med at gætte ved kværnen. Træk et shot, fortæl Brewmie hvordan det smagte, og få ét klart træk til det næste. Malingsgrad, dosis eller yield, i kværnens egne enheder, med begrundelsen under.\n\nBygget af baristaer. Tilpasset dit udstyr, dine bønner og luften i dit køkken.\n\nDET DU GØR\nIndstil dit shot. Tryk på BREW. Timeren tager over. Stop når den er færdig. Vurder crema og smag. Brewmie ordner resten.\n\nHVAD BREWMIE VED\nOver 25 maskinmærker og 100 kværnmodeller, med de rigtige indstillingsintervaller. Stamper-tryk, bønnealder, ristningsgrad, rumtemperatur, luftfugtighed, alt regnes med. Bønneprofiler følger med fra pose til pose.\n\nÉN LINJE, ÉT TRÆK\nIkke \"gå lidt finere.\" 31,5 til 30,5, med grunden lige under. Anvend på næste shot med ét tryk.\n\nINSIGHTS\nHvert shot logget. Personlig rekord, konsistensscore, ugens tempo. Sweet spot-opskrifter dukker op når du har logget nok gode. Eksportér loggen når du vil.\n\nPREMIUM\nÉn betaling låser alle kværne, alle stampere, fulde bønneprofiler, CSV-eksport og husstandssynkronisering op.\n\nPRIVATLIV\nShots bliver på din enhed som standard. Log ind for at synkronisere mellem telefoner. Anonyme shotdata fodrer algoritmen. Slå fra når som helst.\n\nLavet til baristaer der er trætte af at gætte.",
+  "whats_new": "Første version. Træk et shot, log tid og yield, vurder smagen. Brewmie siger hvad du ændrer, i kværnens egne enheder.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

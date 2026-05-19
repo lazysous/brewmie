@@ -1,0 +1,12 @@
+{
+  "language": "German",
+  "ios_locale": "de-DE",
+  "play_locale": "de-DE",
+  "name": "Brewmie: Espresso Dial-In",
+  "subtitle": "Shot-Timer und Mahl-Logbuch",
+  "short_description": "Espresso-Timer, Mahl-Log und Dial-In-Coach. Von Baristas gebaut.",
+  "promotional_text": "Hör auf, an der Mühle zu raten. Zieh einen Shot, bewerte den Geschmack, Brewmie sagt dir, was du als Nächstes änderst. Von Baristas.",
+  "description": "Espresso-Dial-In-Coach für Heimbaristas.\n\nHör auf, an der Mühle zu raten. Zieh einen Shot, sag Brewmie, wie er geschmeckt hat, und bekomm einen klaren Schritt für den nächsten. Mahlgrad, Dose oder Yield, in den echten Einheiten deiner Mühle, mit der Begründung darunter.\n\nVon Baristas gebaut. Eingestellt auf dein Equipment, deine Bohnen und die Luft in deiner Küche.\n\nWAS DU MACHST\nStell deinen Shot ein. Tipp auf BREW. Der Timer übernimmt. Stopp, wenn er durch ist. Bewerte Crema und Geschmack. Brewmie macht den Rest.\n\nWAS BREWMIE WEISS\nÜber 25 Maschinenmarken und 100 Mühlenmodelle, mit den echten Mahlbereichen. Tamperdruck, Bohnenalter, Röstgrad, Raumtemperatur, Luftfeuchte, alles fließt ein. Bohnenprofile wandern von Tüte zu Tüte.\n\nEINE ZEILE, EIN SCHRITT\nKein \"geh etwas feiner.\" Mahlgrad 31,5 auf 30,5, mit der Begründung direkt darunter. Mit einem Tap für den nächsten Shot übernehmen.\n\nINSIGHTS\nJeder Shot getrackt. Persönliche Bestleistung, Konstanz-Score, Wochenrhythmus. Sweet-Spot-Rezepte tauchen auf, wenn du genug gute geloggt hast. Log jederzeit exportieren.\n\nPREMIUM\nEinmalzahlung schaltet alle Mühlen, alle Tamper, vollständige Bohnenprofile, CSV-Export und Haushalts-Sync frei.\n\nPRIVATSPHÄRE\nShots bleiben standardmäßig auf deinem Gerät. Melde dich an, um zwischen Geräten zu syncen. Anonyme Shotdaten füttern den Algorithmus. Jederzeit deaktivierbar.\n\nFür Baristas, die das Raten satthaben.",
+  "whats_new": "Erste Version. Zieh einen Shot, log Zeit und Yield, bewerte den Geschmack. Brewmie sagt dir, was du änderst, in den echten Einheiten deiner Mühle.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

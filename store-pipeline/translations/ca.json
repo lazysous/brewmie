@@ -1,0 +1,12 @@
+{
+  "language": "Catalan",
+  "ios_locale": "ca",
+  "play_locale": "ca",
+  "name": "Brewmie: Ajust d'espresso",
+  "subtitle": "Cronòmetre i diari de mòlta",
+  "short_description": "Cronòmetre d'espresso, diari de mòlta i coach d'ajust. Fet per baristes.",
+  "promotional_text": "Deixa d'endevinar al molinet. Treu un shot, valora el gust, Brewmie et diu què canviar. Fet per baristes.",
+  "description": "Coach d'ajust d'espresso per a baristes a casa.\n\nDeixa d'endevinar al molinet. Treu un shot, digues a Brewmie com era, i rep un sol moviment clar per al següent. Mòlta, dosi o rendiment, en les unitats reals del teu molinet, amb la raó just a sota.\n\nFet per baristes. Calibrat al teu equip, els teus grans i l'aire de la teva cuina.\n\nEL QUE FAS\nMunta el shot. Toca BREW. El cronòmetre pren el comandament. Atura quan estigui llest. Valora la crema i el gust. La resta la fa Brewmie.\n\nEL QUE BREWMIE SAP\nMés de 25 marques de màquines i 100 models de molinets, amb els intervals reals. Pressió del tamper, edat dels grans, torrat, temperatura ambient, humitat, tot entra al càlcul. Els perfils de gra viatgen de bossa en bossa.\n\nUNA LÍNIA, UN MOVIMENT\nRes de \"una mica més fi.\" De 31,5 a 30,5, amb la raó just a sota. Aplica al següent shot amb un toc.\n\nINSIGHTS\nCada shot registrat. Rècord personal, puntuació de constància, ritme de la setmana. Les receptes del punt dolç sorgeixen quan ja en tens prou de bones. Exporta el diari quan vulguis.\n\nPREMIUM\nUn pagament desbloqueja tots els molinets, tots els tampers, perfils complets de gra, exportació CSV i sincronització a la llar.\n\nPRIVACITAT\nEls shots queden al teu dispositiu per defecte. Inicia sessió per sincronitzar entre telèfons. Les dades anònimes alimenten l'algoritme. Desactiva quan vulguis.\n\nPer a baristes cansats d'endevinar.",
+  "whats_new": "Primera versió. Treu un shot, registra temps i rendiment, valora el gust. Brewmie diu què canviar, en les unitats reals del teu molinet.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

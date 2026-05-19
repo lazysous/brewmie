@@ -1,0 +1,12 @@
+{
+  "language": "Croatian",
+  "ios_locale": "hr",
+  "play_locale": "hr",
+  "name": "Brewmie: štimanje espressa",
+  "subtitle": "Štoperica i dnevnik mljevenja",
+  "short_description": "Štoperica za espresso, dnevnik mljevenja i coach štimanja. Od baristi.",
+  "promotional_text": "Prestani nagađati na mlincu. Povuci shot, ocijeni okus, Brewmie ti kaže što promijeniti. Od baristi.",
+  "description": "Coach za štimanje espressa za kućne bariste.\n\nPrestani nagađati na mlincu. Povuci shot, reci Brewmieju kakav je bio, i dobiješ jedan jasan potez za sljedeći. Mljevenje, doza ili yield, u stvarnim jedinicama tvog mlinca, s razlogom odmah ispod.\n\nNapravljeno od baristi. Podešeno na tvoju opremu, tvoja zrna i zrak u tvojoj kuhinji.\n\nŠTO RADIŠ\nNamjesti shot. Pritisni BREW. Štoperica preuzima. Zaustavi kad je gotovo. Ocijeni cremu i okus. Ostalo radi Brewmie.\n\nŠTO BREWMIE ZNA\nViše od 25 marki aparata i 100 modela mlinaca, sa stvarnim rasponima. Pritisak tampera, starost zrna, stupanj prženja, sobna temperatura, vlažnost, sve ulazi u račun. Profili zrna putuju od vrećice do vrećice.\n\nJEDAN RED, JEDAN POTEZ\nBez \"malo finije\". Mljevenje s 31,5 na 30,5, razlog odmah ispod. Primjenjuješ na sljedeći shot jednim dodirom.\n\nINSIGHTS\nSvaki shot praćen. Osobni rekord, ocjena dosljednosti, tempo tjedna. Recepti iz sweet spota izrone kad nakupiš dovoljno dobrih. Dnevnik izvoziš kad god želiš.\n\nPREMIUM\nJedna uplata otključava sve mlince, sve tampere, pune profile zrna, CSV izvoz i kućnu sinkronizaciju.\n\nPRIVATNOST\nShotovi po zadanom ostaju na tvom uređaju. Prijavi se za sinkronizaciju među telefonima. Anonimni podaci shotova hrane algoritam. Isključi kad god želiš.\n\nZa bariste kojima je dosta nagađanja.",
+  "whats_new": "Prva verzija. Povuci shot, zabilježi vrijeme i yield, ocijeni okus. Brewmie ti kaže što promijeniti, u stvarnim jedinicama tvog mlinca.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

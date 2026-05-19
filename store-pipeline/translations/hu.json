@@ -1,0 +1,12 @@
+{
+  "language": "Hungarian",
+  "ios_locale": "hu",
+  "play_locale": "hu-HU",
+  "name": "Brewmie: eszpresszó beállítás",
+  "subtitle": "Shot időzítő és őrlési napló",
+  "short_description": "Eszpresszó időzítő, őrlési napló és beállítás-coach. Baristáktól.",
+  "promotional_text": "Ne találgass a darálónál. Húzz egy shotot, pontozd az ízét, Brewmie megmondja, mit változtass. Baristáktól.",
+  "description": "Eszpresszó beállítás-coach otthoni baristáknak.\n\nNe találgass a darálónál. Húzz egy shotot, mondd el Brewmienek, milyen volt, és kapsz egy egyértelmű lépést a következőhöz. Őrlés, dózis vagy hozam, a darálód valódi egységeiben, az indokkal együtt.\n\nBaristák készítették. Hangolva a felszerelésedhez, a babjaidhoz és a konyhád levegőjéhez.\n\nAMIT TE CSINÁLSZ\nÁllítsd be a shotot. Koppints a BREW-ra. Az időzítő átveszi. Állítsd meg, amikor kész. Pontozd a cremát és az ízt. A többit Brewmie intézi.\n\nAMIT BREWMIE TUD\n25-nél több gépmárka és 100-nál több daráló modell, valódi tárcsa-tartományokkal. Tömörítő nyomás, bab kora, pörkölési szint, szobahőmérséklet, páratartalom, minden számít. A babprofilok zacskóról zacskóra veled jönnek.\n\nEGY SOR, EGY LÉPÉS\nNem \"egy kicsit finomabb\". Őrlés 31,5-ről 30,5-re, az indok közvetlenül alatta. A következő shotra egy koppintással alkalmazható.\n\nINSIGHTS\nMinden shot rögzítve. Egyéni csúcs, konzisztencia-pontszám, heti tempó. A sweet spot receptek előbukkannak, ha eleget naplóztál. A naplót bármikor exportálhatod.\n\nPREMIUM\nEgy fizetés feloldja az összes darálót, az összes tömörítőt, a teljes babprofilokat, a CSV exportot és a háztartási szinkronizálást.\n\nADATVÉDELEM\nA shotok alapból a készülékeden maradnak. Jelentkezz be, hogy szinkronizáld a telefonok között. Az anonim shot-adatok az algoritmust tanítják. Bármikor kikapcsolható.\n\nA találgatást megunt baristáknak.",
+  "whats_new": "Első kiadás. Húzz egy shotot, naplózd az időt és a hozamot, pontozd az ízt. Brewmie megmondja, mit változtass, a darálód valódi egységeiben.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

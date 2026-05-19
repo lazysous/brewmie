@@ -1,0 +1,12 @@
+{
+  "language": "Turkish",
+  "ios_locale": "tr",
+  "play_locale": "tr-TR",
+  "name": "Brewmie: Espresso ayarı",
+  "subtitle": "Shot süresi ve öğütüm günlüğü",
+  "short_description": "Espresso zamanlayıcı, öğütüm günlüğü ve ayar koçu. Baristalardan.",
+  "promotional_text": "Değirmen başında tahmin yürütmeyi bırak. Shot çek, tadı puanla, Brewmie sonraki adımı söylesin. Baristalardan.",
+  "description": "Ev baristaları için espresso ayar koçu.\n\nDeğirmen başında tahmin yürütmeyi bırak. Bir shot çek, Brewmie'ye nasıl olduğunu söyle ve bir sonraki için tek bir net hamle al. Öğütme, doz ya da çıktı, değirmeninin gerçek birimlerinde, gerekçesiyle birlikte.\n\nBaristalar tarafından yapıldı. Senin ekipmanına, çekirdeğine ve mutfağının havasına göre ayarlanır.\n\nSENİN YAPACAĞIN\nShot'unu kur. BREW'a bas. Zamanlayıcı devralır. Bitince durdur. Krema ve tadı puanla. Geri kalanı Brewmie hallediyor.\n\nBREWMIE NE BİLİR\n25'ten fazla makine markası ve 100'den fazla değirmen modeli, gerçek ayar aralıklarıyla. Tamper basıncı, çekirdek yaşı, kavrum derecesi, oda sıcaklığı, nem, hepsi hesaba katılır. Çekirdek profilleri torbadan torbaya seninle gelir.\n\nBİR SATIR, BİR HAMLE\n\"Biraz daha ince çek\" yok. Öğütme 31,5'tan 30,5'a, gerekçesi hemen altında. Sonraki shot'a tek dokunuşla uygula.\n\nINSIGHTS\nHer shot kaydedilir. Kişisel rekor, tutarlılık skoru, bu haftanın temposu. Yeterince iyi shot biriktiğinde sweet spot tarifleri öne çıkar. Günlüğü istediğin an dışa aktar.\n\nPREMIUM\nTek ödeme; tüm değirmenler, tüm tamperler, eksiksiz çekirdek profilleri, CSV dışa aktarma ve hane senkronu açılır.\n\nGİZLİLİK\nShot'lar varsayılan olarak cihazında kalır. Telefonlar arasında senkronize için giriş yap. Anonim shot verisi algoritmayı besler. İstediğin an kapat.\n\nTahminden bıkmış baristalar için.",
+  "whats_new": "İlk sürüm. Bir shot çek, süre ve çıktıyı kaydet, tadı puanla. Brewmie sonraki adımı değirmeninin gerçek birimlerinde söyler.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

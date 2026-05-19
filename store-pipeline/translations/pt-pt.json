@@ -1,0 +1,12 @@
+{
+  "language": "Portuguese (Portugal)",
+  "ios_locale": "pt-PT",
+  "play_locale": "pt-PT",
+  "name": "Brewmie: Afinação de espresso",
+  "subtitle": "Cronómetro e registo de moagem",
+  "short_description": "Cronómetro de espresso, registo de moagem e coach de afinação. Por baristas.",
+  "promotional_text": "Deixa de adivinhar no moinho. Tira um shot, avalia o sabor, o Brewmie diz o que mudar a seguir. Feito por baristas.",
+  "description": "Coach de afinação de espresso para baristas em casa.\n\nDeixa de adivinhar no moinho. Tira um shot, diz ao Brewmie como soube, e recebe um movimento claro para o próximo. Moagem, dose ou rendimento, nas unidades reais do teu moinho, com a razão por baixo.\n\nFeito por baristas. Afinado ao teu equipamento, aos teus grãos e ao ar da tua cozinha.\n\nO QUE FAZES\nMonta o shot. Toca em BREW. O cronómetro toma conta. Pára quando estiver pronto. Avalia a crema e o sabor. O Brewmie faz o resto.\n\nO QUE O BREWMIE SABE\nMais de 25 marcas de máquinas e 100 modelos de moinhos, com os intervalos reais. Pressão do tamper, idade do grão, torra, temperatura, humidade, tudo entra na conta. Os perfis de grão viajam de saco para saco.\n\nUMA LINHA, UM MOVIMENTO\nNada de \"vai mais fino.\" De 31,5 para 30,5, com a razão por baixo. Aplica no próximo shot com um toque.\n\nINSIGHTS\nCada shot registado. Recorde pessoal, pontuação de consistência, ritmo da semana. As receitas certas aparecem quando já tens o suficiente registado. Exporta o diário quando quiseres.\n\nPREMIUM\nUm pagamento desbloqueia todos os moinhos, todos os tampers, perfis completos, exportação CSV e sincronização entre telemóveis.\n\nPRIVACIDADE\nOs shots ficam no teu aparelho por defeito. Inicia sessão para sincronizar entre telemóveis. Dados anónimos alimentam o algoritmo. Desativas quando quiseres.\n\nFeito para baristas fartos de adivinhar.",
+  "whats_new": "Primeira versão. Tira um shot, regista tempo e rendimento, avalia o sabor. O Brewmie diz o que mudar, nas unidades reais do teu moinho.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

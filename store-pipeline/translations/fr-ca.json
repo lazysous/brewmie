@@ -1,0 +1,12 @@
+{
+  "language": "French (Canada)",
+  "ios_locale": "fr-CA",
+  "play_locale": "fr-CA",
+  "name": "Brewmie: Réglage d'espresso",
+  "subtitle": "Minuteur et journal de mouture",
+  "short_description": "Minuteur d'espresso, journal de mouture et coach de réglage. Par des baristas.",
+  "promotional_text": "Arrête de deviner au moulin. Tire un shot, note le goût, Brewmie te dit quoi changer ensuite. Conçu par des baristas.",
+  "description": "Coach de réglage espresso pour baristas à la maison.\n\nArrête de deviner au moulin. Tire un shot, dis à Brewmie ce que ça goûtait, et obtiens un seul geste clair pour le prochain. Mouture, dose ou rendement, dans les unités réelles de ton moulin, avec la raison en dessous.\n\nConçu par des baristas. Calibré à ton équipement, tes grains et l'air de ta cuisine.\n\nCE QUE TU FAIS\nRègle ton shot. Appuie sur BREW. Le minuteur prend le relais. Arrête quand c'est fini. Note la crema et le goût. Brewmie s'occupe du reste.\n\nCE QUE BREWMIE CONNAÎT\nPlus de 25 marques de machines et 100 modèles de moulins, avec les vraies plages. Pression de tassage, âge des grains, torréfaction, température, humidité, tout entre en compte. Les profils de grains te suivent d'un sac à l'autre.\n\nUNE LIGNE, UN GESTE\nPas \"affine un peu.\" Passe de 31,5 à 30,5, avec la raison en dessous. Applique au prochain shot en un tap.\n\nINSIGHTS\nChaque shot suivi. Record perso, score de constance, rythme de la semaine. Les recettes gagnantes ressortent une fois que tu en as logué assez. Exporte ton journal en tout temps.\n\nPREMIUM\nUn seul paiement débloque tous les moulins, tous les tampers, les profils complets, l'export CSV et la synchro multi-comptes.\n\nCONFIDENTIALITÉ\nLes shots restent sur ton appareil par défaut. Connecte-toi pour synchroniser. Les données anonymes nourrissent l'algorithme. Désactive quand tu veux.\n\nFait pour les baristas tannés de deviner.",
+  "whats_new": "Première version. Tire un shot, note le temps et le rendement, juge le goût. Brewmie te dit quoi changer ensuite, dans tes vraies unités.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

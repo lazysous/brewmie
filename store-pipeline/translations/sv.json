@@ -1,0 +1,12 @@
+{
+  "language": "Swedish",
+  "ios_locale": "sv",
+  "play_locale": "sv-SE",
+  "name": "Brewmie: Ställ in espresson",
+  "subtitle": "Shottimer och malningslogg",
+  "short_description": "Espressotimer, malningslogg och inställningscoach. Byggd av baristor.",
+  "promotional_text": "Sluta gissa vid kvarnen. Dra en shot, betygsätt smaken, Brewmie säger vad du ändrar. Byggd av baristor.",
+  "description": "Espressoinställningscoach för hembaristor.\n\nSluta gissa vid kvarnen. Dra en shot, berätta för Brewmie hur den smakade, och få ett tydligt drag inför nästa. Malning, dos eller yield, i kvarnens egna enheter, med skälet under.\n\nByggd av baristor. Anpassad efter din utrustning, dina bönor och luften i ditt kök.\n\nDET DU GÖR\nStäll in shoten. Tryck på BREW. Timern tar över. Stoppa när den är klar. Betygsätt crema och smak. Brewmie gör resten.\n\nVAD BREWMIE KAN\nÖver 25 maskinmärken och 100 kvarnmodeller, med riktiga inställningsintervall. Tampertryck, bönornas ålder, rostnivå, rumstemperatur, luftfuktighet, allt räknas in. Bönprofiler följer med från påse till påse.\n\nEN RAD, EN ÅTGÄRD\nIngen \"gå lite finare.\" 31,5 till 30,5, med skälet under. Tillämpa på nästa shot med en tryckning.\n\nINSIGHTS\nVarje shot loggad. Personligt rekord, konsekvensbetyg, veckans takt. Recept i sweet spot dyker upp när du loggat tillräckligt. Exportera loggen när du vill.\n\nPREMIUM\nEn betalning låser upp alla kvarnar, alla tampers, fullständiga bönprofiler, CSV-export och hushållssynk.\n\nINTEGRITET\nShots ligger på enheten som standard. Logga in för att synka mellan telefoner. Anonyma shotdata matar algoritmen. Stäng av när du vill.\n\nFör baristor som tröttnat på att gissa.",
+  "whats_new": "Första versionen. Dra en shot, logga tid och yield, betygsätt smaken. Brewmie säger vad du ändrar, i kvarnens egna enheter.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

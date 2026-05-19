@@ -1,0 +1,12 @@
+{
+  "language": "Romanian",
+  "ios_locale": "ro",
+  "play_locale": "ro",
+  "name": "Brewmie: reglaj espresso",
+  "subtitle": "Cronometru și jurnal râșnire",
+  "short_description": "Cronometru espresso, jurnal de râșnire și coach de reglaj. De la bariști.",
+  "promotional_text": "Gata cu ghicitul la râșniță. Trage un shot, notează gustul, Brewmie îți spune ce schimbi. De la bariști.",
+  "description": "Coach de reglaj espresso pentru bariștii de acasă.\n\nGata cu ghicitul la râșniță. Trage un shot, spune-i lui Brewmie cum a fost, și primești o singură mișcare clară pentru următorul. Râșnire, doză sau yield, în unitățile reale ale râșniței tale, cu motivul dedesubt.\n\nFăcut de bariști. Reglat după echipamentul tău, boabele tale și aerul din bucătărie.\n\nCE FACI\nSetează shotul. Apasă BREW. Cronometrul preia. Oprește când e gata. Notează crema și gustul. Restul îl face Brewmie.\n\nCE ȘTIE BREWMIE\nPeste 25 de mărci de aparate și 100 de modele de râșnițe, cu intervalele reale. Presiunea tamperului, vârsta boabelor, gradul de prăjire, temperatura camerei, umiditatea, totul intră în calcul. Profilurile de boabe trec dintr-o pungă în alta.\n\nUN RÂND, O MIȘCARE\nFără \"mai fin puțin\". Râșnirea de la 31,5 la 30,5, cu motivul chiar dedesubt. Aplici la următorul shot dintr-o atingere.\n\nINSIGHTS\nFiecare shot înregistrat. Record personal, scor de consistență, ritmul săptămânii. Rețetele din sweet spot apar când ai logat destule bune. Exporți jurnalul oricând.\n\nPREMIUM\nO singură plată deblochează toate râșnițele, toate tamperele, profilurile complete de boabe, exportul CSV și sincronizarea pe casă.\n\nCONFIDENȚIALITATE\nShoturile rămân pe dispozitiv în mod implicit. Conectează-te ca să sincronizezi între telefoane. Datele anonime hrănesc algoritmul. Dezactivezi oricând.\n\nPentru bariștii sătui să ghicească.",
+  "whats_new": "Prima versiune. Trage un shot, notează timpul și yield-ul, evaluează gustul. Brewmie îți spune ce schimbi, în unitățile reale ale râșniței tale.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

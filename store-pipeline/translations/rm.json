@@ -1,0 +1,11 @@
+{
+  "language": "Romansh",
+  "ios_locale": null,
+  "play_locale": "rm",
+  "name": "Brewmie: Espresso Shot Dial-In",
+  "subtitle": "Coffee shot timer & grind log",
+  "short_description": "Espresso shot timer, grind log, and dial-in coach. Built by baristas.",
+  "promotional_text": "Stop guessing at the grinder. Pull a shot, rate the taste, Brewmie tells you what to change next. Built by baristas.",
+  "description": "Espresso dial-in coach for home baristas.\n\nStop guessing at the grinder. Pull a shot, tell Brewmie how it tasted, and get one clear move for the next one. Grind, dose, or yield, in your grinder's actual units, with the reasoning underneath.\n\nBuilt by baristas. Tuned to your gear, your beans, and the air in your kitchen.\n\nWHAT YOU DO\nSet your shot. Hit BREW. The timer takes over. Stop when it's done. Rate the crema and the taste. Brewmie does the rest.\n\nWHAT BREWMIE KNOWS\n25 plus machine brands and 100 plus grinder models, with the real dial ranges. Tamp pressure, bean age, roast level, room temperature, humidity, all factored in. Bean profiles travel across bags.\n\nONE LINE, ONE NEXT MOVE\nNot \"go a bit finer.\" Grind 31.5 to 30.5, with the reason sitting underneath. Apply for the next shot with one tap.\n\nINSIGHTS\nEvery shot tracked. Personal best, consistency score, this week's pace. Sweet-spot recipes surface once you have logged enough good ones. Export your log anytime.\n\nPREMIUM\nOne payment unlocks every grinder, every tamper, full bean profiles, CSV export, and household sync.\n\nPRIVACY\nShots live on your device by default. Sign in to sync across phones. Anonymous shot data feeds the algorithm. Opt out anytime.\n\nBuilt for baristas who got tired of guessing.",
+  "whats_new": "First release. Pull a shot, log the time and yield, rate the taste. Brewmie tells you what to change next, in your grinder's actual units."
+}

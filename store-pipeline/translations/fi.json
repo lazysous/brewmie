@@ -1,0 +1,12 @@
+{
+  "language": "Finnish",
+  "ios_locale": "fi",
+  "play_locale": "fi-FI",
+  "name": "Brewmie: Espresson säätö",
+  "subtitle": "Shot-ajastin ja jauholoki",
+  "short_description": "Espressoajastin, jauhepäiväkirja ja säätövalmentaja. Baristoilta.",
+  "promotional_text": "Lopeta arvailu myllyllä. Vedä shot, arvioi maku, Brewmie kertoo, mitä muutat. Baristojen tekemä.",
+  "description": "Espresson säätövalmentaja kotibaristoille.\n\nLopeta arvailu myllyllä. Vedä shot, kerro Brewmielle, miltä se maistui, ja saat yhden selkeän siirron seuraavaa varten. Karkeus, annos tai saanto, myllysi oikeissa yksiköissä, perustelu alla.\n\nBaristojen tekemä. Säädetty laitteistoosi, papuihisi ja keittiösi ilmaan.\n\nMITÄ TEET\nAseta shot. Paina BREW. Ajastin ottaa vallan. Pysäytä, kun on valmis. Arvioi crema ja maku. Loput hoitaa Brewmie.\n\nMITÄ BREWMIE TIETÄÄ\nYli 25 konemerkkiä ja 100 myllymallia, oikeilla säätöalueilla. Tampparin paine, papujen ikä, paahtoaste, huoneenlämpö, kosteus, kaikki huomioidaan. Papuprofiilit kulkevat pussista toiseen.\n\nYKSI RIVI, YKSI SIIRTO\nEi \"hieman hienommaksi\". Karkeus 31,5:stä 30,5:een, perustelu heti alla. Käytä seuraavaan shotiin yhdellä napautuksella.\n\nINSIGHTS\nJokainen shot kirjataan. Henkilökohtainen ennätys, tasaisuuspisteet, viikon tahti. Sweet spot -reseptit nousevat esiin, kun olet kirjannut tarpeeksi hyviä. Vie päiväkirja milloin haluat.\n\nPREMIUM\nYksi maksu avaa kaikki myllyt, kaikki tampparit, täydet papuprofiilit, CSV-viennin ja kotitalouden synkronoinnin.\n\nYKSITYISYYS\nShotit pysyvät oletuksena laitteessasi. Kirjaudu sisään synkronoidaksesi puhelimien välillä. Anonyymit shot-tiedot syöttävät algoritmia. Voit kytkeä pois milloin tahansa.\n\nTehty baristoille, jotka ovat kyllästyneet arvailuun.",
+  "whats_new": "Ensimmäinen versio. Vedä shot, kirjaa aika ja saanto, arvioi maku. Brewmie kertoo, mitä muutat, myllysi oikeissa yksiköissä.",
+  "keywords": "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,tamper,puckyeah,beanconqueror,timer,log"
+}

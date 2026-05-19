@@ -254,14 +254,16 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         .hero__auth { display: flex; align-items: center; gap: 10px; }
 
         .hero__signin {
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 600;
           color: var(--copper);
           background: transparent;
           border: none;
           letter-spacing: 0.3px;
           cursor: pointer;
-          padding: 6px 4px;
+          padding: 12px;
+          min-height: 44px;
+          min-width: 44px;
           -webkit-tap-highlight-color: transparent;
         }
         .hero__signin:active { transform: scale(0.95); }

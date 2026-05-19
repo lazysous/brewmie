@@ -13,7 +13,7 @@ import type {
 } from '../types'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
-import { TIER_1_LOCALES, TIER_2_LOCALES, setLocale } from '../lib/i18n'
+import { TIER_1_LOCALES, TIER_2_LOCALES } from '../lib/i18n'
 import { useTier } from '../hooks/useTier'
 import { PremiumModal } from '../components/PremiumModal'
 import { deleteUserAccount } from '../lib/supabase'
@@ -373,7 +373,7 @@ function RoastAgeDisplay({ days, t }: RoastAgeDisplayProps) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
-  const { t, locale } = useTranslation()
+  const { t, locale, setLocale } = useTranslation()
   const allClosed = (): Record<CardKey, boolean> => ({
     units: false, language: false, machine: false, grinder: false, tamper: false,
     beans: false, maintenance: false, privacy: false,
@@ -1873,9 +1873,10 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         .sc-pill-option {
           position: relative;
           flex: 1;
-          font-size: 13px;
+          min-height: 44px;
+          font-size: 14px;
           font-weight: 600;
-          padding: 7px 0;
+          padding: 12px 0;
           border-radius: 17px;
           color: var(--text-tertiary);
           background: none;

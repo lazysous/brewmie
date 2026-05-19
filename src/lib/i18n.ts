@@ -62,10 +62,16 @@ export function detectLocale(): Locale {
 // ─── Set locale ───────────────────────────────────────────────────────────────
 // Persists to localStorage. Reloads the page so the React tree picks up new
 // strings cleanly — matches the Lazy Sous behaviour and keeps things simple.
+/**
+ * Persist the active locale to localStorage. Does NOT reload the page —
+ * callers (the I18nProvider) update React state and the useEffect chain
+ * lazy-loads the new locale's translations. window.location.reload() is
+ * unreliable inside Capacitor's WKWebView and the in-place update is
+ * a better UX anyway (no flash, no scroll-position reset).
+ */
 export function setLocale(code: string): void {
   if (!isLocale(code)) return
   try { localStorage.setItem(STORAGE_KEY, code) } catch { /* ignore */ }
-  try { window.location.reload() } catch { /* ignore */ }
 }
 
 // ─── Load translations ────────────────────────────────────────────────────────

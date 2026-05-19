@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react'
 import {
+  ALL_LOCALES,
   detectLocale,
   loadTranslations,
   setLocale as persistLocale,
@@ -61,7 +62,12 @@ export function I18nProvider({ children }: I18nProviderProps) {
 
   const setLocale = useCallback((code: string) => {
     persistLocale(code)
-  }, [])
+    // Update local state too — the useEffect on [locale] will load the new
+    // translations and re-render the whole tree. No window.reload() needed.
+    if (code === 'en' || (code !== locale && (ALL_LOCALES as readonly string[]).includes(code))) {
+      setLocaleState(code as Locale)
+    }
+  }, [locale])
 
   const value = useMemo<I18nContextValue>(
     () => ({ t, locale, setLocale, isReady }),

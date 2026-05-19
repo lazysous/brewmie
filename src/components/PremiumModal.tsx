@@ -30,9 +30,14 @@ interface PremiumModalProps {
 export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: PremiumModalProps) {
   const { t } = useTranslation()
   const [signingIn, setSigningIn] = useState(false)
+  const [purchasing, setPurchasing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (open) track('premium_modal_open', { trigger: trigger ?? 'none', signed_in: isSignedIn, platform: PLATFORM })
+    if (open) {
+      setError(null)
+      track('premium_modal_open', { trigger: trigger ?? 'none', signed_in: isSignedIn, platform: PLATFORM })
+    }
   }, [open, trigger, isSignedIn])
 
   // Escape closes the modal (keyboard + accessibility).
@@ -47,37 +52,53 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
 
   const isDev = import.meta.env.DEV
 
-  // Run the purchase / trial activation step. On dev web with no real store
-  // wired up, this flips the tier override so QA can keep testing.
-  const completePurchase = () => {
-    if (isDev) setTierOverride('premium')
-    track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
-    onClose()
-  }
-
   const handleNativeSignIn = async () => {
     track('premium_cta_click', { product: 'brewmie_only', signed_in: false, platform: PLATFORM })
     setSigningIn(true)
+    setError(null)
     try {
       const result = PLATFORM === 'ios'
         ? await signInWithApple()
         : await signInWithGoogle()
-      if (result && 'error' in result && result.error) {
-        // Cancelled or failed — stay on the modal silently.
+      // Supabase signInWithIdToken returns { data, error }. Surface the error
+      // text so the user isn't stuck in a silent loop when the backend rejects
+      // the token (provider not enabled, audience mismatch, etc.).
+      const r = result as unknown as { error?: { message?: string } | null } | null
+      if (r && r.error) {
+        setError(r.error.message ?? t('auth.errorGeneric'))
         return
       }
-      // Auth state listener in App.tsx will set the user; proceed with purchase.
-      completePurchase()
-    } catch {
-      // Cancellation throws on some platforms. Stay put.
+      // Auth state listener in App.tsx will set state.userId, which flips
+      // isSignedIn=true. Modal re-renders with the Purchase button. User
+      // taps that to actually trigger the IAP.
+    } catch (e: unknown) {
+      // Cancellation throws on some platforms — silent. Real errors surface.
+      const msg = e instanceof Error ? e.message : ''
+      if (msg && !/cancel/i.test(msg)) setError(msg)
     } finally {
       setSigningIn(false)
     }
   }
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     track('premium_cta_click', { product: 'brewmie_only', signed_in: true, platform: PLATFORM })
-    completePurchase()
+    setPurchasing(true)
+    setError(null)
+    try {
+      if (isDev) {
+        // Dev shortcut so QA can unlock without hitting the store sandbox.
+        setTierOverride('premium')
+        track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
+        onClose()
+        return
+      }
+      // Production IAP entry point. Wire StoreKit (iOS) / Play Billing (Android)
+      // here. Until that's in place, surface a holding message rather than
+      // silently closing the modal as if the purchase succeeded.
+      setError(t('premium.purchaseUnavailable'))
+    } finally {
+      setPurchasing(false)
+    }
   }
 
   // ── Body branches ──
@@ -157,10 +178,14 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
             </span>
           </button>
         ) : (
-          <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button">
+          <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing}>
             <span className="pm-btn__label">{t('premium.cta')}</span>
             <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>
           </button>
+        )}
+
+        {error && (
+          <p className="pm-error" role="alert">{error}</p>
         )}
 
         {isDev && (
@@ -370,6 +395,15 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
           text-align: center;
           margin: 12px 0 0;
           font-style: italic;
+        }
+        .pm-error {
+          font-size: 13px;
+          color: #8B1A1A;
+          background: rgba(139, 26, 26, 0.08);
+          border-radius: 10px;
+          padding: 10px 12px;
+          margin: 12px 0 0;
+          line-height: 1.4;
         }
       `}</style>
     </div>,

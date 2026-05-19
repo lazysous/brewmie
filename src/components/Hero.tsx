@@ -176,14 +176,24 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
             </button>
           ) : SIGN_IN_AVAILABLE ? (
             <button
-              className="hero__profile"
+              className={`hero__signin hero__signin--${Capacitor.getPlatform() === 'android' ? 'google' : 'apple'}`}
               onClick={onSignIn}
               aria-label={t('header.signIn')}
               type="button"
             >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
+              {Capacitor.getPlatform() === 'android' ? (
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.11A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <path d="M17.05 12.04c0-2.5 2.05-3.7 2.14-3.76-1.17-1.7-2.99-1.94-3.63-1.96-1.54-.16-3.01.91-3.79.91-.79 0-2-.89-3.29-.86-1.69.02-3.25.98-4.12 2.49-1.76 3.05-.45 7.56 1.27 10.03.84 1.21 1.84 2.57 3.14 2.52 1.26-.05 1.74-.81 3.27-.81 1.52 0 1.96.81 3.29.79 1.36-.02 2.22-1.23 3.05-2.45.97-1.4 1.36-2.76 1.38-2.83-.03-.01-2.65-1.02-2.71-4.04zM14.49 4.51c.7-.85 1.17-2.03 1.04-3.2-1.01.04-2.23.67-2.95 1.51-.65.75-1.21 1.95-1.06 3.1 1.12.09 2.27-.57 2.97-1.41z"/>
+                </svg>
+              )}
+              <span className="hero__signin-label">{t('header.signIn')}</span>
             </button>
           ) : null}
         </div>
@@ -292,19 +302,37 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         }
 
         .hero__signin {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
           font-size: 13px;
           font-weight: 600;
-          color: var(--copper);
-          background: transparent;
-          border: none;
-          letter-spacing: 0.3px;
+          letter-spacing: 0.2px;
+          padding: 8px 14px;
+          min-height: 36px;
+          border-radius: 999px;
           cursor: pointer;
-          padding: 12px;
-          min-height: 44px;
-          min-width: 44px;
           -webkit-tap-highlight-color: transparent;
+          transition: transform 0.1s ease;
         }
-        .hero__signin:active { transform: scale(0.95); }
+        .hero__signin:active { transform: scale(0.97); }
+        /* Apple HIG: solid black + white logo + system font. */
+        .hero__signin--apple {
+          background: #000;
+          color: #fff;
+          border: 1px solid #000;
+          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+        }
+        /* Google branding: white + #dadce0 border + Roboto. */
+        .hero__signin--google {
+          background: #fff;
+          color: #3c4043;
+          border: 1px solid #dadce0;
+          font-family: 'Roboto', Arial, sans-serif;
+        }
+        .hero__signin-label {
+          line-height: 1;
+        }
 
         .hero__avatar {
           width: 30px;

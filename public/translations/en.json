@@ -269,6 +269,7 @@
     "priceBrewmie": "$6.99",
     "signInApple": "Sign in with Apple to unlock",
     "signInGoogle": "Sign in with Google to unlock",
+    "purchaseUnavailable": "In-app purchases aren't connected yet. We'll enable this on launch.",
     "webOnlyBody": "Premium is only available in the Brewmie app. Install on iOS or Android to unlock.",
     "appStoreUrl": "https://apps.apple.com/app/brewmie",
     "playStoreUrl": "https://play.google.com/store/apps/details?id=app.brewmie.brewmie",

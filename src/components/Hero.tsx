@@ -202,14 +202,18 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           user-select: none;
         }
 
-        /* Inverted dark band at the top — bleeds full width past hero padding */
+        /* Inverted dark band at the top — bleeds full width past hero padding.
+           box-sizing: border-box means height includes padding, so we use
+           min-height + explicit safe-top padding. Content area is ~52pt with
+           +12pt breathing room around it; safe-top guarantees the wordmark
+           sits clear of the Dynamic Island on every iPhone. */
         .hero__top {
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 12px;
-          height: 52px;
-          padding: var(--safe-top) 22px 0;
+          min-height: calc(52px + var(--safe-top));
+          padding: calc(var(--safe-top) + 12px) 22px 12px;
           margin: 0 -22px 14px;
           background: linear-gradient(180deg, #221C15 0%, #2C261E 100%);
           border-bottom: 1px solid rgba(184, 116, 74, 0.22);

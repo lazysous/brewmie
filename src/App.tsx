@@ -10,11 +10,29 @@ import { DevTierPill } from './components/DevTierPill'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle } from './lib/supabase'
 import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
+import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
 import type { AlgoParams } from './lib/supabase'
+
+// Native iOS opens Apple sign-in directly; Android opens Google directly.
+// Web falls back to the AuthModal which offers multiple providers (no native
+// Apple/Google on the web side).
+const NATIVE_PLATFORM: 'ios' | 'android' | 'web' = Capacitor.isNativePlatform()
+  ? (Capacitor.getPlatform() === 'android' ? 'android' : 'ios')
+  : 'web'
+
+async function startSignIn(): Promise<void> {
+  try {
+    if (NATIVE_PLATFORM === 'ios') {
+      await signInWithApple()
+    } else if (NATIVE_PLATFORM === 'android') {
+      await signInWithGoogle()
+    }
+  } catch { /* user cancelled or plugin unavailable; silent */ }
+}
 
 interface WeatherData { temp: number; humidity: number }
 
@@ -23,6 +41,17 @@ export function App() {
   const { state, dispatch } = useBrewmie()
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
+
+  // Sign-in entry from anywhere in the app. Native iOS goes straight to Apple,
+  // native Android straight to Google. Only web falls back to the multi-
+  // provider AuthModal.
+  function handleSignInClick() {
+    if (NATIVE_PLATFORM === 'web') {
+      setShowAuthModal(true)
+    } else {
+      startSignIn()
+    }
+  }
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
 
   // Restore Supabase session on mount and listen for auth changes
@@ -116,11 +145,11 @@ export function App() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'setup':
-        return <SetupScreen state={state} dispatch={dispatch} onSignIn={() => setShowAuthModal(true)} />
+        return <SetupScreen state={state} dispatch={dispatch} onSignIn={handleSignInClick} />
       case 'brew':
-        return <BrewScreen state={state} dispatch={dispatch} onNavigateToSetup={() => setActiveTab('setup')} onSignIn={() => setShowAuthModal(true)} weather={weather} algoParams={algoParams} />
+        return <BrewScreen state={state} dispatch={dispatch} onNavigateToSetup={() => setActiveTab('setup')} onSignIn={handleSignInClick} weather={weather} algoParams={algoParams} />
       case 'insights':
-        return <InsightsScreen state={state} dispatch={dispatch} onSignIn={() => setShowAuthModal(true)} />
+        return <InsightsScreen state={state} dispatch={dispatch} onSignIn={handleSignInClick} />
     }
   }
 
@@ -131,7 +160,7 @@ export function App() {
         state={state}
         dispatch={dispatch}
         weather={weather}
-        onSignIn={() => setShowAuthModal(true)}
+        onSignIn={handleSignInClick}
         onHome={() => setActiveTab('brew')}
       />
       <main className="screen-content" role="main">

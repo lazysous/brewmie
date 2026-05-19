@@ -1160,7 +1160,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           </div>
           <a
             className="sc-privacy-link"
-            href="/privacy.html"
+            href="https://brewmie.app/privacy"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -1671,7 +1671,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          padding: clamp(9px, 1.6vh, 16px) clamp(14px, 4vw, 20px);
+          padding: clamp(7px, 1.1vh, 11px) clamp(14px, 4vw, 20px);
           background: none;
           border: none;
           cursor: pointer;

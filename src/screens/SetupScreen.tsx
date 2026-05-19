@@ -321,13 +321,15 @@ function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday, 
       </div>
       <span className="sc-maint__sublabel">{t('setup.maintLastDone')}</span>
       <div className="sc-maint__inputs">
-        <input
-          type="date"
-          className="sc-input sc-input--date"
-          value={toDateInputValue(lastDate)}
-          max={TODAY_ISO}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDateChange(e.target.value)}
-        />
+        <span className={`sc-date-wrap${lastDate ? '' : ' sc-date-wrap--empty'}`} data-placeholder={t('setup.dateLabel')}>
+          <input
+            type="date"
+            className="sc-input sc-input--date"
+            value={toDateInputValue(lastDate)}
+            max={TODAY_ISO}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDateChange(e.target.value)}
+          />
+        </span>
         <button className="sc-btn-today" onClick={onToday} type="button">
           {t('setup.maintToday')}
         </button>
@@ -997,17 +999,19 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
           <Field label={t('setup.beanRoastDate')}>
             <div className="sc-date-row">
-              <input
-                type="date"
-                className="sc-input sc-input--date"
-                value={toDateInputValue(roastDate)}
-                max={TODAY_ISO}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const val = e.target.value || null
-                  setRoastDate(val)
-                  dispatchBeans({ roastDate: val, beanAge: daysSince(val) })
-                }}
-              />
+              <span className={`sc-date-wrap${roastDate ? '' : ' sc-date-wrap--empty'}`} data-placeholder={t('setup.dateLabel')}>
+                <input
+                  type="date"
+                  className="sc-input sc-input--date"
+                  value={toDateInputValue(roastDate)}
+                  max={TODAY_ISO}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const val = e.target.value || null
+                    setRoastDate(val)
+                    dispatchBeans({ roastDate: val, beanAge: daysSince(val) })
+                  }}
+                />
+              </span>
               {beanAgeDays !== null && (
                 <RoastAgeDisplay days={beanAgeDays} t={t} />
               )}
@@ -1350,8 +1354,10 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                   </Field>
                   <Field label={t('setup.beanRoastDate')}>
                     <div className="sc-date-row">
-                      <input type="date" className="sc-input sc-input--date" value={toDateInputValue(roastDate)} max={TODAY_ISO}
-                        onChange={(e) => { const v = e.target.value || null; setRoastDate(v); dispatchBeans({ roastDate: v, beanAge: daysSince(v) }) }} />
+                      <span className={`sc-date-wrap${roastDate ? '' : ' sc-date-wrap--empty'}`} data-placeholder={t('setup.dateLabel')}>
+                        <input type="date" className="sc-input sc-input--date" value={toDateInputValue(roastDate)} max={TODAY_ISO}
+                          onChange={(e) => { const v = e.target.value || null; setRoastDate(v); dispatchBeans({ roastDate: v, beanAge: daysSince(v) }) }} />
+                      </span>
                       {beanAgeDays !== null && <RoastAgeDisplay days={beanAgeDays} t={t} />}
                     </div>
                   </Field>
@@ -1817,6 +1823,41 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
         .sc-input--date {
           min-width: 0;
+        }
+
+        /* Cross-browser placeholder for empty <input type="date"> — the
+           native control shows nothing in WebKit, leaving a flat bar that
+           reads as broken. Wrapper provides a visible 'DATE' hint when empty
+           and steps out of the way as soon as the user picks a date. */
+        .sc-date-wrap {
+          position: relative;
+          display: block;
+          width: 100%;
+        }
+        .sc-date-wrap input.sc-input--date {
+          width: 100%;
+        }
+        .sc-date-wrap--empty input.sc-input--date::-webkit-datetime-edit {
+          color: transparent;
+        }
+        .sc-date-wrap--empty::before {
+          content: attr(data-placeholder);
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 1.4px;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          pointer-events: none;
+        }
+        .sc-date-wrap--empty input.sc-input--date:focus::-webkit-datetime-edit {
+          color: var(--text-primary);
+        }
+        .sc-date-wrap--empty:has(input:focus)::before {
+          display: none;
         }
 
         /* ── Select ── */

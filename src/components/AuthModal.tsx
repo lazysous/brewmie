@@ -273,12 +273,19 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           gap: 10px;
         }
 
+        /* Apple HIG: "Sign in with Apple" / "Continue with Apple" button.
+           Apple's spec: black background, white text + Apple logo, minimum
+           44pt height, system font. The corner radius can match the app's
+           design (Apple permits any radius from 0 up).
+           Google: standard Google Sign-In Light button — white background,
+           1px #dadce0 stroke, full-colour G logo + Roboto-equivalent text. */
         .am-provider {
+          min-height: 44px;
           height: 50px;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 8px;
           border-radius: 12px;
           font-size: 15px;
           font-weight: 600;
@@ -289,14 +296,8 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           -webkit-tap-highlight-color: transparent;
         }
 
-        .am-provider:active {
-          transform: scale(0.98);
-        }
-
-        .am-provider:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
+        .am-provider:active { transform: scale(0.98); }
+        .am-provider:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .am-provider__icon {
           display: inline-flex;
@@ -304,14 +305,19 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           justify-content: center;
         }
 
+        /* Apple HIG: pure black + white. Brand brown #221C15 was non-compliant
+           and Apple has flagged near-blacks in past reviews. */
         .am-provider--apple {
-          background: #221C15;
+          background: #000;
           color: #fff;
+          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui;
         }
+        /* Google "Sign in with Google" Light button spec. */
         .am-provider--google {
           background: #fff;
-          color: #1a1a1a;
-          border-color: var(--border);
+          color: #1f1f1f;
+          border-color: #dadce0;
+          font-family: "Google Sans", Roboto, system-ui, sans-serif;
         }
         .am-provider--meta {
           background: #fff;
@@ -319,7 +325,7 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           border-color: var(--border);
         }
         .am-provider--github {
-          background: #2C261E;
+          background: #24292f;
           color: #fff;
         }
 

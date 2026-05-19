@@ -257,3 +257,82 @@ file path if any are absent.
 - **`submit_ios_release.py` fails with "APP_ID not set"**: edit
   `store-pipeline/_auth.py` and replace the `<FILL_AFTER_ASC_APP_CREATED>`
   placeholder with the numeric app id from App Store Connect.
+
+---
+
+## Native sign-in (Apple + Google) — external setup checklist
+
+The Brewmie codebase has the native plumbing for "Sign in with Apple" (iOS)
+and "Sign in with Google" (Android + iOS) wired but the provider configs
+must be created externally before the buttons can complete a round-trip.
+
+If the native plugin call fails for any reason (capability missing, plugin
+not configured, user cancels), `handleSignInClick` falls back to opening
+the AuthModal which then attempts Supabase's hosted OAuth web flow. That
+fallback also needs the providers configured in the Supabase dashboard.
+
+### 1. Apple — Sign in with Apple (iOS only; Apple policy 4.8 requires it)
+
+1. Apple Developer Portal → Identifiers → Brewmie's bundle ID
+   `app.brewmie.brewmie`. Enable the **Sign in with Apple** capability.
+2. Identifiers → Services IDs → `+` → register a Services ID, e.g.
+   `app.brewmie.brewmie.web`. Configure: enable Sign in with Apple, add
+   `https://pdbfmmtwgsdkattjraya.supabase.co/auth/v1/callback` as the
+   Return URL. Note the Services ID — Supabase calls it `client_id`.
+3. Keys → `+` → create a key with Sign in with Apple enabled. Download the
+   `.p8` file (one-time). Note the Key ID + your Team ID.
+4. Supabase dashboard → Authentication → Providers → Apple. Toggle on.
+   Fill: Services ID, Team ID, Key ID, paste the `.p8` contents.
+
+The iOS app already has `App.entitlements` with `com.apple.developer.applesignin`
+and pbxproj wired to `CODE_SIGN_ENTITLEMENTS = App/App.entitlements`. The
+native plugin call will return an identity token; Supabase verifies it
+against the Service ID config.
+
+### 2. Google — Google Sign-In (Android + iOS)
+
+1. Firebase console → Create project "brewmie" (or use existing). Add an
+   Android app with package `app.brewmie.brewmie` and an iOS app with
+   bundle ID `app.brewmie.brewmie`. Download:
+   - **google-services.json** → place at `android/app/google-services.json`
+   - **GoogleService-Info.plist** → place at `ios/App/App/GoogleService-Info.plist`
+2. Firebase console → Project Settings → Your apps → note the three
+   OAuth client IDs (Web, Android, iOS). The Web Client ID is the
+   `serverClientId` used by Supabase to verify Google tokens.
+3. Edit `capacitor.config.ts` — replace the three `REPLACE-WITH-BREWMIE-...`
+   placeholders in the `GoogleAuth` plugin block.
+4. Edit `ios/App/App/Info.plist` — replace the
+   `com.googleusercontent.apps.REPLACE-WITH-BREWMIE-IOS-CLIENT-ID`
+   placeholder with the iOS reversed-client-id from Firebase.
+5. Supabase dashboard → Authentication → Providers → Google. Toggle on.
+   Fill the Web Client ID + Client Secret (from Google Cloud Console →
+   APIs & Services → Credentials).
+
+### 3. Verifying
+
+After the above is in place:
+
+```bash
+# Rebuild + reinstall the app
+cd ~/brewmie && npm run build
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer npx cap sync
+# iOS
+scripts/publish_ios.sh --skip-upload
+# Android
+cd android && ./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+Then tap the profile icon top-right of the Hero header. The AuthModal
+slides up. Tap "Continue with Apple" on iOS or "Continue with Google" on
+Android. The native sheet should appear, authenticate, and return to the
+app with a live Supabase session.
+
+### Until all of this is done
+
+The buttons still appear (HIG-compliant styling) and tapping them opens
+the in-app browser to Supabase's OAuth page. The flow then bounces through
+Apple/Google and ends at Supabase's callback URL — but without the
+provider config in Supabase, the callback returns an "OAuth provider not
+configured" error. The user sees that error in the modal, not a silent
+no-op.

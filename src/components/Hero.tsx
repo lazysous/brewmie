@@ -162,17 +162,28 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         <div className="hero__auth">
           {state.userId ? (
             <button
-              className="hero__signin"
+              className="hero__profile hero__profile--signed-in"
               onClick={handleSignOut}
               aria-label={t('header.signOut')}
               title={state.displayName ?? ''}
               type="button"
             >
-              {t('header.signOut')}
+              {state.displayName ? state.displayName.charAt(0).toUpperCase() : (
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              )}
             </button>
           ) : SIGN_IN_AVAILABLE ? (
-            <button className="hero__signin" onClick={onSignIn} type="button">
-              {t('header.signIn')}
+            <button
+              className="hero__profile"
+              onClick={onSignIn}
+              aria-label={t('header.signIn')}
+              type="button"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
             </button>
           ) : null}
         </div>
@@ -252,6 +263,33 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         }
 
         .hero__auth { display: flex; align-items: center; gap: 10px; }
+
+        /* Profile icon — replaces a plain "Sign in" text link in the header.
+           Apple's HIG flags using just text where a recognised sign-in flow
+           would normally appear; an icon-only entry that opens a properly-
+           styled provider modal is the safer pattern. */
+        .hero__profile {
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(184, 116, 74, 0.14);
+          border: 1.5px solid rgba(184, 116, 74, 0.45);
+          color: var(--copper);
+          border-radius: 999px;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          padding: 0;
+          font-size: 14px;
+          font-weight: 700;
+        }
+        .hero__profile:active { transform: scale(0.95); }
+        .hero__profile--signed-in {
+          background: var(--copper);
+          border-color: var(--copper);
+          color: #fff;
+        }
 
         .hero__signin {
           font-size: 13px;

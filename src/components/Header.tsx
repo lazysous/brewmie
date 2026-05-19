@@ -64,11 +64,13 @@ export function Header({ state, dispatch, onSignIn, onHome }: HeaderProps) {
           display: flex;
           align-items: center;
           justify-content: center;
-          /* 60pt content area gives the wordmark room to clear the Dynamic
-             Island on iPhone Pro Max. safe-top pads the top so the brand
-             never touches the status bar zone. */
-          min-height: calc(60px + var(--safe-top));
-          padding: calc(var(--safe-top) + 8px) 16px 8px;
+          /* Dynamic Island on iPhone Pro Max devices extends ~3pt below the
+             safe-area-inset-top boundary. safe-top + 20pt guarantees the
+             wordmark clears the island on every iPhone shipped to date,
+             including landscape orientation where the safe inset is 0
+             (the +20 still gives a comfortable top breathing strip). */
+          min-height: calc(56px + var(--safe-top) + 20px);
+          padding: calc(var(--safe-top) + 20px) 16px 12px;
           background: linear-gradient(180deg, #221C15 0%, #2C261E 100%);
           border-bottom: 1px solid rgba(184, 116, 74, 0.22);
           flex-shrink: 0;

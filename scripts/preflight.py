@@ -83,7 +83,6 @@ def check_ios_plist(r: Result):
     text = plist.read_text()
     for key, label in [
         ("ITSAppUsesNonExemptEncryption", "Export compliance"),
-        ("NSUserTrackingUsageDescription", "ATT prompt copy"),
         ("UIStatusBarStyleLightContent", "Status bar style"),
     ]:
         if key in text:

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import type { BrewmieState, AppAction, ShotEntry } from '../types'
+import type { BrewmieState, AppAction, ShotEntry, BeanConfig } from '../types'
 import type { AlgoParams } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import { useTier } from '../hooks/useTier'
@@ -183,6 +183,7 @@ function computeAdjustments(
   algoParams?: AlgoParams | null,
   timeWindowOverride?: number | null,
   recentAdjustments?: RecentAdjustment[],
+  crema?: 'thin' | 'normal' | 'thick' | null,
 ): ComputeResult {
   const range = Math.max(1, grinderMax - grinderMin)
   // Grind snaps to 0.5 (physical dial resolution on most domestic grinders);
@@ -214,17 +215,19 @@ function computeAdjustments(
   // Noise floor scales with personal time variability — small misses get "hold".
   const speedNoise = Math.max(0.05, (timeWindow / safeTime) * TIME_WEIGHT)
 
-  // ── Channelling guard ─────────────────────────────────────────────────────
-  // Long time + low yield together = puck integrity, not grind.
+  // ── Prep-issue guards ─────────────────────────────────────────────────────
+  // Choker (long time + low yield) and gusher (short time + high yield) both
+  // signal puck integrity — distribution / WDT / tamp evenness fix it, not grind.
   const channelling = timeDelta > timeWindow && volumeDelta < -5
+  const gusher = timeDelta < -timeWindow && volumeDelta > 5
 
-  if (channelling) {
+  if (channelling || gusher) {
     return {
       grindAdjust: 0,
       doseAdjust: 0,
       volumeAdjust: 0,
       timeAdjust: 0,
-      tampAdjust: 1,                // firmer / more even tamp + redistribute
+      tampAdjust: 1,
       reasonKey: 'brew.reasonChannelling',
       doseReasonKey: '',
     }
@@ -303,7 +306,13 @@ function computeAdjustments(
     else if (weather.temp < 15)     weatherPct += 0.5
   }
 
-  const modPct = (driver === 'none') ? 0 : agePct + weatherPct
+  // Crema reads: thin = under-extracted (finer), thick = over-extracted (coarser).
+  // Small contribution — flavour + flow stay the dominant signals.
+  let cremaPct = 0
+  if (crema === 'thin')       cremaPct = -0.3
+  else if (crema === 'thick') cremaPct =  0.3
+
+  const modPct = (driver === 'none') ? 0 : agePct + weatherPct + cremaPct
   const rawTotalPct = primaryGrindPct + tasteBiasPct + modPct
   const totalPct = Math.max(-5, Math.min(5, rawTotalPct))
   let grindAdjust = pctToUnits(totalPct)
@@ -453,12 +462,94 @@ function beanAge(roastDate: string | null, beanAgeOverride: number | null): numb
   return Math.floor((now.getTime() - roast.getTime()) / (1000 * 60 * 60 * 24))
 }
 
+// First-shot starting point. Uses roast level to bias grind/time/ratio so the
+// user lands closer to a sensible shot than a one-size-fits-all 27s 1:2 guess.
+// Numbers come from ROAST_TIME_OFFSET observations: lighter roasts run faster
+// and are denser (finer grind, slightly tighter ratio, slightly longer time);
+// darker roasts are more soluble (coarser, looser ratio, shorter time).
+const ROAST_STARTING_POINT: Record<string, { grindPct: number; ratio: number; time: number }> = {
+  'light':        { grindPct: 0.40, ratio: 1.9, time: 30 },
+  'medium-light': { grindPct: 0.45, ratio: 1.95, time: 28 },
+  'medium':       { grindPct: 0.50, ratio: 2.0, time: 27 },
+  'medium-dark':  { grindPct: 0.55, ratio: 2.05, time: 26 },
+  'dark':         { grindPct: 0.60, ratio: 2.1, time: 25 },
+}
+
+// Identify the user's current bag by brand + roastDate. Same brand, same roast
+// date = same physical bag. Used to seed targets from prior dialled-in shots.
+function sameBagShots(shots: ShotEntry[], beans: BeanConfig | null): ShotEntry[] {
+  if (!beans || !beans.brand) return []
+  const roastDate = beans.roastDate ?? null
+  return shots.filter((s) => {
+    if (s.roastLevel !== beans.roastLevel) return false
+    // Bean snapshot doesn't carry brand directly; use beanAge proximity as a
+    // tie-breaker when roastDate is present. If beanAge on the shot is within
+    // 2 days of the current bag's age window, treat as same bag.
+    if (roastDate) {
+      const shotRoast = new Date(s.timestamp).getTime() - (s.beanAge ?? 0) * 86400000
+      const bagRoast = new Date(roastDate).getTime()
+      if (Math.abs(shotRoast - bagRoast) > 2 * 86400000) return false
+    }
+    return true
+  })
+}
+
+function median(nums: number[]): number {
+  if (nums.length === 0) return NaN
+  const sorted = [...nums].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+  // ignore brand for now; brand not on ShotEntry
+}
+
 function defaultTargets(state: BrewmieState): BrewTargets {
-  const grind = state.currentGrind ?? (state.grinder ? Math.round((state.grinder.minSetting + state.grinder.maxSetting) / 2) : 15)
+  const roast = state.beans?.roastLevel ?? 'medium'
+  const sp = ROAST_STARTING_POINT[roast] ?? ROAST_STARTING_POINT['medium']
+
   const dose = state.machine?.basketSize ?? 18
-  const volume = dose * 2
-  const time = 27
+  let volume = Math.round(dose * sp.ratio * 10) / 10
+  let time = sp.time
   const tamp = state.tamp?.level ?? 50
+
+  let grind: number
+  if (state.currentGrind != null) {
+    grind = state.currentGrind
+  } else if (state.grinder) {
+    const { minSetting, maxSetting } = state.grinder
+    const raw = minSetting + (maxSetting - minSetting) * sp.grindPct
+    grind = Math.round(raw * 2) / 2
+  } else {
+    grind = 15
+  }
+
+  // Same-bag memory: if user has 2+ rated shots on this bag, seed from medians
+  // of the best-scoring half. Falls back to roast-table starting point above.
+  const bagShots = sameBagShots(state.shots, state.beans)
+  const rated = bagShots.filter((s) => s.score !== null && s.actualTime !== null && s.actualVolume !== null)
+  if (rated.length >= 2) {
+    const sorted = [...rated].sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+    const top = sorted.slice(0, Math.max(2, Math.ceil(sorted.length / 2)))
+    const mGrind  = median(top.map((s) => s.inputGrind))
+    const mDose   = median(top.map((s) => s.inputDose))
+    const mVol    = median(top.map((s) => s.actualVolume as number))
+    const mTime   = median(top.map((s) => s.actualTime as number))
+    if (Number.isFinite(mGrind)) grind = Math.round(mGrind * 2) / 2
+    if (Number.isFinite(mVol))   volume = Math.round(mVol * 10) / 10
+    if (Number.isFinite(mTime))  time = Math.round(mTime * 10) / 10
+    // dose only overrides if it's actually different from the basket
+    if (Number.isFinite(mDose) && Math.abs(mDose - dose) > 0.4) {
+      // not returned — keep dose tied to basket size
+    }
+  }
+
+  // Cold-machine warmup: if the gap since the last shot is > 6h, the group head
+  // is cold and the first shot runs faster/under-extracted. Nudge time +1s.
+  const lastShot = state.shots[0]
+  if (lastShot) {
+    const gapHours = (Date.now() - new Date(lastShot.timestamp).getTime()) / 3600000
+    if (gapHours > 6) time = Math.round((time + 1) * 10) / 10
+  }
+
   return { grind, dose, volume, time, tamp }
 }
 
@@ -740,11 +831,11 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       state.beans?.roastLevel ?? null,
       tasteFlavor, tasteStrength,
       gMin, gMax, algoParams, blendedTimeWindow,
-      recent,
+      recent, crema,
     )
     setResult((prev) => prev ? { ...prev, ...adjs } : prev)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tasteFlavor, tasteStrength])
+  }, [tasteFlavor, tasteStrength, crema])
 
   // ─── Save shot ───────────────────────────────────────────────────────────────
   function handleSave(actualTime: number, actualVolume: number) {
@@ -761,7 +852,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
       targets.dose, targets.grind,
       weather, age, state.beans?.roastLevel ?? null,
       null, null, gMin, gMax, algoParams, blendedTimeWindow,
-      recent,
+      recent, null,
     )
     const shotId = generateId()
 
@@ -1034,6 +1125,9 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         </div>
         <div className="bs-section bs-section--targets">
           <span className="bs-section__label">{t('brew.chipTargets')}</span>
+          <span className="bs-section__ratio" aria-label="brew ratio">
+            1:{(targets.volume / Math.max(targets.dose, 1)).toFixed(1)}
+          </span>
           <div className="bs-section__rows">
             {TARGET_ROWS.map((row, idx) => renderParamRow(row, idx === TARGET_ROWS.length - 1))}
           </div>
@@ -1947,6 +2041,20 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         .bs-section--targets .bs-section__label {
           color: var(--accent-green);
           background: rgba(107, 142, 92, 0.14);
+        }
+        .bs-section__ratio {
+          position: absolute;
+          top: 6px;
+          right: 14px;
+          z-index: 1;
+          font-size: 13px;
+          font-weight: 700;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: 0.3px;
+          color: var(--accent-green);
+          background: rgba(107, 142, 92, 0.14);
+          padding: 2px 8px;
+          border-radius: 999px;
         }
 
         .bs-section__rows {

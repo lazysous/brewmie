@@ -335,16 +335,25 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
   // ── Richer benchmarks data ────────────────────────────────────────────────
 
   // Sweet spot recipe — average of the top-scoring shots.
-  type SweetSpot = { grind: number; dose: number; volume: number; time: number; ratio: number; n: number }
+  type SweetSpot = {
+    grind: number; dose: number; volume: number; time: number; ratio: number; n: number
+    bestBeanAge: number | null    // median days off roast across top shots
+  }
   let sweetSpot: SweetSpot | null = null
   if (topShots.length > 0) {
     const valid = topShots.filter((s) => s.actualVolume !== null && s.actualTime !== null)
     if (valid.length > 0) {
       const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length
+      const med = (xs: number[]) => {
+        const s = [...xs].sort((a, b) => a - b)
+        const m = Math.floor(s.length / 2)
+        return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2
+      }
       const grind = avg(valid.map((s) => s.inputGrind))
       const dose = avg(valid.map((s) => s.inputDose))
       const volume = avg(valid.map((s) => s.actualVolume as number))
       const time = avg(valid.map((s) => s.actualTime as number))
+      const ages = valid.map((s) => s.beanAge).filter((a): a is number => typeof a === 'number')
       sweetSpot = {
         grind: Math.round(grind * 2) / 2,
         dose: Math.round(dose * 10) / 10,
@@ -352,6 +361,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         time: Math.round(time),
         ratio: dose > 0 ? volume / dose : 0,
         n: valid.length,
+        bestBeanAge: ages.length >= 2 ? Math.round(med(ages)) : null,
       }
     }
   }
@@ -681,6 +691,9 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
                   <div className="ix-bench__chips">
                     <span className="ix-bench__chip"><strong>{sweetSpot.grind}</strong> {t('insights.bestGrindLabel')}</span>
                     <span className="ix-bench__chip"><strong>1:{sweetSpot.ratio.toFixed(1)}</strong> {t('insights.ratioLabel')}</span>
+                    {sweetSpot.bestBeanAge !== null && (
+                      <span className="ix-bench__chip"><strong>{sweetSpot.bestBeanAge}d</strong> {t('insights.offRoastLabel')}</span>
+                    )}
                     <span className="ix-bench__chip ix-bench__chip--muted">{t('insights.fromNShots', { n: sweetSpot.n })}</span>
                   </div>
                 </>

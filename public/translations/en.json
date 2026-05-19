@@ -433,6 +433,7 @@
     "bestGrindLabel": "grind",
     "ratioLabel": "ratio",
     "fromNShots": "from {n} top shots",
+    "offRoastLabel": "off roast",
     "noTopShots": "Log a shot scoring 85+ to set your sweet spot.",
     "personalBest": "Personal best",
     "thisWeek": "This week",

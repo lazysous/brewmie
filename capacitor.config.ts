@@ -21,16 +21,10 @@ const config: CapacitorConfig = {
   },
   plugins: {
     GoogleAuth: {
-      // Web client ID from GCP project 'notional-gist-496404-q9' (Brewmie).
-      // Same value used by Supabase's Google provider to verify ID tokens.
-      //
-      // TODO when ready to ship native UX: create iOS + Android OAuth clients
-      // in GCP and set iosClientId + androidClientId respectively. Until then
-      // the plugin falls back to the Web client which still authenticates
-      // correctly against Supabase, just via a web consent screen rather
-      // than the platform-native sheet.
+      // serverClientId = Web client (Supabase verifies ID tokens against this).
+      // iosClientId = iOS-native OAuth client (drives the native sheet).
       scopes: ['email', 'profile'],
-      clientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
+      iosClientId: '451962407650-tlvmc7fh70vr8peb7p0c445p1lfuv562.apps.googleusercontent.com',
       serverClientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
       forceCodeForRefreshToken: false,
     },

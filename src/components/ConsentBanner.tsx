@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from '../hooks/useTranslation'
 
 const SEEN_KEY = 'hasSeenConsent'
@@ -60,7 +61,7 @@ export function ConsentBanner() {
     setVisible(false)
   }
 
-  return (
+  return createPortal(
     <div className="cb-toast" role="dialog" aria-label={t('consent.ariaLabel')}>
       <p className="cb-toast__body">{t('consent.body')}</p>
       <div className="cb-toast__actions">
@@ -131,6 +132,7 @@ export function ConsentBanner() {
         }
         .cb-toast__opt:active { color: #fff; }
       `}</style>
-    </div>
+    </div>,
+    document.body
   )
 }

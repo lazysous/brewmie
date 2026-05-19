@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import { useTranslation } from '../hooks/useTranslation'
 import { setTierOverride } from '../hooks/useTier'
@@ -77,7 +78,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
   // 3. Native + signed-in: original buy flow.
   const webAppOnly = PLATFORM === 'web'
 
-  return (
+  return createPortal(
     <div className="pm-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="pm-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="pm-handle" aria-hidden="true" />
@@ -336,6 +337,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
           font-style: italic;
         }
       `}</style>
-    </div>
+    </div>,
+    document.body
   )
 }

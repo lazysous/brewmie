@@ -1,4 +1,5 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { useState } from 'react'
 import { useTranslation } from '../hooks/useTranslation'
@@ -169,7 +170,7 @@ function ShotEditSheet({
     onSave(updates)
   }
 
-  return (
+  return createPortal(
     <div className="ix-sheet-backdrop" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="ix-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="ix-sheet__header">
@@ -258,7 +259,8 @@ function ShotEditSheet({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

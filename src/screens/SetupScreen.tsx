@@ -1393,7 +1393,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         onSignInRequired={onSignIn}
       />
 
-      {deleteModalOpen && (
+      {deleteModalOpen && createPortal(
         <div className="sc-delete-modal" role="dialog" aria-modal="true">
           <div className="sc-delete-modal__card">
             <h2 className="sc-delete-modal__title">{t('setup.deleteAccountTitle')}</h2>
@@ -1417,7 +1417,8 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <style>{`

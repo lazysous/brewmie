@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import type { AppAction } from '../types'
 import {
@@ -72,7 +73,7 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
     }
   }
 
-  return (
+  return createPortal(
     <div className="am-backdrop" onClick={step === 'provider' ? onClose : undefined} role="dialog" aria-modal="true" aria-label={t('auth.ariaLabel')}>
       <div className="am-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="am-handle" aria-hidden="true" />
@@ -337,6 +338,7 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           cursor: not-allowed;
         }
       `}</style>
-    </div>
+    </div>,
+    document.body
   )
 }

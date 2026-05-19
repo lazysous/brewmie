@@ -64,10 +64,11 @@ export function Header({ state, dispatch, onSignIn, onHome }: HeaderProps) {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: calc(52px + var(--safe-top));
-          padding-top: var(--safe-top);
-          padding-left: 16px;
-          padding-right: 16px;
+          /* 60pt content area gives the wordmark room to clear the Dynamic
+             Island on iPhone Pro Max. safe-top pads the top so the brand
+             never touches the status bar zone. */
+          min-height: calc(60px + var(--safe-top));
+          padding: calc(var(--safe-top) + 8px) 16px 8px;
           background: linear-gradient(180deg, #221C15 0%, #2C261E 100%);
           border-bottom: 1px solid rgba(184, 116, 74, 0.22);
           flex-shrink: 0;
@@ -102,8 +103,6 @@ export function Header({ state, dispatch, onSignIn, onHome }: HeaderProps) {
           width: auto;
           display: block;
           object-fit: contain;
-          position: relative;
-          top: 4px;
         }
 
         .header__byline {

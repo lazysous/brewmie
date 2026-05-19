@@ -5,6 +5,7 @@ import { useTranslation } from '../hooks/useTranslation'
 import { setTierOverride } from '../hooks/useTier'
 import { track } from '../lib/analytics'
 import { signInWithApple, signInWithGoogle } from '../lib/supabase'
+import { purchasePremium } from '../lib/iap'
 
 // Platform detection — read once at module load so render is sync.
 const NATIVE = Capacitor.isNativePlatform()
@@ -85,17 +86,30 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
     setPurchasing(true)
     setError(null)
     try {
-      if (isDev) {
-        // Dev shortcut so QA can unlock without hitting the store sandbox.
-        setTierOverride('premium')
-        track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
-        onClose()
+      // On web there's no store — keep the dev override path so designers
+      // can preview premium without a native build.
+      if (PLATFORM === 'web') {
+        if (isDev) {
+          setTierOverride('premium')
+          track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
+          onClose()
+        } else {
+          setError(t('premium.purchaseUnavailable'))
+        }
         return
       }
-      // Production IAP entry point. Wire StoreKit (iOS) / Play Billing (Android)
-      // here. Until that's in place, surface a holding message rather than
-      // silently closing the modal as if the purchase succeeded.
-      setError(t('premium.purchaseUnavailable'))
+      // Native: open the platform store sheet. Ownership propagation happens
+      // through the verified() callback wired in App.tsx (initIAP), which
+      // sets state.tier=premium and persists to Supabase. We don't need to
+      // dispatch anything here — just close once the user confirms.
+      const result = await purchasePremium()
+      if (result.ok) {
+        track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
+        onClose()
+      } else if (!result.cancelled) {
+        setError(result.message ?? t('premium.purchaseUnavailable'))
+      }
+      // Cancellation: stay on the modal silently.
     } finally {
       setPurchasing(false)
     }

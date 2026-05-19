@@ -10,7 +10,8 @@ import { DevTierPill } from './components/DevTierPill'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, setTier as persistTier, signInWithApple, signInWithGoogle } from './lib/supabase'
+import { initIAP } from './lib/iap'
 import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
 import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
@@ -86,6 +87,16 @@ export function App() {
     // No-op on web/Android. Result is system-cached; we don't re-prompt.
     requestAppTrackingPermission().catch(() => {})
     track('app_open')
+    // Boot the IAP store. On native this loads the Premium product and wires
+    // verified-receipt callbacks; on web it's a no-op. When the store reports
+    // ownership (either now from a restored receipt or later from a purchase),
+    // we flip tier=premium locally and best-effort persist to Supabase if the
+    // user is signed in.
+    initIAP(() => {
+      dispatch({ type: 'SET_TIER', payload: 'premium' })
+      const uid = supabase.auth.getUser().then(({ data }) => data.user?.id)
+      uid.then((u) => { if (u) persistTier(u, 'premium').catch(() => {}) })
+    }).catch(() => {})
   }, [])
 
   // Track tab changes as screen views

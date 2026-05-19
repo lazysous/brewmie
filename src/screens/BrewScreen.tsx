@@ -2015,6 +2015,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         /* Dual stepper buttons: BIG = ±1.0, FINE = ±0.1 (±0.5 for grind).
            Size encodes magnitude so users can read it at a glance. */
         .bs-stepper {
+          position: relative;
           border-radius: 50%;
           background: transparent;
           border: 1px solid var(--border);
@@ -2029,6 +2030,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           transition: background 0.12s ease, border-color 0.12s ease, transform 0.08s ease, color 0.12s ease;
           -webkit-tap-highlight-color: transparent;
         }
+        /* Invisible hit-area extender — every stepper has at least a 44pt
+           tappable square even if the visible circle is smaller. Matches
+           Apple HIG and Material guidelines. */
+        .bs-stepper::before {
+          content: '';
+          position: absolute;
+          inset: -10px;
+        }
         .bs-stepper--big {
           width: clamp(26px, 4vh, 34px);
           height: clamp(26px, 4vh, 34px);
@@ -2040,6 +2049,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           font-size: clamp(12px, 1.8vh, 15px);
           opacity: 0.75;
         }
+        .bs-stepper--fine::before { inset: -13px; }
         .bs-stepper--fine:hover:not(:disabled) { opacity: 1; }
         /* Unspecified (fallback for spacer/fixed-tamp slot) */
         .bs-stepper:not(.bs-stepper--big):not(.bs-stepper--fine) {

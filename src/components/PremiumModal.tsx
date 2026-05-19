@@ -35,6 +35,14 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
     if (open) track('premium_modal_open', { trigger: trigger ?? 'none', signed_in: isSignedIn, platform: PLATFORM })
   }, [open, trigger, isSignedIn])
 
+  // Escape closes the modal (keyboard + accessibility).
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+
   if (!open) return null
 
   const isDev = import.meta.env.DEV
@@ -82,6 +90,12 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
     <div className="pm-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="pm-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="pm-handle" aria-hidden="true" />
+        <button
+          className="pm-close"
+          type="button"
+          onClick={onClose}
+          aria-label={t('common.close')}
+        >×</button>
 
         <div className="pm-eyebrow">
           <span className="pm-eyebrow__mark" aria-hidden="true" />
@@ -165,6 +179,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
           justify-content: center;
         }
         .pm-sheet {
+          position: relative;
           background: var(--cream);
           border-radius: 24px 24px 0 0;
           padding: 14px 24px 36px;
@@ -183,6 +198,26 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
           border-radius: 9999px;
           margin: 0 auto 18px;
         }
+
+        .pm-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0,0,0,0.05);
+          border: none;
+          border-radius: 999px;
+          font-size: 22px;
+          line-height: 1;
+          color: var(--text-medium);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pm-close:active { transform: scale(0.92); background: rgba(0,0,0,0.1); }
 
         .pm-eyebrow {
           display: flex;

@@ -37,6 +37,14 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
     }
   }, [open, nicknameForUser])
 
+  // Escape closes the modal unless an OAuth round-trip is in flight.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && !loading) onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, loading, onClose])
+
   if (!open) return null
 
   async function runProvider(fn: () => Promise<{ error?: unknown }>) {
@@ -74,9 +82,16 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
   }
 
   return createPortal(
-    <div className="am-backdrop" onClick={step === 'provider' ? onClose : undefined} role="dialog" aria-modal="true" aria-label={t('auth.ariaLabel')}>
+    <div className="am-backdrop" onClick={loading ? undefined : onClose} role="dialog" aria-modal="true" aria-label={t('auth.ariaLabel')}>
       <div className="am-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="am-handle" aria-hidden="true" />
+        <button
+          className="am-close"
+          type="button"
+          onClick={onClose}
+          disabled={loading}
+          aria-label={t('common.close')}
+        >×</button>
 
         {step === 'nickname' ? (
           <>
@@ -169,6 +184,7 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
         }
 
         .am-sheet {
+          position: relative;
           background: linear-gradient(180deg, #FBF8F1 0%, var(--cream) 100%);
           border-radius: 24px 24px 0 0;
           padding: 12px 24px 32px;
@@ -177,6 +193,27 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           animation: slideUp 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both;
           box-shadow: 0 -10px 40px rgba(60, 40, 20, 0.18);
         }
+
+        .am-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0,0,0,0.05);
+          border: none;
+          border-radius: 999px;
+          font-size: 22px;
+          line-height: 1;
+          color: var(--text-medium);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .am-close:active { transform: scale(0.92); background: rgba(0,0,0,0.1); }
+        .am-close:disabled { opacity: 0.4; cursor: default; }
 
         .am-handle {
           width: 36px;

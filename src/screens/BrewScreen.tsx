@@ -1786,7 +1786,8 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         }
         .bs-rating-pill {
           flex: 1;
-          padding: clamp(7px, 1.2vh, 10px) 4px;
+          min-height: 44px;
+          padding: clamp(10px, 1.6vh, 14px) 4px;
           font-size: clamp(12px, 1.8vh, 14px);
           font-weight: 600;
           background: var(--off-white);

@@ -96,31 +96,43 @@ export function App() {
     state.beans?.roastDate,
   ])
 
-  // Load shots, config, and display name from Supabase when user signs in.
-  // If the user has no display_name yet (first sign-in), prompt for one.
+  // Load shots, config, display name, and tier from Supabase when user signs
+  // in. The three HYDRATE-style fetches resolve in parallel but merge their
+  // results into a SINGLE dispatch at the end. Previously each dispatched its
+  // own `HYDRATE` with `{ ...state, ... }` and whichever resolved last would
+  // clobber the others (e.g. config landing after shots wiped the shots array
+  // until the next reducer write).
   useEffect(() => {
     if (!state.userId) return
-    fetchShots(state.userId).then((shots) => {
-      if (shots.length > 0) {
-        dispatch({ type: 'HYDRATE', payload: { ...state, shots } })
+    const uid = state.userId
+    Promise.allSettled([
+      fetchShots(uid),
+      fetchUserConfig(uid),
+      fetchDisplayName(uid),
+      fetchTier(uid),
+    ]).then(([shotsResult, configResult, nameResult, tierResult]) => {
+      const merge: Partial<typeof state> = {}
+      if (shotsResult.status === 'fulfilled' && shotsResult.value.length > 0) {
+        merge.shots = shotsResult.value
       }
-    }).catch(() => {})
-    fetchUserConfig(state.userId).then((config) => {
-      if (config) {
-        dispatch({ type: 'HYDRATE', payload: { ...state, ...config } })
+      if (configResult.status === 'fulfilled' && configResult.value) {
+        Object.assign(merge, configResult.value)
       }
-    }).catch(() => {})
-    fetchDisplayName(state.userId).then((name) => {
-      if (name) {
-        dispatch({ type: 'SET_DISPLAY_NAME', payload: name })
-      } else {
-        // First sign-in: open the modal in nickname-capture mode.
-        setShowAuthModal(true)
+      if (Object.keys(merge).length > 0) {
+        dispatch({ type: 'HYDRATE', payload: { ...state, ...merge } })
       }
-    }).catch(() => {})
-    fetchTier(state.userId).then((tier) => {
-      dispatch({ type: 'SET_TIER', payload: tier })
-    }).catch(() => {})
+      if (nameResult.status === 'fulfilled') {
+        if (nameResult.value) {
+          dispatch({ type: 'SET_DISPLAY_NAME', payload: nameResult.value })
+        } else {
+          // First sign-in: open the modal in nickname-capture mode.
+          setShowAuthModal(true)
+        }
+      }
+      if (tierResult.status === 'fulfilled') {
+        dispatch({ type: 'SET_TIER', payload: tierResult.value })
+      }
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])
 

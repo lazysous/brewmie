@@ -24,14 +24,21 @@ const NATIVE_PLATFORM: 'ios' | 'android' | 'web' = Capacitor.isNativePlatform()
   ? (Capacitor.getPlatform() === 'android' ? 'android' : 'ios')
   : 'web'
 
-async function startSignIn(): Promise<void> {
+async function startSignIn(): Promise<boolean> {
   try {
     if (NATIVE_PLATFORM === 'ios') {
       await signInWithApple()
-    } else if (NATIVE_PLATFORM === 'android') {
-      await signInWithGoogle()
+      return true
     }
-  } catch { /* user cancelled or plugin unavailable; silent */ }
+    if (NATIVE_PLATFORM === 'android') {
+      await signInWithGoogle()
+      return true
+    }
+  } catch {
+    // Native plugin unavailable, capability missing, or user cancelled.
+    // Caller should fall back to the AuthModal for the OAuth web flow.
+  }
+  return false
 }
 
 interface WeatherData { temp: number; humidity: number }
@@ -42,15 +49,19 @@ export function App() {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
-  // Sign-in entry from anywhere in the app. Native iOS goes straight to Apple,
-  // native Android straight to Google. Only web falls back to the multi-
-  // provider AuthModal.
-  function handleSignInClick() {
+  // Sign-in entry from anywhere in the app. On native, try the platform's
+  // direct provider first (Apple on iOS, Google on Android). If the native
+  // plugin call fails — typically because the capability/google-services
+  // config isn't wired yet — fall back to the AuthModal which uses
+  // Supabase's hosted OAuth web flow. That way the button always does
+  // SOMETHING, even before native auth is fully provisioned.
+  async function handleSignInClick() {
     if (NATIVE_PLATFORM === 'web') {
       setShowAuthModal(true)
-    } else {
-      startSignIn()
+      return
     }
+    const ok = await startSignIn()
+    if (!ok) setShowAuthModal(true)
   }
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
 

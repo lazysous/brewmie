@@ -19,7 +19,7 @@ interface PremiumModalProps {
   onClose: () => void
   // Trigger is kept for analytics (which surface opened the modal), but no
   // longer shown to the user — restating "you tapped grinder" was redundant.
-  trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null
+  trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | 'export' | null
   isSignedIn?: boolean
   // Still accepted for API compatibility, but PremiumModal no longer opens
   // AuthModal on signed-out taps. Native goes straight to the platform

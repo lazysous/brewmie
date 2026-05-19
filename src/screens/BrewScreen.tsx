@@ -1930,11 +1930,11 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         .bs-section__label {
           position: absolute;
-          top: 6px;
+          top: 8px;
           left: 16px;
-          font-size: 8px;
+          font-size: 11px;
           font-weight: 800;
-          letter-spacing: 1.6px;
+          letter-spacing: 1.4px;
           text-transform: uppercase;
           padding: 1px 0;
           z-index: 1;
@@ -1959,25 +1959,27 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
         /* ── Param row: each row claims an equal share of the section
               so the card breathes naturally on tall screens, stays compact
-              on small ones. ───────────────────────────────────────────── */
+              on small ones. max-height caps the upper end so the card
+              doesn't go sparse on iPhone Pro Max / Pixel Pro devices. ── */
         .bs-param-row {
           padding: clamp(4px, 0.9vh, 11px) clamp(12px, 2vw, 16px);
           display: grid;
-          grid-template-columns: clamp(50px, 8vw, 64px) 1fr;
+          grid-template-columns: clamp(56px, 9vw, 76px) 1fr;
           align-items: center;
           gap: 8px;
           flex: 1 1 0;
           min-height: 0;
+          max-height: 78px;
         }
         .bs-param-row--sep {
           border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .bs-param-row__label {
-          font-size: 10px;
+          font-size: 13px;
           font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.8px;
+          letter-spacing: 0.6px;
           color: var(--text-tertiary);
         }
 
@@ -1989,13 +1991,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         }
 
         /* Fixed two-column grid: number right-aligns, unit left-aligns.
-           Every row's digits land on the same vertical line. */
+           Every row's digits land on the same vertical line. 105px gives
+           enough room for "18.5", "120.5" etc. at the largest font clamp. */
         .bs-param-row__value-group {
           display: grid;
-          grid-template-columns: 1fr 20px;
-          column-gap: 3px;
+          grid-template-columns: 1fr 22px;
+          column-gap: 4px;
           align-items: baseline;
-          width: 78px;
+          width: 105px;
         }
 
         .bs-param-row__value {

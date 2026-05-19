@@ -268,7 +268,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
   const { t } = useTranslation()
   const tier = useTier(state)
   const isFree = tier === 'free'
-  const [premiumTrigger, setPremiumTrigger] = useState<'history' | 'benchmarks' | null>(null)
+  const [premiumTrigger, setPremiumTrigger] = useState<'history' | 'benchmarks' | 'export' | null>(null)
 
   // Free tier sees only shots in the last 30 days.
   const allShots = state.shots
@@ -392,9 +392,10 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
   // ── Handlers ──────────────────────────────────────────────────────────────
 
   // CSV export — Title Case headers, ISO dates, clean column order matching
-  // the field names the app uses. Premium feature (open on web while we test).
-  function handleExportCsv() {
+  // the field names the app uses. Premium-gated.
+  async function handleExportCsv() {
     if (shots.length === 0) return
+    if (isFree) { setPremiumTrigger('export'); return }
     const cols: { key: keyof ShotEntry; label: string }[] = [
       { key: 'timestamp',     label: 'Timestamp' },
       { key: 'inputGrind',    label: 'Grind' },
@@ -432,11 +433,38 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
       cols.map(({ key }) => escape((s as unknown as Record<string, unknown>)[key])).join(',')
     )
     const csv = [cols.map((c) => c.label).join(','), ...rows].join('\n')
+    const filename = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
+
+    // Native (iOS/Android): write to cache then open the OS share sheet so
+    // the user can mail, save to Files / Drive, or AirDrop.
+    if ((await import('@capacitor/core')).Capacitor.isNativePlatform()) {
+      try {
+        const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
+        const { Share } = await import('@capacitor/share')
+        const written = await Filesystem.writeFile({
+          path: filename,
+          data: csv,
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8,
+        })
+        await Share.share({
+          title: 'Brewmie shots',
+          text: 'Your Brewmie shot log',
+          url: written.uri,
+          dialogTitle: 'Save or send your shots',
+        })
+      } catch {
+        // User cancelled or plugin unavailable — silent.
+      }
+      return
+    }
+
+    // Web fallback: trigger a download via Blob URL.
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
+    a.download = filename
     a.click()
     URL.revokeObjectURL(url)
   }

@@ -496,9 +496,32 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
   const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null>(null)
 
-  // ── Derived defaults from state
-  const initTargets = useCallback(() => defaultTargets(state), [])
+  // ── Derived defaults from state. Persisted to localStorage so the user's
+  // in-progress recipe survives tab switches (the screen unmounts) and full
+  // reloads. Falls back to defaultTargets(state) when storage is empty or
+  // contains a different shape.
+  const TARGETS_KEY = 'brewmie_active_targets_v1'
+  const initTargets = useCallback((): BrewTargets => {
+    try {
+      const raw = localStorage.getItem(TARGETS_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw) as Partial<BrewTargets>
+        const seed = defaultTargets(state)
+        return {
+          grind:  Number.isFinite(parsed.grind  as number) ? parsed.grind  as number : seed.grind,
+          dose:   Number.isFinite(parsed.dose   as number) ? parsed.dose   as number : seed.dose,
+          tamp:   (typeof parsed.tamp === 'string' ? parsed.tamp as BrewTargets['tamp'] : seed.tamp),
+          volume: Number.isFinite(parsed.volume as number) ? parsed.volume as number : seed.volume,
+          time:   Number.isFinite(parsed.time   as number) ? parsed.time   as number : seed.time,
+        }
+      }
+    } catch {}
+    return defaultTargets(state)
+  }, [])
   const [targets, setTargets] = useState<BrewTargets>(initTargets)
+  useEffect(() => {
+    try { localStorage.setItem(TARGETS_KEY, JSON.stringify(targets)) } catch {}
+  }, [targets])
 
   // ── Phase
   const [phase, setPhase] = useState<BrewPhase>('idle')

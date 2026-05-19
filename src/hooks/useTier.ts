@@ -4,8 +4,17 @@ import type { Tier, BrewmieState } from '../types'
 
 // In dev, localStorage.brewmie_tier_override = 'free' | 'premium' overrides the
 // real tier so designers can flip between modes without touching the backend.
+// In production we ignore any stale value unless the user has explicitly
+// opted into devtest mode — otherwise a stray write during testing would
+// leak a 'premium' override into the shipped app.
 const OVERRIDE_KEY = 'brewmie_tier_override'
+const PROD_OPT_IN_KEY = 'brewmie_devtest'
 const EVENT = 'brewmie:tier-override'
+
+const OVERRIDE_ENABLED: boolean = (() => {
+  if (import.meta.env.DEV) return true
+  try { return typeof localStorage !== 'undefined' && localStorage.getItem(PROD_OPT_IN_KEY) === '1' } catch { return false }
+})()
 
 // While we're testing on web, gating is OFF. Every feature is available, no
 // modal, no locks, no PREMIUM badges. Native apps (iOS/Android) keep the full
@@ -14,6 +23,7 @@ const GATING_ENABLED = Capacitor.isNativePlatform()
 
 function readOverride(): Tier | null {
   if (typeof window === 'undefined') return null
+  if (!OVERRIDE_ENABLED) return null
   const v = localStorage.getItem(OVERRIDE_KEY)
   return v === 'free' || v === 'premium' ? v : null
 }

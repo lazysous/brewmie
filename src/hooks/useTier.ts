@@ -61,15 +61,16 @@ function getServerSnapshot(): Tier | null {
  */
 export function useTier(state: BrewmieState): Tier {
   const override = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-  if (override) return override
+  // On web, gating is off — always return premium and ignore any stale override.
   if (!GATING_ENABLED) return 'premium'
+  if (override) return override
   return state.tier
 }
 
 export function isPremium(state: BrewmieState): boolean {
+  if (!GATING_ENABLED) return true
   const override = readOverride()
   if (override) return override === 'premium'
-  if (!GATING_ENABLED) return true
   return state.tier === 'premium'
 }
 

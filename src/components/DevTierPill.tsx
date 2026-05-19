@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Capacitor } from '@capacitor/core'
 import { setTierOverride } from '../hooks/useTier'
 import type { Tier } from '../types'
 
@@ -62,7 +63,10 @@ export function DevTierPill() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const visible = import.meta.env.DEV || readProdOptIn()
+  // Hide entirely on web — gating is off there, the toggle does nothing useful.
+  // Native (iOS / Android) keeps it for testing the premium flow.
+  const onWeb = !Capacitor.isNativePlatform()
+  const visible = !onWeb && (import.meta.env.DEV || readProdOptIn())
   if (!visible) return null
 
   // Two-state flip: free ↔ premium. Effective override is "premium" until

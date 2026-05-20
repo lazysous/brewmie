@@ -53,17 +53,24 @@ export async function getCurrentUser() {
 export async function signInWithApple() {
   if (await isNative()) {
     const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
-    // Generate a single nonce and use the SAME value on both sides:
-    //  1. Pass to Apple → Apple bakes it into the ID token's nonce claim.
-    //  2. Pass to Supabase → Supabase verifies the JWT's nonce against this.
-    // Without matching nonces Supabase rejects the token and the user appears
-    // stuck on the sign-in button.
-    const nonce = generateNonce()
+    // Apple's Sign in with Apple convention:
+    //   1. Generate a raw random nonce.
+    //   2. Hash it with SHA-256 and send the HASH to Apple.
+    //   3. Apple puts the hash in the JWT's `nonce` claim.
+    //   4. Send the RAW nonce to Supabase.
+    //   5. Supabase computes SHA-256(raw) and compares to JWT.nonce.
+    //
+    // The @capacitor-community/apple-sign-in plugin forwards the `nonce`
+    // option directly to ASAuthorizationAppleIDProvider without hashing,
+    // so we must hash before calling authorize(). Without this, JWT.nonce
+    // contains the raw value and Supabase's SHA-256 verification mismatches.
+    const rawNonce = generateNonce()
+    const hashedNonce = await sha256Hex(rawNonce)
     const result = await SignInWithApple.authorize({
       clientId: 'app.brewmie.brewmie',
       redirectURI: SUPABASE_URL + '/auth/v1/callback',
       scopes: 'email name',
-      nonce,
+      nonce: hashedNonce,
     })
     const token = result.response?.identityToken
     if (!token) {
@@ -72,13 +79,19 @@ export async function signInWithApple() {
     return supabase.auth.signInWithIdToken({
       provider: 'apple',
       token,
-      nonce,
+      nonce: rawNonce,
     })
   }
   return supabase.auth.signInWithOAuth({
     provider: 'apple',
     options: { redirectTo: webRedirectTo() },
   })
+}
+
+async function sha256Hex(input: string): Promise<string> {
+  const buf = new TextEncoder().encode(input)
+  const hash = await crypto.subtle.digest('SHA-256', buf)
+  return Array.from(new Uint8Array(hash), (b) => b.toString(16).padStart(2, '0')).join('')
 }
 
 export async function signInWithGoogle() {

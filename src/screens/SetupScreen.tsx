@@ -1399,6 +1399,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
         onClose={() => setPremiumTrigger(null)}
         trigger={premiumTrigger}
         isSignedIn={!!state.userId}
+        isPremium={state.tier === 'premium'}
         onSignInRequired={onSignIn}
       />
 

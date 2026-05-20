@@ -529,17 +529,12 @@ function defaultTargets(state: BrewmieState): BrewTargets {
   if (rated.length >= 2) {
     const sorted = [...rated].sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
     const top = sorted.slice(0, Math.max(2, Math.ceil(sorted.length / 2)))
-    const mGrind  = median(top.map((s) => s.inputGrind))
-    const mDose   = median(top.map((s) => s.inputDose))
-    const mVol    = median(top.map((s) => s.actualVolume as number))
-    const mTime   = median(top.map((s) => s.actualTime as number))
+    const mGrind = median(top.map((s) => s.inputGrind))
+    const mVol   = median(top.map((s) => s.actualVolume as number))
+    const mTime  = median(top.map((s) => s.actualTime as number))
     if (Number.isFinite(mGrind)) grind = Math.round(mGrind * 2) / 2
     if (Number.isFinite(mVol))   volume = Math.round(mVol * 10) / 10
     if (Number.isFinite(mTime))  time = Math.round(mTime * 10) / 10
-    // dose only overrides if it's actually different from the basket
-    if (Number.isFinite(mDose) && Math.abs(mDose - dose) > 0.4) {
-      // not returned — keep dose tied to basket size
-    }
   }
 
   // Cold-machine warmup: if the gap since the last shot is > 6h, the group head
@@ -587,32 +582,59 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
   const [premiumTrigger, setPremiumTrigger] = useState<'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | null>(null)
 
-  // ── Derived defaults from state. Persisted to localStorage so the user's
-  // in-progress recipe survives tab switches (the screen unmounts) and full
-  // reloads. Falls back to defaultTargets(state) when storage is empty or
-  // contains a different shape.
-  const TARGETS_KEY = 'brewmie_active_targets_v1'
+  // ── Derived defaults from state. Persisted to localStorage keyed by the
+  // active bag (brand + roast date) so switching beans falls back to fresh
+  // defaults rather than carrying yesterday's recipe over. On reopen we also
+  // re-apply the cold-machine nudge if it's been >6h since the last shot —
+  // the persisted target shouldn't pin a stale "warm" time across overnight
+  // gaps. Tab switches inside one session are unaffected.
+  const TARGETS_KEY = useMemo(() => {
+    const b = state.beans
+    const tag = b ? `${(b.brand ?? '').trim().toLowerCase()}|${b.roastDate ?? ''}|${b.roastLevel}` : 'none'
+    return `brewmie_active_targets_v2:${tag}`
+  }, [state.beans?.brand, state.beans?.roastDate, state.beans?.roastLevel])
+
   const initTargets = useCallback((): BrewTargets => {
+    const seed = defaultTargets(state)
     try {
       const raw = localStorage.getItem(TARGETS_KEY)
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<BrewTargets>
-        const seed = defaultTargets(state)
-        return {
+        const merged: BrewTargets = {
           grind:  Number.isFinite(parsed.grind  as number) ? parsed.grind  as number : seed.grind,
           dose:   Number.isFinite(parsed.dose   as number) ? parsed.dose   as number : seed.dose,
           tamp:   Number.isFinite(parsed.tamp   as number) ? parsed.tamp   as number : seed.tamp,
           volume: Number.isFinite(parsed.volume as number) ? parsed.volume as number : seed.volume,
           time:   Number.isFinite(parsed.time   as number) ? parsed.time   as number : seed.time,
         }
+        // Cold-machine reopen nudge: only apply if defaults wanted it AND the
+        // stored time matches the warm baseline. We don't blindly +1s on every
+        // reopen — the user may have deliberately set a longer target.
+        const lastShot = state.shots[0]
+        if (lastShot) {
+          const gapHours = (Date.now() - new Date(lastShot.timestamp).getTime()) / 3600000
+          const warmBaseline = seed.time - 1
+          if (gapHours > 6 && Math.abs(merged.time - warmBaseline) < 0.05) {
+            merged.time = Math.round((merged.time + 1) * 10) / 10
+          }
+        }
+        return merged
       }
     } catch {}
-    return defaultTargets(state)
-  }, [])
+    return seed
+  }, [TARGETS_KEY])
+
   const [targets, setTargets] = useState<BrewTargets>(initTargets)
+  // Re-seed when bag identity changes mid-session (Setup screen edits beans).
+  // The dependency on TARGETS_KEY ensures we pick up the new bag's stored
+  // targets, or fall back to roast-aware defaults if this bag is new.
+  useEffect(() => {
+    setTargets(initTargets())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [TARGETS_KEY])
   useEffect(() => {
     try { localStorage.setItem(TARGETS_KEY, JSON.stringify(targets)) } catch {}
-  }, [targets])
+  }, [targets, TARGETS_KEY])
 
   // ── Phase
   const [phase, setPhase] = useState<BrewPhase>('idle')
@@ -1624,6 +1646,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
         onClose={() => setPremiumTrigger(null)}
         trigger={premiumTrigger}
         isSignedIn={!!state.userId}
+        isPremium={state.tier === 'premium'}
         onSignInRequired={onSignIn}
       />
 

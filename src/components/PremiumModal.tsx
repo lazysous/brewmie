@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import { useTranslation } from '../hooks/useTranslation'
@@ -22,17 +22,28 @@ interface PremiumModalProps {
   // longer shown to the user — restating "you tapped grinder" was redundant.
   trigger?: 'grinder' | 'tamper' | 'beans' | 'history' | 'benchmarks' | 'export' | null
   isSignedIn?: boolean
+  // Live tier from app state. Used to confirm ownership after a purchase: we
+  // wait for tier to flip to 'premium' (from the verified() receipt callback
+  // in initIAP) before closing. Without this, the modal would close on
+  // store.order() resolution, leaving a window where the user was charged
+  // but verification hadn't completed yet.
+  isPremium?: boolean
   // Still accepted for API compatibility, but PremiumModal no longer opens
   // AuthModal on signed-out taps. Native goes straight to the platform
   // provider; web shows a store-only message.
   onSignInRequired?: () => void
 }
 
-export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: PremiumModalProps) {
+export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPremium = false }: PremiumModalProps) {
   const { t } = useTranslation()
   const [signingIn, setSigningIn] = useState(false)
   const [purchasing, setPurchasing] = useState(false)
+  const [verifying, setVerifying] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Mirror isPremium into a ref so the verification polling sees fresh values
+  // without each tick capturing a stale closure of the prop.
+  const isPremiumRef = useRef(isPremium)
+  useEffect(() => { isPremiumRef.current = isPremium }, [isPremium])
 
   useEffect(() => {
     if (open) {
@@ -100,19 +111,49 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
       }
       // Native: open the platform store sheet. Ownership propagation happens
       // through the verified() callback wired in App.tsx (initIAP), which
-      // sets state.tier=premium and persists to Supabase. We don't need to
-      // dispatch anything here — just close once the user confirms.
+      // sets state.tier=premium and persists to Supabase. We do NOT close on
+      // the order() resolution alone — that's just "order placed", not
+      // "receipt verified". Instead we flip to a verifying state and wait
+      // for the isPremium prop to land (with a 20s timeout for safety).
       const result = await purchasePremium()
-      if (result.ok) {
+      if (result.cancelled) {
+        return
+      }
+      if (!result.ok) {
+        setError(result.message ?? t('premium.purchaseUnavailable'))
+        return
+      }
+      // Order placed — wait for the verified receipt to flip tier in state.
+      setVerifying(true)
+      const verified = await waitForPremium(20000)
+      if (verified) {
         track('premium_purchased', { product: 'brewmie_only', platform: PLATFORM })
         onClose()
-      } else if (!result.cancelled) {
-        setError(result.message ?? t('premium.purchaseUnavailable'))
+      } else {
+        // Timed out. The receipt may still verify in the background and the
+        // app will reflect premium on next launch (initIAP re-checks
+        // ownership), but surface the wait so the user isn't left wondering.
+        setError(t('premium.verifyTimeout'))
       }
-      // Cancellation: stay on the modal silently.
     } finally {
       setPurchasing(false)
+      setVerifying(false)
     }
+  }
+
+  // Polls the isPremium prop (driven by Supabase tier + IAP verified callback).
+  // Resolves true if it lands within timeoutMs, false otherwise.
+  function waitForPremium(timeoutMs: number): Promise<boolean> {
+    if (isPremium) return Promise.resolve(true)
+    return new Promise((resolve) => {
+      const start = Date.now()
+      const tick = () => {
+        if (isPremiumRef.current) return resolve(true)
+        if (Date.now() - start >= timeoutMs) return resolve(false)
+        setTimeout(tick, 250)
+      }
+      tick()
+    })
   }
 
   // ── Body branches ──
@@ -192,9 +233,11 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true }: Prem
             </span>
           </button>
         ) : (
-          <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing}>
-            <span className="pm-btn__label">{t('premium.cta')}</span>
-            <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>
+          <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
+            <span className="pm-btn__label">
+              {verifying ? t('premium.verifying') : t('premium.cta')}
+            </span>
+            {!verifying && <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>}
           </button>
         )}
 

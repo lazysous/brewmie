@@ -813,6 +813,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         onClose={() => setPremiumTrigger(null)}
         trigger={premiumTrigger}
         isSignedIn={!!state.userId}
+        isPremium={state.tier === 'premium'}
         onSignInRequired={onSignIn}
       />
 

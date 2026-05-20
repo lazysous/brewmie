@@ -25,21 +25,27 @@ const NATIVE_PLATFORM: 'ios' | 'android' | 'web' = Capacitor.isNativePlatform()
   ? (Capacitor.getPlatform() === 'android' ? 'android' : 'ios')
   : 'web'
 
-async function startSignIn(): Promise<boolean> {
+async function startSignIn(): Promise<{ ok: boolean; error?: string }> {
   try {
-    if (NATIVE_PLATFORM === 'ios') {
-      await signInWithApple()
-      return true
-    }
-    if (NATIVE_PLATFORM === 'android') {
-      await signInWithGoogle()
-      return true
-    }
-  } catch {
-    // Native plugin unavailable, capability missing, or user cancelled.
-    // Caller should fall back to the AuthModal for the OAuth web flow.
+    const result = NATIVE_PLATFORM === 'ios'
+      ? await signInWithApple()
+      : NATIVE_PLATFORM === 'android'
+        ? await signInWithGoogle()
+        : null
+    if (!result) return { ok: false }
+    // signInWithIdToken returns { data: { user, session }, error }. The auth
+    // state listener in App will dispatch SET_USER as soon as a session
+    // exists; until then we treat the absence of a session as failure and
+    // surface the provider error so the user isn't stuck on a dead button.
+    const r = result as { data?: { user?: { id?: string } | null }; error?: { message?: string } | null }
+    if (r.error) return { ok: false, error: r.error.message }
+    if (!r.data?.user?.id) return { ok: false, error: 'Sign in did not return a session.' }
+    return { ok: true }
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    if (/cancel/i.test(msg)) return { ok: false }   // user cancelled — silent
+    return { ok: false, error: msg }
   }
-  return false
 }
 
 interface WeatherData { temp: number; humidity: number }
@@ -54,12 +60,17 @@ export function App() {
   // to Google. No interstitial modal. If the native plugin throws (capability
   // not wired or user cancels), silent — the OS already showed any error.
   // Web is the only path that opens the multi-provider AuthModal.
+  const [signInError, setSignInError] = useState<string | null>(null)
   async function handleSignInClick() {
+    setSignInError(null)
     if (NATIVE_PLATFORM === 'web') {
       setShowAuthModal(true)
       return
     }
-    await startSignIn()
+    const result = await startSignIn()
+    if (!result.ok && result.error) {
+      setSignInError(result.error)
+    }
   }
   const [algoParams, setAlgoParams] = useState<AlgoParams | null>(() => loadAlgoParams())
 
@@ -207,6 +218,30 @@ export function App() {
       />
       <ConsentBanner />
       <DevTierPill />
+      {signInError && (
+        <div
+          role="alert"
+          onClick={() => setSignInError(null)}
+          style={{
+            position: 'fixed',
+            top: 'calc(env(safe-area-inset-top) + 64px)',
+            left: 16,
+            right: 16,
+            zIndex: 9998,
+            padding: '12px 14px',
+            background: '#8B1A1A',
+            color: '#fff',
+            borderRadius: 12,
+            boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+            fontSize: 13,
+            lineHeight: 1.4,
+            cursor: 'pointer',
+          }}
+        >
+          <strong style={{ display: 'block', marginBottom: 4 }}>Sign in failed</strong>
+          {signInError}
+        </div>
+      )}
     </div>
   )
 }

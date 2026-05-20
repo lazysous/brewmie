@@ -222,16 +222,19 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
             </div>
           </div>
         ) : !isSignedIn ? (
-          <button
-            className="pm-btn pm-btn--primary"
-            onClick={handleNativeSignIn}
-            type="button"
-            disabled={signingIn}
-          >
-            <span className="pm-btn__label">
-              {PLATFORM === 'ios' ? t('premium.signInApple') : t('premium.signInGoogle')}
-            </span>
-          </button>
+          <>
+            <button
+              className={`pm-btn pm-btn--${PLATFORM === 'ios' ? 'apple' : 'google'}`}
+              onClick={handleNativeSignIn}
+              type="button"
+              disabled={signingIn}
+            >
+              <span className="pm-btn__label">
+                {PLATFORM === 'ios' ? t('premium.signInApple') : t('premium.signInGoogle')}
+              </span>
+            </button>
+            <p className="pm-explainer">{t('premium.signInExplainer')}</p>
+          </>
         ) : (
           <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
             <span className="pm-btn__label">
@@ -386,6 +389,30 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           background: var(--accent-green);
           color: #fff;
           box-shadow: 0 6px 14px rgba(107, 142, 92, 0.22);
+        }
+        /* Apple HIG-compliant Sign in with Apple — solid black, white text,
+           system font. Label may not be modified. */
+        .pm-btn--apple {
+          background: #000;
+          color: #fff;
+          border: 1px solid #000;
+          justify-content: center;
+          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+        }
+        /* Google brand spec — white background, neutral text, #dadce0 border. */
+        .pm-btn--google {
+          background: #fff;
+          color: #3c4043;
+          border: 1px solid #dadce0;
+          justify-content: center;
+          font-family: 'Roboto', Arial, sans-serif;
+        }
+        .pm-explainer {
+          font-size: 12px;
+          color: var(--text-tertiary);
+          line-height: 1.4;
+          margin: 10px 2px 0;
+          text-align: center;
         }
         .pm-btn__label {
           font-size: 15px;

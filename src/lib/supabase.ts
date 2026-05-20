@@ -53,15 +53,26 @@ export async function getCurrentUser() {
 export async function signInWithApple() {
   if (await isNative()) {
     const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
+    // Generate a single nonce and use the SAME value on both sides:
+    //  1. Pass to Apple → Apple bakes it into the ID token's nonce claim.
+    //  2. Pass to Supabase → Supabase verifies the JWT's nonce against this.
+    // Without matching nonces Supabase rejects the token and the user appears
+    // stuck on the sign-in button.
+    const nonce = generateNonce()
     const result = await SignInWithApple.authorize({
       clientId: 'app.brewmie.brewmie',
       redirectURI: SUPABASE_URL + '/auth/v1/callback',
       scopes: 'email name',
-      nonce: Math.random().toString(36).slice(2),
+      nonce,
     })
+    const token = result.response?.identityToken
+    if (!token) {
+      return { data: { user: null, session: null }, error: { message: 'Apple did not return an identity token.' } }
+    }
     return supabase.auth.signInWithIdToken({
       provider: 'apple',
-      token: result.response.identityToken,
+      token,
+      nonce,
     })
   }
   return supabase.auth.signInWithOAuth({
@@ -74,15 +85,26 @@ export async function signInWithGoogle() {
   if (await isNative()) {
     const { GoogleAuth } = await import('@codetrix-studio/capacitor-google-auth')
     const user = await GoogleAuth.signIn()
+    const token = user?.authentication?.idToken
+    if (!token) {
+      return { data: { user: null, session: null }, error: { message: 'Google did not return an ID token.' } }
+    }
     return supabase.auth.signInWithIdToken({
       provider: 'google',
-      token: user.authentication.idToken,
+      token,
     })
   }
   return supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: webRedirectTo() },
   })
+}
+
+function generateNonce(): string {
+  // 32-byte URL-safe random string.
+  const bytes = new Uint8Array(32)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
 }
 
 export async function signInWithMeta() {

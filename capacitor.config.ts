@@ -21,9 +21,15 @@ const config: CapacitorConfig = {
   },
   plugins: {
     GoogleAuth: {
-      // serverClientId = Web client (Supabase verifies ID tokens against this).
-      // iosClientId = iOS-native OAuth client (drives the native sheet).
+      // The Android side of @codetrix-studio/capacitor-google-auth reads
+      // `clientId` (NOT `serverClientId`) when building the ID-token request.
+      // Without it the plugin falls back to R.string.server_client_id which
+      // we don't define, and Google returns DEVELOPER_ERROR (code 10).
+      // clientId/serverClientId both point at the Web client so the audience
+      // matches what Supabase expects to verify.
+      // iosClientId drives the native Apple-style sheet on iOS.
       scopes: ['email', 'profile'],
+      clientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
       iosClientId: '451962407650-tlvmc7fh70vr8peb7p0c445p1lfuv562.apps.googleusercontent.com',
       serverClientId: '451962407650-pdgbmlp6kevujrlqr433spr0t3u1mrts.apps.googleusercontent.com',
       forceCodeForRefreshToken: false,

@@ -137,8 +137,17 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
     : insightsCopy(state, t)
 
   const handleSignOut = async () => {
+    // Confirm so an accidental tap on the avatar pill doesn't drop the user
+    // out of their account silently. Using window.confirm keeps the flow
+    // native on web; on iOS / Android WebView it renders as a system dialog.
+    const name = state.displayName ?? null
+    const msg = name
+      ? t('header.signOutConfirm', { name })
+      : t('header.signOutConfirmNoName')
+    if (!window.confirm(msg)) return
     await signOut()
     dispatch({ type: 'SET_USER', payload: null })
+    dispatch({ type: 'SET_DISPLAY_NAME', payload: null })
   }
 
   return (

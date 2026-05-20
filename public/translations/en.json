@@ -17,6 +17,8 @@
   "header": {
     "signIn": "Sign in",
     "signOut": "Sign out",
+    "signOutConfirm": "Sign out as {name}?",
+    "signOutConfirmNoName": "Sign out of Brewmie?",
     "byLazySous": "by Lazy Sous",
     "logoAlt": "Brewmie",
     "home": "Home"

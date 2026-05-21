@@ -187,9 +187,15 @@ export function AuthModal({ open, onClose, dispatch, nicknameForUser }: AuthModa
           position: relative;
           background: linear-gradient(180deg, #FBF8F1 0%, var(--cream) 100%);
           border-radius: 24px 24px 0 0;
-          padding: 12px 24px 32px;
+          padding: 12px 24px max(32px, env(safe-area-inset-bottom));
           width: 100%;
           max-width: 428px;
+          /* Cap to the visible viewport so the submit button stays above the
+             iOS keyboard + QuickType bar (which native-resize subtracts from
+             the WebView). Sheet content scrolls if it would otherwise be
+             clipped on short devices. */
+          max-height: 100dvh;
+          overflow-y: auto;
           animation: slideUp 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both;
           box-shadow: 0 -10px 40px rgba(60, 40, 20, 0.18);
         }

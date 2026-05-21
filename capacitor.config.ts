@@ -35,12 +35,22 @@ const config: CapacitorConfig = {
       forceCodeForRefreshToken: false,
     },
     CapacitorUpdater: {
-      // OTA bundle delivery. Worker checks the device's installed version on
-      // launch + every ~1h and serves the latest if newer. No App Store
-      // resubmission required for JS/CSS/asset changes.
+      // OTA enabled. The worker (ota/worker.js) is currently in "dark" mode
+      // (OTA_ENABLED=false in the Worker), so every device gets a
+      // no_new_version_available response. Flip that constant + redeploy the
+      // Worker when ready to ship a real bundle. autoUpdate=true here just
+      // means the plugin will poll; the Worker decides whether anything
+      // actually gets downloaded.
       autoUpdate: true,
       statsUrl: '',
       updateUrl: 'https://brewmie-ota.richbwilliamson.workers.dev',
+    },
+    Keyboard: {
+      // Native resize: WebView is shrunk to exclude BOTH the keyboard and the
+      // QuickType / autofill accessory bar, so bottom-sheet submit buttons
+      // stay visible above the iOS text-tool overlays.
+      resize: 'native',
+      resizeOnFullScreen: true,
     },
   },
 }

@@ -12,7 +12,7 @@ import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
 import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, setTier as persistTier, signInWithApple, signInWithGoogle } from './lib/supabase'
 import { initIAP } from './lib/iap'
-import { notifyAppReady, requestAppTrackingPermission } from './lib/native'
+import { notifyAppReady } from './lib/native'
 import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
@@ -94,9 +94,11 @@ export function App() {
     // Tell the Capacitor Updater the app loaded cleanly so it doesn't roll
     // back the latest OTA bundle.
     notifyAppReady()
-    // Ask once on iOS — required by Apple before any analytics SDK runs.
-    // No-op on web/Android. Result is system-cached; we don't re-prompt.
-    requestAppTrackingPermission().catch(() => {})
+    // No ATT call: Brewmie doesn't use IDFA or any tracking SDK, so the
+    // NSUserTrackingUsageDescription key was removed. Calling
+    // ATTrackingManager.requestTrackingAuthorization without that key
+    // crashes the app on launch (Apple enforces this). If we ever add a
+    // tracking SDK we need to put the key back AND uncomment this call.
     track('app_open')
     // Boot the IAP store. On native this loads the Premium product and wires
     // verified-receipt callbacks; on web it's a no-op. When the store reports

@@ -74,7 +74,7 @@ mkdir -p "$BUILD_DIR"
 
 info "Archiving (Release)..."
 xcodebuild \
-    -project "$PROJECT" \
+    -workspace "$IOS_DIR/App.xcworkspace" \
     -scheme "$SCHEME" \
     -configuration Release \
     -sdk iphoneos \
@@ -83,7 +83,7 @@ xcodebuild \
     -allowProvisioningUpdates \
     archive | xcbeautify --quiet 2>/dev/null || \
 xcodebuild \
-    -project "$PROJECT" \
+    -workspace "$IOS_DIR/App.xcworkspace" \
     -scheme "$SCHEME" \
     -configuration Release \
     -sdk iphoneos \

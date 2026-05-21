@@ -69,6 +69,13 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
       return { ...state, displayName: action.payload }
 
     case 'SET_TIER':
+      // Premium is a one-way trip. Two effects race on launch — the IAP
+      // restore callback dispatches SET_TIER:premium when the store reports
+      // ownership, and fetchTier(uid) from Supabase dispatches the persisted
+      // value. If Supabase hasn't been updated yet (e.g. the previous
+      // purchase finished after the user backgrounded the app), the
+      // Supabase path would otherwise overwrite premium back to free.
+      if (state.tier === 'premium' && action.payload === 'free') return state
       return { ...state, tier: action.payload }
 
     case 'HYDRATE':

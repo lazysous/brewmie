@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _auth import asc_request, APP_ID
 
-IAP_ID = "<FILL_AFTER_IAP_CREATED>"
+IAP_ID = "6770476770"  # brewmie_premium_lifetime — matches _auth.IAP_PRODUCT_INTERNAL_ID
 IMAGE_PATH = "/Users/williamson/Desktop/brewmie-iap-promo.png"
 
 

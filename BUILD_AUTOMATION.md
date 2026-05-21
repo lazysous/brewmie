@@ -128,40 +128,45 @@ First-time setup:
 
 ---
 
-## 4. Capgo (OTA)
+## 4. OTA (Cloudflare Worker + Pages)
 
-Brewmie pushes JS-only updates through Capgo, not the Lazy-Sous-style
-Cloudflare Pages zip pipeline. The endpoint is configured in
-`capacitor.config.ts` to point at the Brewmie Worker.
+Brewmie ships its own OTA pipeline — no Capgo account. `@capgo/capacitor-updater`
+is the plugin, but it talks to our own Worker, not Capgo's SaaS.
 
-Setup is intentionally light:
+Two moving pieces:
 
-1. Sign in at https://capgo.app with the same GitHub account.
-2. Create an app with bundle id `app.brewmie.brewmie`.
-3. Generate an API key and save it locally:
+- **`ota/worker.js`** — Cloudflare Worker at
+  `https://brewmie-ota.richbwilliamson.workers.dev`. Devices POST their
+  version; the worker either returns `no_new_version_available` or a URL
+  to a new bundle. Three constants control behaviour:
+  `OTA_ENABLED` (kill switch), `LATEST_VERSION`, `LATEST_URL`.
+- **`brewmie.app/ota/builds/<version>.zip`** — the actual bundle, served
+  from the Cloudflare Pages project `brewmie`.
 
-```bash
-mkdir -p ~/.brewmie
-cat > ~/.brewmie/capgo.env <<EOF
-CAPGO_API_KEY=...
-EOF
-chmod 600 ~/.brewmie/capgo.env
-```
+The bundled `autoUpdate` flag in `capacitor.config.ts` is what causes the
+plugin to poll. iOS v1.0 (build 5 and earlier) ships with `autoUpdate=false`
+and ignores the worker entirely; from v1.0.1 onward it's `true`. Android
+v1.0 (versionCode 3) is built with `autoUpdate=true`.
 
-4. Wire up `scripts/ota_push.sh` once the Capgo CLI is installed:
-
-```bash
-npm install --save-dev @capgo/cli
-```
-
-Day-to-day push (interim, until `ota_push.sh` is filled in):
+Day-to-day push:
 
 ```bash
-npm run build
-npx @capgo/cli bundle upload --channel production
+scripts/ota_push.sh 1.0.2     # builds, zips, deploys Pages + Worker, smoke tests
 ```
 
-Capgo delivers to clients in ~60s.
+That script is the source of truth. Steps inside it:
+1. `npm run build`
+2. zip `dist/` -> `ota/builds/<v>.zip` (excludes nested `ota/`)
+3. copy zip to `dist/ota/builds/<v>.zip` so Pages serves it
+4. `wrangler pages deploy dist --project-name brewmie --branch main`
+5. rewrite `OTA_ENABLED=true`, `LATEST_VERSION`, `LATEST_URL` in `ota/worker.js`
+6. `wrangler deploy ota/worker.js --name brewmie-ota`
+7. POST both `1.0` and `<v>` to the worker to verify behaviour
+
+Worker dark mode: set `OTA_ENABLED=false` in `ota/worker.js` + redeploy if
+you need to immediately kill all OTA distribution (e.g. a bad bundle slipped
+through). All devices then get `no_new_version_available` regardless of
+their reported version.
 
 ---
 

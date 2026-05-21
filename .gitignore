@@ -33,3 +33,4 @@ pnpm-debug.log*
 # Type checking cache
 *.tsbuildinfo
 store-pipeline/__pycache__/
+ota/builds/

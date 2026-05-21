@@ -42,9 +42,9 @@ export default {
     // OTA_ENABLED=false serves "no_new_version_available" to all devices,
     // regardless of what they report. This is the safe default — flip to
     // true only when LATEST_URL points at a verified-good bundle ZIP.
-    const OTA_ENABLED = false
-    const LATEST_VERSION = '0.1.0'
-    const LATEST_URL = 'https://brewmie.app/ota/builds/0.1.0.zip'
+    const OTA_ENABLED = true
+    const LATEST_VERSION = '1.0.1'
+    const LATEST_URL = 'https://brewmie.app/ota/builds/1.0.1.zip'
 
     if (!OTA_ENABLED || deviceVersion === LATEST_VERSION) {
       return new Response(JSON.stringify({

@@ -39,6 +39,12 @@ function loadGtag() {
     // Don't auto-track page views — we'll fire screen events explicitly so
     // SPA tab changes register as separate "screens".
     send_page_view: false,
+    // Hard-disable the only GA4 features that would constitute "tracking"
+    // under Apple's definition: Google Signals (links analytics with Google's
+    // cross-site ad profile) and ad-personalization signals. With these off,
+    // GA4 is purely first-party aggregate analytics — no ATT prompt needed.
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
   })
   loaded = true
 }

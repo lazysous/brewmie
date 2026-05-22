@@ -5,7 +5,7 @@ import { useTranslation } from '../hooks/useTranslation'
 import { setTierOverride } from '../hooks/useTier'
 import { track } from '../lib/analytics'
 import { signInWithApple, signInWithGoogle } from '../lib/supabase'
-import { purchasePremium } from '../lib/iap'
+import { purchasePremium, restorePurchases } from '../lib/iap'
 
 // Platform detection — read once at module load so render is sync.
 const NATIVE = Capacitor.isNativePlatform()
@@ -39,6 +39,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   const [signingIn, setSigningIn] = useState(false)
   const [purchasing, setPurchasing] = useState(false)
   const [verifying, setVerifying] = useState(false)
+  const [restoring, setRestoring] = useState(false)
   const [error, setError] = useState<string | null>(null)
   // Mirror isPremium into a ref so the verification polling sees fresh values
   // without each tick capturing a stale closure of the prop.
@@ -138,6 +139,34 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
     } finally {
       setPurchasing(false)
       setVerifying(false)
+    }
+  }
+
+  // Apple guideline 3.1.1 requires a distinct, user-initiated "Restore
+  // Purchases" control. restorePurchases() asks StoreKit / Play Billing to
+  // re-deliver any prior receipts; ownership then flows through the same
+  // verified() callback as a fresh purchase.
+  const handleRestore = async () => {
+    track('premium_restore_click', { platform: PLATFORM })
+    setRestoring(true)
+    setError(null)
+    try {
+      if (PLATFORM === 'web') {
+        setError(t('premium.purchaseUnavailable'))
+        return
+      }
+      await restorePurchases()
+      const restored = await waitForPremium(8000)
+      if (restored) {
+        track('premium_restored', { platform: PLATFORM })
+        onClose()
+      } else {
+        setError(t('premium.restoreNothingFound'))
+      }
+    } catch {
+      setError(t('premium.restoreFailed'))
+    } finally {
+      setRestoring(false)
     }
   }
 
@@ -246,6 +275,17 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
 
         {error && (
           <p className="pm-error" role="alert">{error}</p>
+        )}
+
+        {!webAppOnly && (
+          <button
+            className="pm-restore"
+            type="button"
+            onClick={handleRestore}
+            disabled={restoring || purchasing || verifying}
+          >
+            {restoring ? t('premium.restoring') : t('premium.restore')}
+          </button>
         )}
 
         {isDev && (
@@ -489,6 +529,21 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           margin: 12px 0 0;
           line-height: 1.4;
         }
+        .pm-restore {
+          display: block;
+          width: 100%;
+          margin: 14px 0 0;
+          padding: 12px;
+          background: transparent;
+          border: none;
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--copper);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pm-restore:active { opacity: 0.6; }
+        .pm-restore:disabled { opacity: 0.4; cursor: default; }
       `}</style>
     </div>,
     document.body

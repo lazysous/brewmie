@@ -1,7 +1,8 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import type { AppTab, BrewmieState, AppAction } from '../types'
-import { signOut } from '../lib/supabase'
+import { signOut, deleteUserAccount } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
 
@@ -136,18 +137,41 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
     : activeTab === 'setup' ? setupCopy(state, t)
     : insightsCopy(state, t)
 
+  // Account sheet: tapping the profile avatar opens a small dialog with
+  // Sign out + Delete account. Apple guideline 5.1.1(v) requires account
+  // deletion to be reachable; surfacing it on the profile button (not buried
+  // in a collapsible Settings card) makes it unmissable.
+  const [accountOpen, setAccountOpen] = React.useState(false)
+  const [confirmDelete, setConfirmDelete] = React.useState(false)
+  const [deleteBusy, setDeleteBusy] = React.useState(false)
+  const [deleteError, setDeleteError] = React.useState<string | null>(null)
+
+  const closeAccount = () => {
+    setAccountOpen(false)
+    setConfirmDelete(false)
+    setDeleteBusy(false)
+    setDeleteError(null)
+  }
+
   const handleSignOut = async () => {
-    // Confirm so an accidental tap on the avatar pill doesn't drop the user
-    // out of their account silently. Using window.confirm keeps the flow
-    // native on web; on iOS / Android WebView it renders as a system dialog.
-    const name = state.displayName ?? null
-    const msg = name
-      ? t('header.signOutConfirm', { name })
-      : t('header.signOutConfirmNoName')
-    if (!window.confirm(msg)) return
+    closeAccount()
     await signOut()
     dispatch({ type: 'SET_USER', payload: null })
     dispatch({ type: 'SET_DISPLAY_NAME', payload: null })
+  }
+
+  const handleDeleteAccount = async () => {
+    setDeleteBusy(true)
+    setDeleteError(null)
+    const res = await deleteUserAccount()
+    if (res.ok) {
+      closeAccount()
+      dispatch({ type: 'SET_USER', payload: null })
+      dispatch({ type: 'SET_DISPLAY_NAME', payload: null })
+    } else {
+      setDeleteBusy(false)
+      setDeleteError(res.error || t('setup.deleteAccountFailed'))
+    }
   }
 
   return (
@@ -172,8 +196,8 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           {state.userId ? (
             <button
               className="hero__profile hero__profile--signed-in"
-              onClick={handleSignOut}
-              aria-label={t('header.signOut')}
+              onClick={() => setAccountOpen(true)}
+              aria-label={t('header.account')}
               title={state.displayName ?? ''}
               type="button"
             >
@@ -219,6 +243,72 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
       )}
 
       <div className="hero__rule" aria-hidden="true" />
+
+      {accountOpen && createPortal(
+        <div
+          className="acct-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('header.account')}
+          onClick={deleteBusy ? undefined : closeAccount}
+        >
+          <div className="acct-sheet" onClick={(e) => e.stopPropagation()}>
+            <div className="acct-handle" aria-hidden="true" />
+            {!confirmDelete ? (
+              <>
+                <h2 className="acct-title">{t('header.account')}</h2>
+                {state.displayName && (
+                  <p className="acct-sub">{state.displayName}</p>
+                )}
+                <button
+                  className="acct-btn"
+                  type="button"
+                  onClick={handleSignOut}
+                >
+                  {t('header.signOut')}
+                </button>
+                <button
+                  className="acct-btn acct-btn--danger"
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                >
+                  {t('setup.deleteAccount')}
+                </button>
+                <button
+                  className="acct-btn acct-btn--ghost"
+                  type="button"
+                  onClick={closeAccount}
+                >
+                  {t('common.cancel')}
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="acct-title">{t('setup.deleteAccountTitle')}</h2>
+                <p className="acct-sub acct-sub--warn">{t('setup.deleteAccountWarning')}</p>
+                {deleteError && <p className="acct-error">{deleteError}</p>}
+                <button
+                  className="acct-btn acct-btn--danger"
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  disabled={deleteBusy}
+                >
+                  {deleteBusy ? t('setup.deleteAccountBusy') : t('setup.deleteAccountConfirm')}
+                </button>
+                <button
+                  className="acct-btn acct-btn--ghost"
+                  type="button"
+                  onClick={() => { setConfirmDelete(false); setDeleteError(null) }}
+                  disabled={deleteBusy}
+                >
+                  {t('setup.deleteAccountCancel')}
+                </button>
+              </>
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
 
       <style>{`
         .hero {
@@ -443,6 +533,72 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
           .hero__big { font-size: clamp(22px, 4vh, 30px); }
           .hero__big-rest { font-size: clamp(18px, 3.4vh, 26px); }
         }
+
+        /* Account sheet (profile button -> Sign out / Delete account) */
+        .acct-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 300;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+        }
+        .acct-sheet {
+          background: var(--cream);
+          border-radius: 24px 24px 0 0;
+          padding: 12px 24px max(28px, env(safe-area-inset-bottom));
+          width: 100%;
+          max-width: 460px;
+          animation: acctUp 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        @keyframes acctUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .acct-handle {
+          width: 36px; height: 4px;
+          background: var(--border);
+          border-radius: 9999px;
+          margin: 0 auto 18px;
+        }
+        .acct-title {
+          font-family: var(--font-brand);
+          font-size: 22px;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0 0 4px;
+        }
+        .acct-sub {
+          font-size: 14px;
+          color: var(--text-tertiary);
+          margin: 0 0 16px;
+        }
+        .acct-sub--warn { color: var(--text-medium); line-height: 1.45; }
+        .acct-error {
+          font-size: 13px;
+          color: #8B1A1A;
+          background: rgba(139,26,26,0.07);
+          padding: 10px 14px;
+          border-radius: 10px;
+          margin: 0 0 12px;
+        }
+        .acct-btn {
+          display: block;
+          width: 100%;
+          height: 52px;
+          border: none;
+          border-radius: 14px;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.2px;
+          cursor: pointer;
+          margin-top: 10px;
+          background: var(--off-white);
+          color: var(--text-primary);
+          -webkit-tap-highlight-color: transparent;
+        }
+        .acct-btn:active { transform: scale(0.98); }
+        .acct-btn:disabled { opacity: 0.5; }
+        .acct-btn--danger { background: #8B1A1A; color: #fff; }
+        .acct-btn--ghost { background: transparent; color: var(--text-tertiary); font-weight: 600; }
       `}</style>
     </header>
   )

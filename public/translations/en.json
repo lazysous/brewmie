@@ -21,7 +21,8 @@
     "signOutConfirmNoName": "Sign out of Brewmie?",
     "byLazySous": "by Lazy Sous",
     "logoAlt": "Brewmie",
-    "home": "Home"
+    "home": "Home",
+    "account": "Account"
   },
   "subheader": {
     "morning": "Morning. Pull a good one.",
@@ -282,7 +283,11 @@
     "storeAppleBig": "App Store",
     "storeGoogleSmall": "Get it on",
     "storeGoogleBig": "Google Play",
-    "devNote": "Dev: this unlocks via the override pill. Not a real purchase."
+    "devNote": "Dev: this unlocks via the override pill. Not a real purchase.",
+    "restore": "Restore Purchases",
+    "restoring": "Restoring…",
+    "restoreNothingFound": "No previous purchase found to restore.",
+    "restoreFailed": "Restore didn't complete. Please try again."
   },
   "tierLock": {
     "badge": "Premium",

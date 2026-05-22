@@ -34,6 +34,23 @@ VERSION="${1:?Usage: scripts/ota_push.sh <version>}"
     exit 2
 }
 
+# Refuse to push a bundle older than the shipping native binary. The bug
+# fixed on 2026-05-23: pushing OTA <native> means fresh installs (which
+# report the native marketing version on first poll) get told to "upgrade"
+# to an older bundle and end up running stale code. This guard is the
+# single most important rule: OTA bundles can only go FORWARD.
+NATIVE_VERSION=$(grep -m1 -oE 'MARKETING_VERSION = [0-9.]+' ios/App/App.xcodeproj/project.pbxproj | grep -oE '[0-9.]+')
+[ -n "$NATIVE_VERSION" ] || { echo "FAIL could not read MARKETING_VERSION from pbxproj" >&2; exit 2; }
+ver_lt() {  # ver_lt A B  -> true if A < B (semver-ish)
+    [ "$1" = "$2" ] && return 1
+    [ "$(printf '%s\n%s' "$1" "$2" | sort -V | head -1)" = "$1" ]
+}
+if ver_lt "$VERSION" "$NATIVE_VERSION"; then
+    echo "FAIL refusing to push OTA $VERSION while shipping native is $NATIVE_VERSION." >&2
+    echo "     OTA bundles can only go forward. Bump the version arg to >= $NATIVE_VERSION." >&2
+    exit 2
+fi
+
 ZIP_REL="ota/builds/${VERSION}.zip"
 ZIP_ABS="${REPO}/${ZIP_REL}"
 DIST_ZIP_REL="dist/ota/builds/${VERSION}.zip"
@@ -93,7 +110,7 @@ ok "worker.js patched"
 
 # 6) Deploy worker
 info "wrangler deploy worker"
-wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date +%Y-%m-%d)" > /tmp/brewmie-ota-worker.log 2>&1 || {
+wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date -u -v-1d +%Y-%m-%d)" > /tmp/brewmie-ota-worker.log 2>&1 || {
     echo "FAIL worker deploy, see /tmp/brewmie-ota-worker.log" >&2
     tail -10 /tmp/brewmie-ota-worker.log
     exit 1

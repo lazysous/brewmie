@@ -42,9 +42,12 @@ export default {
     // OTA_ENABLED=false serves "no_new_version_available" to all devices,
     // regardless of what they report. This is the safe default — flip to
     // true only when LATEST_URL points at a verified-good bundle ZIP.
+    // Dark while v1.0 is in App Store review — the 1.0.1 bundle predates the
+    // account-dialog + Restore Purchases code that ships in iOS build 8.
+    // Re-enable AFTER push a fresh bundle that matches the shipping native.
     const OTA_ENABLED = true
-    const LATEST_VERSION = '1.0.1'
-    const LATEST_URL = 'https://brewmie.app/ota/builds/1.0.1.zip'
+    const LATEST_VERSION = '1.0.2'
+    const LATEST_URL = 'https://brewmie.app/ota/builds/1.0.2.zip'
 
     if (!OTA_ENABLED || deviceVersion === LATEST_VERSION) {
       return new Response(JSON.stringify({

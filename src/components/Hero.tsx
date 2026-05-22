@@ -18,6 +18,7 @@ interface HeroProps {
   weather: { temp: number; humidity: number } | null
   onSignIn: () => void
   onHome: () => void
+  onOpenPremium: () => void
 }
 
 type T = (key: string, params?: TParams) => string
@@ -129,7 +130,7 @@ function insightsCopy(state: BrewmieState, t: T): HeroCopy {
   return { big, status, meta: null, accent: 'sage' }
 }
 
-export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: HeroProps) {
+export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, onOpenPremium }: HeroProps) {
   const { t } = useTranslation()
 
   const copy: HeroCopy =
@@ -259,6 +260,15 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
                 <h2 className="acct-title">{t('header.account')}</h2>
                 {state.displayName && (
                   <p className="acct-sub">{state.displayName}</p>
+                )}
+                {state.tier !== 'premium' && (
+                  <button
+                    className="acct-btn acct-btn--primary"
+                    type="button"
+                    onClick={() => { closeAccount(); onOpenPremium() }}
+                  >
+                    {t('header.getPremium')}
+                  </button>
                 )}
                 <button
                   className="acct-btn"
@@ -597,6 +607,7 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome }: 
         }
         .acct-btn:active { transform: scale(0.98); }
         .acct-btn:disabled { opacity: 0.5; }
+        .acct-btn--primary { background: var(--accent-green); color: #fff; }
         .acct-btn--danger { background: #8B1A1A; color: #fff; }
         .acct-btn--ghost { background: transparent; color: var(--text-tertiary); font-weight: 600; }
       `}</style>

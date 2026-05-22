@@ -7,6 +7,7 @@ import { GlobalShotCounter } from './components/GlobalShotCounter'
 import { AuthModal } from './components/AuthModal'
 import { ConsentBanner } from './components/ConsentBanner'
 import { DevTierPill } from './components/DevTierPill'
+import { PremiumModal } from './components/PremiumModal'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
@@ -61,6 +62,10 @@ export function App() {
   // not wired or user cancels), silent — the OS already showed any error.
   // Web is the only path that opens the multi-provider AuthModal.
   const [signInError, setSignInError] = useState<string | null>(null)
+  // App-level Premium modal opener for the Hero account dialog. Screen-level
+  // PremiumModals (SetupScreen / BrewScreen / InsightsScreen) still own their
+  // own state for in-context triggers (tap a Premium-badged row).
+  const [headerPremiumOpen, setHeaderPremiumOpen] = useState(false)
   async function handleSignInClick() {
     setSignInError(null)
     if (NATIVE_PLATFORM === 'web') {
@@ -206,6 +211,7 @@ export function App() {
         weather={weather}
         onSignIn={handleSignInClick}
         onHome={() => setActiveTab('brew')}
+        onOpenPremium={() => setHeaderPremiumOpen(true)}
       />
       <main className="screen-content" role="main">
         {renderScreen()}
@@ -217,6 +223,16 @@ export function App() {
         onClose={() => setShowAuthModal(false)}
         dispatch={dispatch}
         nicknameForUser={state.userId && !state.displayName ? state.userId : null}
+      />
+      {/* App-level Premium modal opened from the Hero account dialog. Screen
+          modals (SetupScreen / BrewScreen / InsightsScreen) keep their own
+          for in-context taps of premium-badged rows. */}
+      <PremiumModal
+        open={headerPremiumOpen}
+        onClose={() => setHeaderPremiumOpen(false)}
+        trigger={null}
+        isSignedIn={!!state.userId}
+        isPremium={state.tier === 'premium'}
       />
       <ConsentBanner />
       <DevTierPill />

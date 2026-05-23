@@ -316,15 +316,19 @@
     width: 100%;
   }
   .logo {
-    height: 64px;
-    width: auto;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    margin: 0 auto 8px;
-    display: block;
+    margin-bottom: 12px;
+    border-radius: 22px;
   }
-  .h1-sr {
-    position: absolute; left: -10000px; top: auto;
-    width: 1px; height: 1px; overflow: hidden;
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: #2F1C14;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
   }
   .subtitle {
     font-size: 17px;
@@ -586,9 +590,9 @@
 <body>
 <main class="container" role="main">
   <header>
-    <img src="assets/BM-logo-full-black.png" alt="Brewmie - Espresso Shot Dial-In Coach" class="logo" width="334" height="80">
-    <h1 class="h1-sr">Brewmie</h1>
-    <p class="subtitle">Espresso shot dial-in coach</p>
+    <img src="assets/apple-touch-icon.png" alt="Brewmie - Espresso Shot Dial-In Coach app icon" class="logo" width="100" height="100">
+    <h1 data-i18n="brand">Brewmie</h1>
+    <p class="subtitle" data-i18n="subtitle">Espresso shot dial-in coach</p>
   </header>
 
   <nav class="store-badges" aria-label="Download links">
@@ -624,56 +628,89 @@
   <section class="features" aria-label="Features">
     <article class="feature">
       <div class="feature-icon">&#9201;</div>
-      <h3 class="feature-title">Shot timer that listens</h3>
-      <p class="feature-desc">Tap BREW. Stop when it's done. Rate the crema and the taste. Brewmie does the rest.</p>
+      <h3 class="feature-title" data-i18n="f1t">Shot timer that listens</h3>
+      <p class="feature-desc" data-i18n="f1d">Tap BREW. Stop when it's done. Rate the crema and the taste. Brewmie does the rest.</p>
     </article>
     <article class="feature">
       <div class="feature-icon">&#127919;</div>
-      <h3 class="feature-title">One next move</h3>
-      <p class="feature-desc">Not "go a bit finer." Grind 31.5 to 30.5, with the reason underneath.</p>
+      <h3 class="feature-title" data-i18n="f2t">One next move</h3>
+      <p class="feature-desc" data-i18n="f2d">Not "go a bit finer." Grind 31.5 to 30.5, with the reason underneath.</p>
     </article>
     <article class="feature">
       <div class="feature-icon">&#9881;</div>
-      <h3 class="feature-title">Your grinder's units</h3>
-      <p class="feature-desc">25+ machines, 100+ grinders with their real dial ranges. Numbers in your units.</p>
+      <h3 class="feature-title" data-i18n="f3t">Your grinder's units</h3>
+      <p class="feature-desc" data-i18n="f3d">25+ machines, 100+ grinders with their real dial ranges. Numbers in your units.</p>
     </article>
     <article class="feature">
       <div class="feature-icon">&#127793;</div>
-      <h3 class="feature-title">Bean profiles that travel</h3>
-      <p class="feature-desc">Bag follows you across days. Roast date, age, and last setting remembered.</p>
+      <h3 class="feature-title" data-i18n="f4t">Bean profiles that travel</h3>
+      <p class="feature-desc" data-i18n="f4d">Bag follows you across days. Roast date, age, and last setting remembered.</p>
     </article>
   </section>
 
   <article class="seo-content">
-    <p>Brewmie is a free espresso dial-in app for iOS and Android. Pull a shot, tell Brewmie how it tasted, and the coach returns the next specific change for the next shot (grind, dose, or yield) in your grinder's actual dial units. 25+ machine brands and 100+ grinder models supported. Bean profiles travel across bags. Free with a one off premium upgrade, not a subscription.</p>
+    <p data-i18n="lead">Brewmie is a free espresso dial-in app for iOS and Android. Pull a shot, tell Brewmie how it tasted, and the coach returns the next specific change for the next shot (grind, dose, or yield) in your grinder's actual dial units. 25+ machine brands and 100+ grinder models supported. Bean profiles travel across bags. Free with a one off premium upgrade, not a subscription.</p>
 
-    <h2>What is Brewmie?</h2>
-    <p>Every home barista runs the same loop: pull, taste, adjust, pull again, taste, adjust, until the cup is balanced. The hard part is knowing which variable to move and how far. Brewmie watches the four signals that matter (shot time, yield ratio, taste descriptors, bean age) and converts them into one specific dial change at a time.</p>
+    <h2 data-i18n="h_what">What is Brewmie?</h2>
+    <p data-i18n="p_what">Every home barista runs the same loop: pull, taste, adjust, pull again, taste, adjust, until the cup is balanced. The hard part is knowing which variable to move and how far. Brewmie watches the four signals that matter (shot time, yield ratio, taste descriptors, bean age) and converts them into one specific dial change at a time.</p>
 
-    <h2>How it works</h2>
-    <p>Set up your kit once: espresso machine, grinder, the bag you're pulling from. Pull a shot. Stop the timer. Rate the crema and the taste with two taps (sour, bitter, channelling, gusher, weak, balanced). Brewmie returns one move: grind 31.5 to 30.5, drop the dose by 0.3 g, pull 2 seconds longer. With the reason underneath. Apply, pull again, repeat until the cup lands.</p>
+    <h2 data-i18n="h_how">How it works</h2>
+    <p data-i18n="p_how">Set up your kit once: espresso machine, grinder, the bag you're pulling from. Pull a shot. Stop the timer. Rate the crema and the taste with two taps (sour, bitter, channelling, gusher, weak, balanced). Brewmie returns one move: grind 31.5 to 30.5, drop the dose by 0.3 g, pull 2 seconds longer. With the reason underneath. Apply, pull again, repeat until the cup lands.</p>
 
-    <h2>Designed to be light</h2>
-    <p>No essays. No calorie counts. No 47-step onboarding. No subscription. One purchase, yours forever. Brewmie is the app you want when you're standing at the machine in pyjamas before work and the milk is steaming. Two taps to log. One screen to rate. One number to dial. Just espresso.</p>
+    <h2 data-i18n="h_light">Designed to be light</h2>
+    <p data-i18n="p_light">No essays. No calorie counts. No 47-step onboarding. No subscription. One purchase, yours forever. Brewmie is the app you want when you're standing at the machine in pyjamas before work and the milk is steaming. Two taps to log. One screen to rate. One number to dial. Just espresso.</p>
 
-    <h2>Perfect for</h2>
-    <p>Home baristas who bought the prosumer machine and the single-dose grinder and now have to learn how to use them. People who keep a notebook full of "grind 5.5, too sour, try 5.0" scribbles and want to throw it away. Coffee gift recipients who own the gear and want to actually use it. Cafes wanting a consistent dial-in log across staff. Anyone tired of paying monthly for a barista app that should just work.</p>
+    <h2 data-i18n="h_for">Perfect for</h2>
+    <p data-i18n="p_for">Home baristas who bought the prosumer machine and the single-dose grinder and now have to learn how to use them. People who keep a notebook full of "grind 5.5, too sour, try 5.0" scribbles and want to throw it away. Coffee gift recipients who own the gear and want to actually use it. Cafes wanting a consistent dial-in log across staff. Anyone tired of paying monthly for a barista app that should just work.</p>
 
-    <h2>From the same studio as <a href="https://lazysous.app">Lazy Sous</a></h2>
-    <p>Same anti-subscription, one-off purchase, respect-the-user policy. Different problem. Lazy Sous plans a whole week of family dinners in one tap. Brewmie dials in your espresso. Both built by people who hate apps that nag.</p>
+    <h2 data-i18n-html="h_studio">From the same studio as <a href="https://lazysous.app">Lazy Sous</a></h2>
+    <p data-i18n="p_studio">Same anti-subscription, one-off purchase, respect-the-user policy. Different problem. Lazy Sous plans a whole week of family dinners in one tap. Brewmie dials in your espresso. Both built by people who hate apps that nag.</p>
   </article>
 
   <footer>
-    <p class="contact">Questions? <a href="mailto:hello@brewmie.app">hello@brewmie.app</a></p>
+    <p class="contact"><span data-i18n="footer_q">Questions?</span> <a href="mailto:hello@brewmie.app">hello@brewmie.app</a></p>
     <nav class="footer-links" aria-label="Footer navigation">
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/support">Support</a>
-      <a href="/delete-account">Delete account</a>
+      <a href="/privacy" data-i18n="f_privacy">Privacy Policy</a>
+      <a href="/support" data-i18n="f_support">Support</a>
+      <a href="/delete-account" data-i18n="f_delete">Delete account</a>
     </nav>
   </footer>
 </main>
 
 <script>
+// ── i18n ────────────────────────────────────────────────────────────────────
+// Reads ?lang=xx from the URL (or persists across links via localStorage),
+// fetches /translations/landing-<xx>.json, and swaps every element with a
+// data-i18n="key" attribute. data-i18n-html allows HTML in the value (used
+// for the "From the same studio as <a>Lazy Sous</a>" heading).
+(function(){
+  function detect() {
+    var m = /[?&]lang=([a-zA-Z-]+)/.exec(location.search);
+    if (m) { try { localStorage.setItem('brewmie_lang', m[1]); } catch(e){} return m[1]; }
+    try { var s = localStorage.getItem('brewmie_lang'); if (s) return s; } catch(e){}
+    return (navigator.language || 'en').slice(0,2).toLowerCase();
+  }
+  var lang = detect().toLowerCase().split('-')[0];
+  if (lang === 'en') return; // English is the baseline already in HTML
+  fetch('/translations/landing-' + lang + '.json').then(function(r){
+    if (!r.ok) throw new Error('no translation for ' + lang);
+    return r.json();
+  }).then(function(d){
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n');
+      if (d[k]) el.textContent = d[k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      var k = el.getAttribute('data-i18n-html');
+      if (d[k]) el.innerHTML = d[k];
+    });
+    if (d.html_lang) document.documentElement.setAttribute('lang', d.html_lang);
+    if (d.title) document.title = d.title;
+    var md = document.querySelector('meta[name="description"]');
+    if (d.description && md) md.setAttribute('content', d.description);
+  }).catch(function(e){ /* fall back to English silently */ });
+})();
+
 var lbIndex = 0;
 var lbImages = document.querySelectorAll('.screenshots img');
 function openLightbox(img) {

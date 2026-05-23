@@ -1,49 +1,46 @@
-# Brewmie | Espresso Dialling-In Assistant
+# Brewmie | Espresso Shot Dial-In
 
 ## About
-Brewmie is a free home-barista app that helps users dial in espresso shot by shot. After each shot, the user logs the time, yield, and a taste rating (sour, balanced, or bitter, plus optional weak/strong). Brewmie returns the next grind, dose, or yield adjustment in the grinder's actual units, with a one-line reason. The product is a coach for the dialling-in process, not just a logbook. Built for prosumer machines and standalone grinders.
+Brewmie is a free espresso dial-in coach for home baristas. It runs on iOS and Android. The user sets up their kit once (espresso machine, grinder, beans), pulls a shot, tells Brewmie how it tasted, and Brewmie returns one specific change to make for the next shot (grind, dose, or yield) in the user's grinder's actual dial units. Not vague advice. A real number with the reason underneath.
 
-## Sister product
-Brewmie is published by the team behind Lazy Sous (lazysous.app), a weekly meal-planning app. Brewmie lives at lazysous.app/brewmie. Same studio voice: punchy, anti-ceremony, second-person, no subscription, no AI marketing.
-
-## Key features
-- Per-shot logging: dose, time, yield, taste
-- Live recommendation that updates the moment you rate taste
-- Grind adjustments in actual grinder units (e.g. 0.4 finer on a 0-50 grinder), not abstract steps
-- Conflict resolution: when volume disagrees with time or taste, an explicit priority hierarchy decides
-- Channelling detection: long time + low yield is flagged as a prep issue, not a grind one
-- Roast-level time offsets derived from 19,000+ community shots
-- Bean-age modifier (fresh beans coarser, stale beans finer)
-- Personalisation: after 8 shots, the user's own data starts to outweigh the population prior
-- Built-in equipment library: 31 machine brands, 25 grinder brands, 100+ specific models with known setting ranges
-- Works fully offline
-- Optional sign-in syncs shots across devices
+## Key Features
+- Espresso shot timer with bean-age and crema feedback
+- Dial-in coach that returns the next concrete grind / dose / yield number, not vague advice
+- Per-grinder dial unit translation across 25+ machine brands and 100+ grinder models (La Marzocco, Profitec, ECM, Lelit, Sage / Breville, Niche Zero, DF64, Eureka, etc.)
+- Bean profiles that travel across bags, with roast date awareness
+- Tamp pressure and ambient humidity factored into the model
+- Lifetime shot history and personal benchmarks (Premium)
+- CSV export of every shot (Premium)
+- Works offline; sign-in is optional
 
 ## Pricing
-Free. No subscription. No ads. Optional sign-in (free) syncs shots across web, iOS, and Android.
+Free to download and use, including the shot timer, recipe set, and dial-in coach. Premium is a one-off purchase (around AUD 6.99, localised by App Store and Google Play in each region). Premium unlocks per-grinder dial units, lifetime shot history, personal benchmarks, and CSV export. There is no subscription, ever.
 
-## Who it's for
-Home baristas with a prosumer espresso machine ($500-$3000 class) and a standalone grinder, who want to stop wasting beans on the dial-in process for every new bag. Skill level: knows the difference between sour and bitter, owns a scale, can read a brew ratio. Not for pod machines or super-automatics.
+## Who it is for
+Home baristas with prosumer espresso machines and single-dosing grinders. Coffee gift recipients who own the kit and want to actually use it. Cafes wanting a consistent dial-in log across staff. People who keep a paper notebook full of "grind 5.5, too sour, try 5.0" scribbles and want to throw it away.
 
-## How it's different
-Unlike PuckYeah and BeanConquerer (excellent shot trackers), Brewmie tells you what to change after every shot. The recommendation appears as a direction pill (finer/coarser), a concrete new setting, and a one-line reason. Unlike apps that suggest abstract step deltas (+0.5 steps), Brewmie's recommendation is in your grinder's own units, derived from its configured min/max range.
-
-## Algorithm summary
-Decision priority for grind adjustment: 1) volume signal if more than 5ml off target; 2) taste (sour=finer, bitter=coarser) when volume is on target; 3) time delta. Modifiers added: bean age (0-3 days: +1% coarser, 22+ days: -0.5% finer), weather (high humidity: coarser, high temp: finer), roast level (dark roasts naturally run 4s longer than baseline, baked into time offset). Population time_window comes from a 19,546-shot Visualizer.coffee dataset. Personal time_window blends in via n/(n+8) once you log shots.
-
-## Technical
-- Built with Vite, React 18, TypeScript, Capacitor v6
-- One codebase ships PWA, iOS, and Android
-- Supabase for optional auth and shot sync
-- Open-meteo for opt-in weather correlation
-- Under 1MB JS bundle, sub-second cold start on Wi-Fi
+## How it is different
+- Different from PuckYeah: PuckYeah is a timer with a manual log. Brewmie is a coach that gives the next number.
+- Different from Beanconqueror: Beanconqueror is a detailed lab-style notebook. Brewmie is a fast, conversational dial-in tool that fits a pre-work espresso routine.
+- Different from generic brew apps: Brewmie's coach speaks in the user's grinder's actual dial units, not abstract steps.
+- Different from subscription apps: Brewmie is a one-time Premium purchase, never a subscription.
 
 ## Privacy
-All shot data stays local by default. Anonymous shot data shared to the population dataset only if you opt in (off by default in settings under Privacy). No third-party trackers. No ads.
+Brewmie has no advertising SDKs, no data brokers, no tracking. Google Analytics 4 (first-party, aggregate only) can be disabled in Setup > Privacy. Sign-in is optional and uses Sign in with Apple or Sign in with Google. Account deletion is one tap from the profile menu and is a hard delete (shots, profile, and the auth record all removed). Encryption in transit (HTTPS/TLS) for all server traffic. No ATT prompt because the app does not track.
 
 ## Links
-- Web app: https://brewmie.app/
-- Sister app (meal planning): https://lazysous.app/
-- iOS App Store: TBA
-- Android Google Play: TBA
-- Contact: hello@lazysous.app
+- Website: https://brewmie.app
+- iOS App Store: https://apps.apple.com/app/id6770472698
+- Android Google Play: https://play.google.com/store/apps/details?id=app.brewmie.brewmie
+- Contact: hello@brewmie.app
+- Privacy policy: https://brewmie.app/privacy
+- Sister app (same studio): https://lazysous.app
+
+## Technical
+- Built with Capacitor (iOS + Android from one codebase, native shell + web view UI)
+- Localised across 80+ locales
+- Under 20 MB install size
+- Works offline
+- Over-the-air JS updates (no native re-submission required for hotfixes)
+- Backend: Supabase (Postgres + Auth)
+- In-app purchase via Apple StoreKit / Google Play Billing (cordova-plugin-purchase)

@@ -1,23 +1,9 @@
 # Brewmie Cloudflare Pages routing.
 #
-# brewmie.app is a marketing-only site. The web-app/SPA is taken down at the
-# web layer (still bundled in the .ipa/.aab for Capacitor, unaffected here).
-# Root '/' serves the marketing landing; the SPA's index.html is no longer
-# linked from anywhere.
-#
-# Pages auto-strips .html, so destinations use the pretty form.
+# Root '/' serves the marketing landing page. All other paths fall through
+# to direct file serving (assets, /privacy, /support, /delete-account,
+# /ota/builds/*, /.well-known/*, etc.). The SPA's index.html still exists
+# at dist/index.html for the Capacitor bundle; visiting brewmie.app/index.html
+# directly would still hit it, but nothing on the marketing site links there.
 
-# OTA bundles (served via Pages so the @capgo/capacitor-updater plugin can fetch them).
-/ota/builds/*      /ota/builds/:splat    200
-
-# Apple/Android universal-link verification files.
-/.well-known/*     /.well-known/:splat   200
-
-# Marketing pages — keep their own pretty URLs (these resolve to .html automatically).
-/privacy           /privacy              200
-/support           /support              200
-/delete-account    /delete-account       200
-
-# Root + unknown paths -> landing (without .html, Pages strips it anyway).
-/                  /landing              200
-/*                 /landing              200
+/   /landing.html   200

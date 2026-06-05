@@ -1,9 +1,11 @@
 # Build automation, one-time setup
 
+Last verified: 2026-06-05
+
 Once the credentials below exist, every future Brewmie release is one command.
 
 ```bash
-scripts/release.sh ota 1.0.4           # JS bundle via Capgo
+scripts/release.sh ota 1.0.4           # JS bundle via our own OTA (Cloudflare Pages + Worker)
 scripts/release.sh native              # iOS .ipa + Android .aab uploads
 scripts/release.sh all 1.0.4           # All three
 ```
@@ -174,7 +176,7 @@ their reported version.
 
 | Command | What it does |
 |---|---|
-| `scripts/release.sh ota 1.0.4` | Build the web bundle, upload to Capgo, channel `production`. ~30s. (Stub today; finish wiring before first OTA.) |
+| `scripts/release.sh ota 1.0.4` | Runs `ota_push.sh`: build the web bundle, deploy to Cloudflare Pages + Worker (our own OTA, not Capgo). ~30s. |
 | `scripts/publish_ios.sh` | Bump build number, cap:sync, archive, export `.ipa`, upload to App Store Connect. ~5 min. |
 | `scripts/submit_ios_release.py --wait --submit` | Create the App Store version, set localized "What's New" copy from `store-pipeline/translations/*.json`, attach the uploaded build, submit for Apple review. `--wait` polls until processing finishes. |
 | `scripts/publish_ios.sh --no-bump` | Same archive, current build number (retry after upload failure). |
@@ -233,7 +235,6 @@ are free (Google + Apple admin APIs).
 ~/.brewmie/
 +- play-publish.json        # Google service account key (chmod 600)
 +- asc-api.env              # ASC_KEY_ID + ASC_ISSUER_ID (chmod 600)
-+- capgo.env                # CAPGO_API_KEY (chmod 600)
 
 ~/.appstoreconnect/
 +- private_keys/

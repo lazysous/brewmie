@@ -1,5 +1,7 @@
 # Native build requirements
 
+Last verified: 2026-06-05
+
 JS wiring is in place for the items below, but the native iOS/Android build
 needs one-time config when the dev environment has CocoaPods + Xcode set up.
 

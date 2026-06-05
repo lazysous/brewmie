@@ -581,7 +581,7 @@ new file mode 100644
 index 0000000..69c4c43
 Binary files /dev/null and b/node_modules/@capacitor-community/apple-sign-in/android/build/tmp/compileReleaseJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/@capacitor-community/apple-sign-in/ios/Plugin/Plugin.swift b/node_modules/@capacitor-community/apple-sign-in/ios/Plugin/Plugin.swift
-index f273691..11769ef 100755
+index f273691..56e0b68 100755
 --- a/node_modules/@capacitor-community/apple-sign-in/ios/Plugin/Plugin.swift
 +++ b/node_modules/@capacitor-community/apple-sign-in/ios/Plugin/Plugin.swift
 @@ -1,4 +1,5 @@
@@ -601,21 +601,62 @@ index f273691..11769ef 100755
          authorizationController.performRequests()
      }
  
-@@ -78,3 +83,17 @@ extension SignInWithApple: ASAuthorizationControllerDelegate {
+@@ -74,7 +79,57 @@ extension SignInWithApple: ASAuthorizationControllerDelegate {
+         guard let call = self.bridge?.savedCall(withID: id) else {
+             return
+         }
+-        call.reject(error.localizedDescription)
++        // Surface a structured error so the JS layer / UI can show the actual
++        // ASAuthorizationError code instead of the opaque "operation couldn't
++        // be completed" string. Treat user-cancel as a non-error reject with
++        // a stable code so the UI doesn't show it as a failure.
++        let asError = error as? ASAuthorizationError
++        let codeRaw = asError?.code.rawValue ?? -1
++        let codeName: String
++        switch asError?.code {
++        case .canceled: codeName = "canceled"
++        case .invalidResponse: codeName = "invalidResponse"
++        case .notHandled: codeName = "notHandled"
++        case .failed: codeName = "failed"
++        case .unknown: codeName = "unknown"
++        @unknown default: codeName = "other(\(codeRaw))"
++        }
++        let message = "Apple sign in failed (\(codeName)/\(codeRaw)): \(error.localizedDescription)"
++        call.reject(message, "\(codeRaw)", error)
          self.bridge?.releaseCall(call)
      }
  }
 +
 +extension SignInWithApple: ASAuthorizationControllerPresentationContextProviding {
 +    public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-+        // Anchor on the app's active window. Required for iPad; harmless on iPhone.
-+        if let window = self.bridge?.viewController?.view.window {
-+            return window
-+        }
-+        let sceneWindow = UIApplication.shared.connectedScenes
++        // Anchor MUST be a real attached window. Returning an empty ASPresentationAnchor()
++        // or a window not attached to a foreground-active UIWindowScene causes
++        // ASAuthorizationError.unknown (code 1000) on iPad, especially under
++        // iPadOS 17+ Stage Manager / Split View. We prefer in this order:
++        //   1. The foreground-active scene's key window
++        //   2. The foreground-active scene's first window
++        //   3. The bridge view controller's window (legacy fallback)
++        //   4. Any window from any window scene (last resort)
++        let activeScenes = UIApplication.shared.connectedScenes
 +            .compactMap { $0 as? UIWindowScene }
-+            .flatMap { $0.windows }
-+            .first { $0.isKeyWindow }
-+        return sceneWindow ?? ASPresentationAnchor()
++            .filter { $0.activationState == .foregroundActive }
++        if let keyWindow = activeScenes.flatMap({ $0.windows }).first(where: { $0.isKeyWindow }) {
++            return keyWindow
++        }
++        if let anyActiveWindow = activeScenes.flatMap({ $0.windows }).first {
++            return anyActiveWindow
++        }
++        if let bridgeWindow = self.bridge?.viewController?.view.window {
++            return bridgeWindow
++        }
++        if let anyWindow = UIApplication.shared.connectedScenes
++            .compactMap({ $0 as? UIWindowScene })
++            .flatMap({ $0.windows })
++            .first {
++            return anyWindow
++        }
++        // Absolute last resort. ASPresentationAnchor() is invalid on its own
++        // but at least the call stack is in the logs by this point.
++        return ASPresentationAnchor()
 +    }
 +}

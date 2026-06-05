@@ -1,0 +1,90 @@
+diff --git a/node_modules/capacitor-plugin-cdv-purchase/dist/index.js b/node_modules/capacitor-plugin-cdv-purchase/dist/index.js
+index fee20e6..e4ebf32 100644
+--- a/node_modules/capacitor-plugin-cdv-purchase/dist/index.js
++++ b/node_modules/capacitor-plugin-cdv-purchase/dist/index.js
+@@ -3674,9 +3674,9 @@ var CdvPurchase;
+                             this.log.info('order.success');
+                             // We'll monitor the payment before resolving.
+                         };
+-                        const error = () => {
+-                            this.log.info('order.error');
+-                            callResolve(appStoreError(CdvPurchase.ErrorCode.PURCHASE, 'Failed to place order', offer.productId));
++                        const error = (message) => {
++                            this.log.info('order.error' + (message ? ': ' + message : ''));
++                            callResolve(appStoreError(CdvPurchase.ErrorCode.PURCHASE, message || 'Failed to place order', offer.productId));
+                         };
+                         // When we switch AppStore user, the cached receipt isn't from the new user.
+                         // so after a purchase, we want to make sure we're using the receipt from the logged in user.
+@@ -4044,7 +4044,7 @@ var CdvPurchase;
+                 purchase(productId, quantity, applicationUsername, discount, success, error) {
+                     this.plugin.purchase({ productId, quantity, applicationUsername, discount })
+                         .then(() => success())
+-                        .catch(() => error());
++                        .catch((err) => error((err === null || err === void 0 ? void 0 : err.message) || 'purchase failed'));
+                 }
+                 finish(transactionId, success, error) {
+                     this.plugin.finish({ transactionId })
+diff --git a/node_modules/capacitor-plugin-cdv-purchase/ios/Sources/PurchasePlugin/PurchasePlugin.swift b/node_modules/capacitor-plugin-cdv-purchase/ios/Sources/PurchasePlugin/PurchasePlugin.swift
+index c3a0d7e..b7351a3 100644
+--- a/node_modules/capacitor-plugin-cdv-purchase/ios/Sources/PurchasePlugin/PurchasePlugin.swift
++++ b/node_modules/capacitor-plugin-cdv-purchase/ios/Sources/PurchasePlugin/PurchasePlugin.swift
+@@ -1,6 +1,7 @@
+ import Foundation
+ import Capacitor
+ import StoreKit
++import UIKit
+ 
+ @available(iOS 15.0, *)
+ private class SK2State {
+@@ -200,7 +201,24 @@ public class PurchasePlugin: CAPPlugin, CAPBridgedPlugin {
+                 // Clear expired unfinished transactions that could block the purchase
+                 await clearExpiredUnfinishedTransactions()
+ 
+-                let result = try await product.purchase(options: options)
++                // On iOS 17+, pass the active UIWindowScene explicitly via
++                // confirmIn:. Without this, SK2 has to resolve the presenting
++                // scene from the environment, which fails on iPadOS with
++                // multi-window state and surfaces as a generic StoreKitError.
++                let result: Product.PurchaseResult
++                if #available(iOS 17.0, *) {
++                    let scene = await MainActor.run { () -> UIWindowScene? in
++                        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
++                        return scenes.first(where: { $0.activationState == .foregroundActive }) ?? scenes.first
++                    }
++                    if let scene = scene {
++                        result = try await product.purchase(confirmIn: scene, options: options)
++                    } else {
++                        result = try await product.purchase(options: options)
++                    }
++                } else {
++                    result = try await product.purchase(options: options)
++                }
+                 switch result {
+                 case .success(let verification):
+                     let jwsRepresentation = verification.jwsRepresentation
+diff --git a/node_modules/capacitor-plugin-cdv-purchase/www/store.js b/node_modules/capacitor-plugin-cdv-purchase/www/store.js
+index b8b2c79..ba6f7ef 100644
+--- a/node_modules/capacitor-plugin-cdv-purchase/www/store.js
++++ b/node_modules/capacitor-plugin-cdv-purchase/www/store.js
+@@ -3748,9 +3748,9 @@ var CdvPurchase;
+                             this.log.info('order.success');
+                             // We'll monitor the payment before resolving.
+                         };
+-                        const error = () => {
+-                            this.log.info('order.error');
+-                            callResolve(appStoreError(CdvPurchase.ErrorCode.PURCHASE, 'Failed to place order', offer.productId));
++                        const error = (message) => {
++                            this.log.info('order.error' + (message ? ': ' + message : ''));
++                            callResolve(appStoreError(CdvPurchase.ErrorCode.PURCHASE, message || 'Failed to place order', offer.productId));
+                         };
+                         // When we switch AppStore user, the cached receipt isn't from the new user.
+                         // so after a purchase, we want to make sure we're using the receipt from the logged in user.
+@@ -4120,7 +4120,7 @@ var CdvPurchase;
+                 purchase(productId, quantity, applicationUsername, discount, success, error) {
+                     this.plugin.purchase({ productId, quantity, applicationUsername, discount })
+                         .then(() => success())
+-                        .catch(() => error());
++                        .catch((err) => error((err === null || err === void 0 ? void 0 : err.message) || 'purchase failed'));
+                 }
+                 finish(transactionId, success, error) {
+                     this.plugin.finish({ transactionId })

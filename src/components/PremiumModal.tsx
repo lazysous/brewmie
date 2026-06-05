@@ -5,7 +5,7 @@ import { useTranslation } from '../hooks/useTranslation'
 import { setTierOverride } from '../hooks/useTier'
 import { track } from '../lib/analytics'
 import { signInWithApple, signInWithGoogle } from '../lib/supabase'
-import { purchasePremium, restorePurchases } from '../lib/iap'
+import { purchasePremium, restorePurchases, getPremiumPriceDisplay } from '../lib/iap'
 
 // Platform detection — read once at module load so render is sync.
 const NATIVE = Capacitor.isNativePlatform()
@@ -41,6 +41,14 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   const [verifying, setVerifying] = useState(false)
   const [restoring, setRestoring] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Localized price (e.g. "AU$10.99 AUD"). Read from cache on mount — no
+  // StoreKit auth triggered. First-time users with no cache see the
+  // hardcoded fallback string; their cache populates after Restore or
+  // an attempted purchase.
+  const [localizedPrice, setLocalizedPrice] = useState<string | null>(null)
+  useEffect(() => {
+    if (open) setLocalizedPrice(getPremiumPriceDisplay())
+  }, [open])
   // Mirror isPremium into a ref so the verification polling sees fresh values
   // without each tick capturing a stale closure of the prop.
   const isPremiumRef = useRef(isPremium)
@@ -269,7 +277,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
             <span className="pm-btn__label">
               {verifying ? t('premium.verifying') : t('premium.cta')}
             </span>
-            {!verifying && <span className="pm-btn__price">{t('premium.priceBrewmie')}</span>}
+            {!verifying && <span className="pm-btn__price">{localizedPrice ?? t('premium.priceBrewmie')}</span>}
           </button>
         )}
 

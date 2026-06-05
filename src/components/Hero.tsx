@@ -2,7 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import type { AppTab, BrewmieState, AppAction } from '../types'
-import { signOut, deleteUserAccount } from '../lib/supabase'
+import { signOut, deleteUserAccount, setDisplayName } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
 
@@ -144,14 +144,22 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
   // in a collapsible Settings card) makes it unmissable.
   const [accountOpen, setAccountOpen] = React.useState(false)
   const [confirmDelete, setConfirmDelete] = React.useState(false)
+  const [confirmSignOut, setConfirmSignOut] = React.useState(false)
   const [deleteBusy, setDeleteBusy] = React.useState(false)
   const [deleteError, setDeleteError] = React.useState<string | null>(null)
+  const [editingNickname, setEditingNickname] = React.useState(false)
+  const [nicknameInput, setNicknameInput] = React.useState(state.displayName ?? '')
+  const [savingNickname, setSavingNickname] = React.useState(false)
 
   const closeAccount = () => {
     setAccountOpen(false)
     setConfirmDelete(false)
+    setConfirmSignOut(false)
     setDeleteBusy(false)
     setDeleteError(null)
+    setEditingNickname(false)
+    setNicknameInput(state.displayName ?? '')
+    setSavingNickname(false)
   }
 
   const handleSignOut = async () => {
@@ -173,6 +181,19 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
       setDeleteBusy(false)
       setDeleteError(res.error || t('setup.deleteAccountFailed'))
     }
+  }
+
+  const handleSaveNickname = async () => {
+    if (!state.userId) { setEditingNickname(false); return }
+    const trimmed = nicknameInput.trim()
+    if (!trimmed || trimmed === state.displayName) { setEditingNickname(false); return }
+    setSavingNickname(true)
+    const { error } = await setDisplayName(state.userId, trimmed)
+    if (!error) {
+      dispatch({ type: 'SET_DISPLAY_NAME', payload: trimmed })
+      setEditingNickname(false)
+    }
+    setSavingNickname(false)
   }
 
   return (
@@ -255,41 +276,97 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
         >
           <div className="acct-sheet" onClick={(e) => e.stopPropagation()}>
             <div className="acct-handle" aria-hidden="true" />
-            {!confirmDelete ? (
+            {!confirmDelete && !confirmSignOut ? (
               <>
                 <h2 className="acct-title">{t('header.account')}</h2>
-                {state.displayName && (
-                  <p className="acct-sub">{state.displayName}</p>
+
+                {/* Nickname: inline-editable text. Tap to edit, Save commits. */}
+                {editingNickname ? (
+                  <div className="acct-nick-edit">
+                    <input
+                      className="acct-nick-input"
+                      type="text"
+                      value={nicknameInput}
+                      onChange={(e) => setNicknameInput(e.target.value)}
+                      placeholder={t('header.nicknamePlaceholder') || 'e.g. billy_bean'}
+                      autoFocus
+                      maxLength={32}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSaveNickname()
+                        if (e.key === 'Escape') { setEditingNickname(false); setNicknameInput(state.displayName ?? '') }
+                      }}
+                    />
+                    <button
+                      className="acct-nick-save"
+                      type="button"
+                      onClick={handleSaveNickname}
+                      disabled={savingNickname}
+                    >
+                      {savingNickname ? '…' : t('common.save')}
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className="acct-nick-display"
+                    type="button"
+                    onClick={() => { setEditingNickname(true); setNicknameInput(state.displayName ?? '') }}
+                    aria-label={t('header.editNickname')}
+                  >
+                    <span className="acct-nick-name">
+                      {state.displayName || t('header.setNickname')}
+                    </span>
+                    <span className="acct-nick-pencil" aria-hidden="true">✎</span>
+                  </button>
                 )}
+
+                {/* Premium CTA — only free tier */}
                 {state.tier !== 'premium' && (
                   <button
-                    className="acct-btn acct-btn--primary"
+                    className="acct-btn acct-btn--premium"
                     type="button"
                     onClick={() => { closeAccount(); onOpenPremium() }}
                   >
-                    {t('header.getPremium')}
+                    <span className="acct-btn__label">{t('header.getPremium')}</span>
+                    <span className="acct-btn__arrow" aria-hidden="true">→</span>
                   </button>
                 )}
+
+                {/* Sign out: red button (destructive but reversible) */}
                 <button
-                  className="acct-btn"
+                  className="acct-btn acct-btn--signout"
                   type="button"
-                  onClick={handleSignOut}
+                  onClick={() => setConfirmSignOut(true)}
                 >
                   {t('header.signOut')}
                 </button>
+
+                {/* Delete account: small text link at the bottom — discoverable
+                    per 5.1.1(v) but visually demoted to discourage casual use. */}
                 <button
-                  className="acct-btn acct-btn--danger"
+                  className="acct-link"
                   type="button"
                   onClick={() => setConfirmDelete(true)}
                 >
                   {t('setup.deleteAccount')}
                 </button>
+              </>
+            ) : confirmSignOut ? (
+              <>
+                <h2 className="acct-title">{t('header.signOutTitle')}</h2>
+                <p className="acct-sub">{t('header.signOutBody')}</p>
                 <button
-                  className="acct-btn acct-btn--ghost"
+                  className="acct-btn acct-btn--primary"
                   type="button"
-                  onClick={closeAccount}
+                  onClick={() => setConfirmSignOut(false)}
                 >
-                  {t('common.cancel')}
+                  {t('header.signOutStay')}
+                </button>
+                <button
+                  className="acct-btn acct-btn--danger"
+                  type="button"
+                  onClick={handleSignOut}
+                >
+                  {t('header.signOutConfirmBtn')}
                 </button>
               </>
             ) : (
@@ -298,20 +375,20 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
                 <p className="acct-sub acct-sub--warn">{t('setup.deleteAccountWarning')}</p>
                 {deleteError && <p className="acct-error">{deleteError}</p>}
                 <button
+                  className="acct-btn acct-btn--primary"
+                  type="button"
+                  onClick={() => { setConfirmDelete(false); setDeleteError(null) }}
+                  disabled={deleteBusy}
+                >
+                  {t('setup.deleteAccountKeep')}
+                </button>
+                <button
                   className="acct-btn acct-btn--danger"
                   type="button"
                   onClick={handleDeleteAccount}
                   disabled={deleteBusy}
                 >
                   {deleteBusy ? t('setup.deleteAccountBusy') : t('setup.deleteAccountConfirm')}
-                </button>
-                <button
-                  className="acct-btn acct-btn--ghost"
-                  type="button"
-                  onClick={() => { setConfirmDelete(false); setDeleteError(null) }}
-                  disabled={deleteBusy}
-                >
-                  {t('setup.deleteAccountCancel')}
                 </button>
               </>
             )}
@@ -607,9 +684,119 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
         }
         .acct-btn:active { transform: scale(0.98); }
         .acct-btn:disabled { opacity: 0.5; }
-        .acct-btn--primary { background: var(--accent-green); color: #fff; }
+        .acct-btn--primary { background: var(--accent-green); color: #fff; box-shadow: 0 6px 14px rgba(107, 142, 92, 0.22); }
         .acct-btn--danger { background: #8B1A1A; color: #fff; }
         .acct-btn--ghost { background: transparent; color: var(--text-tertiary); font-weight: 600; }
+
+        /* Premium CTA: most prominent action when on free tier. Brand green
+           with arrow chevron so it reads as "go forward to upgrade". */
+        .acct-btn--premium {
+          background: var(--accent-green);
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          box-shadow: 0 8px 18px rgba(107, 142, 92, 0.28);
+          margin-top: 16px;
+        }
+        .acct-btn--premium .acct-btn__arrow {
+          font-size: 18px;
+          line-height: 1;
+          margin-left: 2px;
+        }
+        .acct-btn__label { font-size: 15px; font-weight: 700; }
+
+        /* Sign out: red text on light bg, button-shaped but visually
+           demoted vs the green premium CTA. */
+        .acct-btn--signout {
+          background: rgba(139, 26, 26, 0.06);
+          color: #8B1A1A;
+          border: 1px solid rgba(139, 26, 26, 0.18);
+          margin-top: 18px;
+        }
+        .acct-btn--signout:active { background: rgba(139, 26, 26, 0.10); }
+
+        /* Delete account: small grey text link at the bottom. Discoverable
+           per Apple guideline 5.1.1(v) but deliberately demoted. */
+        .acct-link {
+          display: block;
+          width: 100%;
+          padding: 14px 0 6px;
+          margin: 8px 0 0;
+          background: transparent;
+          border: none;
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--text-tertiary, #6F665C);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-color: rgba(0,0,0,0.25);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .acct-link:active { opacity: 0.5; }
+
+        /* Nickname display row: tap to edit. */
+        .acct-nick-display {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          padding: 8px 0 18px;
+          background: transparent;
+          border: none;
+          font-family: inherit;
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--text-primary);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .acct-nick-display:active { opacity: 0.5; }
+        .acct-nick-name {
+          font-size: 18px;
+          font-weight: 600;
+        }
+        .acct-nick-pencil {
+          font-size: 14px;
+          opacity: 0.55;
+        }
+
+        /* Nickname edit row */
+        .acct-nick-edit {
+          display: flex;
+          gap: 8px;
+          align-items: stretch;
+          margin: 4px 0 18px;
+        }
+        .acct-nick-input {
+          flex: 1;
+          height: 44px;
+          border-radius: 12px;
+          border: 1px solid var(--border);
+          background: var(--off-white);
+          padding: 0 14px;
+          font-size: 15px;
+          font-family: inherit;
+          color: var(--text-primary);
+          outline: none;
+        }
+        .acct-nick-input:focus { border-color: var(--accent-green); }
+        .acct-nick-save {
+          height: 44px;
+          padding: 0 16px;
+          border-radius: 12px;
+          border: none;
+          background: var(--accent-green);
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .acct-nick-save:disabled { opacity: 0.6; }
       `}</style>
     </header>
   )

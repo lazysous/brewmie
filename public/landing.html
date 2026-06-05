@@ -85,13 +85,32 @@
 <meta property="al:android:package" content="app.brewmie.brewmie">
 <meta property="al:android:app_name" content="Brewmie">
 
-<!-- Mobile → App Store redirect (bots see full page, humans go straight to store) -->
+<!-- Mobile → App Store redirect. Bots see the full page (so social previews
+     and search engines index the landing copy); humans on a phone go
+     straight to their store. iOS Safari gets an itms-apps:// deep-link
+     first so the App Store app opens directly; https fallback fires after
+     400ms in case the scheme handler bails. ?nostore=1 escape hatch
+     bypasses the redirect for testing / sharing the landing copy. -->
 <script>
 (function(){
-  if (/bot|crawl|spider|slurp|facebook|twitter|linkedin|pinterest|whatsapp|telegram|preview/i.test(navigator.userAgent)) return;
-  var u = navigator.userAgent || '';
-  if (/iPhone|iPad|iPod/i.test(u)) { window.location.replace('https://apps.apple.com/app/id6770472698'); }
-  else if (/Android/i.test(u)) { window.location.replace('https://play.google.com/store/apps/details?id=app.brewmie.brewmie'); }
+  var ua = navigator.userAgent || '';
+  if (/bot|crawl|spider|slurp|facebook|twitter|linkedin|pinterest|whatsapp|telegram|preview/i.test(ua)) return;
+  if (/[?&]nostore=1/.test(location.search)) return;
+  if (/iPhone|iPad|iPod/i.test(ua)) {
+    var canonical = 'https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698';
+    // Native Safari only supports itms-apps:// — third-party browsers (Chrome,
+    // Firefox, Edge on iOS) won't have a handler, so fall back to https.
+    if (!/(CriOS|FxiOS|EdgiOS)/.test(ua)) {
+      location.href = 'itms-apps://apps.apple.com/app/id6770472698';
+      setTimeout(function(){ location.href = canonical; }, 400);
+    } else {
+      location.href = canonical;
+    }
+    return;
+  }
+  if (/Android/i.test(ua)) {
+    location.href = 'https://play.google.com/store/apps/details?id=app.brewmie.brewmie';
+  }
 })();
 </script>
 
@@ -106,8 +125,8 @@
   "applicationCategory": "FoodAndDrinkApplication",
   "operatingSystem": "iOS, Android",
   "url": "https://brewmie.app",
-  "downloadUrl": "https://apps.apple.com/app/id6770472698",
-  "installUrl": "https://apps.apple.com/app/id6770472698",
+  "downloadUrl": "https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698",
+  "installUrl": "https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698",
   "screenshot": "https://brewmie.app/assets/screenshots/ios-1.png",
   "softwareVersion": "1.0",
   "author": {
@@ -231,7 +250,7 @@
   "logo": "https://brewmie.app/assets/icon-192.png",
   "email": "hello@brewmie.app",
   "sameAs": [
-    "https://apps.apple.com/app/id6770472698",
+    "https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698",
     "https://play.google.com/store/apps/details?id=app.brewmie.brewmie",
     "https://lazysous.app"
   ],
@@ -249,7 +268,7 @@
   "itemListElement": [
     {"@type": "ListItem", "position": 1, "name": "Brewmie", "item": "https://brewmie.app"},
     {"@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://brewmie.app/privacy"},
-    {"@type": "ListItem", "position": 3, "name": "Download on App Store", "item": "https://apps.apple.com/app/id6770472698"}
+    {"@type": "ListItem", "position": 3, "name": "Download on App Store", "item": "https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698"}
   ]
 }
 </script>
@@ -267,7 +286,7 @@
   "tool": {
     "@type": "SoftwareApplication",
     "name": "Brewmie",
-    "url": "https://apps.apple.com/app/id6770472698"
+    "url": "https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698"
   },
   "totalTime": "PT2M"
 }
@@ -596,7 +615,7 @@
   </header>
 
   <nav class="store-badges" aria-label="Download links">
-    <a href="https://apps.apple.com/app/id6770472698" class="store-badge" target="_blank" rel="noopener">
+    <a href="https://apps.apple.com/us/app/brewmie-espresso-shot-dial-in/id6770472698" class="store-badge" target="_blank" rel="noopener">
       <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" width="150" height="50">
     </a>
     <a href="https://play.google.com/store/apps/details?id=app.brewmie.brewmie" class="store-badge" target="_blank" rel="noopener">

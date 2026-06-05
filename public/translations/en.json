@@ -19,11 +19,18 @@
     "signOut": "Sign out",
     "signOutConfirm": "Sign out as {name}?",
     "signOutConfirmNoName": "Sign out of Brewmie?",
+    "signOutTitle": "Sign out?",
+    "signOutBody": "Your data stays safe. You can sign back in any time and pick up where you left off.",
+    "signOutStay": "Stay signed in",
+    "signOutConfirmBtn": "Sign out",
     "byLazySous": "by Lazy Sous",
     "logoAlt": "Brewmie",
     "home": "Home",
     "account": "Account",
-    "getPremium": "Get Premium"
+    "getPremium": "Get Premium",
+    "setNickname": "Set a nickname",
+    "editNickname": "Edit nickname",
+    "nicknamePlaceholder": "e.g. billy_bean"
   },
   "subheader": {
     "morning": "Morning. Pull a good one.",
@@ -382,6 +389,7 @@
     "deleteAccountTitle": "Delete your account?",
     "deleteAccountWarning": "Your shots, gear, and profile will be wiped from our servers. This can't be undone.",
     "deleteAccountCancel": "Cancel",
+    "deleteAccountKeep": "Keep my account",
     "deleteAccountConfirm": "Delete",
     "deleteAccountBusy": "Deleting...",
     "deleteAccountFailed": "Failed to delete account. Please try again."

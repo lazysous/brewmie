@@ -46,8 +46,8 @@ export default {
     // account-dialog + Restore Purchases code that ships in iOS build 8.
     // Re-enable AFTER push a fresh bundle that matches the shipping native.
     const OTA_ENABLED = true
-    const LATEST_VERSION = '1.0.2'
-    const LATEST_URL = 'https://brewmie.app/ota/builds/1.0.2.zip'
+    const LATEST_VERSION = '1.0.5'
+    const LATEST_URL = 'https://brewmie.app/ota/builds/1.0.5.zip'
 
     if (!OTA_ENABLED || deviceVersion === LATEST_VERSION) {
       return new Response(JSON.stringify({

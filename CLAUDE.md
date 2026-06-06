@@ -32,6 +32,18 @@ job (launchd/cron), no code reference, empty `~/Library/Logs/brewmie-scrape`. If
 a scraper is added, document it here and in the relevant doc. Do not assume one
 runs.
 
+## Purchase notifications
+
+On a successful purchase, the app sends a fire-and-forget email notification.
+Brewmie uses `capacitor-plugin-cdv-purchase` (no RevenueCat), so `src/lib/iap.ts`
+(`notifyPurchase`, called from `purchasePremium` only on a new order success, not
+on restore/launch) POSTs to a Firebase function `brewmiePurchaseWebhook` at
+`https://us-central1-lazy-sous.cloudfunctions.net/brewmiePurchaseWebhook`. That
+function lives in the **lazy-sous** Firebase project (Brewmie has no Firebase of
+its own) and emails chef.lazysous@gmail.com, the same inbox as Lazy Sous. A shared
+token (`PURCHASE_NOTIFY_TOKEN`) gates it against spam. The client side ships to
+users only on the next OTA.
+
 ## Load-bearing gotchas
 
 - Deploys are MANUAL wrangler only. No auto-deploy. A git push alone ships

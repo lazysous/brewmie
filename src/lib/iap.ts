@@ -32,6 +32,26 @@ let initialized = false
 let initPromise: Promise<void> | null = null
 let onOwnershipCallback: (() => void) | null = null
 
+// Purchase-notification email. Fire-and-forget POST to a Firebase function
+// (hosted in the lazy-sous project, same Gmail inbox) when a NEW purchase
+// completes. Never blocks or throws into the purchase flow: a failure here
+// must never affect the user's unlock. Token matches SHARED_TOKEN in the
+// function (functions/brewmie-purchase.js).
+const PURCHASE_NOTIFY_URL = 'https://us-central1-lazy-sous.cloudfunctions.net/brewmiePurchaseWebhook'
+const PURCHASE_NOTIFY_TOKEN = 'bru_ntfy_k7Qm2Zp9Lx4w'
+
+function notifyPurchase(detail: { productId: string; platform: string; price: string }): void {
+  try {
+    fetch(PURCHASE_NOTIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Brewmie-Token': PURCHASE_NOTIFY_TOKEN },
+      body: JSON.stringify(detail),
+    }).catch(() => {})
+  } catch {
+    // ignore — notification is best-effort
+  }
+}
+
 function platformId() {
   const p = Capacitor.getPlatform()
   if (p === 'ios') return Platform.APPLE_APPSTORE
@@ -220,7 +240,17 @@ export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: bool
   if (!offer) return { ok: false, message: 'No purchase offer available. Check your network and try again.' }
 
   const err = await offer.order()
-  if (!err) return { ok: true }
+  if (!err) {
+    const pricing = product.pricing
+    notifyPurchase({
+      productId: PREMIUM_PRODUCT_ID,
+      platform: Capacitor.getPlatform(),
+      price: pricing?.price
+        ? (pricing.currency ? `${pricing.price} ${pricing.currency}` : String(pricing.price))
+        : '?',
+    })
+    return { ok: true }
+  }
   if (err.code === ErrorCode.PAYMENT_CANCELLED) return { ok: false, cancelled: true }
   const detail = err.message || `code ${err.code ?? 'unknown'}`
   return { ok: false, message: `Purchase failed: ${detail}` }

@@ -94,3 +94,32 @@ grant execute on function public.global_shot_count() to anon, authenticated;
 -- 5. The review's probe row (inserted 2026-10-05 to test anon write access).
 -- ---------------------------------------------------------------------------
 delete from public.public_shots where source_id = 'audit-probe-will-delete';
+
+-- ---------------------------------------------------------------------------
+-- 6. OPTIONAL, owner decision: deduplicate public_shots.
+--    Until OTA 1.0.10 the client re-posted the newest shot on every launch
+--    and every delete. On 2026-10-05 the table held 393 rows for 123 distinct
+--    shots (one shot appeared 144 times), which weights get_algo_params toward
+--    whoever launched the app most. This keeps the EARLIEST row of each group
+--    of rows that are identical on every shot value and deletes the rest.
+--    Run the SELECT first to see the count; uncomment the DELETE to apply.
+-- ---------------------------------------------------------------------------
+-- select count(*) as surplus_rows from (
+--   select id, row_number() over (
+--     partition by grind, dose, target_volume, target_time, actual_volume,
+--                  actual_time, score, taste_flavor, taste_strength, bean_age_bucket,
+--                  roast_level, temp, humidity, machine_brand, grinder_type, tamp_type
+--     order by created_at asc, id asc) as rn
+--   from public.public_shots
+-- ) d where rn > 1;
+--
+-- delete from public.public_shots where id in (
+--   select id from (
+--     select id, row_number() over (
+--       partition by grind, dose, target_volume, target_time, actual_volume,
+--                    actual_time, score, taste_flavor, taste_strength, bean_age_bucket,
+--                    roast_level, temp, humidity, machine_brand, grinder_type, tamp_type
+--       order by created_at asc, id asc) as rn
+--     from public.public_shots
+--   ) d where rn > 1
+-- );

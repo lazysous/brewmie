@@ -175,8 +175,10 @@ export function Hero({ activeTab, state, dispatch, weather, onSignIn, onHome, on
     const res = await deleteUserAccount()
     if (res.ok) {
       closeAccount()
-      dispatch({ type: 'SET_USER', payload: null })
-      dispatch({ type: 'SET_DISPLAY_NAME', payload: null })
+      // The account is gone; so is its data. Before this, SET_USER left the
+      // deleted account's shots in state and the persist effect wrote them
+      // straight back into the localStorage deleteUserAccount had cleared.
+      dispatch({ type: 'RESET' })
     } else {
       setDeleteBusy(false)
       setDeleteError(res.error || t('setup.deleteAccountFailed'))

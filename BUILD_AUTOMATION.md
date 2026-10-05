@@ -1,6 +1,6 @@
 # Build automation, one-time setup
 
-Last verified: 2026-06-05
+Last verified: 2026-10-05
 
 Once the credentials below exist, every future Brewmie release is one command.
 
@@ -171,6 +171,20 @@ through). All devices then get `no_new_version_available` regardless of
 their reported version.
 
 ---
+
+## 4b. Tests (run before every OTA)
+
+```bash
+npm test            # vitest, offline, a few seconds
+npm run typecheck   # tsc --noEmit
+```
+
+Tests live in `tests/`. `vitest.config.ts` carries a small plugin that
+appends an export list to `BrewScreen.tsx` and `InsightsScreen.tsx` at test
+time only, so the module-private dial-in algorithm and stats helpers can be
+pinned without editing the screens. Supabase and the purchase plugin are
+mocked in the tests that touch them; nothing reaches the network. A red
+result is a real regression.
 
 ## 5. Day-to-day commands
 

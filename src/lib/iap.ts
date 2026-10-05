@@ -103,14 +103,14 @@ export function initIAP(onOwnership: () => void): Promise<void> {
     })
     .verified(async (receipt: VerifiedReceipt) => {
       const txs = (receipt as unknown as { transactions?: Transaction[] }).transactions ?? []
-      // Receipt is ours if any transaction matches our product id, OR if the
-      // products[] array is empty/absent (StoreKit local-config / Simulator
-      // hands back receipts with no products[] populated).
-      const owns = txs.length === 0 || txs.some((t: Transaction) => {
-        const ps = t.products ?? []
-        if (ps.length === 0) return true
-        return ps.some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID)
-      })
+      // Ours only when a transaction names our product. An earlier version
+      // also accepted an empty receipt or a transaction with no products
+      // (to cope with the Simulator), which meant a user who owned nothing
+      // could be granted Premium by a verified application receipt. The
+      // approved() handler above and the owned() check after initialize
+      // still unlock a real purchase, so nothing legitimate is lost.
+      const owns = txs.some((t: Transaction) =>
+        (t.products ?? []).some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID))
       console.log('[iap] verified', { txCount: txs.length, owns })
       if (owns) {
         console.log('[iap] verified->onOwnership')

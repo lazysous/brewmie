@@ -137,6 +137,12 @@ export interface BrewmieState {
   userId: string | null
   displayName: string | null
   tier: Tier
+  // The account whose data this device holds. Set when a user signs in and
+  // kept through sign-out, so that a DIFFERENT account signing in on the same
+  // device starts clean instead of inheriting (and uploading) the previous
+  // account's shots. null means the data was recorded with nobody signed in
+  // and belongs to whoever signs in first.
+  dataOwnerId?: string | null
 }
 
 export type Tier = 'free' | 'premium'
@@ -159,4 +165,7 @@ export type AppAction =
   | { type: 'SET_DISPLAY_NAME'; payload: string | null }
   | { type: 'SET_TIER'; payload: Tier }
   | { type: 'HYDRATE'; payload: BrewmieState }
+  // Partial merge applied by the reducer against the CURRENT state. HYDRATE
+  // took a whole state built by the caller, which captured a stale copy.
+  | { type: 'MERGE'; payload: Partial<BrewmieState> }
   | { type: 'RESET' }

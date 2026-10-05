@@ -216,14 +216,18 @@ export async function upsertShot(shot: ShotEntry, userId: string) {
 /**
  * Bulk-upsert all shots for a user (used for first-login migration).
  */
-export async function bulkUpsertShots(shots: ShotEntry[], userId: string): Promise<void> {
-  if (shots.length === 0) return
-  await supabase
+export async function bulkUpsertShots(shots: ShotEntry[], userId: string): Promise<{ error: { message: string } | null }> {
+  if (shots.length === 0) return { error: null }
+  // supabase-js resolves with { error } rather than throwing, so the old
+  // `.catch(() => {})` around this call could never see a failure. Callers
+  // now get the error back and decide what to do with it.
+  const { error } = await supabase
     .from('shots')
     .upsert(
       shots.map((s) => ({ ...s, user_id: userId })),
       { onConflict: 'id' }
     )
+  return { error }
 }
 
 /**
@@ -240,7 +244,43 @@ export async function fetchShots(userId: string): Promise<ShotEntry[]> {
     console.error('[Brewmie] fetchShots error:', error.message)
     return []
   }
-  return (data ?? []) as ShotEntry[]
+  return (data ?? []).map(normaliseShotRow)
+}
+
+// The shots table began life with grind / dose / tamp columns and grew the
+// camelCase ShotEntry columns later (2026-10-05 migration). Rows from the
+// early shape have no inputGrind etc., and the table also carries user_id
+// and created_at, which have no place in local state. Map every row onto a
+// clean ShotEntry so nothing downstream sees undefined where it expects a
+// number.
+type ShotRow = Partial<ShotEntry> & { grind?: number | null; dose?: number | null; tamp?: number | null; id: string; timestamp: string }
+export function normaliseShotRow(row: ShotRow): ShotEntry {
+  const num = (v: unknown, fallback: number): number => (typeof v === 'number' && Number.isFinite(v) ? v : fallback)
+  const numOrNull = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null)
+  return {
+    id: row.id,
+    timestamp: row.timestamp,
+    inputGrind: num(row.inputGrind ?? row.grind, 0),
+    inputDose: num(row.inputDose ?? row.dose, 0),
+    inputTamp: num(row.inputTamp ?? row.tamp, 0),
+    targetVolume: num(row.targetVolume, 0),
+    targetTime: num(row.targetTime, 0),
+    actualVolume: numOrNull(row.actualVolume),
+    actualTime: numOrNull(row.actualTime),
+    score: numOrNull(row.score),
+    grindAdjust: numOrNull(row.grindAdjust),
+    doseAdjust: numOrNull(row.doseAdjust),
+    volumeAdjust: numOrNull(row.volumeAdjust),
+    timeAdjust: numOrNull(row.timeAdjust),
+    tampAdjust: numOrNull(row.tampAdjust),
+    crema: row.crema ?? null,
+    tasteFlavor: row.tasteFlavor ?? null,
+    tasteStrength: row.tasteStrength ?? null,
+    beanAge: numOrNull(row.beanAge),
+    roastLevel: row.roastLevel ?? null,
+    temp: numOrNull(row.temp),
+    humidity: numOrNull(row.humidity),
+  }
 }
 
 /**

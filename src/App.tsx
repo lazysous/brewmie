@@ -155,7 +155,10 @@ export function App() {
         Object.assign(merge, configResult.value)
       }
       if (Object.keys(merge).length > 0) {
-        dispatch({ type: 'HYDRATE', payload: { ...state, ...merge } })
+        // Merged by the reducer against the live state. The old HYDRATE spread
+        // the `state` this effect closed over at sign-in time, so anything the
+        // user did while the fetch was in flight was thrown away.
+        dispatch({ type: 'MERGE', payload: merge })
       }
       if (nameResult.status === 'fulfilled') {
         if (nameResult.value) {

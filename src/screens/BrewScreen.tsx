@@ -101,8 +101,9 @@ function computeScore(
     timeScore = 70 - (timeDelta - 5) * 5
   }
 
-  const actualRatio = actualVolume / inputDose
-  const targetRatio = targetVolume / inputDose
+  // Same guard computeAdjustments uses; a zero dose made this NaN.
+  const actualRatio = actualVolume / Math.max(inputDose, 1)
+  const targetRatio = targetVolume / Math.max(inputDose, 1)
   const ratioDelta = Math.abs(actualRatio - targetRatio)
   let ratioScore: number
   if (ratioDelta <= 0.1) {
@@ -394,6 +395,10 @@ function computeAdjustments(
     if (!doseReasonKey) doseReasonKey = 'brew.doseStrong'
   }
   doseAdjust = snapDose(doseAdjust)
+  // An edge or trend bump and an opposite taste-strength nudge can cancel to
+  // zero; the reason was set before that happened and claimed a dose change
+  // the number did not show.
+  if (doseAdjust === 0) doseReasonKey = ''
 
   // ── Tamp: ratio is off and grind only needs a small nudge (≤0.5 step) ────
   const actualRatio = actualVolume / Math.max(inputDose, 1)
@@ -418,9 +423,13 @@ function computeAdjustments(
 
 // Bayesian blend personal time stddev with population time_window.
 // weight_user = n/(n+8); requires actualTime + targetTime present.
+// Uses the 20 most recent usable shots. shots[0] is the newest (ADD_SHOT
+// prepends); the loop used to start from the other end, so once a user had
+// more than 20 shots the window was computed from their oldest ones and
+// never saw a recent shot again.
 function personalTimeWindow(shots: ShotEntry[], populationWindow: number): number {
   const deltas: number[] = []
-  for (let i = shots.length - 1; i >= 0 && deltas.length < 20; i--) {
+  for (let i = 0; i < shots.length && deltas.length < 20; i++) {
     const s = shots[i]
     if (s.actualTime !== null && s.targetTime !== null) {
       deltas.push(s.actualTime - s.targetTime)

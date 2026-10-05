@@ -324,6 +324,7 @@ type PublicShotContext = {
  */
 export async function upsertPublicShot(shot: ShotEntry, ctx: PublicShotContext) {
   return supabase.from('public_shots').insert({
+    source_id: shot.id,
     machine_brand: ctx.machine?.brand ?? null,
     grinder_type: ctx.grinder?.type ?? null,
     tamp_type: ctx.tamp?.type ?? null,

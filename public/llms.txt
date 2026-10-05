@@ -14,7 +14,7 @@ Brewmie is a free espresso dial-in coach for home baristas. It runs on iOS and A
 - Works offline; sign-in is optional
 
 ## Pricing
-Free to download and use, including the shot timer, recipe set, and dial-in coach. Premium is a one-off purchase (around AUD 6.99, localised by App Store and Google Play in each region). Premium unlocks per-grinder dial units, lifetime shot history, personal benchmarks, and CSV export. There is no subscription, ever.
+Free to download and use, including the shot timer, recipe set, and dial-in coach. Premium is a one-off purchase, currently at an introductory launch price, localised by App Store and Google Play in each region. Premium unlocks per-grinder dial units, lifetime shot history, personal benchmarks, and CSV export. There is no subscription, ever.
 
 ## Who it is for
 Home baristas with prosumer espresso machines and single-dosing grinders. Coffee gift recipients who own the kit and want to actually use it. Cafes wanting a consistent dial-in log across staff. People who keep a paper notebook full of "grind 5.5, too sour, try 5.0" scribbles and want to throw it away.

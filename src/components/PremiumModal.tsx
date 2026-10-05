@@ -273,12 +273,17 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
             <p className="pm-explainer">{t('premium.signInExplainer')}</p>
           </>
         ) : (
-          <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
-            <span className="pm-btn__label">
-              {verifying ? t('premium.verifying') : t('premium.cta')}
-            </span>
-            {!verifying && <span className="pm-btn__price">{localizedPrice ?? t('premium.priceBrewmie')}</span>}
-          </button>
+          <>
+            <div className="pm-intro" aria-label={t('premium.introOffer')}>
+              <span className="pm-intro__badge">{t('premium.introOffer')}</span>
+            </div>
+            <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
+              <span className="pm-btn__label">
+                {verifying ? t('premium.verifying') : t('premium.cta')}
+              </span>
+              {!verifying && localizedPrice && <span className="pm-btn__price">{localizedPrice}</span>}
+            </button>
+          </>
         )}
 
         {error && (
@@ -471,6 +476,21 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           font-size: 15px;
           font-weight: 800;
           font-variant-numeric: tabular-nums;
+        }
+        .pm-intro {
+          display: flex;
+          justify-content: center;
+          margin: 4px 0 -2px;
+        }
+        .pm-intro__badge {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+          background: rgba(196, 124, 73, 0.12);
+          padding: 5px 12px;
+          border-radius: 999px;
         }
 
         .pm-applock {

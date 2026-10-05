@@ -1248,6 +1248,15 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                 <>
                   <h2 className="wz-title">{t('wizard.step2Title')}</h2>
                   <p className="wz-sub">{t('wizard.step2Sub')}</p>
+                  {isFree ? (
+                    <div className="wz-locked">
+                      <span className="wz-locked__badge">{t('tierLock.badge')}</span>
+                      <p className="wz-locked__msg">{t('premium.triggerGrinder')}</p>
+                      <button type="button" className="wz-locked__cta" onClick={() => setPremiumTrigger('grinder')}>
+                        {t('premium.cta')}
+                      </button>
+                    </div>
+                  ) : (<>
                   <Field label={t('setup.fieldType')}>
                     <div className="sc-option-group">
                       <button className={`sc-option-btn${grinderBuiltIn ? ' sc-option-btn--active' : ''}`}
@@ -1288,6 +1297,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                       </div>
                     </>
                   )}
+                  </>)}
                 </>
               )}
 
@@ -1295,6 +1305,15 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                 <>
                   <h2 className="wz-title">{t('wizard.step3Title')}</h2>
                   <p className="wz-sub">{t('wizard.step3Sub')}</p>
+                  {isFree ? (
+                    <div className="wz-locked">
+                      <span className="wz-locked__badge">{t('tierLock.badge')}</span>
+                      <p className="wz-locked__msg">{t('premium.triggerTamper')}</p>
+                      <button type="button" className="wz-locked__cta" onClick={() => setPremiumTrigger('tamper')}>
+                        {t('premium.cta')}
+                      </button>
+                    </div>
+                  ) : (<>
                   <Field label={t('setup.fieldType')}>
                     <div className="sc-option-group">
                       {tampOptions.map(({ type: t, icon, label }) => (
@@ -1330,6 +1349,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                   {tampType === 'manual' && (
                     <p className="sc-hint">Set tamp per shot on the Brew screen.</p>
                   )}
+                  </>)}
                 </>
               )}
 
@@ -1337,6 +1357,15 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                 <>
                   <h2 className="wz-title">{t('wizard.step4Title')}</h2>
                   <p className="wz-sub">{t('wizard.step4Sub')}</p>
+                  {isFree ? (
+                    <div className="wz-locked">
+                      <span className="wz-locked__badge">{t('tierLock.badge')}</span>
+                      <p className="wz-locked__msg">{t('premium.triggerBeans')}</p>
+                      <button type="button" className="wz-locked__cta" onClick={() => setPremiumTrigger('beans')}>
+                        {t('premium.cta')}
+                      </button>
+                    </div>
+                  ) : (<>
                   <Field label={t('setup.beanRoaster')}>
                     <input list="wz-bean-roaster-list" type="text" className="sc-input" placeholder={t('setup.beanRoasterPlaceholder')}
                       value={beanBrand} onChange={(e) => setBeanBrand(e.target.value)}
@@ -1372,6 +1401,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                       ))}
                     </div>
                   </Field>
+                  </>)}
                 </>
               )}
 
@@ -2592,6 +2622,53 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           line-height: 1.5;
           margin: -6px 0 4px;
         }
+
+        .wz-locked {
+          margin-top: 10px;
+          padding: 24px 20px;
+          border-radius: 16px;
+          background: var(--off-white);
+          border: 1px solid var(--border-light);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 12px;
+        }
+
+        .wz-locked__badge {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+          color: var(--copper-deep);
+          background: rgba(196, 124, 73, 0.12);
+          padding: 4px 10px;
+          border-radius: 999px;
+        }
+
+        .wz-locked__msg {
+          font-size: 14px;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin: 0;
+          max-width: 280px;
+        }
+
+        .wz-locked__cta {
+          margin-top: 4px;
+          background: var(--accent-green);
+          color: #fff;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 12px 28px;
+          border-radius: 999px;
+          border: none;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          letter-spacing: 0.1px;
+        }
+        .wz-locked__cta:active { opacity: 0.85; transform: scale(0.97); }
 
         .wz-footer {
           display: flex;

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useTranslation } from '../hooks/useTranslation'
 import { useTier } from '../hooks/useTier'
 import { PremiumModal } from '../components/PremiumModal'
+import { GlobalShotCounter } from '../components/GlobalShotCounter'
 
 // ─── Computation helpers ───────────────────────────────────────────────────────
 
@@ -818,6 +819,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
       />
 
       {/* Footer */}
+      <GlobalShotCounter />
       <div className="ix-footer">
         <a
           href="https://lazysous.app"

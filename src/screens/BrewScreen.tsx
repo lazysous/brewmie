@@ -4,7 +4,8 @@ import type { AlgoParams } from '../lib/supabase'
 import { useTranslation } from '../hooks/useTranslation'
 import { useTier } from '../hooks/useTier'
 import { PremiumModal } from '../components/PremiumModal'
-import { maybeRequestReview, brewTap, shotSavedHaptic, scheduleLocalNotification } from '../lib/native'
+import { maybeRequestReview, brewTap, shotSavedHaptic } from '../lib/native'
+import { scheduleRateReminder, cancelRateReminder } from '../lib/notifications'
 import { track } from '../lib/analytics'
 import type { TParams } from '../lib/i18n'
 
@@ -951,6 +952,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
 
   // ─── Taste phase handlers ─────────────────────────────────────────────────────
   function handleTasteDone() {
+    cancelRateReminder().catch(() => {})
     if (savedShotId) {
       const updates: Partial<ShotEntry> = { crema, tasteFlavor, tasteStrength }
       if (result) {
@@ -970,12 +972,10 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     transitionCard('results')
     setPhase('rated')
     if (savedShotId) {
-      scheduleLocalNotification({
-        id: 2001,
-        title: 'How did that shot taste?',
-        body: 'Tap to rate crema, flavour, and strength.',
-        at: new Date(Date.now() + 8 * 60_000),
-      }).catch(() => {})
+      // Translated copy from notifications.ts (three variants per locale),
+      // under the stable rateReminder id so rating later cancels it. This
+      // used to schedule hard-coded English under its own id.
+      scheduleRateReminder(t).catch(() => {})
     }
   }
 

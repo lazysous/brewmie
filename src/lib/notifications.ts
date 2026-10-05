@@ -105,7 +105,9 @@ function atTimeOnDay(day: Date, hour: number, minute: number): Date {
 
 /**
  * Schedule a one-shot maintenance reminder at 09:00 local on the due day.
- * If the due day is already in the past, fires at 09:00 the next morning.
+ * If the due day is already in the past, fires at the NEXT 09:00: later today
+ * when it is still before nine, otherwise tomorrow morning. (An overdue task
+ * is better nudged sooner than later.)
  * Re-scheduling with the same type overwrites the previous one (stable ID).
  */
 export async function scheduleMaintReminder(

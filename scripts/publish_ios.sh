@@ -68,56 +68,107 @@ fi
 info "cap:sync ios"
 ( cd "$REPO" && npx cap sync ios )
 
+# 4b. Signing keychain. The private key lives in a dedicated keychain whose
+# partition list pre-approves codesign; without it codesign raises a GUI
+# prompt and the archive hangs with no output.
+KEYCHAIN="$HOME/Library/Keychains/lazysous-signing.keychain-db"
+KEYCHAIN_ENV="$HOME/.lazysous/signing-keychain.env"
+if [ -f "$KEYCHAIN" ] && [ -f "$KEYCHAIN_ENV" ]; then
+    # shellcheck disable=SC1090
+    source "$KEYCHAIN_ENV"
+    security unlock-keychain -p "$SIGNING_KEYCHAIN_PASSWORD" "$KEYCHAIN" \
+        && info "unlocked signing keychain"
+    if ! security list-keychains -d user | grep -q "lazysous-signing"; then
+        # shellcheck disable=SC2046
+        security list-keychains -d user -s "$KEYCHAIN" \
+            $(security list-keychains -d user | tr -d '"' | sed 's/^ *//')
+        info "added signing keychain to the search list"
+    fi
+else
+    info "warning: no dedicated signing keychain; codesign may raise a GUI prompt"
+fi
+security find-identity -v -p codesigning | grep -q "Apple Distribution" || \
+    die "No 'Apple Distribution' identity in the keychain. See BUILD_AUTOMATION.md section 3."
+ls "$HOME/Library/MobileDevice/Provisioning Profiles/93PGBWRFQ5.mobileprovision" >/dev/null 2>&1 || \
+    die "Brewmie AppStore 2026 profile not installed. See BUILD_AUTOMATION.md section 3."
+
 # 5. Clean + archive
 rm -rf "$ARCHIVE" "$IPA_DIR"
 mkdir -p "$BUILD_DIR"
 
-info "Archiving (Release)..."
-xcodebuild \
-    -workspace "$IOS_DIR/App.xcworkspace" \
-    -scheme "$SCHEME" \
-    -configuration Release \
-    -sdk iphoneos \
-    -destination 'generic/platform=iOS' \
-    -archivePath "$ARCHIVE" \
-    -allowProvisioningUpdates \
-    archive | xcbeautify --quiet 2>/dev/null || \
-xcodebuild \
-    -workspace "$IOS_DIR/App.xcworkspace" \
-    -scheme "$SCHEME" \
-    -configuration Release \
-    -sdk iphoneos \
-    -destination 'generic/platform=iOS' \
-    -archivePath "$ARCHIVE" \
-    -allowProvisioningUpdates \
-    archive | tail -40
+info "Archiving (Release, manual signing)..."
+ARCHIVE_LOG="$BUILD_DIR/archive.log"
+ARCHIVE_ARGS=(
+    -workspace "$IOS_DIR/App.xcworkspace"
+    -scheme "$SCHEME"
+    -configuration Release
+    -sdk iphoneos
+    -destination 'generic/platform=iOS'
+    -archivePath "$ARCHIVE"
+    CODE_SIGN_STYLE=Manual
+    DEVELOPMENT_TEAM=L36L3B3J32
+    CODE_SIGN_IDENTITY="Apple Distribution"
+    PROVISIONING_PROFILE_SPECIFIER="Brewmie AppStore 2026"
+    archive
+)
+if command -v xcbeautify >/dev/null 2>&1; then
+    xcodebuild "${ARCHIVE_ARGS[@]}" 2>&1 | tee "$ARCHIVE_LOG" | xcbeautify --quiet
+else
+    # Full log to a file. xcodebuild prints thousands of lines and the
+    # failure, when there is one, is in the last fifty.
+    xcodebuild "${ARCHIVE_ARGS[@]}" > "$ARCHIVE_LOG" 2>&1 || {
+        tail -60 "$ARCHIVE_LOG"
+        die "Archive failed, full log at $ARCHIVE_LOG"
+    }
+    grep -E "ARCHIVE SUCCEEDED|warning: .*(sign|provision)" "$ARCHIVE_LOG" | tail -5 || true
+fi
 
-[ -d "$ARCHIVE" ] || die "Archive failed"
+[ -d "$ARCHIVE" ] || die "Archive failed, see $ARCHIVE_LOG"
 ok "Archived to $ARCHIVE"
 
-# 6. Export ipa for App Store distribution
-cat > "$EXPORT_OPTS" <<'PLIST'
+# 6. Export ipa for App Store distribution.
+#
+# Manual signing. The App Store Connect key has the App Manager role, which
+# cannot use Apple's cloud-managed distribution certificates, so automatic
+# export fails with "You haven't been given access to cloud-managed
+# distribution certificates". The team's Apple Distribution certificate and
+# its private key live in the dedicated keychain Lazy Sous set up
+# (~/Library/Keychains/lazysous-signing.keychain-db, partition list
+# pre-approved for codesign); the Brewmie App Store profile (ASC id
+# 93PGBWRFQ5) was created through the ASC API against that certificate.
+# See BUILD_AUTOMATION.md section 3.
+PROFILE_APP="Brewmie AppStore 2026"
+SIGN_ID="Apple Distribution"
+TEAM_ID="L36L3B3J32"
+cat > "$EXPORT_OPTS" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>method</key><string>app-store</string>
-    <key>signingStyle</key><string>automatic</string>
+    <key>method</key><string>app-store-connect</string>
+    <key>signingStyle</key><string>manual</string>
+    <key>teamID</key><string>$TEAM_ID</string>
+    <key>signingCertificate</key><string>$SIGN_ID</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>app.brewmie.brewmie</key><string>$PROFILE_APP</string>
+    </dict>
     <key>uploadBitcode</key><false/>
     <key>uploadSymbols</key><true/>
     <key>destination</key><string>export</string>
 </dict>
 </plist>
 PLIST
-
-info "Exporting .ipa..."
+info "Exporting .ipa (manual signing)..."
+EXPORT_LOG="$BUILD_DIR/export.log"
 xcodebuild \
     -exportArchive \
     -archivePath "$ARCHIVE" \
     -exportPath "$IPA_DIR" \
-    -exportOptionsPlist "$EXPORT_OPTS" \
-    -allowProvisioningUpdates | tail -20
-
+    -exportOptionsPlist "$EXPORT_OPTS" > "$EXPORT_LOG" 2>&1 || {
+    tail -40 "$EXPORT_LOG"
+    die "Export failed, full log at $EXPORT_LOG"
+}
 IPA=$(find "$IPA_DIR" -name "*.ipa" -type f | head -1)
 [ -f "$IPA" ] || die "Export failed, no .ipa produced"
 ok "Exported $IPA"

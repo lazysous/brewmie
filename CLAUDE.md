@@ -4,7 +4,8 @@ Last verified: 2026-10-05
 
 Brewmie (brewmie.app) is an espresso shot dial-in coach for home baristas. The
 codebase is a Vite + React + TypeScript web app wrapped in Capacitor for native
-iOS and Android. Supabase is the backend (auth, data). A 7-day trial exists only as unused SQL.
+iOS and Android. Supabase is the backend (auth, data). Premium is a one-time
+lifetime unlock bought through the stores; there is no trial.
 Lazy Sous is the sister brand from the same studio.
 
 ## Build / serve / deploy (verified)
@@ -50,36 +51,43 @@ users only on the next OTA.
 before any OTA. Suites live in `tests/`; see BUILD_AUTOMATION.md section 4b for
 how the private algorithm functions are reached.
 
-## Backend facts (verified live 2026-10-05)
+## Backend facts (verified live 2026-10-05, after the hardening SQL ran)
 
 - Supabase project `pdbfmmtwgsdkattjraya`. The anon key is in `.env.local`
   (never committed). There is no service-role key or Supabase CLI login on this
-  machine: schema changes go through the SQL editor in the dashboard.
-- `shots` was created with `grind` / `dose` / `tamp` columns and never gained
-  the camelCase ShotEntry columns the client writes. Every `upsertShot` and
-  `bulkUpsertShots` since the ShotEntry reshape failed with PGRST204 before
-  RLS was consulted, silently (supabase-js returns `{ error }`, it does not
-  throw, and the old `.catch()` wrappers never saw it). Personal shot history
-  lives only on the device until `supabase/2026-10-05_review_hardening.sql`
-  is applied; the client now backfills once per account after that.
-- `effective_tier` (the unused trial view) was readable by the anon key and
-  listed every user's id, tier and trial dates. Same SQL file fixes it.
-- `public_shots` accepts anonymous inserts by design (the community dataset
-  behind `get_algo_params`). Until OTA 1.0.10 the client re-posted the newest
-  shot on every launch and every delete: 393 rows held 123 distinct shots.
-  Duplicates skew the algorithm parameters until the table is deduplicated.
-- The 7-day trial exists only as SQL (`start_trial`, `effective_tier`).
-  Nothing in the client calls it. Nobody has had a trial.
+  machine: schema changes go through the SQL editor in the dashboard, and the
+  scripts that were applied live in `supabase/`
+  (`2026-10-05_review_hardening.sql` is the latest, applied 2026-10-05).
+- `shots` was created with `grind` / `dose` / `tamp` columns and only gained
+  the camelCase ShotEntry columns the client writes on 2026-10-05. Before that
+  every `upsertShot` and `bulkUpsertShots` failed with PGRST204 before RLS was
+  consulted, silently (supabase-js returns `{ error }`, it does not throw).
+  Since OTA 1.0.10 the client checks the error and backfills the device's
+  history once per account (`brewmie_backfill_v1:<uid>` flag, set only on
+  success), so personal history reaches the server on the first launch after
+  the columns exist.
+- The anon role has no access to `profiles` or `shots` (revoked 2026-10-05);
+  the app never reads either before sign-in. `public_shots` still accepts
+  anonymous inserts by design (the community dataset behind
+  `get_algo_params`), bounded by the `public_shots_sane_ranges` CHECK.
+- Until OTA 1.0.10 the client re-posted the newest public shot on every
+  launch and every delete: 393 rows held 123 distinct shots. The duplicates
+  skew `get_algo_params` until the optional dedupe block (section 7 of the
+  hardening SQL) is run. Owner decision.
+- The 7-day trial is gone: `start_trial`, `effective_tier` and
+  `profiles.trial_started_at` were dropped on 2026-10-05. Nobody ever had one.
 - Entitlement model: Premium is decided on the device by the store plugin
-  (StoreKit 2 / Play Billing, no server-side receipt validation, no
-  `store.validator`) and mirrored to `profiles.tier` BY THE CLIENT. Any
-  signed-in user can set their own `tier` with their session token. Closing
-  that needs either column-level revocation of `tier` (Restore Purchases then
-  carries ownership between devices) or an Edge Function that validates
-  receipts and writes `tier` with the service role. Owner decision, not made.
-- `DevTierPill` / `useTier` honour a `brewmie_tier_override` when
-  `brewmie_devtest=1` is in localStorage, in production too. Not reachable
-  without devtools on native; still a backdoor the TODO said to remove.
+  (StoreKit 2 / Play Billing, no server-side receipt validation) and
+  `profiles.tier` is READ-ONLY for clients since 2026-10-05. The
+  authenticated role may insert and update every profile column except
+  `tier` (column-level grants), so a profile upsert that includes `tier`
+  fails as a whole; keep `tier` out of every profile payload. Restore
+  Purchases carries ownership between devices, and the four profiles that
+  already held `tier = 'premium'` keep it. The client stopped writing `tier`
+  in the 1.1 release.
+- `useTier` honours `localStorage.brewmie_tier_override` in dev builds only
+  (`import.meta.env.DEV`). The production opt-in (`brewmie_devtest`) and the
+  `DevTierPill` were removed on 2026-10-05.
 
 ## Native facts
 

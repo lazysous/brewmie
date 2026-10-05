@@ -2,9 +2,11 @@
 # One-command release for Brewmie.
 #
 # Usage:
-#   scripts/release.sh ota <ver>            # OTA via Capgo (JS bundle only)
+#   scripts/release.sh ota <ver>            # OTA via our own worker (JS bundle only)
 #   scripts/release.sh native               # native iOS + Play (no OTA bump)
 #   scripts/release.sh all <ota_version>    # OTA push + iOS + Play
+#
+# PLAY_NOTES="..." sets the Play release note for `native` / `all`.
 #
 # Examples:
 #   scripts/release.sh ota 1.0.4
@@ -22,9 +24,10 @@ case "$cmd" in
         exec "$REPO/scripts/ota_push.sh" "$ver"
         ;;
     native)
+        notes="${PLAY_NOTES:-Bug fixes and improvements.}"
         echo "-> Starting Play upload in background..."
         "$REPO/scripts/publish_play.py" --track production \
-            --notes "First release. Pull a shot, dial it in, no subscription." \
+            --notes "$notes" \
             > /tmp/brewmie-play.log 2>&1 &
         play_pid=$!
         echo "-> Starting iOS upload (foreground, needs Xcode)..."

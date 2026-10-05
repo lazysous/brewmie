@@ -116,17 +116,40 @@ which means the API auth works.
 
 ---
 
-## 3. Xcode + signing
+## 3. Xcode + signing (manual, verified 2026-10-05)
 
-Brewmie uses Capacitor automatic signing through `-allowProvisioningUpdates`.
-First-time setup:
+Automatic signing does not work from the command line here. The App Store
+Connect API key has the App Manager role, which cannot use Apple's
+cloud-managed distribution certificates, so `-allowProvisioningUpdates`
+fails at export with "You haven't been given access to cloud-managed
+distribution certificates". `publish_ios.sh` therefore signs manually with
+three pieces that already exist on this machine:
 
-- Open `ios/App/App.xcworkspace` in Xcode.
-- Sign in to your Apple ID under **Settings**, **Accounts**.
-- On the **App** target, **Signing & Capabilities**, tick **Automatically
-  manage signing**, pick the team.
-- Xcode will fetch the Distribution certificate on first archive. After
-  that, `publish_ios.sh` runs unattended.
+- **Certificate**: `Apple Distribution: RICHARD A B WILLIAMSON (L36L3B3J32)`,
+  created through the ASC API for Lazy Sous (ASC certificate id
+  `363HA9WALY`). Certificate and private key live in the dedicated keychain
+  `~/Library/Keychains/lazysous-signing.keychain-db`, whose partition list
+  pre-approves `codesign`. Its password is in
+  `~/.lazysous/signing-keychain.env` (`SIGNING_KEYCHAIN_PASSWORD`); the
+  script unlocks the keychain and adds it to the search list before
+  archiving. A silent hang with no output during archive or export means
+  the keychain prompt is waiting. Unlock it.
+- **Profile**: `Brewmie AppStore 2026` (ASC id `93PGBWRFQ5`), an App Store
+  distribution profile for `app.brewmie.brewmie` with In-App Purchase and
+  Sign in with Apple, created through the ASC API against that certificate
+  and installed at
+  `~/Library/MobileDevice/Provisioning Profiles/93PGBWRFQ5.mobileprovision`.
+  It expires with the certificate. Recreate both through the ASC API
+  (`store-pipeline/_auth.py` in the Lazy Sous repo has `asc_request`) and
+  update the id in `publish_ios.sh`.
+- **Build settings**: the archive step passes `CODE_SIGN_STYLE=Manual`,
+  `DEVELOPMENT_TEAM=L36L3B3J32`, `CODE_SIGN_IDENTITY="Apple Distribution"`
+  and `PROVISIONING_PROFILE_SPECIFIER="Brewmie AppStore 2026"` on the
+  command line, and the export plist uses `signingStyle manual` with the
+  same profile. The pbxproj keeps automatic signing for Xcode GUI use.
+
+Nothing to click in Xcode. `scripts/publish_ios.sh` runs unattended once the
+three items above exist, and dies naming the missing item if one is absent.
 
 ---
 
@@ -198,7 +221,7 @@ result is a real regression.
 | `scripts/publish_play.py --track internal` | Bump versionCode, cap:sync, bundleRelease, upload AAB to Internal Testing. ~2 min. |
 | `scripts/publish_play.py --track production --notes "..."` | Same, ships to Production with release notes. |
 | `scripts/publish_play.py --no-bump --skip-build` | Re-upload existing AAB after a failed network upload. |
-| `scripts/release.sh native` | iOS + Play in parallel. iOS foreground (Xcode signing), Play background to `/tmp/brewmie-play.log`. |
+| `PLAY_NOTES="..." scripts/release.sh native` | iOS + Play in parallel. iOS foreground (manual signing, section 3), Play background to `/tmp/brewmie-play.log`. `PLAY_NOTES` is the Play release note; without it a generic one ships. |
 | `scripts/release.sh all 1.0.4` | OTA push, then native. |
 
 After upload:
@@ -262,9 +285,13 @@ file path if any are absent.
 
 ## 8. Troubleshooting
 
-- **iOS "no signing certificate"**: Xcode, Settings, Accounts, sign in,
-  Manage Certificates, ensure an Apple Distribution cert exists.
-  Capacitor uses automatic signing so a one-time login fixes it.
+- **iOS "No 'Apple Distribution' identity" or "profile not installed"**:
+  the signing keychain or the provisioning profile is missing; section 3
+  lists both.
+- **iOS archive or export hangs with no output**: the signing keychain is
+  locked and codesign is waiting on a GUI prompt. Run
+  `security unlock-keychain ~/Library/Keychains/lazysous-signing.keychain-db`
+  and retry with `--no-bump`.
 - **Play "Version code XX has already been used"**: `--no-bump` was
   passed but the previous versionCode is already on Play. Drop
   `--no-bump`.

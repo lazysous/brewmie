@@ -5,12 +5,11 @@ import { Hero } from './components/Hero'
 import { BottomNav } from './components/BottomNav'
 import { AuthModal } from './components/AuthModal'
 import { ConsentBanner } from './components/ConsentBanner'
-import { DevTierPill } from './components/DevTierPill'
 import { PremiumModal } from './components/PremiumModal'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, setTier as persistTier, signInWithApple, signInWithGoogle } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle } from './lib/supabase'
 import { initIAP } from './lib/iap'
 import { notifyAppReady } from './lib/native'
 import { Capacitor } from '@capacitor/core'
@@ -107,12 +106,12 @@ export function App() {
     // Boot the IAP store. On native this loads the Premium product and wires
     // verified-receipt callbacks; on web it's a no-op. When the store reports
     // ownership (either now from a restored receipt or later from a purchase),
-    // we flip tier=premium locally and best-effort persist to Supabase if the
-    // user is signed in.
+    // we flip tier=premium locally. Ownership lives in the App Store / Play
+    // account and Restore Purchases carries it to other devices; the client
+    // no longer writes profiles.tier (the column is read-only to clients
+    // since 2026-10-05, after a review found any signed-in user could set it).
     initIAP(() => {
       dispatch({ type: 'SET_TIER', payload: 'premium' })
-      const uid = supabase.auth.getUser().then(({ data }) => data.user?.id)
-      uid.then((u) => { if (u) persistTier(u, 'premium').catch(() => {}) })
     }).catch(() => {})
   }, [])
 
@@ -236,7 +235,6 @@ export function App() {
         isPremium={state.tier === 'premium'}
       />
       <ConsentBanner />
-      <DevTierPill />
       {signInError && (
         <div
           role="alert"

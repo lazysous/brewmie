@@ -64,26 +64,6 @@ export async function notifyAppReady(): Promise<void> {
 }
 
 /**
- * iOS App Tracking Transparency. Required by Apple before any IDFA-style
- * tracking. Brewmie doesn't track across apps, but Apple still requires the
- * prompt for any analytics SDK. Call once shortly after first launch.
- *
- * Info.plist must include NSUserTrackingUsageDescription on iOS, otherwise the
- * prompt won't appear. The plist string is set in capacitor.config.ts/ios.
- */
-export async function requestAppTrackingPermission(): Promise<'authorized' | 'denied' | 'notDetermined' | 'restricted' | 'unavailable'> {
-  if (!isNative || Capacitor.getPlatform() !== 'ios') return 'unavailable'
-  try {
-    const mod = await import('@capgo/capacitor-app-tracking-transparency')
-    const AppTrackingTransparency = (mod as { AppTrackingTransparency: { requestPermission: () => Promise<{ status: string }> } }).AppTrackingTransparency
-    const res = await AppTrackingTransparency.requestPermission()
-    return res.status as 'authorized' | 'denied' | 'notDetermined' | 'restricted'
-  } catch {
-    return 'unavailable'
-  }
-}
-
-/**
  * Schedule a local notification. Works on iOS + Android via Capacitor.
  * No APNs needed — local notifications don't require a push server.
  */

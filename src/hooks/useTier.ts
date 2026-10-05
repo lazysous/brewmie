@@ -2,19 +2,14 @@ import { useSyncExternalStore } from 'react'
 import { Capacitor } from '@capacitor/core'
 import type { Tier, BrewmieState } from '../types'
 
-// In dev, localStorage.brewmie_tier_override = 'free' | 'premium' overrides the
-// real tier so designers can flip between modes without touching the backend.
-// In production we ignore any stale value unless the user has explicitly
-// opted into devtest mode — otherwise a stray write during testing would
-// leak a 'premium' override into the shipped app.
+// In dev builds only, localStorage.brewmie_tier_override = 'free' | 'premium'
+// overrides the real tier so the two modes can be checked without a purchase.
+// Production ignores it entirely. (There used to be a localStorage opt-in that
+// enabled the override in shipped builds; removed 2026-10-05.)
 const OVERRIDE_KEY = 'brewmie_tier_override'
-const PROD_OPT_IN_KEY = 'brewmie_devtest'
 const EVENT = 'brewmie:tier-override'
 
-const OVERRIDE_ENABLED: boolean = (() => {
-  if (import.meta.env.DEV) return true
-  try { return typeof localStorage !== 'undefined' && localStorage.getItem(PROD_OPT_IN_KEY) === '1' } catch { return false }
-})()
+const OVERRIDE_ENABLED: boolean = import.meta.env.DEV
 
 // While we're testing on web, gating is OFF. Every feature is available, no
 // modal, no locks, no PREMIUM badges. Native apps (iOS/Android) keep the full

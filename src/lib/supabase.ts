@@ -153,13 +153,11 @@ export async function setDisplayName(userId: string, displayName: string) {
 }
 
 // ─── Tier (free / premium) ───────────────────────────────────────────────────
-// Production entitlement flow (when StoreKit / Play Billing is wired):
-//   1. On launch, query the store for active non-consumable purchases.
-//   2. If "Brewmie Premium" is owned, set tier locally to 'premium'.
-//   3. Cache the entitlement in localStorage so the app boots premium offline.
-//   4. If a user signs in, mirror the receipt to profiles.tier for sync.
-//   5. fetchTier(userId) below is only the SERVER read path for cross-device sync.
-// Effective tier = localPurchaseEntitlement ?? state.tier (from server) ?? 'free'.
+// Premium is granted on the device by the store plugin (StoreKit 2 / Play
+// Billing) and persisted in local state. profiles.tier is READ-ONLY to clients
+// since 2026-10-05: it keeps the value for accounts that were marked premium
+// before then, and is the hook for a future server-side receipt validator.
+// Restore Purchases carries ownership to a new device.
 
 export async function fetchTier(userId: string): Promise<'free' | 'premium'> {
   const { data, error } = await supabase
@@ -171,11 +169,6 @@ export async function fetchTier(userId: string): Promise<'free' | 'premium'> {
   return (data.tier as 'free' | 'premium') ?? 'free'
 }
 
-export async function setTier(userId: string, tier: 'free' | 'premium') {
-  return supabase
-    .from('profiles')
-    .upsert({ id: userId, tier }, { onConflict: 'id' })
-}
 
 // ─── Global shot counter ─────────────────────────────────────────────────────
 // Total shots across every Brewmie user, all time. Cached briefly so the

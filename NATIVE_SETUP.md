@@ -2,80 +2,70 @@
 
 Last verified: 2026-10-05
 
-JS wiring is in place for the items below, but the native iOS/Android build
-needs one-time config when the dev environment has CocoaPods + Xcode set up.
+What the native iOS and Android shells need beyond the web bundle.
+Everything below is in place as of the 1.1 release (2026-10-05); the notes
+say why each piece exists so nobody removes it.
 
-## App Tracking Transparency (iOS)
+## UIScene lifecycle (iOS, mandatory)
 
-Plugin: `@capgo/capacitor-app-tracking-transparency` (installed).
+Xcode 27 builds against the iOS 26 SDK, and Apple rejects apps that have not
+adopted the UIScene lifecycle. Lazy Sous build 18 was rejected for exactly
+this; the simulator does not reproduce it and the reason only shows in App
+Store Connect, not in the rejection email. Brewmie adopted it on 2026-10-05:
 
-Required Info.plist key in `ios/App/App/Info.plist`:
+- `ios/App/App/SceneDelegate.swift` forwards URL contexts and user
+  activities to `ApplicationDelegateProxy.shared` so Capacitor deep links
+  and plugin callbacks keep working.
+- `AppDelegate.swift` returns a `UISceneConfiguration` named
+  "Default Configuration" from `configurationForConnecting`.
+- `Info.plist` carries `UIApplicationSceneManifest` pointing at
+  `$(PRODUCT_MODULE_NAME).SceneDelegate` and the `Main` storyboard.
+- `project.pbxproj` registers `SceneDelegate.swift` in the App target.
 
-```xml
-<key>NSUserTrackingUsageDescription</key>
-<string>Brewmie uses anonymous usage data to improve dialling-in recommendations for all users. No personal data is ever included.</string>
-```
-
-The plugin call site is `requestAppTrackingPermission()` in `src/lib/native.ts`.
-It is NOT called anywhere (checked 2026-10-05): `src/App.tsx` deliberately skips
-ATT because Brewmie has no tracking SDK, and the Info.plist has no
-NSUserTrackingUsageDescription. Calling it without the key crashes on launch.
-Leave both as they are unless a tracking SDK is added.
-
-## Local notifications (iOS + Android)
-
-Plugin: `@capacitor/local-notifications` (installed).
-
-Required Info.plist key:
-
-```xml
-<key>UIBackgroundModes</key>
-<array>
-  <string>remote-notification</string>
-</array>
-```
-
-Android manifest already declares the permission via the plugin.
-
-Reminders are scheduled from `src/lib/notifications.ts` (there is no
-`reminders.ts`), triggered on app open and whenever maintenance dates or bean
-roast date change. The Info.plist currently has NO UIBackgroundModes entry and
-local notifications do not need one; the block above is only required if push
-is ever added.
+`npx cap sync ios` does not touch any of these. Do not remove them.
 
 ## Location (weather at shot time)
 
-`src/App.tsx` asks for the device position on every launch to record ambient
-temperature and humidity against each shot (the algorithm's weather modifier
-and the public dataset's `temp` / `humidity` columns). The iOS Info.plist has
-NO `NSLocationWhenInUseUsageDescription`, so on iOS the request fails silently
-and every iOS shot is recorded with no weather (36% of the public dataset had
-none on 2026-10-05). Add before the next native build:
+`src/App.tsx` asks for the device position on every launch to record
+ambient temperature and humidity against each shot (the algorithm's weather
+modifier and the public dataset's `temp` / `humidity` columns). Info.plist
+has carried `NSLocationWhenInUseUsageDescription` since 1.1 (build 12).
+Builds before it never showed the permission prompt, so every iOS shot from
+1.0 has no weather (36% of the public dataset had none on 2026-10-05).
 
-```xml
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>Brewmie uses your rough location once per session to record the weather alongside each shot, because humidity and temperature change how espresso extracts.</string>
-```
+## Local notifications (iOS + Android)
 
-## 7-day Premium trial
+Plugin: `@capacitor/local-notifications` (6.x, matching the Capacitor 6
+core). Reminders are scheduled from `src/lib/notifications.ts` (rate-later,
+maintenance, bean age), triggered on app open and whenever maintenance dates
+or the bean roast date change. Info.plist has no `UIBackgroundModes` entry
+and local notifications do not need one; the `remote-notification`
+background mode is only required if push is ever added. The Android manifest
+gets its permission from the plugin.
 
-Server-side. Run the migration once:
+## Plugin versions
 
-```bash
-psql $DATABASE_URL -f supabase/add_trial_started_at.sql
-```
+Capacitor core, iOS and Android are 6.2.1. Every `@capacitor/*` plugin is on
+the 6.x line (filesystem 6.0.4, local-notifications 6.1.3, share 6.0.4), as
+is `@capgo/capacitor-updater` (it talks to our own OTA worker, not Capgo's
+SaaS). Keep plugin majors equal to the core major; 1.0 shipped 8.x plugins
+on the 6.2 core and only built because nothing in the mismatched surface was
+called.
 
-Or paste the SQL into the Supabase dashboard SQL editor.
+The ATT plugin (`@capgo/capacitor-app-tracking-transparency`) was removed on
+2026-10-05: Brewmie has no tracking SDK, nothing called it, and Info.plist
+never had `NSUserTrackingUsageDescription`. Re-adding tracking means adding
+both the plugin and the plist key, or the app crashes on launch.
 
-The migration has been applied (the `start_trial` function and
-`effective_tier` view exist in production) but the CLIENT NEVER CALLS EITHER:
-as of 2026-10-05 nothing in `src/` references `start_trial`, `effective_tier`
-or a trial. No user has ever had a trial. Either wire it (call `start_trial`
-on first sign-in and treat `now < trial_started_at + 7 days` as Premium in
-`useTier`) or drop the SQL; see the review notes in CLAUDE.md.
+## Removed
+
+- The 7-day Premium trial. Its SQL (`start_trial`, `effective_tier`,
+  `profiles.trial_started_at`) was dropped from the database on 2026-10-05
+  and `supabase/add_trial_started_at.sql` deleted. Premium is a one-time
+  lifetime unlock through the stores; see CLAUDE.md "Backend facts" for the
+  entitlement model.
 
 ## Deferred
 
-- Move app to `/testing.html` + landing at `/` — needs Vite multi-entry +
-  Capacitor entrypoint workaround. Done in isolation when the native bundle
-  can be re-synced and tested. Current landing lives at `/landing.html`.
+- Move app to `/testing.html` + landing at `/`: needs Vite multi-entry +
+  Capacitor entrypoint workaround. Current landing lives at `/landing.html`.

@@ -8,16 +8,14 @@
 --   1. shots: add the columns the app has been writing since the ShotEntry
 --      shape changed. Personal shot sync has failed on every upsert because
 --      PostgREST rejects unknown columns (PGRST204) before RLS is consulted.
---   2. effective_tier: stop the anonymous key reading every user's id, tier
---      and trial dates. Nothing in the app reads this view.
+--   2. Remove the unused 7-day trial (view, function, column).
 --   3. public_shots: sanity bounds so a malformed or hostile insert cannot
 --      skew the community algorithm parameters.
 --   4. global_shot_count: the union version (one count per physical shot).
 --   5. Remove the review's probe row.
 --
--- NOT included, owner decision (see the review report):
---   - revoking client write access to profiles.tier (entitlement model).
---   - wiring or removing the unused 7-day trial.
+--   6. profiles.tier no longer client-writable; anon loses profiles/shots.
+--   7. OPTIONAL deduplication of public_shots (commented out).
 
 -- ---------------------------------------------------------------------------
 -- 1. shots: the columns the client writes.
@@ -46,12 +44,14 @@ alter table public.shots
 notify pgrst, 'reload schema';
 
 -- ---------------------------------------------------------------------------
--- 2. effective_tier: not readable by the anonymous role, and when read by a
---    signed-in user only their own row (the view ran as its owner, which
---    bypassed the profiles RLS policy).
+-- 2. The 7-day trial is removed (owner decision 2026-10-05). It was never
+--    wired in the client; all 32 profiles had trial_started_at = null when
+--    this ran. The effective_tier view was also readable by the anon key and
+--    listed every user's id and tier.
 -- ---------------------------------------------------------------------------
-revoke select on public.effective_tier from anon;
-alter view public.effective_tier set (security_invoker = true);
+drop view if exists public.effective_tier;
+drop function if exists public.start_trial();
+alter table public.profiles drop column if exists trial_started_at;
 
 -- ---------------------------------------------------------------------------
 -- 3. public_shots: bounds. These match the app's own input ranges with
@@ -96,7 +96,24 @@ grant execute on function public.global_shot_count() to anon, authenticated;
 delete from public.public_shots where source_id = 'audit-probe-will-delete';
 
 -- ---------------------------------------------------------------------------
--- 6. OPTIONAL, owner decision: deduplicate public_shots.
+-- 6. Entitlement: profiles.tier is no longer client-writable (owner decision
+--    2026-10-05). Premium ownership lives in the App Store / Play account and
+--    Restore Purchases carries it between devices; the 4 profiles that already
+--    hold tier = 'premium' keep it. The client stops writing tier in OTA 1.1.1.
+--    Column-level privileges: table-level INSERT/UPDATE are withdrawn from the
+--    authenticated role and granted back on every column except tier.
+--    The anon role gets no access to profiles or shots at all (the app never
+--    reads either before sign-in).
+-- ---------------------------------------------------------------------------
+revoke select, insert, update, delete on public.profiles from anon;
+revoke select, insert, update, delete on public.shots from anon;
+revoke insert, update on public.profiles from authenticated;
+grant insert (id, display_name, units, machine, grinder, tamp, beans, updated_at),
+      update (id, display_name, units, machine, grinder, tamp, beans, updated_at)
+  on public.profiles to authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 7. OPTIONAL, owner decision: deduplicate public_shots.
 --    Until OTA 1.0.10 the client re-posted the newest shot on every launch
 --    and every delete. On 2026-10-05 the table held 393 rows for 123 distinct
 --    shots (one shot appeared 144 times), which weights get_algo_params toward

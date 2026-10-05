@@ -103,26 +103,17 @@ describe('native + override, DEV mode (import.meta.env.DEV is true under vitest)
   })
 })
 
-describe('native + override, production opt-in (import.meta.env.DEV stubbed to false)', () => {
-  it('the override is IGNORED without the brewmie_devtest opt-in flag', async () => {
-    mockIsNative = true
-    vi.stubEnv('DEV', false)
-    localStorage.setItem('brewmie_tier_override', 'premium') // no opt-in flag set
-    const mod = await freshUseTier()
-    const { result } = renderHook(() => mod.useTier(makeState('free')))
-    expect(result.current).toBe('free')
-  })
-
-  // FINDING: see report. A production user who flips brewmie_devtest=1 can
-  // self-grant premium for free via brewmie_tier_override, on native.
-  it('[FINDING] brewmie_devtest=1 + brewmie_tier_override=premium grants Premium for free in production', async () => {
+describe('native + override, production (import.meta.env.DEV stubbed to false)', () => {
+  it('the override is ignored in production, with or without the old brewmie_devtest flag (removed 2026-10-05)', async () => {
+    // Native, so gating is on and only the override could make this premium.
     mockIsNative = true
     vi.stubEnv('DEV', false)
     localStorage.setItem('brewmie_devtest', '1')
     localStorage.setItem('brewmie_tier_override', 'premium')
     const mod = await freshUseTier()
-    const { result } = renderHook(() => mod.useTier(makeState('free')))
-    expect(result.current).toBe('premium')
-    expect(mod.isPremium(makeState('free'))).toBe(true)
+    const state = makeState('free')
+    expect(mod.isPremium(state)).toBe(false)
+    expect(renderHook(() => mod.useTier(state)).result.current).toBe('free')
+    vi.unstubAllEnvs()
   })
 })

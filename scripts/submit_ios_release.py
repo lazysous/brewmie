@@ -252,20 +252,29 @@ def submit_for_review(version_id: str, build_id: str | None = None) -> None:
         _ensure_encryption_flag(build_id)
 
     sub_id = _find_or_create_review_submission()
-    try:
-        asc_request("POST", "/v1/reviewSubmissionItems", {
-            "data": {
-                "type": "reviewSubmissionItems",
-                "relationships": {
-                    "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub_id}},
-                    "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version_id}},
-                },
-            }
-        })
-    except RuntimeError as e:
-        if "409" not in str(e):
-            raise
-        info("Version already on submission; continuing.")
+    # Apple answers this POST with a bare HTTP 500 UNEXPECTED_ERROR now and
+    # then, with nothing wrong on our side; the identical request succeeds on
+    # retry (1.1 build 12, 2026-10-06). Retry 5xx a few times before failing.
+    for attempt in range(1, 5):
+        try:
+            asc_request("POST", "/v1/reviewSubmissionItems", {
+                "data": {
+                    "type": "reviewSubmissionItems",
+                    "relationships": {
+                        "reviewSubmission": {"data": {"type": "reviewSubmissions", "id": sub_id}},
+                        "appStoreVersion": {"data": {"type": "appStoreVersions", "id": version_id}},
+                    },
+                }
+            })
+            break
+        except RuntimeError as e:
+            if "409" in str(e):
+                info("Version already on submission; continuing.")
+                break
+            if "HTTP 5" not in str(e) or attempt == 4:
+                raise
+            warn(f"ASC returned a server error adding the item (attempt {attempt}/4); retrying in 20s")
+            time.sleep(20)
 
     asc_request("PATCH", f"/v1/reviewSubmissions/{sub_id}", {
         "data": {"type": "reviewSubmissions", "id": sub_id,

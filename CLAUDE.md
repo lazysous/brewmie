@@ -1,6 +1,6 @@
 # Brewmie
 
-Last verified: 2026-10-05
+Last verified: 2026-10-07
 
 Brewmie (brewmie.app) is an espresso shot dial-in coach for home baristas. The
 codebase is a Vite + React + TypeScript web app wrapped in Capacitor for native
@@ -91,13 +91,14 @@ how the private algorithm functions are reached.
 
 ## Native facts (verified 2026-10-06)
 
-- **Android 1.1 (versionCode 7) is live on Play production.** iOS 1.1
-  (build 12) is uploaded and submitted for review; iOS 1.0 build 11 stays
-  READY_FOR_SALE until Apple approves. Both 1.0 binaries embed an old bundle
-  and pick up OTA on launch.
+- **Android 1.1 (versionCode 7) is live on Play production** (2026-10-06).
+  **iOS 1.1 (build 12) is WAITING_FOR_REVIEW** (submitted 2026-10-06); iOS
+  1.0 build 11 stays READY_FOR_SALE until Apple approves. The App Review
+  notes on the 1.1 version describe every change, including the location
+  prompt. Binaries pick up OTA on launch.
 - OTA must never go backwards from the shipping native version.
   `ota_push.sh` enforces it by reading `MARKETING_VERSION`, so every OTA from
-  here is >= 1.1. Current bundle: 1.1.1.
+  here is >= 1.1. Current bundle: 1.1.2.
 - Minimum OS versions moved with this release: iOS 15.0 (Xcode 27 refuses
   below 15) and Android API 24 (Play refuses below 24). Details and the
   Podfile hook that makes the pods comply are in NATIVE_SETUP.md.
@@ -108,6 +109,12 @@ how the private algorithm functions are reached.
 - Info.plist now has `NSLocationWhenInUseUsageDescription`, so iOS records
   weather against a shot from 1.1 onward. Every iOS shot logged on 1.0 has
   none.
+- The permission string promises "rough location", so `src/lib/weather.ts`
+  rounds the coordinates to one decimal place (about 11 km) before they go to
+  Open-Meteo; a fence test keeps App.tsx from building that URL itself. The
+  privacy policy (`public/privacy.html`, live at brewmie.app/privacy)
+  discloses it under "Location and weather" and names every processor.
+  Keep the three in step: plist string, rounding, policy.
 - Every Capacitor plugin is on the 6.x line, matching the 6.2.1 core. The ATT
   plugin was removed (nothing called it). `npm install` still needs
   `--legacy-peer-deps`, now for one reason only:

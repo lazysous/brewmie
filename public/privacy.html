@@ -147,9 +147,9 @@ h1 {
     </div>
 
     <div class="content">
-        <h2>Your shots stay on your device — unless you sign in.</h2>
+        <h2>Your shots stay on your device unless you sign in.</h2>
         <p>
-            Without signing in, everything lives in your browser only. We can't see it. Clear your browser data to delete it.
+            Without signing in, everything stays on your phone or in your browser. We can't see it. Delete all data in Insights removes it.
         </p>
         <p>
             If you sign in, we sync your shots, gear setup, and preferences across your devices.
@@ -157,10 +157,20 @@ h1 {
 
         <h2>What we collect.</h2>
         <p>
-            Signed-in: your email, display name, shots, gear, and settings — enough to sync them.
+            Signed in: your email, display name, shots, gear, and settings. That is what syncing needs, nothing more.
         </p>
         <p>
-            Anonymous shot data — grind, yield, time, taste — feeds the recommendation engine. No names, no emails, no device IDs. Turn it off any time in Setup → Privacy.
+            Anonymous shot data (grind, yield, time, taste, and the temperature and humidity if you allow location) feeds the recommendation engine. No names, no emails, no device IDs, no location. Turn it off any time in Setup, under Privacy.
+        </p>
+
+        <h2>Location and weather.</h2>
+        <p>
+            Optional. Humidity and temperature change how espresso extracts, so Brewmie asks for your location once per session. It rounds it to about 11 km on your device and sends only that to Open-Meteo, a public weather service, to get the current temperature and humidity. We keep those two numbers with your shot. Your location itself is never stored and never sent anywhere else. Say no and your shots are logged without weather.
+        </p>
+
+        <h2>Who else handles your data.</h2>
+        <p>
+            Supabase stores the data of signed-in users. Google Analytics counts anonymous usage, with advertising signals switched off. Open-Meteo receives the rounded location described above. Your sign-in provider (Apple, Google or GitHub) handles sign-in, and the App Store or Google Play handles purchases. We never see your password or card. We don't sell data and there is no advertising in Brewmie.
         </p>
 
         <h2>Sign-in.</h2>
@@ -175,7 +185,7 @@ h1 {
 
         <h2>Your rights.</h2>
         <p>
-            Access, correct, export, or delete your data any time. The app has a Delete all data button in Insights. To delete a signed-in account, email us.
+            Access, correct, export, or delete your data any time. Delete account, in Setup under Privacy or in the account menu, permanently removes your account and everything synced to it. You can also email us.
         </p>
 
         <h2>Children.</h2>
@@ -189,7 +199,7 @@ h1 {
         </p>
 
         <p style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
-            <em>Effective: 16 May 2026</em>
+            <em>Effective: 7 October 2026</em>
         </p>
     </div>
 

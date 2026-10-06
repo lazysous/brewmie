@@ -118,11 +118,25 @@ wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date -u
 ok "worker redeployed"
 
 # 7) Smoke test
+#
+# Cloudflare can serve the previous worker version from an edge for a few
+# seconds after `wrangler deploy` returns, so a single immediate probe can
+# read the OLD LATEST_VERSION and fail a push that actually succeeded
+# (happened on the 1.1.1 push, 2026-10-05). Retry for up to 30s and only
+# fail if it never converges.
 info "smoke testing worker"
-DEVICE_OLD=$(curl -fs -X POST https://brewmie-ota.richbwilliamson.workers.dev \
-    -H "Content-Type: application/json" -d '{"version_name":"1.0"}')
-DEVICE_NEW=$(curl -fs -X POST https://brewmie-ota.richbwilliamson.workers.dev \
-    -H "Content-Type: application/json" -d "{\"version_name\":\"${VERSION}\"}")
+WORKER_URL="https://brewmie-ota.richbwilliamson.workers.dev"
+for attempt in $(seq 1 10); do
+    DEVICE_OLD=$(curl -fs -X POST "$WORKER_URL" \
+        -H "Content-Type: application/json" -d '{"version_name":"1.0"}' || true)
+    DEVICE_NEW=$(curl -fs -X POST "$WORKER_URL" \
+        -H "Content-Type: application/json" -d "{\"version_name\":\"${VERSION}\"}" || true)
+    if echo "$DEVICE_OLD" | grep -q "$VERSION" && \
+       echo "$DEVICE_NEW" | grep -q no_new_version_available; then
+        break
+    fi
+    [ "$attempt" = "10" ] || { info "edge still on the old version, retrying ($attempt/10)"; sleep 3; }
+done
 echo "  device 1.0 -> $DEVICE_OLD"
 echo "  device $VERSION -> $DEVICE_NEW"
 if ! echo "$DEVICE_NEW" | grep -q no_new_version_available; then
@@ -133,7 +147,14 @@ if ! echo "$DEVICE_OLD" | grep -q "$VERSION"; then
     echo "FAIL worker did not offer $VERSION to device on 1.0" >&2
     exit 1
 fi
-ok "smoke test passed"
+
+# The bundle itself must be reachable, or every device gets a download error.
+ZIP_CODE=$(curl -s -o /dev/null -w '%{http_code}' -m 60 "https://brewmie.app/${ZIP_REL}")
+[ "$ZIP_CODE" = "200" ] || {
+    echo "FAIL bundle https://brewmie.app/${ZIP_REL} returned HTTP $ZIP_CODE" >&2
+    exit 1
+}
+ok "smoke test passed (worker + bundle reachable)"
 
 echo
 echo "DONE  OTA bundle ${VERSION} live. Android (autoUpdate=true) will pull on next launch."

@@ -89,16 +89,35 @@ how the private algorithm functions are reached.
   (`import.meta.env.DEV`). The production opt-in (`brewmie_devtest`) and the
   `DevTierPill` were removed on 2026-10-05.
 
-## Native facts
+## Native facts (verified 2026-10-06)
 
-- iOS 1.0 build 11 is READY_FOR_SALE; Android 1.0 versionCode 6 is in
-  production. Both embed an old bundle and pick up OTA on launch.
-- Info.plist has no `NSLocationWhenInUseUsageDescription`, so weather is
-  never recorded on iOS (see NATIVE_SETUP.md). Needs a native release.
-- `@capacitor/filesystem`, `local-notifications`, `share` and the Capgo ATT
-  plugin are 8.x against Capacitor 6.2 core (`npm install` needs
-  `--legacy-peer-deps`). It builds and ships today; treat it as fragile and
-  align versions at the next native release.
+- **Android 1.1 (versionCode 7) is live on Play production.** iOS 1.1
+  (build 12) is uploaded and submitted for review; iOS 1.0 build 11 stays
+  READY_FOR_SALE until Apple approves. Both 1.0 binaries embed an old bundle
+  and pick up OTA on launch.
+- OTA must never go backwards from the shipping native version.
+  `ota_push.sh` enforces it by reading `MARKETING_VERSION`, so every OTA from
+  here is >= 1.1. Current bundle: 1.1.1.
+- Minimum OS versions moved with this release: iOS 15.0 (Xcode 27 refuses
+  below 15) and Android API 24 (Play refuses below 24). Details and the
+  Podfile hook that makes the pods comply are in NATIVE_SETUP.md.
+- iOS adopted the UIScene lifecycle (SceneDelegate.swift +
+  `UIApplicationSceneManifest`). Mandatory under the iOS 26 SDK; Lazy Sous
+  build 18 was rejected for its absence and the simulator does not reproduce
+  it. Do not remove.
+- Info.plist now has `NSLocationWhenInUseUsageDescription`, so iOS records
+  weather against a shot from 1.1 onward. Every iOS shot logged on 1.0 has
+  none.
+- Every Capacitor plugin is on the 6.x line, matching the 6.2.1 core. The ATT
+  plugin was removed (nothing called it). `npm install` still needs
+  `--legacy-peer-deps`, now for one reason only:
+  `@codetrix-studio/capacitor-google-auth@3.3.6` declares a peer of
+  `@capacitor/core@^5`.
+- `ios/` and `android/` are gitignored, so none of the native config above is
+  in version control. NATIVE_SETUP.md is the only record of it.
+- The release python scripts need pyjwt (iOS) and google-api-python-client
+  (Play), which the system python3 lacks. Both scripts re-exec themselves in
+  the Lazy Sous venv, or in `$BREWMIE_PYTHON` if set.
 
 ## Load-bearing gotchas
 

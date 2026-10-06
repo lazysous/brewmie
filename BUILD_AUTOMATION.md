@@ -14,6 +14,15 @@ Brewmie shares an Apple Developer team with Lazy Sous, so the App Store
 Connect API key is reused. Play uses a separate service account so the
 Brewmie console has its own permissions surface.
 
+**Python interpreter.** `publish_play.py` needs google-api-python-client and
+`submit_ios_release.py` needs pyjwt; the system `python3` on this machine has
+neither, and the failure used to surface as a traceback after a four minute
+gradle build. Both scripts now re-exec themselves in the first interpreter
+that has the dependency: `$BREWMIE_PYTHON` if set, otherwise the Lazy Sous
+venv at `/Users/williamson/lazysous/venv/bin/python`. On a new machine, set
+`BREWMIE_PYTHON` to a venv with `pyjwt cryptography google-auth
+google-api-python-client` installed.
+
 ---
 
 ## 0. Prerequisite, the app records must exist
@@ -148,8 +157,20 @@ three pieces that already exist on this machine:
   command line, and the export plist uses `signingStyle manual` with the
   same profile. The pbxproj keeps automatic signing for Xcode GUI use.
 
+**The archive signs automatically, only the export signs manually.** The
+manual settings must never be passed on the `xcodebuild` command line:
+settings given that way apply to every target in the workspace, so all ~15
+Pods static libraries fail with "`<Pod>` does not support provisioning
+profiles ... but provisioning profile Brewmie AppStore 2026 has been manually
+specified". The archive therefore runs with `-allowProvisioningUpdates` plus
+the ASC API key (which is what lets it resolve an identity at all), and the
+export plist names the profile for `app.brewmie.brewmie` alone. Same split as
+Lazy Sous.
+
 Nothing to click in Xcode. `scripts/publish_ios.sh` runs unattended once the
 three items above exist, and dies naming the missing item if one is absent.
+Archive and export logs land at `build/ios/archive.log` and
+`build/ios/export.log`.
 
 ---
 
@@ -298,6 +319,13 @@ file path if any are absent.
 - **Play "different certificate than previous uploads"**: signing key
   mismatch. Verify `android/keystore.properties` points at the right
   upload keystore.
+- **Play "automatic protection requires a minimum SDK version of 24"**:
+  `minSdkVersion` in `android/variables.gradle` is below 24. It is 24 as of
+  1.1; a regenerated native project resets it to the Capacitor default.
+- **iOS "deployment target is set to 13.0, but the range of supported
+  deployment target versions is 15.0 to 27.0.x"**, once per pod: the Podfile
+  `post_install` hook that raises pods to 15.0 is missing. See
+  NATIVE_SETUP.md, "Minimum OS versions".
 - **`xcrun altool` "Unable to find utility altool"**: `xcode-select -p`
   shows CommandLineTools instead of the full Xcode. Run
   `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer` once.

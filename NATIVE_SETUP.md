@@ -43,6 +43,22 @@ and local notifications do not need one; the `remote-notification`
 background mode is only required if push is ever added. The Android manifest
 gets its permission from the plugin.
 
+## Minimum OS versions (forced by the toolchains, 2026-10-06)
+
+- **iOS 15.0.** Xcode 27 builds against the iOS 26 SDK and refuses any
+  deployment target below 15.0. 1.0 was built at 13.0. The App target's
+  `IPHONEOS_DEPLOYMENT_TARGET` is now 15.0, and `ios/App/Podfile` carries a
+  `post_install` hook that raises every pod target to 15.0 as well: the
+  Capacitor 6 podspecs each declare 13.0, and Capacitor's own
+  `assertDeploymentTarget` only enforces a floor of 13.0, so neither the
+  Podfile `platform` line nor the App target's value reaches them. Without
+  the hook the archive fails with one error per pod. Drops iOS 13 and 14.
+- **Android API 24 (7.0).** Play refuses an upload below 24 with "Play
+  automatic protection requires a minimum SDK version of 24 or higher".
+  `android/variables.gradle` now sets `minSdkVersion = 24`. 1.0 shipped 23,
+  so devices on Android 6.0 keep the version they have and stop receiving
+  updates.
+
 ## Plugin versions
 
 Capacitor core, iOS and Android are 6.2.1. Every `@capacitor/*` plugin is on
@@ -64,6 +80,16 @@ both the plugin and the plist key, or the app crashes on launch.
   and `supabase/add_trial_started_at.sql` deleted. Premium is a one-time
   lifetime unlock through the stores; see CLAUDE.md "Backend facts" for the
   entitlement model.
+
+## These files are NOT in git
+
+`.gitignore` excludes `ios/` and `android/` wholesale, so everything on this
+page lives only on this machine: the SceneDelegate, the Info.plist keys, the
+Podfile hook, the deployment targets, the signing config and both version
+numbers. `npx cap sync` does not recreate any of it. If the native projects
+are ever regenerated from scratch, work through this page top to bottom
+before archiving, and expect the 1.0 defaults (iOS 13.0, minSdk 23, no
+UIScene, no location key) to come back.
 
 ## Deferred
 

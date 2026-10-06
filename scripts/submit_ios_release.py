@@ -18,12 +18,27 @@ Requires pyjwt + cryptography (`pip3 install --user pyjwt cryptography`).
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import re
 import sys
 import time
 from pathlib import Path
+
+# _auth.py signs its App Store Connect JWT with pyjwt, which is not installed
+# in the system python here. Re-exec in an interpreter that has it:
+# $BREWMIE_PYTHON if set, else the Lazy Sous venv (same Apple team, same key,
+# deps already there). See BUILD_AUTOMATION.md section 1.
+if importlib.util.find_spec("jwt") is None and not os.environ.get("_BREWMIE_REEXEC"):
+    for candidate in (os.environ.get("BREWMIE_PYTHON"),
+                      "/Users/williamson/lazysous/venv/bin/python"):
+        if candidate and Path(candidate).exists():
+            os.execve(candidate, [candidate, __file__, *sys.argv[1:]],
+                      {**os.environ, "_BREWMIE_REEXEC": "1"})
+    sys.exit("FAIL pyjwt not installed, and no interpreter with it was found. Set "
+             "BREWMIE_PYTHON to one, or pip install pyjwt cryptography. "
+             "See BUILD_AUTOMATION.md section 1.")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "store-pipeline"))
 from _auth import asc_request, APP_ID  # noqa: E402

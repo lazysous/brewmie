@@ -96,7 +96,18 @@ ls "$HOME/Library/MobileDevice/Provisioning Profiles/93PGBWRFQ5.mobileprovision"
 rm -rf "$ARCHIVE" "$IPA_DIR"
 mkdir -p "$BUILD_DIR"
 
-info "Archiving (Release, manual signing)..."
+# Archive with AUTOMATIC signing, export manually (section 6).
+#
+# The manual settings must NOT go on the xcodebuild command line: build
+# settings passed that way apply to every target in the workspace, including
+# the ~15 Pods static libraries, which fail with "<Pod> does not support
+# provisioning profiles ... but provisioning profile Brewmie AppStore 2026
+# has been manually specified". The App target's pbxproj already carries
+# CODE_SIGN_STYLE = Automatic + DEVELOPMENT_TEAM, and the ASC API key lets
+# -allowProvisioningUpdates resolve a development-style identity for the
+# archive. Distribution signing happens at export, where the plist names the
+# profile for the app bundle id alone. This is the same split Lazy Sous uses.
+info "Archiving (Release)..."
 ARCHIVE_LOG="$BUILD_DIR/archive.log"
 ARCHIVE_ARGS=(
     -workspace "$IOS_DIR/App.xcworkspace"
@@ -105,10 +116,10 @@ ARCHIVE_ARGS=(
     -sdk iphoneos
     -destination 'generic/platform=iOS'
     -archivePath "$ARCHIVE"
-    CODE_SIGN_STYLE=Manual
-    DEVELOPMENT_TEAM=L36L3B3J32
-    CODE_SIGN_IDENTITY="Apple Distribution"
-    PROVISIONING_PROFILE_SPECIFIER="Brewmie AppStore 2026"
+    -allowProvisioningUpdates
+    -authenticationKeyPath "$P8"
+    -authenticationKeyID "$ASC_KEY_ID"
+    -authenticationKeyIssuerID "$ASC_ISSUER_ID"
     archive
 )
 if command -v xcbeautify >/dev/null 2>&1; then

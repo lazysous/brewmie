@@ -21,6 +21,7 @@ See BUILD_AUTOMATION.md for the full walkthrough.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import os
 import re
 import shutil
@@ -28,6 +29,20 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+
+# The Google API client is not installed in the system python on this machine,
+# and the failure used to arrive as a traceback AFTER a four minute gradle
+# build. Re-exec in an interpreter that has it: $BREWMIE_PYTHON if set, else
+# the Lazy Sous venv (same studio, deps already there). See BUILD_AUTOMATION.md.
+if importlib.util.find_spec("googleapiclient") is None and not os.environ.get("_BREWMIE_REEXEC"):
+    for candidate in (os.environ.get("BREWMIE_PYTHON"),
+                      "/Users/williamson/lazysous/venv/bin/python"):
+        if candidate and Path(candidate).exists():
+            os.execve(candidate, [candidate, __file__, *sys.argv[1:]],
+                      {**os.environ, "_BREWMIE_REEXEC": "1"})
+    sys.exit("FAIL google-api-python-client not installed, and no interpreter with it "
+             "was found. Set BREWMIE_PYTHON to one, or pip install google-auth "
+             "google-api-python-client. See BUILD_AUTOMATION.md section 2.")
 
 REPO = Path(__file__).resolve().parent.parent
 ANDROID = REPO / "android"

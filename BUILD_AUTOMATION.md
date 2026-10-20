@@ -377,6 +377,13 @@ or a service-role key, neither of which is on this machine (owner step; see the 
   locked and codesign is waiting on a GUI prompt. Run
   `security unlock-keychain ~/Library/Keychains/lazysous-signing.keychain-db`
   and retry with `--no-bump`.
+- **wrangler "fetch failed" or "could not reach the Cloudflare auth server"
+  while curl works**: IPv6 on this Mac is broken (`curl -6` fails) and Node's
+  address autoselection times out before falling back to IPv4, so every Node
+  fetch to Cloudflare dies. Prefix the command with
+  `NODE_OPTIONS="--no-network-family-autoselection --dns-result-order=ipv4first"`.
+  `scripts/sale_flag.sh` sets it itself; `ota_push.sh` and `ota_rollback.sh`
+  do not yet. Not a login problem; do not re-authenticate.
 - **Play "Version code XX has already been used"**: `--no-bump` was
   passed but the previous versionCode is already on Play. Drop
   `--no-bump`.

@@ -496,7 +496,9 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
       brand: grinderBuiltIn ? '(Built-in)' : grinderBrand,
       model: grinderBuiltIn ? '' : grinderModel,
       minSetting: grinderMin,
-      maxSetting: grinderMax,
+      // A dial needs a real range (audit brewmie-04): max below or equal to min collapsed
+      // every grind move to zero.
+      maxSetting: grinderMax > grinderMin ? grinderMax : grinderMin + 1,
       ...overrides,
     }
     dispatch({ type: 'SET_GRINDER', payload: cfg })

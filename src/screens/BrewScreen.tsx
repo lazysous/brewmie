@@ -318,6 +318,14 @@ function computeAdjustments(
   const rawTotalPct = primaryGrindPct + tasteBiasPct + modPct
   const totalPct = Math.max(-5, Math.min(5, rawTotalPct))
   let grindAdjust = pctToUnits(totalPct)
+  // Narrow-range grinders (Mazzer Mini 1-8, Eureka Mignon 0-8, EK43 1-10...) express a
+  // few percent of range as less than a quarter step, so every typical fast or slow
+  // shot snapped to zero and was then explained as "cancelled out" (audit brewmie-04).
+  // When the flow signal is real and the modifiers did not actually cancel it (same
+  // sign after summing), move one dial step in the signal direction instead.
+  if (grinderMax > grinderMin && grindAdjust === 0 && primaryGrindPct !== 0 && totalPct !== 0 && Math.sign(totalPct) === Math.sign(primaryGrindPct)) {
+    grindAdjust = totalPct < 0 ? -GRIND_STEP : GRIND_STEP
+  }
 
   // ── Edge detection: if grind would exceed range, surplus → dose ──────────
   let flowDoseAdjust = 0

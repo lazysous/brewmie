@@ -864,3 +864,20 @@ describe('defaultTargets', () => {
     })
   })
 })
+
+describe('narrow-range grinders get a real move (audit brewmie-04)', () => {
+  it('Mazzer Mini 1-8 at 18 s / 40 ml (target 27 s / 36 ml) moves one step finer, not "cancelled out"', () => {
+    const r = adjust({ actualTime: 18, actualVolume: 40, inputGrind: 4, grinderMin: 1, grinderMax: 8, beanAgeDays: 10 })
+    expect(r.grindAdjust).toBe(-0.5)
+    expect(r.reasonKey).not.toBe('brew.reasonCancelled')
+  })
+  it('Eureka Mignon 0-8 running 9 s slow moves one step coarser', () => {
+    const r = adjust({ actualTime: 36, actualVolume: 36, inputGrind: 3, grinderMin: 0, grinderMax: 8, beanAgeDays: 10 })
+    expect(r.grindAdjust).toBe(0.5)
+  })
+  it('a wide-range grinder is unchanged by the rule (its moves were never snapped to zero)', () => {
+    const wide = adjust({ actualTime: 18, actualVolume: 40, inputGrind: 15, grinderMin: 0, grinderMax: 30, beanAgeDays: 10 })
+    expect(wide.grindAdjust).toBeLessThan(0)
+    expect(Math.abs(wide.grindAdjust)).toBeGreaterThanOrEqual(0.5)
+  })
+})

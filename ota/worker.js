@@ -91,8 +91,8 @@ export default {
     const NATIVE_VERSION = '1.1'
 
     // Rewritten by scripts/sale_flag.sh (on <until>|off); UTC ISO 8601, '' when off.
-    const SALE_ACTIVE = false
-    const SALE_UNTIL = ''
+    const SALE_ACTIVE = true
+    const SALE_UNTIL = '2027-10-20T00:00:00Z'
 
     if (new URL(request.url).pathname === '/sale') {
       return new Response(JSON.stringify(saleAnswer({ active: SALE_ACTIVE, until: SALE_UNTIL })), {

@@ -34,3 +34,23 @@ pnpm-debug.log*
 *.tsbuildinfo
 store-pipeline/__pycache__/
 ota/builds/
+
+# Secret-shaped files, any location (audit 2026-10, shared-06). This repo is PUBLIC, so
+# the pre-commit secret guard (scripts/git-hooks) refuses them too; install it once with
+# scripts/install_hooks.sh and prove it with scripts/test_secret_guard.sh.
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.p8
+*.mobileprovision
+**/keystore.properties
+**/key.properties
+**/google-services.json
+**/GoogleService-Info.plist
+**/play-publish*.json
+**/*service-account*.json
+**/AuthKey_*
+.brewmie/

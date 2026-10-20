@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "postinstall": "patch-package",
     "test": "vitest run",
+    "test:secret-guard": "bash scripts/test_secret_guard.sh",
     "test:watch": "vitest"
   },
   "dependencies": {

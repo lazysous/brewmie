@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Secret guard (audit 2026-10, shared-06). Refuses a commit that stages a file that
+# must never be tracked (keystores, .env files, service-account JSON, Instagram
+# session dumps) or an added line that carries a secret-shaped literal (Groq, Google,
+# GitHub, Stripe, Slack, AWS keys, private keys, bearer tokens).
+#
+# Install once per clone:  scripts/install_hooks.sh   (sets core.hooksPath)
+# Proven by:               scripts/test_secret_guard.sh
+# A public literal that trips the content rule (a Firebase web API key, for example)
+# goes, exactly as written, on its own line in scripts/git-hooks/secret-allowlist.
+# For anything else the answer is to move the value out of the repo, not to bypass.
+set -u
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ALLOW="$HOOK_DIR/secret-allowlist"
+status=0
+
+BLOCKED_NAMES='(^|/)\.env(\.[^/]*)?$|\.(keystore|jks|p12|pfx|pem|p8|mobileprovision)$|(^|/)\.ig_session[^/]*$|(^|/)google-services\.json$|(^|/)GoogleService-Info\.plist$|(^|/)play-publish[^/]*\.json$|(^|/)[^/]*service-account[^/]*\.json$|(^|/)keystore\.properties$|(^|/)AuthKey_[^/]*$|(^|/)id_(rsa|ed25519|ecdsa)(\.pub)?$'
+while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    case "$f" in *.example|*.sample|*.template) continue ;; esac
+    if printf '%s' "$f" | grep -E -q "$BLOCKED_NAMES"; then
+        echo "secret guard: '$f' looks like a secret or signing file and must not be committed."
+        status=1
+    fi
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+PATTERNS='gsk_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{32,}|sk_live_[A-Za-z0-9]{10,}|xox[abprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|"private_key_id"|"private_key"[[:space:]]*:|"sessionid"|Bearer [A-Za-z0-9._~+/=-]{30,}'
+while IFS= read -r hit; do
+    [ -z "$hit" ] && continue
+    # A match is allowlisted when it is contained in a line of the allowlist (the
+    # regex may extract only a prefix of a longer public literal).
+    if [ -f "$ALLOW" ] && grep -F -q -- "$hit" "$ALLOW"; then continue; fi
+    echo "secret guard: a staged line adds a secret-shaped literal starting '${hit:0:8}'. Move it to Secret Manager or the environment."
+    status=1
+done < <(git diff --cached -U0 --no-color --diff-filter=ACMR -- . ":(exclude)scripts/git-hooks/*" ":(exclude)scripts/test_secret_guard.sh" \
+         | grep -E '^\+' | grep -v -E '^\+\+\+ ' | cut -c2- | grep -E -o "$PATTERNS" | sort -u)
+
+if [ "$status" -ne 0 ]; then
+    echo "secret guard: commit refused. Unstage the file or value, or add a known PUBLIC literal to scripts/git-hooks/secret-allowlist."
+fi
+exit "$status"

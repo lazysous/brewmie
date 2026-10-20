@@ -51,6 +51,16 @@ users only on the next OTA.
 before any OTA. Suites live in `tests/`; see BUILD_AUTOMATION.md section 4b for
 how the private algorithm functions are reached.
 
+**Secret guard (audit 2026-10, this repo is PUBLIC).** `scripts/git-hooks/pre-commit`
+refuses a commit that stages a secret-shaped literal (Groq, Google, GitHub, Stripe,
+Slack, AWS keys, private keys, bearer tokens, Instagram session dumps) or a secret or
+signing file by name (.env, keystores, service-account JSON, provisioning profiles).
+Install it once per clone with `scripts/install_hooks.sh` (sets `core.hooksPath`) and
+prove it with `npm run test:secret-guard`. A PUBLIC literal that trips the content rule
+goes on its own line in `scripts/git-hooks/secret-allowlist` (the Supabase anon key is a
+JWT and does not trip it); anything else moves out of the repo. `.gitignore` carries the
+matching filename patterns.
+
 ## Backend facts (verified live 2026-10-05, after the hardening SQL ran)
 
 - Supabase project `pdbfmmtwgsdkattjraya`. The anon key is in `.env.local`

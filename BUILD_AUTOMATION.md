@@ -304,6 +304,27 @@ file path if any are absent.
 
 ---
 
+## 7b. Disaster recovery (audit 2026-10, brewmie-27)
+
+`ios/`, `android/` and `~/.brewmie` (upload keystore, its password, the Play publisher key,
+the ASC API env) exist only on this Mac; a lost disk would block every native release.
+Since 2026-10-20 there is an encrypted archive of all of them:
+
+- `~/Backups/brewmie-native-<date>.tar.gz.enc` and a copy in iCloud Drive at
+  `Backups/brewmie-native-<date>.tar.gz.enc` (with a README next to it). Build outputs
+  (Pods, DerivedData, .gradle, build dirs, the copied web bundle) are excluded; they regenerate.
+- Cipher: `openssl enc -aes-256-cbc -pbkdf2 -iter 600000`. The passphrase is the
+  `brewmie-native-backup-<date>` line in `~/projects/.tipjar-gate-creds`, never next to the archive.
+- Restore: `openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in <file>.enc -out plain.tar.gz`,
+  `tar -xzf plain.tar.gz -C <scratch>`, then move `ios/` and `android/` into the clone and
+  `.brewmie` into `~`. The 2026-10-20 archive was restored once and checksummed (305 files).
+- Refresh it after any change to signing, native config or the files in `~/.brewmie`:
+  re-run the same tar + openssl steps with a new date and a new passphrase line.
+
+The Supabase schema, RLS policies and grants are NOT in this archive. The scripts that were
+applied live in `supabase/`, but a live dump with a drift check needs the database password
+or a service-role key, neither of which is on this machine (owner step; see the audit page).
+
 ## 8. Troubleshooting
 
 - **iOS "No 'Apple Distribution' identity" or "profile not installed"**:

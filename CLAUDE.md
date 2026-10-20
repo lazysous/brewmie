@@ -63,6 +63,7 @@ matching filename patterns.
 
 ## Backend facts (verified live 2026-10-05, after the hardening SQL ran)
 
+- Disaster recovery: the native shells and `~/.brewmie` are in an encrypted archive (local + iCloud Drive) since 2026-10-20; BUILD_AUTOMATION.md section 7b has the restore steps. The Supabase schema is not in it (needs DB access this Mac does not have).
 - Supabase project `pdbfmmtwgsdkattjraya`. The anon key is in `.env.local`
   (never committed). There is no service-role key or Supabase CLI login on this
   machine: schema changes go through the SQL editor in the dashboard, and the

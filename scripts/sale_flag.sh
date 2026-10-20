@@ -47,7 +47,7 @@ if [ "$DRY" = "1" ]; then echo "DRY RUN: nothing written, nothing deployed"; exi
 # IPv6 is broken on the owner's Mac and Node's address autoselection times out before it
 # falls back, so wrangler reports "fetch failed" while curl works (BUILD_AUTOMATION section 8).
 export NODE_OPTIONS="--no-network-family-autoselection --dns-result-order=ipv4first ${NODE_OPTIONS:-}"
-wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date -u -v-1d +%Y-%m-%d)" > /tmp/brewmie-sale-flag.log 2>&1 || { echo "FAIL worker deploy, see /tmp/brewmie-sale-flag.log" >&2; tail -10 /tmp/brewmie-sale-flag.log; git checkout -q -- ota/worker.js; echo "ota/worker.js restored; nothing changed" >&2; exit 1; }
+wrangler deploy -c ota/wrangler.toml > /tmp/brewmie-sale-flag.log 2>&1 || { echo "FAIL worker deploy, see /tmp/brewmie-sale-flag.log" >&2; tail -10 /tmp/brewmie-sale-flag.log; git checkout -q -- ota/worker.js; echo "ota/worker.js restored; nothing changed" >&2; exit 1; }
 for attempt in $(seq 1 10); do
     RESP=$(curl -fs "$WORKER_URL/sale" || true)
     echo "$RESP" | grep -q "\"active\":$ACTIVE" && break

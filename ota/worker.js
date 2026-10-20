@@ -46,8 +46,44 @@ export function saleAnswer(cfg, now = Date.now()) {
   return { active, until: active ? cfg.until : null }
 }
 
+// Supabase keep-alive (audit brewmie-90): the free tier pauses a project after a week with
+// no API traffic. A daily GET of one anonymous public_shots row (the same read the app's
+// community counter makes) keeps it awake. Pure request builder so the test can pin the URL
+// and headers without a network; `scheduled()` runs it on the cron in wrangler.toml and
+// GET /keepalive runs it on demand so a deploy can be verified.
+export function keepAliveRequest(env) {
+  const base = (env && env.SUPABASE_URL ? String(env.SUPABASE_URL) : '').replace(/\/+$/, '')
+  const key = env && env.SUPABASE_ANON_KEY ? String(env.SUPABASE_ANON_KEY) : ''
+  if (!base || !key) return null
+  return {
+    url: `${base}/rest/v1/public_shots?select=id&limit=1`,
+    headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: 'application/json' },
+  }
+}
+
+async function keepAlive(env) {
+  const req = keepAliveRequest(env)
+  if (!req) {
+    console.log(JSON.stringify({ event: 'keepalive', ok: false, reason: 'SUPABASE_URL or SUPABASE_ANON_KEY missing' }))
+    return { ok: false, status: 0 }
+  }
+  try {
+    const res = await fetch(req.url, { headers: req.headers })
+    const ok = res.ok
+    console.log(JSON.stringify({ event: 'keepalive', ok, status: res.status }))
+    return { ok, status: res.status }
+  } catch (e) {
+    console.log(JSON.stringify({ event: 'keepalive', ok: false, error: String(e).slice(0, 120) }))
+    return { ok: false, status: 0 }
+  }
+}
+
 export default {
-  async fetch(request) {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(keepAlive(env))
+  },
+
+  async fetch(request, env) {
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
@@ -64,6 +100,11 @@ export default {
     // Updater stats sink (audit brewmie-41): once capacitor.config.ts statsUrl points here
     // (native release), the plugin posts download/set/rollback events. They are logged as
     // one JSON line each (wrangler tail / Workers logs); nothing is stored.
+    if (request.method === 'GET' && new URL(request.url).pathname === '/keepalive') {
+      const r = await keepAlive(env)
+      return new Response(JSON.stringify(r), { status: r.ok ? 200 : 503, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } })
+    }
+
     if (new URL(request.url).pathname === '/stats') {
       let stats = {}
       try { stats = await request.json() } catch { /* ignore */ }

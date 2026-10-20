@@ -1,7 +1,7 @@
 // Characterisation of the OTA worker's decision (ota/worker.js decide()), including the
 // rollback paths scripts/ota_rollback.sh relies on. Audit 2026-10, brewmie-39.
 import { describe, it, expect } from 'vitest'
-import { decide } from '../ota/worker.js'
+import { decide, keepAliveRequest } from '../ota/worker.js'
 
 const live = { enabled: true, latestVersion: '1.1.2', latestUrl: 'https://brewmie.app/ota/builds/1.1.2.zip', revertToBuiltin: false, nativeVersion: '1.1' }
 
@@ -27,5 +27,17 @@ describe('ota worker decide()', () => {
     const rolledBack = { ...live, latestVersion: '1.1.1', latestUrl: 'https://brewmie.app/ota/builds/1.1.1.zip' }
     expect(decide('1.1.2', rolledBack)).toEqual({ version: '1.1.1', url: 'https://brewmie.app/ota/builds/1.1.1.zip' })
     expect(decide('1.1.1', rolledBack).error).toBe('no_new_version_available')
+  })
+})
+
+describe('supabase keep-alive request (brewmie-90)', () => {
+  it('reads one public_shots row with the anon key, trailing slash tolerated', () => {
+    const r = keepAliveRequest({ SUPABASE_URL: 'https://x.supabase.co/', SUPABASE_ANON_KEY: 'anon' })
+    expect(r).toEqual({ url: 'https://x.supabase.co/rest/v1/public_shots?select=id&limit=1', headers: { apikey: 'anon', Authorization: 'Bearer anon', Accept: 'application/json' } })
+  })
+  it('refuses to build a request without the url or the key', () => {
+    expect(keepAliveRequest({ SUPABASE_URL: 'https://x.supabase.co' })).toBeNull()
+    expect(keepAliveRequest({ SUPABASE_ANON_KEY: 'anon' })).toBeNull()
+    expect(keepAliveRequest(undefined)).toBeNull()
   })
 })

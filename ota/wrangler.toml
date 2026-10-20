@@ -1,0 +1,15 @@
+# Config for the brewmie-ota Worker. Every deploy of the worker goes through this file
+# (scripts/ota_push.sh, scripts/ota_rollback.sh, scripts/sale_flag.sh use `wrangler deploy
+# -c ota/wrangler.toml`): a bare `wrangler deploy ota/worker.js` would drop the cron below.
+name = "brewmie-ota"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+# Daily read of one public_shots row keeps the free-tier Supabase project from pausing
+# after a week of inactivity (audit brewmie-90). The anon key is a Worker secret
+# (`wrangler secret put SUPABASE_ANON_KEY --name brewmie-ota`), not in this file.
+[triggers]
+crons = ["17 3 * * *"]
+
+[vars]
+SUPABASE_URL = "https://pdbfmmtwgsdkattjraya.supabase.co"

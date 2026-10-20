@@ -40,7 +40,7 @@ p.write_text(src)
 PY
 echo "worker constants now:"; grep -E "const (OTA_ENABLED|LATEST_VERSION|LATEST_URL|REVERT_TO_BUILTIN|NATIVE_VERSION) =" ota/worker.js | sed 's/^ *//'
 if [ "$DRY" = "1" ]; then echo "DRY RUN: restoring ota/worker.js, nothing deployed"; git checkout -q -- ota/worker.js; exit 0; fi
-wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date -u -v-1d +%Y-%m-%d)" > /tmp/brewmie-ota-rollback.log 2>&1 || { echo "FAIL worker deploy, see /tmp/brewmie-ota-rollback.log" >&2; tail -10 /tmp/brewmie-ota-rollback.log; exit 1; }
+wrangler deploy -c ota/wrangler.toml > /tmp/brewmie-ota-rollback.log 2>&1 || { echo "FAIL worker deploy, see /tmp/brewmie-ota-rollback.log" >&2; tail -10 /tmp/brewmie-ota-rollback.log; exit 1; }
 for attempt in $(seq 1 10); do
     RESP=$(curl -fs -X POST "$WORKER_URL" -H "Content-Type: application/json" -d '{"version_name":"0.0.1"}' || true)
     case "$TARGET" in

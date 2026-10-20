@@ -163,7 +163,7 @@ ok "worker.js patched"
 
 # 6) Deploy worker
 info "wrangler deploy worker"
-wrangler deploy ota/worker.js --name brewmie-ota --compatibility-date "$(date -u -v-1d +%Y-%m-%d)" > /tmp/brewmie-ota-worker.log 2>&1 || {
+wrangler deploy -c ota/wrangler.toml > /tmp/brewmie-ota-worker.log 2>&1 || {
     echo "FAIL worker deploy, see /tmp/brewmie-ota-worker.log" >&2
     tail -10 /tmp/brewmie-ota-worker.log
     exit 1

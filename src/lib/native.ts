@@ -99,3 +99,30 @@ export async function cancelLocalNotification(id: number): Promise<void> {
     await LocalNotifications.cancel({ notifications: [{ id }] })
   } catch {}
 }
+
+/** The OTA bundle version this session runs: 'builtin' on an untouched store binary,
+ *  the OTA version string otherwise, 'web' off-device. Never throws. */
+export async function getBundleVersion(): Promise<string> {
+  if (!isNative) return 'web'
+  try {
+    const { CapacitorUpdater } = await import('@capgo/capacitor-updater')
+    const cur = await CapacitorUpdater.current()
+    const v = cur?.bundle?.version
+    return v && v !== '' ? v : 'builtin'
+  } catch {
+    return 'unknown'
+  }
+}
+
+/** Recovery path from the error boundary: drop the OTA bundle and go back to the
+ *  bundle shipped in the store binary. Resolves false when not native or on failure. */
+export async function resetToStoreBundle(): Promise<boolean> {
+  if (!isNative) return false
+  try {
+    const { CapacitorUpdater } = await import('@capgo/capacitor-updater')
+    await CapacitorUpdater.reset({ toLastSuccessful: false })
+    return true
+  } catch {
+    return false
+  }
+}

@@ -33,7 +33,19 @@ export function loadState(): BrewmieState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return defaultState
-    const parsed = JSON.parse(raw) as Partial<BrewmieState>
+    const parsedRaw: unknown = JSON.parse(raw)
+    // Shape check (audit brewmie-25): anything that is not a plain object is treated as
+    // corrupt, and a shots field that is not an array is dropped so a bad write can never
+    // blank the app at render time.
+    if (parsedRaw === null || typeof parsedRaw !== 'object' || Array.isArray(parsedRaw)) {
+      console.warn('[Brewmie] Persisted state is not an object, using defaults.')
+      return defaultState
+    }
+    const parsed = parsedRaw as Partial<BrewmieState>
+    if (parsed.shots !== undefined && !Array.isArray(parsed.shots)) {
+      console.warn('[Brewmie] Persisted shots is not an array, dropping it.')
+      delete parsed.shots
+    }
     // Merge with defaults so new fields added in future versions are present
     return {
       ...defaultState,

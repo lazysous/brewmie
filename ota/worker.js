@@ -50,6 +50,16 @@ export default {
       return new Response('Method not allowed', { status: 405 })
     }
 
+    // Updater stats sink (audit brewmie-41): once capacitor.config.ts statsUrl points here
+    // (native release), the plugin posts download/set/rollback events. They are logged as
+    // one JSON line each (wrangler tail / Workers logs); nothing is stored.
+    if (new URL(request.url).pathname === '/stats') {
+      let stats = {}
+      try { stats = await request.json() } catch { /* ignore */ }
+      console.log(JSON.stringify({ event: 'updater_stats', ...stats }))
+      return new Response('{"ok":true}', { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+    }
+
     let deviceVersion = '0.0.0'
     if (request.method === 'POST') {
       try {
@@ -73,6 +83,7 @@ export default {
       enabled: OTA_ENABLED, latestVersion: LATEST_VERSION, latestUrl: LATEST_URL,
       revertToBuiltin: REVERT_TO_BUILTIN, nativeVersion: NATIVE_VERSION,
     })
+    if (body.url !== undefined) console.log(JSON.stringify({ event: 'update_offered', from: deviceVersion, to: body.version }))
     return new Response(JSON.stringify(body), {
       headers: {
         'Content-Type': 'application/json',

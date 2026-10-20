@@ -52,24 +52,24 @@ describe('loadState', () => {
     expect(warn).toHaveBeenCalled()
   })
 
-  it('"[]": spreads as a no-op object, parsed.maintenance is undefined -> no throw, resolves like defaultState', () => {
+  it('"[]": a JSON array is treated as corrupt (warns) and resolves to defaultState (audit brewmie-25)', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     localStorage.setItem(KEY, '[]')
     const result = loadState()
     expect(result).toEqual(defaultState)
     expect(Array.isArray(result.shots)).toBe(true)
     expect(typeof result.maintenance).toBe('object')
-    expect(warn).not.toHaveBeenCalled()
+    expect(warn).toHaveBeenCalled()
   })
 
-  it('"42": a boxed-primitive spread is also a no-op, (42).maintenance is undefined -> no throw, resolves like defaultState', () => {
+  it('"42": a JSON scalar is treated as corrupt (warns) and resolves to defaultState (audit brewmie-25)', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     localStorage.setItem(KEY, '42')
     const result = loadState()
     expect(result).toEqual(defaultState)
     expect(Array.isArray(result.shots)).toBe(true)
     expect(typeof result.maintenance).toBe('object')
-    expect(warn).not.toHaveBeenCalled()
+    expect(warn).toHaveBeenCalled()
   })
 })
 
@@ -103,5 +103,24 @@ describe('saveState error handling', () => {
     expect(() => saveState(defaultState)).not.toThrow()
     expect(warn).toHaveBeenCalled()
     setItemSpy.mockRestore()
+  })
+})
+
+describe('loadState shape checks (audit brewmie-25)', () => {
+  it('treats a JSON array or scalar as corrupt and returns defaults', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    localStorage.setItem(KEY, '[1,2,3]')
+    expect(loadState()).toEqual(defaultState)
+    localStorage.setItem(KEY, '"just a string"')
+    expect(loadState()).toEqual(defaultState)
+    expect(warn).toHaveBeenCalled()
+  })
+  it('drops a shots field that is not an array but keeps the rest of the object', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    localStorage.setItem(KEY, JSON.stringify({ units: 'imperial', shots: 'oops' }))
+    const s = loadState()
+    expect(s.units).toBe('imperial')
+    expect(Array.isArray(s.shots)).toBe(true)
+    expect(s.shots).toEqual(defaultState.shots)
   })
 })

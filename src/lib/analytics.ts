@@ -8,6 +8,12 @@
 const GA_ID = import.meta.env.VITE_GA_ID as string | undefined
 let loaded = false
 let loading = false
+// The OTA bundle this session runs (set from main.tsx via the updater; 'web' on the
+// web build, 'builtin' on a store binary with no OTA applied). Every event carries it
+// so a bad bundle shows up as a version in the analytics, not as a mystery.
+let bundleVersion = 'web'
+export function setBundleVersion(v: string) { bundleVersion = v || 'unknown' }
+export function getBundleVersion() { return bundleVersion }
 
 function userOptedOut(): boolean {
   if (typeof localStorage === 'undefined') return false
@@ -53,7 +59,7 @@ export function track(event: string, params?: Record<string, string | number | b
   if (!GA_ID || typeof window === 'undefined') return
   if (userOptedOut()) return
   loadGtag()
-  window.gtag?.('event', event, params ?? {})
+  window.gtag?.('event', event, { bundle_version: bundleVersion, ...(params ?? {}) })
 }
 
 export function trackScreen(name: 'brew' | 'setup' | 'insights') {

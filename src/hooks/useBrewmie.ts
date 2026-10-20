@@ -2,6 +2,7 @@ import { useReducer, useEffect, useRef, useCallback } from 'react'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { loadState, saveState, clearState, defaultState, defaultMaintenanceRecord } from '../lib/storage'
 import { upsertShot, upsertPublicShot, upsertUserConfig, bulkUpsertShots } from '../lib/supabase'
+import { track } from '../lib/analytics'
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
 
@@ -169,10 +170,11 @@ export function useBrewmie(): UseBrewmieReturn {
       if (cancelled) return
       if (error) {
         console.warn('[Brewmie] shot backfill failed:', error.message)
+        track('sync_failed', { op: 'backfill' })
         return
       }
       writeFlag(flag)
-    }).catch((err) => console.warn('[Brewmie] shot backfill threw:', err))
+    }).catch((err) => { console.warn('[Brewmie] shot backfill threw:', err); track('sync_failed', { op: 'backfill' }) })
     return () => { cancelled = true }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])
@@ -197,8 +199,8 @@ export function useBrewmie(): UseBrewmieReturn {
     for (const shot of state.shots) {
       if (previous.get(shot.id) === current.get(shot.id)) continue
       upsertShot(shot, uid).then(({ error }) => {
-        if (error) console.warn('[Brewmie] shot sync failed:', error.message)
-      }).catch((err) => console.warn('[Brewmie] shot sync threw:', err))
+        if (error) { console.warn('[Brewmie] shot sync failed:', error.message); track('sync_failed', { op: 'shot' }) }
+      }).catch((err) => { console.warn('[Brewmie] shot sync threw:', err); track('sync_failed', { op: 'shot' }) })
     }
   }, [state.shots, state.userId])
 
@@ -226,8 +228,8 @@ export function useBrewmie(): UseBrewmieReturn {
         grinder: state.grinder,
         tamp: state.tamp,
       }).then(({ error }) => {
-        if (error) console.warn('[Brewmie] public shot write failed:', error.message)
-      }).catch(() => {})
+        if (error) { console.warn('[Brewmie] public shot write failed:', error.message); track('sync_failed', { op: 'public' }) }
+      }).catch(() => { track('sync_failed', { op: 'public' }) })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.shots])
@@ -242,8 +244,8 @@ export function useBrewmie(): UseBrewmieReturn {
       tamp: state.tamp,
       beans: state.beans,
     }).then(({ error }) => {
-      if (error) console.warn('[Brewmie] config sync failed:', error.message)
-    }).catch(() => {})
+      if (error) { console.warn('[Brewmie] config sync failed:', error.message); track('sync_failed', { op: 'config' }) }
+    }).catch(() => { track('sync_failed', { op: 'config' }) })
   }, [state.userId, state.machine, state.grinder, state.tamp, state.beans, state.units])
 
   return {

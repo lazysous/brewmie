@@ -10,6 +10,7 @@ const calls = vi.hoisted(() => ({
   upsertPublicShot: vi.fn(async () => ({ error: null })),
   upsertUserConfig: vi.fn(async () => ({ error: null })),
   bulkUpsertShots: vi.fn(async () => ({ error: null as { message: string } | null })),
+  deleteShot: vi.fn(async () => ({ error: null })),
 }))
 vi.mock('../src/lib/supabase', () => calls)
 
@@ -97,7 +98,7 @@ describe('change-based sync', () => {
     expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
 
-  it('deleting a shot writes nothing anywhere', async () => {
+  it('deleting a shot writes no upserts, sends one server delete and leaves a tombstone (audit brewmie-02)', async () => {
     seed({ userId: 'A', dataOwnerId: 'A', shots: [shot('1'), shot('2')] })
     localStorage.setItem('brewmie_backfill_v1:A', '1')
     const { result } = renderHook(() => useBrewmie())
@@ -106,6 +107,18 @@ describe('change-based sync', () => {
     await flush()
     expect(calls.upsertShot).not.toHaveBeenCalled()
     expect(calls.upsertPublicShot).not.toHaveBeenCalled()
+    expect(calls.deleteShot).toHaveBeenCalledTimes(1)
+    expect(calls.deleteShot).toHaveBeenCalledWith('2')
+    expect(result.current.state.deletedShotIds).toEqual(['2'])
+  })
+
+  it('a hydrate from the server unions with local shots and never resurrects a tombstone', async () => {
+    seed({ userId: 'A', dataOwnerId: 'A', shots: [shot('1'), shot('2')], deletedShotIds: ['9'] })
+    localStorage.setItem('brewmie_backfill_v1:A', '1')
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    act(() => result.current.dispatch({ type: 'HYDRATE_SHOTS', payload: [shot('2'), shot('3'), shot('9')] }))
+    expect(result.current.state.shots.map((s) => s.id).sort()).toEqual(['1', '2', '3'])
   })
 
   it('launching with shots already present posts nothing publicly (the old code re-posted the newest shot every launch)', async () => {

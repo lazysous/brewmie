@@ -18,6 +18,7 @@ export const defaultState: BrewmieState = {
   beans: null,
   currentGrind: null,
   shots: [],
+  deletedShotIds: [],
   maintenance: defaultMaintenanceRecord,
   autoApplyAdjustments: false,
   userId: null,

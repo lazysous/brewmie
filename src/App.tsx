@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { AppTab } from './types'
 import { useBrewmie } from './hooks/useBrewmie'
 import { Hero } from './components/Hero'
@@ -9,9 +9,10 @@ import { PremiumModal } from './components/PremiumModal'
 import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
-import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle } from './lib/supabase'
+import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle, bulkUpsertShots } from './lib/supabase'
 import { initIAP } from './lib/iap'
 import { notifyAppReady } from './lib/native'
+import { localOnly } from './lib/shots'
 import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
@@ -138,6 +139,9 @@ export function App() {
   // own `HYDRATE` with `{ ...state, ... }` and whichever resolved last would
   // clobber the others (e.g. config landing after shots wiped the shots array
   // until the next reducer write).
+  const shotsRef = useRef(state.shots)
+  const deletedRefForHydrate = useRef<string[]>(state.deletedShotIds ?? [])
+  useEffect(() => { shotsRef.current = state.shots; deletedRefForHydrate.current = state.deletedShotIds ?? [] }, [state.shots, state.deletedShotIds])
   useEffect(() => {
     if (!state.userId) return
     const uid = state.userId
@@ -148,8 +152,17 @@ export function App() {
       fetchTier(uid),
     ]).then(([shotsResult, configResult, nameResult, tierResult]) => {
       const merge: Partial<typeof state> = {}
-      if (shotsResult.status === 'fulfilled' && shotsResult.value.length > 0) {
-        merge.shots = shotsResult.value
+      if (shotsResult.status === 'fulfilled') {
+        // Union with the live local list (reducer), then upload whatever the server lacks:
+        // shots recorded signed out or during a failed sync (audit brewmie-01).
+        const serverShots = shotsResult.value
+        dispatch({ type: 'HYDRATE_SHOTS', payload: serverShots })
+        const missing = localOnly(shotsRef.current, serverShots, deletedRefForHydrate.current)
+        if (missing.length > 0) {
+          bulkUpsertShots(missing, uid).then(({ error }) => {
+            if (error) track('sync_failed', { op: 'hydrate_upload' })
+          }).catch(() => track('sync_failed', { op: 'hydrate_upload' }))
+        }
       }
       if (configResult.status === 'fulfilled' && configResult.value) {
         Object.assign(merge, configResult.value)

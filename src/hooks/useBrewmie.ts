@@ -3,6 +3,8 @@ import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { loadState, saveState, clearState, defaultState, defaultMaintenanceRecord } from '../lib/storage'
 import { upsertShot, upsertPublicShot, upsertUserConfig, bulkUpsertShots } from '../lib/supabase'
 import { track } from '../lib/analytics'
+import { unionShots, addTombstone } from '../lib/shots'
+import { deleteShot } from '../lib/supabase'
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
 
@@ -67,7 +69,14 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
       return {
         ...state,
         shots: state.shots.filter((s) => s.id !== action.payload),
+        // Tombstone so the next hydrate from the server does not bring it back.
+        deletedShotIds: addTombstone(state.deletedShotIds, action.payload),
       }
+
+    case 'HYDRATE_SHOTS':
+      // Union, never replace: local-only shots survive, the server copy wins for shared
+      // ids, tombstoned ids stay gone (audit brewmie-01 / brewmie-02).
+      return { ...state, shots: unionShots(state.shots, action.payload, state.deletedShotIds ?? []) }
 
     case 'UPDATE_MAINTENANCE':
       return {
@@ -178,6 +187,22 @@ export function useBrewmie(): UseBrewmieReturn {
     return () => { cancelled = true }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.userId])
+
+  // Deletes reach the server (audit brewmie-02): every tombstone is sent once per session
+  // while signed in. A missing DELETE policy makes the call a silent no-op server side, so
+  // the local tombstone stays the source of truth either way.
+  const deletedRef = useRef<Set<string>>(new Set())
+  useEffect(() => {
+    const uid = state.userId
+    if (!uid) return
+    for (const id of state.deletedShotIds ?? []) {
+      if (deletedRef.current.has(id)) continue
+      deletedRef.current.add(id)
+      deleteShot(id).then(({ error }) => {
+        if (error) { console.warn('[Brewmie] shot delete failed:', error.message); track('sync_failed', { op: 'delete' }) }
+      }).catch(() => { track('sync_failed', { op: 'delete' }) })
+    }
+  }, [state.userId, state.deletedShotIds])
 
   // Sync shots that changed since the last render to the personal store
   // (signed-in only). Compares each shot's content, so an added shot and an

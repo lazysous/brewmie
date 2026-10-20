@@ -143,6 +143,8 @@ export interface BrewmieState {
   // account's shots. null means the data was recorded with nobody signed in
   // and belongs to whoever signs in first.
   dataOwnerId?: string | null
+  /** Shot ids deleted on this device; a hydrate never resurrects them (audit brewmie-02). */
+  deletedShotIds?: string[]
 }
 
 export type Tier = 'free' | 'premium'
@@ -159,6 +161,7 @@ export type AppAction =
   | { type: 'ADD_SHOT'; payload: ShotEntry }
   | { type: 'UPDATE_SHOT'; payload: { id: string; updates: Partial<ShotEntry> } }
   | { type: 'DELETE_SHOT'; payload: string }
+  | { type: 'HYDRATE_SHOTS'; payload: ShotEntry[] }
   | { type: 'UPDATE_MAINTENANCE'; payload: Partial<MaintenanceRecord> }
   | { type: 'SET_AUTO_APPLY'; payload: boolean }
   | { type: 'SET_USER'; payload: string | null }

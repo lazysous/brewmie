@@ -226,18 +226,28 @@ export async function bulkUpsertShots(shots: ShotEntry[], userId: string): Promi
 /**
  * Fetch all shots for the authenticated user, ordered newest-first.
  */
-export async function fetchShots(userId: string): Promise<ShotEntry[]> {
-  const { data, error } = await supabase
-    .from('shots')
-    .select('*')
-    .eq('user_id', userId)
-    .order('timestamp', { ascending: false })
+export const FETCH_PAGE = 1000
 
-  if (error) {
-    console.error('[Brewmie] fetchShots error:', error.message)
-    return []
+// Pages through PostgREST's row cap (audit brewmie-61): a single select silently truncated
+// a long history, and the truncated list then replaced the local one.
+export async function fetchShots(userId: string): Promise<ShotEntry[]> {
+  const rows: ShotRow[] = []
+  for (let from = 0; ; from += FETCH_PAGE) {
+    const { data, error } = await supabase
+      .from('shots')
+      .select('*')
+      .eq('user_id', userId)
+      .order('timestamp', { ascending: false })
+      .range(from, from + FETCH_PAGE - 1)
+    if (error) {
+      console.error('[Brewmie] fetchShots error:', error.message)
+      return rows.length ? rows.map(normaliseShotRow) : []
+    }
+    const page = (data ?? []) as ShotRow[]
+    rows.push(...page)
+    if (page.length < FETCH_PAGE) break
   }
-  return (data ?? []).map(normaliseShotRow)
+  return rows.map(normaliseShotRow)
 }
 
 // The shots table began life with grind / dose / tamp columns and grew the

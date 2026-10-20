@@ -483,7 +483,8 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
 
   function handleClearShots() {
     if (!window.confirm(t('insights.confirmClear'))) return
-    for (const shot of shots) {
+    // Clear means every shot, not the free-tier 30-day view (audit brewmie-33).
+    for (const shot of allShots) {
       dispatch({ type: 'DELETE_SHOT', payload: shot.id })
     }
   }

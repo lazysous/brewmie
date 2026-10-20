@@ -1,4 +1,5 @@
 import React from 'react'
+import { localDateKey, todayKey } from '../lib/dates'
 import { createPortal } from 'react-dom'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { useState } from 'react'
@@ -12,7 +13,7 @@ import { GlobalShotCounter } from '../components/GlobalShotCounter'
 function groupShotsByDate(shots: ShotEntry[]): Map<string, ShotEntry[]> {
   const map = new Map<string, ShotEntry[]>()
   for (const shot of shots) {
-    const date = shot.timestamp.slice(0, 10)
+    const date = localDateKey(shot.timestamp)
     const group = map.get(date) ?? []
     group.push(shot)
     map.set(date, group)
@@ -382,7 +383,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
     : null
 
   // Days active — distinct YYYY-MM-DD count.
-  const distinctDays = new Set(shots.map((s) => s.timestamp.slice(0, 10))).size
+  const distinctDays = new Set(shots.map((s) => localDateKey(s.timestamp))).size
 
   // Consistency value (numeric) — for the bar fill. Inverts std dev of recent
   // 10 scores into a 0–100 "steadiness" reading.
@@ -444,7 +445,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
       cols.map(({ key }) => escape((s as unknown as Record<string, unknown>)[key])).join(',')
     )
     const csv = [cols.map((c) => c.label).join(','), ...rows].join('\n')
-    const filename = `brewmie-shots-${new Date().toISOString().slice(0, 10)}.csv`
+    const filename = `brewmie-shots-${todayKey()}.csv`
 
     // Native (iOS/Android): write to cache then open the OS share sheet so
     // the user can mail, save to Files / Drive, or AirDrop.

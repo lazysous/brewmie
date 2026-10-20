@@ -2,6 +2,8 @@
 // switches by rewriting SALE_ACTIVE and SALE_UNTIL. Pinned: the worker itself says false
 // for an expired or malformed flag, so a forgotten flag cannot label the regular price a
 // sale; the OTA decision is untouched by the new route.
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { describe, it, expect } from 'vitest'
 import worker, { saleAnswer, decide } from '../ota/worker.js'
 
@@ -21,12 +23,18 @@ describe('saleAnswer()', () => {
 })
 
 describe('GET /sale on the worker', () => {
-  it('serves JSON with CORS and no caching, and the committed flag is off', async () => {
-    const res = await worker.fetch(new Request('https://brewmie-ota.richbwilliamson.workers.dev/sale'))
+  it('serves JSON with CORS and no caching, and answers exactly what the committed SALE_* constants say', async () => {
+    // The flag is committed ON or OFF by scripts/sale_flag.sh; the test follows the source
+    // instead of pinning one state (it used to insist on "off", which broke the OTA gate the
+    // moment a sale was switched on).
+    const src = readFileSync(path.join(__dirname, '../ota/worker.js'), 'utf8')
+    const active = /const SALE_ACTIVE = true/.test(src)
+    const until = (src.match(/const SALE_UNTIL = '([^']*)'/) ?? [])[1] ?? ''
+    const res = await worker.fetch(new Request('https://brewmie-ota.richbwilliamson.workers.dev/sale'), {})
     expect(res.headers.get('Content-Type')).toBe('application/json')
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
     expect(res.headers.get('Cache-Control')).toBe('no-store')
-    expect(await res.json()).toEqual({ active: false, until: null })
+    expect(await res.json()).toEqual(saleAnswer({ active, until }))
   })
   it('leaves the OTA answer on the root path unchanged', async () => {
     const res = await worker.fetch(new Request('https://brewmie-ota.richbwilliamson.workers.dev/', {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { localDateKey, todayKey } from '../lib/dates'
 import { createPortal } from 'react-dom'
 import type {
   BrewmieState,
@@ -39,7 +40,6 @@ const ROAST_LEVELS: { value: RoastLevel; labelKey: string }[] = [
   { value: 'dark', labelKey: 'setup.roastDark' },
 ]
 
-const TODAY_ISO = new Date().toISOString().slice(0, 10)
 
 // Maintenance intervals in days
 const BACKFLUSH_INTERVAL_DAYS = 14
@@ -70,7 +70,7 @@ function fahrenheitToCelsius(f: number): number {
 
 function toDateInputValue(isoDate: string | null): string {
   if (!isoDate) return ''
-  return isoDate.slice(0, 10)
+  return localDateKey(isoDate)
 }
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
@@ -326,7 +326,7 @@ function MaintenanceRow({ label, lastDate, intervalDays, onDateChange, onToday, 
             type="date"
             className="sc-input sc-input--date"
             value={toDateInputValue(lastDate)}
-            max={TODAY_ISO}
+            max={todayKey()}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDateChange(e.target.value)}
           />
         </span>
@@ -470,7 +470,10 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
   // ─── Derived ──────────────────────────────────────────────────────────────────
 
   const beanAgeDays = daysSince(roastDate)
-  const shotTempDisplay = state.units === 'imperial' ? celsiusToFahrenheit(shotTempC) : shotTempC
+  // Typed text stays as typed while the field has focus and is converted on blur
+  // (audit brewmie-44): converting every keystroke F->C->F rewrote what the user typed.
+  const [shotTempText, setShotTempText] = useState<string | null>(null)
+  const shotTempDisplay = Math.round((state.units === 'imperial' ? celsiusToFahrenheit(shotTempC) : shotTempC) * 10) / 10
 
   const isEquipmentConfigured = !!(state.machine?.brand && state.grinder?.brand)
   // ─── Dispatch helpers ─────────────────────────────────────────────────────────
@@ -640,12 +643,16 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
   // ─── Shot temperature ─────────────────────────────────────────────────────────
 
   function handleShotTempChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const val = Number(e.target.value)
-    if (state.units === 'imperial') {
-      setShotTempC(fahrenheitToCelsius(val))
-    } else {
-      setShotTempC(val)
+    setShotTempText(e.target.value)
+  }
+  function commitShotTemp() {
+    if (shotTempText !== null) {
+      const val = Number(shotTempText)
+      if (shotTempText.trim() !== '' && Number.isFinite(val)) {
+        setShotTempC(state.units === 'imperial' ? fahrenheitToCelsius(val) : val)
+      }
     }
+    setShotTempText(null)
   }
 
   // ─── Beans helpers ────────────────────────────────────────────────────────────
@@ -798,8 +805,10 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
               min={state.units === 'imperial' ? 185 : 85}
               max={state.units === 'imperial' ? 210 : 99}
               step={0.5}
-              value={shotTempDisplay}
+              value={shotTempText ?? shotTempDisplay}
               onChange={handleShotTempChange}
+              onBlur={commitShotTemp}
+              onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
             />
           </Field>
         </Card>
@@ -1004,7 +1013,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                   type="date"
                   className="sc-input sc-input--date"
                   value={toDateInputValue(roastDate)}
-                  max={TODAY_ISO}
+                  max={todayKey()}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const val = e.target.value || null
                     setRoastDate(val)
@@ -1060,7 +1069,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
             lastDate={state.maintenance.lastBackflush}
             intervalDays={BACKFLUSH_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastBackflush', v)}
-            onToday={() => setMaintenanceDate('lastBackflush', TODAY_ISO)}
+            onToday={() => setMaintenanceDate('lastBackflush', todayKey())}
             t={t}
           />
           <MaintenanceRow
@@ -1068,7 +1077,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
             lastDate={state.maintenance.lastDescale}
             intervalDays={DESCALE_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastDescale', v)}
-            onToday={() => setMaintenanceDate('lastDescale', TODAY_ISO)}
+            onToday={() => setMaintenanceDate('lastDescale', todayKey())}
             t={t}
           />
           <MaintenanceRow
@@ -1076,7 +1085,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
             lastDate={state.maintenance.lastGrinderClean}
             intervalDays={GRINDER_CLEAN_INTERVAL_DAYS}
             onDateChange={(v) => setMaintenanceDate('lastGrinderClean', v)}
-            onToday={() => setMaintenanceDate('lastGrinderClean', TODAY_ISO)}
+            onToday={() => setMaintenanceDate('lastGrinderClean', todayKey())}
             t={t}
           />
         </Card>
@@ -1384,7 +1393,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                   <Field label={t('setup.beanRoastDate')}>
                     <div className="sc-date-row">
                       <span className={`sc-date-wrap${roastDate ? '' : ' sc-date-wrap--empty'}`} data-placeholder={t('setup.dateLabel')}>
-                        <input type="date" className="sc-input sc-input--date" value={toDateInputValue(roastDate)} max={TODAY_ISO}
+                        <input type="date" className="sc-input sc-input--date" value={toDateInputValue(roastDate)} max={todayKey()}
                           onChange={(e) => { const v = e.target.value || null; setRoastDate(v); dispatchBeans({ roastDate: v, beanAge: daysSince(v) }) }} />
                       </span>
                       {beanAgeDays !== null && <RoastAgeDisplay days={beanAgeDays} t={t} />}

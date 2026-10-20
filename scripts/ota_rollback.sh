@@ -8,6 +8,9 @@
 # then fix forward with scripts/ota_push.sh <higher version>.
 set -euo pipefail
 REPO="$(cd "$(dirname "$0")/.." && pwd)"; cd "$REPO"
+# IPv6 is broken on the owner's Mac and Node's address autoselection times out before it
+# falls back, so wrangler reports "fetch failed" while curl works (BUILD_AUTOMATION section 8).
+export NODE_OPTIONS="--no-network-family-autoselection --dns-result-order=ipv4first ${NODE_OPTIONS:-}"
 TARGET="${1:?usage: scripts/ota_rollback.sh <version>|builtin|off [--dry-run]}"
 DRY=0; [ "${2:-}" = "--dry-run" ] && DRY=1
 NATIVE_VERSION=$(grep -m1 -oE 'MARKETING_VERSION = [0-9.]+' ios/App/App.xcodeproj/project.pbxproj | grep -oE '[0-9.]+')

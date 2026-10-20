@@ -15,6 +15,9 @@ import {
 import type { ShotEntry } from '../src/types'
 
 let seq = 0
+// An ISO timestamp for a LOCAL wall-clock moment, so day assertions hold in any zone.
+const localTs = (y: number, m: number, d: number, h: number, min = 0) => new Date(y, m - 1, d, h, min).toISOString()
+
 function makeShot(overrides: Partial<ShotEntry> = {}): ShotEntry {
   seq += 1
   return {
@@ -45,29 +48,33 @@ function makeShot(overrides: Partial<ShotEntry> = {}): ShotEntry {
 }
 
 describe('groupShotsByDate', () => {
-  it('groups by the first 10 characters of the timestamp', () => {
-    const a = makeShot({ timestamp: '2026-10-01T08:00:00.000Z' })
-    const b = makeShot({ timestamp: '2026-10-01T20:30:00.000Z' })
-    const c = makeShot({ timestamp: '2026-10-02T09:00:00.000Z' })
+  it('groups by the LOCAL calendar day of the timestamp (audit brewmie-30)', () => {
+    const a = makeShot({ timestamp: localTs(2026, 10, 1, 8) })
+    const b = makeShot({ timestamp: localTs(2026, 10, 1, 20, 30) })
+    const c = makeShot({ timestamp: localTs(2026, 10, 2, 9) })
     const map = groupShotsByDate([a, b, c])
     expect(map.size).toBe(2)
     expect(map.get('2026-10-01')).toEqual([a, b])
     expect(map.get('2026-10-02')).toEqual([c])
   })
+  it('a shot at 23:30 local stays on its local day even when that is the next UTC day', () => {
+    const lateLocal = makeShot({ timestamp: localTs(2026, 10, 1, 23, 30) })
+    expect([...groupShotsByDate([lateLocal]).keys()]).toEqual(['2026-10-01'])
+  })
 })
 
 describe('getFirstShots', () => {
   it('returns the earliest shot per day even though shots are stored newest-first', () => {
-    const early = makeShot({ timestamp: '2026-10-01T07:00:00.000Z' })
-    const late = makeShot({ timestamp: '2026-10-01T19:00:00.000Z' })
+    const early = makeShot({ timestamp: localTs(2026, 10, 1, 7) })
+    const late = makeShot({ timestamp: localTs(2026, 10, 1, 19) })
     // Stored newest-first, matching how the real app appends shots.
     expect(getFirstShots([late, early])).toEqual([early])
   })
 
   it('returns one shot per distinct day', () => {
-    const day1early = makeShot({ timestamp: '2026-10-01T07:00:00.000Z' })
-    const day1late = makeShot({ timestamp: '2026-10-01T19:00:00.000Z' })
-    const day2only = makeShot({ timestamp: '2026-10-02T12:00:00.000Z' })
+    const day1early = makeShot({ timestamp: localTs(2026, 10, 1, 7) })
+    const day1late = makeShot({ timestamp: localTs(2026, 10, 1, 19) })
+    const day2only = makeShot({ timestamp: localTs(2026, 10, 2, 12) })
     const result = getFirstShots([day2only, day1late, day1early])
     expect(result).toHaveLength(2)
     expect(result).toEqual(expect.arrayContaining([day1early, day2only]))

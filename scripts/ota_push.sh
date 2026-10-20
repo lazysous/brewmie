@@ -25,6 +25,9 @@
 set -euo pipefail
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO"
+# IPv6 is broken on the owner's Mac and Node's address autoselection times out before it
+# falls back, so wrangler reports "fetch failed" while curl works (BUILD_AUTOMATION section 8).
+export NODE_OPTIONS="--no-network-family-autoselection --dns-result-order=ipv4first ${NODE_OPTIONS:-}"
 
 VERSION="${1:?Usage: scripts/ota_push.sh <version>}"
 

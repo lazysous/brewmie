@@ -21,6 +21,7 @@
 // React render (e.g. fired from a Capacitor lifecycle hook).
 
 import { scheduleLocalNotification, cancelLocalNotification } from './native'
+import { parseLocalDate } from './dates'
 import { loadTranslations, resolveKey, type TranslationDict } from './i18n'
 import type { BrewmieState } from '../types'
 
@@ -198,10 +199,10 @@ function addDays(d: Date, n: number): Date {
   return r
 }
 
+// A stored YYYY-MM-DD is a LOCAL day (audit brewmie-30): new Date('YYYY-MM-DD') is UTC
+// midnight, which west of UTC is the evening before, so reminders fired a day early.
 function isoToDate(iso: string | null | undefined): Date | null {
-  if (!iso) return null
-  const d = new Date(iso)
-  return isNaN(d.getTime()) ? null : d
+  return parseLocalDate(iso)
 }
 
 /**

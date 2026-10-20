@@ -725,6 +725,17 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
     if (!Number.isFinite(n)) return
     setTargets((prev) => ({ ...prev, [key]: snapForKey(key, clampForKey(key, n)) }))
   }
+  // The typed value is kept as text while the field has focus and committed (clamped and
+  // snapped) on blur or Enter (audit brewmie-05): clamping on every keystroke turned a
+  // typed "18" into the field minimum on the first key. The stepper path is unchanged.
+  const [editing, setEditing] = useState<{ key: keyof BrewTargets; text: string } | null>(null)
+  function commitEditing() {
+    if (editing) {
+      const n = parseFloat(editing.text)
+      if (Number.isFinite(n)) setTargetValue(editing.key, n)
+    }
+    setEditing(null)
+  }
 
   // ─── Validation ──────────────────────────────────────────────────────────────
   function validate(): string | null {
@@ -1109,15 +1120,14 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
                 className="bs-param-row__value bs-param-row__input"
                 type="text"
                 inputMode="decimal"
-                value={targets[row.key]}
+                value={editing?.key === row.key ? editing.text : targets[row.key]}
                 onChange={(e) => {
                   const v = e.target.value
-                  if (/^[0-9]*\.?[0-9]*$/.test(v)) {
-                    const n = parseFloat(v)
-                    if (!isNaN(n)) setTargetValue(row.key, n)
-                  }
+                  if (/^[0-9]*\.?[0-9]*$/.test(v)) setEditing({ key: row.key, text: v })
                 }}
-                onFocus={(e) => e.target.select()}
+                onFocus={(e) => { e.target.select(); setEditing({ key: row.key, text: String(targets[row.key]) }) }}
+                onBlur={commitEditing}
+                onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
                 aria-label={t(row.labelKey)}
               />
               <span className="bs-param-row__unit">{row.unit}</span>

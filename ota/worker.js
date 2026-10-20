@@ -85,8 +85,8 @@ export default {
     // OTA_ENABLED=false serves "no_new_version_available" to all devices,
     // regardless of what they report.
     const OTA_ENABLED = true
-    const LATEST_VERSION = '1.1.3'
-    const LATEST_URL = 'https://brewmie.app/ota/builds/1.1.3.zip'
+    const LATEST_VERSION = '1.1.4'
+    const LATEST_URL = 'https://brewmie.app/ota/builds/1.1.4.zip'
     const REVERT_TO_BUILTIN = false
     const NATIVE_VERSION = '1.1'
 

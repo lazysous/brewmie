@@ -236,6 +236,11 @@ export function useBrewmie(): UseBrewmieReturn {
   // before this, the newest shot was re-posted on every launch and every
   // delete, and two thirds of the public dataset was duplicates.
   const publicSeenRef = useRef<Set<string> | null>(null)
+  // Only shots recorded in THIS session are posted to the community dataset: a shot that
+  // arrives from the server (sign-in on a new device, reinstall, account switch) was posted
+  // when it was recorded, so re-posting it duplicated the user's whole history (audit
+  // brewmie-06). A minute of slack covers clock skew between the shot and the mount.
+  const sessionStartRef = useRef<number>(Date.now() - 60_000)
   useEffect(() => {
     const ids = new Set(state.shots.map((s) => s.id))
     if (publicSeenRef.current === null) {
@@ -249,6 +254,8 @@ export function useBrewmie(): UseBrewmieReturn {
     if (optedOut) return
     for (const shot of state.shots) {
       if (seen.has(shot.id)) continue
+      const recordedAt = Date.parse(shot.timestamp)
+      if (Number.isFinite(recordedAt) && recordedAt < sessionStartRef.current) continue
       upsertPublicShot(shot, {
         machine: state.machine,
         grinder: state.grinder,

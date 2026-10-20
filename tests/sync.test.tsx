@@ -265,3 +265,24 @@ describe('config sync waits for the hydrate (audit brewmie-07)', () => {
     expect(calls.upsertUserConfig).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('community uploads are for shots recorded this session (audit brewmie-06)', () => {
+  it('shots that arrive from the server on sign-in are not re-posted publicly', async () => {
+    seed({ userId: 'A', dataOwnerId: 'A', shots: [] })
+    localStorage.setItem('brewmie_backfill_v1:A', '1')
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    const old = { ...shot('h1'), timestamp: '2026-01-01T10:00:00.000Z' }
+    act(() => result.current.dispatch({ type: 'HYDRATE_SHOTS', payload: [old, { ...shot('h2'), timestamp: '2026-02-01T10:00:00.000Z' }] }))
+    await flush()
+    expect(calls.upsertPublicShot).not.toHaveBeenCalled()
+  })
+  it('a shot recorded now is still posted once', async () => {
+    seed({ userId: null, shots: [] })
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('n1'), timestamp: new Date().toISOString() } }))
+    await flush()
+    expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
+  })
+})

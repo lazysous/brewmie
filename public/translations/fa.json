@@ -447,7 +447,8 @@
     "feature3Sub": "هر شات را با بهترین خودت مقایسه کن.",
     "ctaBrewmie": "فقط Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: از طریق dev pill باز می‌شود. خرید واقعی نیست."
+    "devNote": "Dev: از طریق dev pill باز می‌شود. خرید واقعی نیست.",
+    "salePrice": "قیمت حراج"
   },
   "tierLock": {
     "badge": "Premium",

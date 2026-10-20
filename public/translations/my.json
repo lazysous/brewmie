@@ -447,7 +447,8 @@
     "feature3Sub": "Shot တိုင်းကို သင့်အကောင်းဆုံးနှင့် နှိုင်းပါ။",
     "ctaBrewmie": "Brewmie တစ်ခုတည်း",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill ဖြင့် ဖွင့်သည်။ စစ်မှန်သော ဝယ်ယူမှု မဟုတ်။"
+    "devNote": "Dev: dev pill ဖြင့် ဖွင့်သည်။ စစ်မှန်သော ဝယ်ယူမှု မဟုတ်။",
+    "salePrice": "လျှော့စျေး"
   },
   "tierLock": {
     "badge": "Premium",

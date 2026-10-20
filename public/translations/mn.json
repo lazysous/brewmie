@@ -447,7 +447,8 @@
     "feature3Sub": "Шот тус бүрийг хамгийн сайнтайгаа харьцуул.",
     "ctaBrewmie": "Зөвхөн Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill-ээр нээгдэнэ. Жинхэнэ худалдан авалт биш."
+    "devNote": "Dev: dev pill-ээр нээгдэнэ. Жинхэнэ худалдан авалт биш.",
+    "salePrice": "Хямдралтай үнэ"
   },
   "tierLock": {
     "badge": "Premium",

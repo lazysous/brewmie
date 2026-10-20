@@ -447,7 +447,8 @@
     "feature3Sub": "Porównuj każdy shot z własnym rekordem.",
     "ctaBrewmie": "Tylko Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: odblokowanie przez dev pill. To nie prawdziwy zakup."
+    "devNote": "Dev: odblokowanie przez dev pill. To nie prawdziwy zakup.",
+    "salePrice": "Cena promocyjna"
   },
   "tierLock": {
     "badge": "Premium",

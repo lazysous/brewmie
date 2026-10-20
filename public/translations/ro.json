@@ -447,7 +447,8 @@
     "feature3Sub": "Compară fiecare shot cu cel mai bun al tău.",
     "ctaBrewmie": "Doar Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: se deblochează prin dev pill. Nu e cumpărare reală."
+    "devNote": "Dev: se deblochează prin dev pill. Nu e cumpărare reală.",
+    "salePrice": "Preț promoțional"
   },
   "tierLock": {
     "badge": "Premium",

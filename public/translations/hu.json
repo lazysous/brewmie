@@ -447,7 +447,8 @@
     "feature3Sub": "Hasonlítsd minden shotot a saját legjobbadhoz.",
     "ctaBrewmie": "Csak Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pillel nyitható. Nem valós vásárlás."
+    "devNote": "Dev: dev pillel nyitható. Nem valós vásárlás.",
+    "salePrice": "Akciós ár"
   },
   "tierLock": {
     "badge": "Premium",

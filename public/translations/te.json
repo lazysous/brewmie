@@ -447,7 +447,8 @@
     "feature3Sub": "ప్రతి shot ను మీ ఉత్తమమైన దానితో పోల్చండి.",
     "ctaBrewmie": "Brewmie మాత్రమే",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill ద్వారా అన్‌లాక్. నిజమైన కొనుగోలు కాదు."
+    "devNote": "Dev: dev pill ద్వారా అన్‌లాక్. నిజమైన కొనుగోలు కాదు.",
+    "salePrice": "ఆఫర్ ధర"
   },
   "tierLock": {
     "badge": "Premium",

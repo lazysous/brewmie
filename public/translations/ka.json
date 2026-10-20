@@ -447,7 +447,8 @@
     "feature3Sub": "შეადარე ყველა შოტი შენს საუკეთესოს.",
     "ctaBrewmie": "მხოლოდ Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: გახსნა dev pill-ით. ნამდვილი შესყიდვა არ არის."
+    "devNote": "Dev: გახსნა dev pill-ით. ნამდვილი შესყიდვა არ არის.",
+    "salePrice": "ფასდაკლების ფასი"
   },
   "tierLock": {
     "badge": "Premium",

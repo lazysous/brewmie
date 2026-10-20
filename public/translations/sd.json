@@ -447,7 +447,8 @@
     "feature3Sub": "هر شاٽ کي پنهنجي بهترين سان مقابلو ڪريو.",
     "ctaBrewmie": "صرف Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill ذريعي کوليو. حقيقي خريداري نه آهي."
+    "devNote": "Dev: dev pill ذريعي کوليو. حقيقي خريداري نه آهي.",
+    "salePrice": "رعايتي قيمت"
   },
   "tierLock": {
     "badge": "Premium",

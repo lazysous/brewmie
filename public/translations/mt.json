@@ -447,7 +447,8 @@
     "feature3Sub": "Qabbel kull shot mal-aqwa tiegħek.",
     "ctaBrewmie": "Brewmie biss",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: jinfetaħ b'dev pill. Mhux xirja vera."
+    "devNote": "Dev: jinfetaħ b'dev pill. Mhux xirja vera.",
+    "salePrice": "Prezz tal-offerta"
   },
   "tierLock": {
     "badge": "Premium",

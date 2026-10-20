@@ -447,7 +447,8 @@
     "feature3Sub": "Porovnej každý shot se svým nejlepším.",
     "ctaBrewmie": "Jen Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: odemčení přes dev pill. Není to skutečný nákup."
+    "devNote": "Dev: odemčení přes dev pill. Není to skutečný nákup.",
+    "salePrice": "Akční cena"
   },
   "tierLock": {
     "badge": "Premium",

@@ -447,7 +447,8 @@
     "feature3Sub": "毎ショットを自己ベストと比較。",
     "ctaBrewmie": "Brewmieのみ",
     "priceBrewmie": "$6.99",
-    "devNote": "開発: dev pillで解放。実際の購入ではありません。"
+    "devNote": "開発: dev pillで解放。実際の購入ではありません。",
+    "salePrice": "セール価格"
   },
   "tierLock": {
     "badge": "Premium",

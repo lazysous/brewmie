@@ -447,7 +447,8 @@
     "feature3Sub": "Σύγκρινε κάθε shot με το καλύτερό σου.",
     "ctaBrewmie": "Μόνο Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: ξεκλείδωμα μέσω dev pill. Δεν είναι πραγματική αγορά."
+    "devNote": "Dev: ξεκλείδωμα μέσω dev pill. Δεν είναι πραγματική αγορά.",
+    "salePrice": "Τιμή προσφοράς"
   },
   "tierLock": {
     "badge": "Premium",

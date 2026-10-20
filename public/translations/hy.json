@@ -447,7 +447,8 @@
     "feature3Sub": "Համեմատիր յուրաքանչյուր շոթ քո լավագույնի հետ։",
     "ctaBrewmie": "Միայն Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev՝ բացվում է dev pill-ով։ Իրական գնում չէ։"
+    "devNote": "Dev՝ բացվում է dev pill-ով։ Իրական գնում չէ։",
+    "salePrice": "Զեղչված գին"
   },
   "tierLock": {
     "badge": "Premium",

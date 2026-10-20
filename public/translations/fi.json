@@ -447,7 +447,8 @@
     "feature3Sub": "Vertaa jokaista shottia parhaaseesi.",
     "ctaBrewmie": "Vain Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: avaa dev pillin kautta. Ei oikea osto."
+    "devNote": "Dev: avaa dev pillin kautta. Ei oikea osto.",
+    "salePrice": "Tarjoushinta"
   },
   "tierLock": {
     "badge": "Premium",

@@ -447,7 +447,8 @@
     "feature3Sub": "每杯和你的最佳对比。",
     "ctaBrewmie": "仅Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "开发：通过dev pill解锁，非实际购买。"
+    "devNote": "开发：通过dev pill解锁，非实际购买。",
+    "salePrice": "促销价"
   },
   "tierLock": {
     "badge": "Premium",

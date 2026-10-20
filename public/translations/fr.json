@@ -447,7 +447,8 @@
     "feature3Sub": "Compare chaque shot à ton meilleur.",
     "ctaBrewmie": "Brewmie seul",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev : déblocage via le dev pill. Ce n'est pas un vrai achat."
+    "devNote": "Dev : déblocage via le dev pill. Ce n'est pas un vrai achat.",
+    "salePrice": "Prix promo"
   },
   "tierLock": {
     "badge": "Premium",

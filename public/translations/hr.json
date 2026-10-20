@@ -447,7 +447,8 @@
     "feature3Sub": "Usporedi svaki shot s tvojim najboljim.",
     "ctaBrewmie": "Samo Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: otključavanje preko dev pill. Nije pravi kupnja."
+    "devNote": "Dev: otključavanje preko dev pill. Nije pravi kupnja.",
+    "salePrice": "Akcijska cijena"
   },
   "tierLock": {
     "badge": "Premium",

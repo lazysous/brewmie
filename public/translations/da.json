@@ -447,7 +447,8 @@
     "feature3Sub": "Sammenlign hvert shot med din bedste.",
     "ctaBrewmie": "Kun Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: lås op via dev pill. Ikke et rigtigt køb."
+    "devNote": "Dev: lås op via dev pill. Ikke et rigtigt køb.",
+    "salePrice": "Tilbudspris"
   },
   "tierLock": {
     "badge": "Premium",

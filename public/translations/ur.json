@@ -447,7 +447,8 @@
     "feature3Sub": "ہر شاٹ کا اپنے بہترین سے موازنہ کریں۔",
     "ctaBrewmie": "صرف Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill سے کھلتا ہے۔ حقیقی خریداری نہیں۔"
+    "devNote": "Dev: dev pill سے کھلتا ہے۔ حقیقی خریداری نہیں۔",
+    "salePrice": "رعایتی قیمت"
   },
   "tierLock": {
     "badge": "Premium",

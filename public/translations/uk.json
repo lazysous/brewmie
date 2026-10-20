@@ -447,7 +447,8 @@
     "feature3Sub": "Порівнюй кожен шот зі своїм найкращим.",
     "ctaBrewmie": "Лише Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: розблокування через dev pill. Не справжня покупка."
+    "devNote": "Dev: розблокування через dev pill. Не справжня покупка.",
+    "salePrice": "Акційна ціна"
   },
   "tierLock": {
     "badge": "Premium",

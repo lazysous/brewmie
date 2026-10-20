@@ -447,7 +447,8 @@
     "feature3Sub": "Compara cada shot co teu mellor.",
     "ctaBrewmie": "Só Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: desbloqueo polo dev pill. Non é compra real."
+    "devNote": "Dev: desbloqueo polo dev pill. Non é compra real.",
+    "salePrice": "Prezo de oferta"
   },
   "tierLock": {
     "badge": "Premium",

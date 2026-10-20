@@ -447,7 +447,8 @@
     "feature3Sub": "Vergelyk elke shot met jou beste.",
     "ctaBrewmie": "Net Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: ontsluit via dev pill. Nie 'n regte aankoop nie."
+    "devNote": "Dev: ontsluit via dev pill. Nie 'n regte aankoop nie.",
+    "salePrice": "Uitverkoopprys"
   },
   "tierLock": {
     "badge": "Premium",

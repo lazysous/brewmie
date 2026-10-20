@@ -447,7 +447,8 @@
     "feature3Sub": "Cymharu pob sied â'th orau.",
     "ctaBrewmie": "Brewmie yn unig",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: datgloi drwy dev pill. Nid pryniant go iawn."
+    "devNote": "Dev: datgloi drwy dev pill. Nid pryniant go iawn.",
+    "salePrice": "Pris sêl"
   },
   "tierLock": {
     "badge": "Premium",

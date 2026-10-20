@@ -447,7 +447,8 @@
     "feature3Sub": "Gereranya buri shot n'iyawe nziza.",
     "ctaBrewmie": "Brewmie gusa",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: birafungukira binyuze muri dev pill. Si urugomero rwa nyaba."
+    "devNote": "Dev: birafungukira binyuze muri dev pill. Si urugomero rwa nyaba.",
+    "salePrice": "Igiciro cyagabanyijwe"
   },
   "tierLock": {
     "badge": "Premium",

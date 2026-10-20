@@ -447,7 +447,8 @@
     "feature3Sub": "සෑම shot එකක්ම ඔබේ හොඳම සමඟ සංසන්දනය කරන්න.",
     "ctaBrewmie": "Brewmie පමණයි",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill හරහා අගුළු හරිනවා. සැබෑ මිලදී ගැනීමක් නොවේ."
+    "devNote": "Dev: dev pill හරහා අගුළු හරිනවා. සැබෑ මිලදී ගැනීමක් නොවේ.",
+    "salePrice": "වට්ටම් මිල"
   },
   "tierLock": {
     "badge": "Premium",

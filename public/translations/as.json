@@ -447,7 +447,8 @@
     "feature3Sub": "প্ৰতিটো শ্বট আপোনাৰ শ্ৰেষ্ঠৰ সৈতে তুলনা।",
     "ctaBrewmie": "কেৱল Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill-ৰে আনলক। প্ৰকৃত ক্ৰয় নহয়।"
+    "devNote": "Dev: dev pill-ৰে আনলক। প্ৰকৃত ক্ৰয় নহয়।",
+    "salePrice": "ৰেহাই মূল্য"
   },
   "tierLock": {
     "badge": "Premium",

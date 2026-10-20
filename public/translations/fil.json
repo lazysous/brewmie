@@ -447,7 +447,8 @@
     "feature3Sub": "Ihambing bawat shot sa best mo.",
     "ctaBrewmie": "Brewmie lang",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: unlock sa pamamagitan ng dev pill. Hindi tunay na pagbili."
+    "devNote": "Dev: unlock sa pamamagitan ng dev pill. Hindi tunay na pagbili.",
+    "salePrice": "Presyong sale"
   },
   "tierLock": {
     "badge": "Premium",

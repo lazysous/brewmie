@@ -447,7 +447,8 @@
     "feature3Sub": "Linganisha kila shot na bora yako.",
     "ctaBrewmie": "Brewmie tu",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: kufunguliwa kwa dev pill. Si ununuzi halisi."
+    "devNote": "Dev: kufunguliwa kwa dev pill. Si ununuzi halisi.",
+    "salePrice": "Bei ya ofa"
   },
   "tierLock": {
     "badge": "Premium",

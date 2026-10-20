@@ -447,7 +447,8 @@
     "feature3Sub": "Параўнай кожны шот са сваім лепшым.",
     "ctaBrewmie": "Толькі Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: разблакіроўка праз dev pill. Не сапраўдная пакупка."
+    "devNote": "Dev: разблакіроўка праз dev pill. Не сапраўдная пакупка.",
+    "salePrice": "Цана са зніжкай"
   },
   "tierLock": {
     "badge": "Premium",

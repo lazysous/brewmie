@@ -447,7 +447,8 @@
     "feature3Sub": "قارن كل شوت بأفضل لديك.",
     "ctaBrewmie": "Brewmie فقط",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: يُفتح عبر dev pill. ليس شراء حقيقي."
+    "devNote": "Dev: يُفتح عبر dev pill. ليس شراء حقيقي.",
+    "salePrice": "سعر التخفيض"
   },
   "tierLock": {
     "badge": "Premium",

@@ -447,7 +447,8 @@
     "feature3Sub": "هر شاټ د خپل غوره سره پرتله کړه.",
     "ctaBrewmie": "یوازې Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: د dev pill له لارې پرانیستل کیږي. اصلي پیرودنه نه ده."
+    "devNote": "Dev: د dev pill له لارې پرانیستل کیږي. اصلي پیرودنه نه ده.",
+    "salePrice": "د تخفیف بیه"
   },
   "tierLock": {
     "badge": "Premium",

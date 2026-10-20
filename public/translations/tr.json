@@ -447,7 +447,8 @@
     "feature3Sub": "Her shotu kendi rekorunla karşılaştır.",
     "ctaBrewmie": "Sadece Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill ile açılır. Gerçek satın alma değil."
+    "devNote": "Dev: dev pill ile açılır. Gerçek satın alma değil.",
+    "salePrice": "İndirimli fiyat"
   },
   "tierLock": {
     "badge": "Premium",

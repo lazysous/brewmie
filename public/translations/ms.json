@@ -447,7 +447,8 @@
     "feature3Sub": "Bandingkan setiap shot dengan terbaik anda.",
     "ctaBrewmie": "Brewmie sahaja",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: buka melalui dev pill. Bukan pembelian sebenar."
+    "devNote": "Dev: buka melalui dev pill. Bukan pembelian sebenar.",
+    "salePrice": "Harga promosi"
   },
   "tierLock": {
     "badge": "Premium",

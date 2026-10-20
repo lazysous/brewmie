@@ -447,7 +447,8 @@
     "feature3Sub": "Cuir gach seat i gcomparáid le do cheann is fearr.",
     "ctaBrewmie": "Brewmie amháin",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dícheangail trí dev pill. Ní fíor-cheannach é."
+    "devNote": "Dev: dícheangail trí dev pill. Ní fíor-cheannach é.",
+    "salePrice": "Praghas díolacháin"
   },
   "tierLock": {
     "badge": "Premium",

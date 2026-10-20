@@ -230,6 +230,36 @@ pinned without editing the screens. Supabase and the purchase plugin are
 mocked in the tests that touch them; nothing reaches the network. A red
 result is a real regression.
 
+## 4c. Sale flag (temporary sale, added 2026-10-20)
+
+The Premium sheet shows the live store price, so a sale is a store-side price
+change (App Store Connect price schedule on the in-app purchase, Play Console
+in-app product price) with no bundle release. What the store cannot say is that
+the price is a sale, so the sheet asks the OTA worker for `GET /sale` and shows
+a gold "Sale price" badge (in place of the introductory-offer badge) while the
+answer says the sale is on. The flag lives in two constants in `ota/worker.js`
+(`SALE_ACTIVE`, `SALE_UNTIL`) so switching it is a worker deploy in seconds,
+with no bundle version and no Pages deploy:
+
+```bash
+scripts/sale_flag.sh on 2026-11-10T13:00:00Z   # UTC end time, must be ahead
+scripts/sale_flag.sh off
+scripts/sale_flag.sh on 2026-11-10T13:00:00Z --dry-run   # show, deploy nothing
+```
+
+The script needs a clean tree, rewrites the constants, deploys the worker,
+proves `GET /sale` answers the new state, and commits + pushes so the next
+`ota_push.sh` (which deploys the worker from the tree) carries the same flag.
+The worker answers `active: false` by itself once `SALE_UNTIL` has passed, and
+the device re-checks the end time, so a forgotten flag cannot label the regular
+price a sale for ever. The app reads it when the sheet opens, at most every
+five minutes, with a three-second limit; any failure means no badge.
+
+Order of operations: lower the store prices, then `sale_flag.sh on`; `off`
+before the prices go back up. `tests/sale.test.ts`, `tests/sale-worker.test.ts`
+and `tests/premium-modal-sale.test.tsx` pin it. The badge ships in bundle 1.1.4
+and later; older bundles show the introductory-offer badge as before.
+
 ## 5. Day-to-day commands
 
 | Command | What it does |

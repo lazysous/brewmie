@@ -447,7 +447,8 @@
     "feature3Sub": "Compara cada shot con tu propio récord.",
     "ctaBrewmie": "Solo Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: se desbloquea desde el dev pill. No es una compra real."
+    "devNote": "Dev: se desbloquea desde el dev pill. No es una compra real.",
+    "salePrice": "Precio de oferta"
   },
   "tierLock": {
     "badge": "Premium",

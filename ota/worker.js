@@ -35,6 +35,17 @@ export function decide(deviceVersion, cfg) {
   return { version: cfg.latestVersion, url: cfg.latestUrl }
 }
 
+// Sale flag (temporary sale, 2026-10). GET /sale answers {active, until}; the app shows a
+// gold "Sale price" badge on the Premium sheet while active is true (src/lib/sale.ts
+// re-checks until on the device). Pure so tests/sale-worker.test.ts can pin it: active only
+// with the flag on AND a parseable end time still ahead, so an expired or malformed flag
+// answers false by itself. cfg: { active, until }.
+export function saleAnswer(cfg, now = Date.now()) {
+  const until = Date.parse(cfg.until)
+  const active = cfg.active === true && Number.isFinite(until) && now < until
+  return { active, until: active ? cfg.until : null }
+}
+
 export default {
   async fetch(request) {
     if (request.method === 'OPTIONS') {
@@ -78,6 +89,20 @@ export default {
     const LATEST_URL = 'https://brewmie.app/ota/builds/1.1.3.zip'
     const REVERT_TO_BUILTIN = false
     const NATIVE_VERSION = '1.1'
+
+    // Rewritten by scripts/sale_flag.sh (on <until>|off); UTC ISO 8601, '' when off.
+    const SALE_ACTIVE = false
+    const SALE_UNTIL = ''
+
+    if (new URL(request.url).pathname === '/sale') {
+      return new Response(JSON.stringify(saleAnswer({ active: SALE_ACTIVE, until: SALE_UNTIL })), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-store',
+        },
+      })
+    }
 
     const body = decide(deviceVersion, {
       enabled: OTA_ENABLED, latestVersion: LATEST_VERSION, latestUrl: LATEST_URL,

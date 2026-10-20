@@ -447,7 +447,8 @@
     "feature3Sub": "Jeden Shot gegen deinen besten vergleichen.",
     "ctaBrewmie": "Nur Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: über den Dev-Pill freischaltbar. Kein echter Kauf."
+    "devNote": "Dev: über den Dev-Pill freischaltbar. Kein echter Kauf.",
+    "salePrice": "Aktionspreis"
   },
   "tierLock": {
     "badge": "Premium",

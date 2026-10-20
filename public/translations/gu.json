@@ -447,7 +447,8 @@
     "feature3Sub": "દરેક શોટની તુલના તમારા શ્રેષ્ઠ સાથે.",
     "ctaBrewmie": "માત્ર Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill થી અનલોક. વાસ્તવિક ખરીદી નથી."
+    "devNote": "Dev: dev pill થી અનલોક. વાસ્તવિક ખરીદી નથી.",
+    "salePrice": "સેલ કિંમત"
   },
   "tierLock": {
     "badge": "Premium",

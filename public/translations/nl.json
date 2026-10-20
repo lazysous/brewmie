@@ -447,7 +447,8 @@
     "feature3Sub": "Vergelijk elke shot met je eigen beste.",
     "ctaBrewmie": "Alleen Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: ontgrendel via dev pill. Geen echte aankoop."
+    "devNote": "Dev: ontgrendel via dev pill. Geen echte aankoop.",
+    "salePrice": "Actieprijs"
   },
   "tierLock": {
     "badge": "Premium",

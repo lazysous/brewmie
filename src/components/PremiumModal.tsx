@@ -6,6 +6,7 @@ import { setTierOverride } from '../hooks/useTier'
 import { track } from '../lib/analytics'
 import { signInWithApple, signInWithGoogle } from '../lib/supabase'
 import { purchasePremium, restorePurchases, getPremiumPriceDisplay } from '../lib/iap'
+import { useSale } from '../hooks/useSale'
 
 // Platform detection — read once at module load so render is sync.
 const NATIVE = Capacitor.isNativePlatform()
@@ -49,6 +50,10 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   useEffect(() => {
     if (open) setLocalizedPrice(getPremiumPriceDisplay())
   }, [open])
+  // Gold "Sale price" badge while the sale flag says a sale is on (src/lib/sale.ts).
+  // It takes the place of the introductory-offer badge; the price itself is
+  // always the live store price.
+  const saleOn = useSale(open)
   // Mirror isPremium into a ref so the verification polling sees fresh values
   // without each tick capturing a stale closure of the prop.
   const isPremiumRef = useRef(isPremium)
@@ -274,9 +279,15 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           </>
         ) : (
           <>
-            <div className="pm-intro" aria-label={t('premium.introOffer')}>
-              <span className="pm-intro__badge">{t('premium.introOffer')}</span>
-            </div>
+            {saleOn ? (
+              <div className="pm-intro" aria-label={t('premium.salePrice')}>
+                <span className="pm-intro__badge pm-intro__badge--sale" data-testid="sale-badge">{t('premium.salePrice')}</span>
+              </div>
+            ) : (
+              <div className="pm-intro" aria-label={t('premium.introOffer')}>
+                <span className="pm-intro__badge">{t('premium.introOffer')}</span>
+              </div>
+            )}
             <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
               <span className="pm-btn__label">
                 {verifying ? t('premium.verifying') : t('premium.cta')}
@@ -491,6 +502,12 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           background: rgba(196, 124, 73, 0.12);
           padding: 5px 12px;
           border-radius: 999px;
+        }
+        /* Gold, for the temporary sale. */
+        .pm-intro__badge--sale {
+          color: #000;
+          background: linear-gradient(135deg, #FFD700, #FFA500);
+          box-shadow: 0 2px 6px rgba(212, 160, 23, 0.35);
         }
 
         .pm-applock {

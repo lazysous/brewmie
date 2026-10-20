@@ -447,7 +447,8 @@
     "feature3Sub": "השווה כל שוט לטוב ביותר שלך.",
     "ctaBrewmie": "Brewmie בלבד",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: שחרור דרך dev pill. לא רכישה אמיתית."
+    "devNote": "Dev: שחרור דרך dev pill. לא רכישה אמיתית.",
+    "salePrice": "מחיר מבצע"
   },
   "tierLock": {
     "badge": "Premium",

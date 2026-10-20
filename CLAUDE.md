@@ -146,6 +146,12 @@ matching filename patterns.
   nothing.
 - Never take the site offline. brewmie.app availability is a hard rule.
 - No em dashes in user-facing prose. Rewrite or use periods. See BRAND_VOICE.md.
+- **Sales are store-side, the badge is a worker flag.** The Premium sheet shows
+  the live store price; the gold "Sale price" badge is switched by
+  `scripts/sale_flag.sh on <until-utc>|off`, which rewrites `SALE_ACTIVE` and
+  `SALE_UNTIL` in `ota/worker.js` and redeploys the worker (`GET /sale`). Lower
+  the store prices before switching it on, switch it off before they go back
+  up. See BUILD_AUTOMATION.md section 4c.
 
 ## Documentation maintenance (keep docs current)
 

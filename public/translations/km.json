@@ -447,7 +447,8 @@
     "feature3Sub": "ប្រៀបធៀប​រាល់ shot នឹង​អ្នក​ល្អ​បំផុត។",
     "ctaBrewmie": "Brewmie តែ​ប៉ុណ្ណោះ",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev៖ ដោះសោ​តាម dev pill។ មិន​មែន​ការ​ទិញ​ពិត​ទេ។"
+    "devNote": "Dev៖ ដោះសោ​តាម dev pill។ មិន​មែន​ការ​ទិញ​ពិត​ទេ។",
+    "salePrice": "តម្លៃបញ្ចុះ"
   },
   "tierLock": {
     "badge": "Premium",

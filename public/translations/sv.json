@@ -447,7 +447,8 @@
     "feature3Sub": "Jämför varje shot med ditt bästa.",
     "ctaBrewmie": "Bara Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: lås upp via dev pill. Inget riktigt köp."
+    "devNote": "Dev: lås upp via dev pill. Inget riktigt köp.",
+    "salePrice": "Kampanjpris"
   },
   "tierLock": {
     "badge": "Premium",

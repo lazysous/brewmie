@@ -447,7 +447,8 @@
     "feature3Sub": "Konparatu shot bakoitza zure onenarekin.",
     "ctaBrewmie": "Brewmie soilik",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill bidez desblokeatzen da. Ez da benetako erosketa."
+    "devNote": "Dev: dev pill bidez desblokeatzen da. Ez da benetako erosketa.",
+    "salePrice": "Eskaintzako prezioa"
   },
   "tierLock": {
     "badge": "Premium",

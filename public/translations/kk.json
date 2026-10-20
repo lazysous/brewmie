@@ -447,7 +447,8 @@
     "feature3Sub": "Әр шотты өзіңнің үздіктіңмен салыстыр.",
     "ctaBrewmie": "Тек Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill арқылы ашылады. Шын сатып алу емес."
+    "devNote": "Dev: dev pill арқылы ашылады. Шын сатып алу емес.",
+    "salePrice": "Жеңілдік бағасы"
   },
   "tierLock": {
     "badge": "Premium",

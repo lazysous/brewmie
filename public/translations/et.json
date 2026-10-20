@@ -447,7 +447,8 @@
     "feature3Sub": "Võrdle iga shotti enda parimaga.",
     "ctaBrewmie": "Ainult Brewmie",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: avab dev pill kaudu. Pole päris ost."
+    "devNote": "Dev: avab dev pill kaudu. Pole päris ost.",
+    "salePrice": "Soodushind"
   },
   "tierLock": {
     "badge": "Premium",

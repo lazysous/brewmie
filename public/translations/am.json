@@ -447,7 +447,8 @@
     "feature3Sub": "እያንዳንዱን ሾት ከራስህ ምርጥ ጋር አወዳድር።",
     "ctaBrewmie": "Brewmie ብቻ",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: በ dev pill ይከፈታል። እውነተኛ ግዥ አይደለም።"
+    "devNote": "Dev: በ dev pill ይከፈታል። እውነተኛ ግዥ አይደለም።",
+    "salePrice": "የቅናሽ ዋጋ"
   },
   "tierLock": {
     "badge": "Premium",

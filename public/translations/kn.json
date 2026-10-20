@@ -447,7 +447,8 @@
     "feature3Sub": "ಪ್ರತಿ ಶಾಟ್ ಅನ್ನು ನಿಮ್ಮ ಉತ್ತಮದೊಂದಿಗೆ ಹೋಲಿಸಿ.",
     "ctaBrewmie": "Brewmie ಮಾತ್ರ",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill ಮೂಲಕ ಅನ್‌ಲಾಕ್. ನಿಜವಾದ ಖರೀದಿ ಅಲ್ಲ."
+    "devNote": "Dev: dev pill ಮೂಲಕ ಅನ್‌ಲಾಕ್. ನಿಜವಾದ ಖರೀದಿ ಅಲ್ಲ.",
+    "salePrice": "ರಿಯಾಯಿತಿ ಬೆಲೆ"
   },
   "tierLock": {
     "badge": "Premium",

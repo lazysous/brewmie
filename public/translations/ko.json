@@ -447,7 +447,8 @@
     "feature3Sub": "매 샷을 내 최고와 비교.",
     "ctaBrewmie": "Brewmie만",
     "priceBrewmie": "$6.99",
-    "devNote": "개발: dev pill로 해제. 실제 구매 아님."
+    "devNote": "개발: dev pill로 해제. 실제 구매 아님.",
+    "salePrice": "할인가"
   },
   "tierLock": {
     "badge": "Premium",

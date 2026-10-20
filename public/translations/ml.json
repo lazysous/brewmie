@@ -447,7 +447,8 @@
     "feature3Sub": "എല്ലാ ഷോട്ടും നിങ്ങളുടെ മികച്ചതുമായി താരതമ്യം.",
     "ctaBrewmie": "Brewmie മാത്രം",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: dev pill വഴി അൺലോക്ക്. യഥാർത്ഥ വാങ്ങലല്ല."
+    "devNote": "Dev: dev pill വഴി അൺലോക്ക്. യഥാർത്ഥ വാങ്ങലല്ല.",
+    "salePrice": "ഓഫർ വില"
   },
   "tierLock": {
     "badge": "Premium",

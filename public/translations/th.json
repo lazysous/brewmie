@@ -447,7 +447,8 @@
     "feature3Sub": "เปรียบเทียบทุกช็อตกับสถิติของคุณ",
     "ctaBrewmie": "Brewmie เท่านั้น",
     "priceBrewmie": "$6.99",
-    "devNote": "Dev: ปลดล็อกผ่าน dev pill ไม่ใช่ซื้อจริง"
+    "devNote": "Dev: ปลดล็อกผ่าน dev pill ไม่ใช่ซื้อจริง",
+    "salePrice": "ราคาลดพิเศษ"
   },
   "tierLock": {
     "badge": "Premium",

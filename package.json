@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:secret-guard": "bash scripts/test_secret_guard.sh",
     "test:store-copy": "python3 store-pipeline/translations/_validate.py",
+    "test:ota-smoke": "bash scripts/test_ota_smoke.sh",
     "test:watch": "vitest"
   },
   "dependencies": {

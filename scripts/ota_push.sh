@@ -58,6 +58,35 @@ DIST_ZIP_REL="dist/ota/builds/${VERSION}.zip"
 info() { echo "* $*"; }
 ok() { echo "OK $*"; }
 
+# 0) Release gate (audit 2026-10: brewmie-24, brewmie-38, brewmie-40, shared-04).
+#    Clean, pushed tree so the bundle is reproducible; a version that is new and above the
+#    live OTA; real Supabase credentials; and the test suite, unless SKIP_TESTS=1 shouts.
+[ -z "$(git status --porcelain)" ] || { echo "FAIL working tree is not clean; commit first (the bundle must match a commit)" >&2; exit 2; }
+git fetch -q origin main
+[ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] || { echo "FAIL HEAD is not origin/main; push first" >&2; exit 2; }
+[ ! -f "ota/builds/${VERSION}.zip" ] || { echo "FAIL ota/builds/${VERSION}.zip already exists; versions are never reused" >&2; exit 2; }
+CURRENT_OTA=$(grep -m1 -oE "const LATEST_VERSION = '[^']+'" ota/worker.js | grep -oE "[0-9][^']*")
+if [ "$VERSION" = "$CURRENT_OTA" ] || ver_lt "$VERSION" "$CURRENT_OTA"; then
+    echo "FAIL $VERSION is not above the live OTA $CURRENT_OTA" >&2; exit 2
+fi
+[ -f .env.local ] || { echo "FAIL .env.local is missing: the build would bake placeholder Supabase credentials" >&2; exit 2; }
+for k in VITE_SUPABASE_URL VITE_SUPABASE_ANON_KEY; do
+    v=$(grep -E "^${k}=" .env.local | head -1 | cut -d= -f2- | tr -d "\"'")
+    if [ -z "$v" ] || printf '%s' "$v" | grep -q -i placeholder; then
+        echo "FAIL ${k} is missing or a placeholder in .env.local" >&2; exit 2
+    fi
+done
+SUPABASE_URL_REAL=$(grep -E "^VITE_SUPABASE_URL=" .env.local | head -1 | cut -d= -f2- | tr -d "\"'")
+ok "gate: clean tree at $(git rev-parse --short HEAD) == origin/main, $VERSION > $CURRENT_OTA, .env.local present"
+if [ "${SKIP_TESTS:-0}" = "1" ]; then
+    echo "!!! SKIP_TESTS=1: shipping WITHOUT vitest and tsc. The release tag will say so." >&2
+else
+    info "npm test + tsc"
+    npm test > /tmp/brewmie-ota-tests.log 2>&1 || { echo "FAIL npm test, see /tmp/brewmie-ota-tests.log" >&2; tail -20 /tmp/brewmie-ota-tests.log; exit 1; }
+    npx tsc --noEmit > /tmp/brewmie-ota-tsc.log 2>&1 || { echo "FAIL tsc, see /tmp/brewmie-ota-tsc.log" >&2; tail -20 /tmp/brewmie-ota-tsc.log; exit 1; }
+    ok "tests and typecheck green"
+fi
+
 # 1) Build
 info "npm run build"
 npm run build > /tmp/brewmie-ota-build.log 2>&1 || {
@@ -66,6 +95,10 @@ npm run build > /tmp/brewmie-ota-build.log 2>&1 || {
     exit 1
 }
 ok "dist/ rebuilt"
+grep -rq -F "$SUPABASE_URL_REAL" dist/assets/ || {
+    echo "FAIL dist/ does not contain the Supabase URL from .env.local; the build baked placeholders" >&2; exit 1
+}
+ok "dist/ carries the real Supabase URL"
 
 # 2) Zip dist (excluding any ota/ subdir left over from a previous run)
 info "zipping dist -> $ZIP_REL"
@@ -79,6 +112,20 @@ ok "wrote $ZIP_REL ($SIZE)"
 mkdir -p dist/ota/builds
 cp "$ZIP_ABS" "$DIST_ZIP_REL"
 ok "copied to $DIST_ZIP_REL"
+
+# 3b) Keep the CURRENTLY advertised zip in the deploy. A Pages deploy replaces the whole
+#     site, so without this the live zip vanishes while the worker still points at it
+#     (brewmie-38). Prefer the local copy, else fetch the live one.
+if [ -n "$CURRENT_OTA" ] && [ "$CURRENT_OTA" != "$VERSION" ]; then
+    if [ -f "ota/builds/${CURRENT_OTA}.zip" ]; then
+        cp "ota/builds/${CURRENT_OTA}.zip" "dist/ota/builds/${CURRENT_OTA}.zip"
+    else
+        curl -fsS -m 120 -o "dist/ota/builds/${CURRENT_OTA}.zip" "https://brewmie.app/ota/builds/${CURRENT_OTA}.zip" || {
+            echo "FAIL could not keep the live zip ${CURRENT_OTA}.zip in the deploy (not local, not downloadable)" >&2; exit 1
+        }
+    fi
+    ok "kept live ${CURRENT_OTA}.zip in dist/ota/builds"
+fi
 
 # 4) Deploy Pages
 info "wrangler pages deploy"
@@ -148,13 +195,19 @@ if ! echo "$DEVICE_OLD" | grep -q "$VERSION"; then
     exit 1
 fi
 
-# The bundle itself must be reachable, or every device gets a download error.
-ZIP_CODE=$(curl -s -o /dev/null -w '%{http_code}' -m 60 "https://brewmie.app/${ZIP_REL}")
-[ "$ZIP_CODE" = "200" ] || {
-    echo "FAIL bundle https://brewmie.app/${ZIP_REL} returned HTTP $ZIP_CODE" >&2
-    exit 1
-}
-ok "smoke test passed (worker + bundle reachable)"
+# The bundle itself must be a real zip at the exact size we uploaded (a 200 text/html
+# fallback would pass a status-only check and give every device a download error).
+bash scripts/ota_smoke.sh "https://brewmie.app/${ZIP_REL}" "$(wc -c < "$ZIP_ABS" | tr -d ' ')" 20
+ok "smoke test passed (worker + bundle verified)"
+
+# 8) Record the release: the worker.js version change is committed and the commit tagged,
+#    so every live bundle maps to a commit (brewmie-40).
+NOTE=""; [ "${SKIP_TESTS:-0}" = "1" ] && NOTE=" (SKIP_TESTS=1: test suite NOT run)"
+git add ota/worker.js
+git commit -q -m "OTA ${VERSION}" || true
+git tag -a "ota-v${VERSION}" -m "OTA ${VERSION}${NOTE}"
+git push -q origin main "ota-v${VERSION}"
+ok "committed worker.js and tagged ota-v${VERSION}"
 
 echo
 echo "DONE  OTA bundle ${VERSION} live. Android (autoUpdate=true) will pull on next launch."

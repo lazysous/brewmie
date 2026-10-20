@@ -139,6 +139,8 @@ matching filename patterns.
 
 ## Load-bearing gotchas
 
+- **Always ship through `scripts/ota_push.sh`, never a bare `wrangler pages deploy`.** A Pages deploy replaces the whole site, so a bare deploy deletes the live OTA zip while `ota/worker.js` still advertises it and every device gets a download error. Since 2026-10-20 the script keeps the currently advertised zip in `dist/ota/builds`, refuses a dirty or unpushed tree, a reused or backwards version, a missing or placeholder `.env.local`, a bundle without the real Supabase URL, runs `npm test` and `tsc` (SKIP_TESTS=1 shouts and is recorded in the tag), proves the uploaded zip is live as application/zip at the exact size (`scripts/ota_smoke.sh`, tested by `npm run test:ota-smoke`), and commits + tags `ota-v<version>`.
+
 - Deploys are MANUAL wrangler only. No auto-deploy. A git push alone ships
   nothing.
 - Never take the site offline. brewmie.app availability is a hard rule.

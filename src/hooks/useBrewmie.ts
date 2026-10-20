@@ -4,6 +4,7 @@ import { loadState, saveState, clearState, defaultState, defaultMaintenanceRecor
 import { upsertShot, upsertPublicShot, upsertUserConfig, bulkUpsertShots } from '../lib/supabase'
 import { track } from '../lib/analytics'
 import { unionShots, addTombstone } from '../lib/shots'
+import { isConfigHydrated } from '../lib/hydration'
 import { deleteShot } from '../lib/supabase'
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
@@ -259,9 +260,11 @@ export function useBrewmie(): UseBrewmieReturn {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.shots])
 
-  // Sync equipment config to Supabase when setup changes
+  // Sync equipment config to Supabase when setup changes. Never before this account's
+  // profile has been hydrated in this session (audit brewmie-07): on a fresh device the
+  // local config is empty and pushing it first wiped the saved gear profile.
   useEffect(() => {
-    if (!state.userId) return
+    if (!state.userId || !isConfigHydrated(state.userId)) return
     upsertUserConfig(state.userId, {
       units: state.units,
       machine: state.machine,

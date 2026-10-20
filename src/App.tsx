@@ -13,6 +13,7 @@ import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams,
 import { initIAP } from './lib/iap'
 import { notifyAppReady } from './lib/native'
 import { localOnly } from './lib/shots'
+import { markConfigHydrated, mergeServerConfig } from './lib/hydration'
 import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
@@ -164,8 +165,9 @@ export function App() {
           }).catch(() => track('sync_failed', { op: 'hydrate_upload' }))
         }
       }
-      if (configResult.status === 'fulfilled' && configResult.value) {
-        Object.assign(merge, configResult.value)
+      if (configResult.status === 'fulfilled') {
+        // Null server columns never erase what the device holds (audit brewmie-07).
+        Object.assign(merge, mergeServerConfig(configResult.value))
       }
       if (Object.keys(merge).length > 0) {
         // Merged by the reducer against the live state. The old HYDRATE spread
@@ -173,6 +175,8 @@ export function App() {
         // user did while the fetch was in flight was thrown away.
         dispatch({ type: 'MERGE', payload: merge })
       }
+      // Only now may the device push its config back (see useBrewmie's config effect).
+      if (configResult.status === 'fulfilled') markConfigHydrated(uid)
       if (nameResult.status === 'fulfilled') {
         if (nameResult.value) {
           dispatch({ type: 'SET_DISPLAY_NAME', payload: nameResult.value })

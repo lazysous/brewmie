@@ -14,6 +14,7 @@ const calls = vi.hoisted(() => ({
 }))
 vi.mock('../src/lib/supabase', () => calls)
 
+import { markConfigHydrated, resetHydration } from '../src/lib/hydration'
 import { useBrewmie } from '../src/hooks/useBrewmie'
 import { defaultState } from '../src/lib/storage'
 // The one real function under test from the otherwise-mocked module.
@@ -247,5 +248,20 @@ describe('normaliseShotRow', () => {
   it('prefers the camelCase columns when both exist', () => {
     const s = normaliseShotRow({ id: 'y', timestamp: 't', inputGrind: 20, grind: 12 } as never)
     expect(s.inputGrind).toBe(20)
+  })
+})
+
+describe('config sync waits for the hydrate (audit brewmie-07)', () => {
+  it('a fresh sign-in does not push the empty device config before the profile has been hydrated', async () => {
+    resetHydration()
+    seed({ userId: 'A', dataOwnerId: 'A', shots: [] })
+    localStorage.setItem('brewmie_backfill_v1:A', '1')
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    expect(calls.upsertUserConfig).not.toHaveBeenCalled()
+    markConfigHydrated('A')
+    act(() => result.current.dispatch({ type: 'SET_UNITS', payload: 'imperial' }))
+    await flush()
+    expect(calls.upsertUserConfig).toHaveBeenCalledTimes(1)
   })
 })

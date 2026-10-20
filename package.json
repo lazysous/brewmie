@@ -11,6 +11,7 @@
     "postinstall": "patch-package",
     "test": "vitest run",
     "test:secret-guard": "bash scripts/test_secret_guard.sh",
+    "test:store-copy": "python3 store-pipeline/translations/_validate.py",
     "test:watch": "vitest"
   },
   "dependencies": {

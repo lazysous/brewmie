@@ -17,10 +17,11 @@ IOS_PROMO_TEXT = (
     "Brewmie tells you what to change next. Built by baristas."
 )  # 117 chars
 
+# No competitor app names in the keyword field (audit brewmie-67, App Review 2.3.7).
 IOS_KEYWORDS = (
     "dial,grind,dose,yield,ratio,barista,extraction,tracker,crema,"
-    "tamper,puckyeah,beanconqueror,timer,log"
-)  # 100 chars
+    "tamper,espresso,coffee,timer,log,shot"
+)  # 98 chars
 
 DESCRIPTION = """Espresso dial-in coach for home baristas.
 
@@ -41,7 +42,7 @@ INSIGHTS
 Every shot tracked. Personal best, consistency score, this week's pace. Sweet-spot recipes surface once you have logged enough good ones. Export your log anytime.
 
 PREMIUM
-One payment unlocks every grinder, every tamper, full bean profiles, CSV export, and household sync.
+One payment unlocks every grinder, every tamper, full bean profiles, and CSV export.
 
 PRIVACY
 Shots live on your device by default. Sign in to sync across phones. Anonymous shot data feeds the algorithm. Opt out anytime.

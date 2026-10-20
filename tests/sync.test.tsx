@@ -74,7 +74,7 @@ describe('backfill of existing shots to the signed-in account', () => {
 })
 
 describe('change-based sync', () => {
-  it('a new shot syncs once to the account and once to the public dataset', async () => {
+  it('a new shot syncs once to the account; the community post waits for the taste rating', async () => {
     seed({ userId: 'A', dataOwnerId: 'A', shots: [shot('1')] })
     localStorage.setItem('brewmie_backfill_v1:A', '1')
     const { result } = renderHook(() => useBrewmie())
@@ -83,11 +83,11 @@ describe('change-based sync', () => {
     await flush()
     expect(calls.upsertShot).toHaveBeenCalledTimes(1)
     expect((calls.upsertShot.mock.calls[0] as unknown as [ShotEntry, string])[0].id).toBe('2')
-    expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
-    expect((calls.upsertPublicShot.mock.calls[0] as unknown as [ShotEntry])[0].id).toBe('2')
+    // The community post waits for the taste rating (audit brewmie-59).
+    expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
 
-  it('an edited shot (taste added later) syncs to the account and is NOT re-posted publicly', async () => {
+  it('an edited shot present at mount syncs to the account and is never posted publicly from this session', async () => {
     seed({ userId: 'A', dataOwnerId: 'A', shots: [shot('1')] })
     localStorage.setItem('brewmie_backfill_v1:A', '1')
     const { result } = renderHook(() => useBrewmie())
@@ -96,6 +96,7 @@ describe('change-based sync', () => {
     await flush()
     expect(calls.upsertShot).toHaveBeenCalledTimes(1)
     expect((calls.upsertShot.mock.calls[0] as unknown as [ShotEntry, string])[0].tasteFlavor).toBe('sour')
+    // Shot '1' was present at mount, so it counts as history: never posted from here.
     expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
 
@@ -133,7 +134,7 @@ describe('change-based sync', () => {
     seed({ userId: null, shots: [] })
     const { result } = renderHook(() => useBrewmie())
     await flush()
-    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9'), timestamp: new Date().toISOString() } }))
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
     await flush()
     expect(calls.upsertShot).not.toHaveBeenCalled()
     expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
@@ -144,7 +145,7 @@ describe('change-based sync', () => {
     localStorage.setItem('analyticsOptOut', 'true')
     const { result } = renderHook(() => useBrewmie())
     await flush()
-    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: shot('9') }))
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
     await flush()
     expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
@@ -158,7 +159,7 @@ describe('change-based sync', () => {
     await flush()
     act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: shot('1') }))
     await flush()
-    act(() => result.current.dispatch({ type: 'SET_AUTO_APPLY', payload: true }))
+    act(() => result.current.dispatch({ type: 'SET_UNITS', payload: 'imperial' }))
     await flush()
     expect(calls.upsertShot).toHaveBeenCalledTimes(1)
     expect(warn).toHaveBeenCalledWith('[Brewmie] shot sync failed:', 'nope')
@@ -277,11 +278,30 @@ describe('community uploads are for shots recorded this session (audit brewmie-0
     await flush()
     expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
-  it('a shot recorded now is still posted once', async () => {
+  it('a shot recorded now with a taste is posted once', async () => {
     seed({ userId: null, shots: [] })
     const { result } = renderHook(() => useBrewmie())
     await flush()
-    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('n1'), timestamp: new Date().toISOString() } }))
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('n1', { tasteFlavor: 'balanced' }), timestamp: new Date().toISOString() } }))
+    await flush()
+    expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('community post waits for the taste rating (audit brewmie-59)', () => {
+  it('a shot recorded this session is posted once, when its taste arrives, and not again on a later edit', async () => {
+    seed({ userId: null, shots: [] })
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    const fresh = { ...shot('t1'), timestamp: new Date().toISOString() }
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: fresh }))
+    await flush()
+    expect(calls.upsertPublicShot).not.toHaveBeenCalled()
+    act(() => result.current.dispatch({ type: 'UPDATE_SHOT', payload: { id: 't1', updates: { tasteFlavor: 'bitter', tasteStrength: 'strong' } } }))
+    await flush()
+    expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
+    expect((calls.upsertPublicShot.mock.calls[0] as unknown as [ShotEntry])[0].tasteFlavor).toBe('bitter')
+    act(() => result.current.dispatch({ type: 'UPDATE_SHOT', payload: { id: 't1', updates: { actualVolume: 40 } } }))
     await flush()
     expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
   })

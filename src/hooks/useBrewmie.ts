@@ -85,9 +85,6 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
         maintenance: { ...state.maintenance, ...action.payload },
       }
 
-    case 'SET_AUTO_APPLY':
-      return { ...state, autoApplyAdjustments: action.payload }
-
     case 'SET_USER': {
       const uid = action.payload
       // The account the local data belongs to. Older saves have no
@@ -235,27 +232,30 @@ export function useBrewmie(): UseBrewmieReturn {
   // launch, a hydration from the server, an edit or a delete never posts:
   // before this, the newest shot was re-posted on every launch and every
   // delete, and two thirds of the public dataset was duplicates.
-  const publicSeenRef = useRef<Set<string> | null>(null)
-  // Only shots recorded in THIS session are posted to the community dataset: a shot that
-  // arrives from the server (sign-in on a new device, reinstall, account switch) was posted
-  // when it was recorded, so re-posting it duplicated the user's whole history (audit
-  // brewmie-06). A minute of slack covers clock skew between the shot and the mount.
+  // Community dataset posts. A shot is posted ONCE, when it first carries a taste rating:
+  // posting at creation (before the taste step) meant the rating never reached the
+  // dataset (audit brewmie-59). Only shots recorded in THIS session qualify: a shot that
+  // arrives from the server (sign-in on a new device, reinstall, account switch) was
+  // handled when it was recorded, so re-posting it duplicated the user's whole history
+  // (brewmie-06). A minute of slack covers clock skew between the shot and the mount.
+  const publicPostedRef = useRef<Set<string> | null>(null)
   const sessionStartRef = useRef<number>(Date.now() - 60_000)
   useEffect(() => {
-    const ids = new Set(state.shots.map((s) => s.id))
-    if (publicSeenRef.current === null) {
-      publicSeenRef.current = ids
+    if (publicPostedRef.current === null) {
+      // Everything present at mount is history, never (re)posted.
+      publicPostedRef.current = new Set(state.shots.map((s) => s.id))
       return
     }
-    const seen = publicSeenRef.current
-    publicSeenRef.current = ids
+    const posted = publicPostedRef.current
     let optedOut = false
     try { optedOut = localStorage.getItem('analyticsOptOut') === 'true' } catch { /* ignore */ }
     if (optedOut) return
     for (const shot of state.shots) {
-      if (seen.has(shot.id)) continue
+      if (posted.has(shot.id)) continue
+      if (!shot.tasteFlavor) continue
       const recordedAt = Date.parse(shot.timestamp)
-      if (Number.isFinite(recordedAt) && recordedAt < sessionStartRef.current) continue
+      if (Number.isFinite(recordedAt) && recordedAt < sessionStartRef.current) { posted.add(shot.id); continue }
+      posted.add(shot.id)
       upsertPublicShot(shot, {
         machine: state.machine,
         grinder: state.grinder,

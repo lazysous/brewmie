@@ -133,7 +133,6 @@ export interface BrewmieState {
   currentGrind: number | null
   shots: ShotEntry[]
   maintenance: MaintenanceRecord
-  autoApplyAdjustments: boolean
   userId: string | null
   displayName: string | null
   tier: Tier
@@ -163,7 +162,6 @@ export type AppAction =
   | { type: 'DELETE_SHOT'; payload: string }
   | { type: 'HYDRATE_SHOTS'; payload: ShotEntry[] }
   | { type: 'UPDATE_MAINTENANCE'; payload: Partial<MaintenanceRecord> }
-  | { type: 'SET_AUTO_APPLY'; payload: boolean }
   | { type: 'SET_USER'; payload: string | null }
   | { type: 'SET_DISPLAY_NAME'; payload: string | null }
   | { type: 'SET_TIER'; payload: Tier }

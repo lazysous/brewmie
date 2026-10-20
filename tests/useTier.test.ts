@@ -28,7 +28,6 @@ function makeState(tier: Tier): BrewmieState {
       shotsSinceBackflush: 0,
       shotsSinceDescale: 0,
     },
-    autoApplyAdjustments: false,
     userId: null,
     displayName: null,
     tier,

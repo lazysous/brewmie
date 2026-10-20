@@ -1348,24 +1348,13 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           )
         })()}
 
-        {/* Apply CTAs — primary "Apply for next shot" + secondary "Always do this" */}
+        {/* Apply CTA */}
         {hasAnyAdjust && (
           <div className="bs-apply-wrap">
             <button className="bs-apply-all-btn" onClick={applyAllAdjustments} type="button">
               {t('brew.applyAll')}
             </button>
-            <button
-              className={`bs-apply-always${state.autoApplyAdjustments ? ' bs-apply-always--on' : ''}`}
-              onClick={() => dispatch({ type: 'SET_AUTO_APPLY', payload: !state.autoApplyAdjustments })}
-              type="button"
-              role="switch"
-              aria-checked={state.autoApplyAdjustments}
-            >
-              <span className="bs-apply-always__check" aria-hidden="true">
-                {state.autoApplyAdjustments ? '✓' : ''}
-              </span>
-              {t('brew.applyAuto')}
-            </button>
+            {/* The 'Always do this' switch was removed (audit brewmie-32): nothing read its flag. */}
           </div>
         )}
 

@@ -20,7 +20,6 @@ export const defaultState: BrewmieState = {
   shots: [],
   deletedShotIds: [],
   maintenance: defaultMaintenanceRecord,
-  autoApplyAdjustments: false,
   userId: null,
   displayName: null,
   tier: 'free',

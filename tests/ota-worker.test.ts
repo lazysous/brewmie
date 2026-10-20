@@ -1,7 +1,7 @@
 // Characterisation of the OTA worker's decision (ota/worker.js decide()), including the
 // rollback paths scripts/ota_rollback.sh relies on. Audit 2026-10, brewmie-39.
 import { describe, it, expect } from 'vitest'
-import { decide, keepAliveRequest } from '../ota/worker.js'
+import { decide, keepAliveRequest, cmpVersion } from '../ota/worker.js'
 
 const live = { enabled: true, latestVersion: '1.1.2', latestUrl: 'https://brewmie.app/ota/builds/1.1.2.zip', revertToBuiltin: false, nativeVersion: '1.1' }
 
@@ -39,5 +39,25 @@ describe('supabase keep-alive request (brewmie-90)', () => {
     expect(keepAliveRequest({ SUPABASE_URL: 'https://x.supabase.co' })).toBeNull()
     expect(keepAliveRequest({ SUPABASE_ANON_KEY: 'anon' })).toBeNull()
     expect(keepAliveRequest(undefined)).toBeNull()
+  })
+})
+
+describe('minimum native version gate (brewmie-23)', () => {
+  const gated = { ...live, minNative: '1.1' }
+  it('withholds the bundle from a device whose store binary is older than the one it was built against', () => {
+    expect(decide('1.0.9', gated, '1.0').error).toBe('no_new_version_available')
+    expect(decide('1.0.9', gated, '1.0.5').error).toBe('no_new_version_available')
+  })
+  it('offers it to devices on that native or newer, and when no native is reported', () => {
+    expect(decide('1.0.9', gated, '1.1')).toEqual({ version: '1.1.2', url: 'https://brewmie.app/ota/builds/1.1.2.zip' })
+    expect(decide('1.0.9', gated, '1.2')).toEqual({ version: '1.1.2', url: 'https://brewmie.app/ota/builds/1.1.2.zip' })
+    expect(decide('1.0.9', gated, '')).toEqual({ version: '1.1.2', url: 'https://brewmie.app/ota/builds/1.1.2.zip' })
+    expect(decide('1.0.9', gated, undefined)).toEqual({ version: '1.1.2', url: 'https://brewmie.app/ota/builds/1.1.2.zip' })
+  })
+  it('cmpVersion is numeric and tolerates missing parts', () => {
+    expect(cmpVersion('1.1', '1.1.0')).toBe(0)
+    expect(cmpVersion('1.10', '1.9')).toBe(1)
+    expect(cmpVersion('1.0.9', '1.1')).toBe(-1)
+    expect(cmpVersion('', '1.1')).toBe(-1)
   })
 })

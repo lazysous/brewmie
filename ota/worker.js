@@ -24,9 +24,27 @@
 // shipped in the store binary (Android _reset / setNextBundle(builtin), iOS _reset). A
 // device already on the native bundle reports nativeVersion and gets no_new_version, so
 // the reset never loops; `off` sets enabled=false and every device keeps what it has.
-export function decide(deviceVersion, cfg) {
+// Numeric dotted-version compare: -1, 0, 1. Missing parts count as 0.
+export function cmpVersion(a, b) {
+  const pa = String(a || '').split('.').map((x) => parseInt(x, 10) || 0)
+  const pb = String(b || '').split('.').map((x) => parseInt(x, 10) || 0)
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const d = (pa[i] || 0) - (pb[i] || 0)
+    if (d !== 0) return d < 0 ? -1 : 1
+  }
+  return 0
+}
+
+// deviceNative is the store binary's version the device reports (version_build); a
+// bundle is only offered to devices whose native is at least cfg.minNative, the native
+// the bundle was built against (audit brewmie-23). No native reported = no gate.
+export function decide(deviceVersion, cfg, deviceNative) {
   const noNew = { message: 'No new version available', error: 'no_new_version_available', version: deviceVersion }
   if (!cfg.enabled) return noNew
+  if (cfg.minNative && deviceNative && cmpVersion(deviceNative, cfg.minNative) < 0) {
+    console.log(JSON.stringify({ event: 'update_withheld', reason: 'native_too_old', native: deviceNative, minNative: cfg.minNative, from: deviceVersion }))
+    return noNew
+  }
   if (cfg.revertToBuiltin) {
     if (deviceVersion === cfg.nativeVersion) return noNew
     return { version: 'builtin', url: '' }
@@ -113,10 +131,12 @@ export default {
     }
 
     let deviceVersion = '0.0.0'
+    let deviceNative = ''
     if (request.method === 'POST') {
       try {
         const body = await request.json()
         deviceVersion = body.version_name || body.version_build || '0.0.0'
+        deviceNative = body.version_build ? String(body.version_build) : ''
       } catch { /* ignore */ }
     }
 
@@ -130,6 +150,7 @@ export default {
     const LATEST_URL = 'https://brewmie.app/ota/builds/1.1.9.zip'
     const REVERT_TO_BUILTIN = false
     const NATIVE_VERSION = '1.1'
+    const MIN_NATIVE_VERSION = '1.1'
 
     // Rewritten by scripts/sale_flag.sh (on <until>|off); UTC ISO 8601, '' when off.
     const SALE_ACTIVE = true
@@ -147,8 +168,8 @@ export default {
 
     const body = decide(deviceVersion, {
       enabled: OTA_ENABLED, latestVersion: LATEST_VERSION, latestUrl: LATEST_URL,
-      revertToBuiltin: REVERT_TO_BUILTIN, nativeVersion: NATIVE_VERSION,
-    })
+      revertToBuiltin: REVERT_TO_BUILTIN, nativeVersion: NATIVE_VERSION, minNative: MIN_NATIVE_VERSION,
+    }, deviceNative)
     if (body.url !== undefined) console.log(JSON.stringify({ event: 'update_offered', from: deviceVersion, to: body.version }))
     return new Response(JSON.stringify(body), {
       headers: {

@@ -160,6 +160,8 @@ src = re.sub(
 src = re.sub(r"const REVERT_TO_BUILTIN = (?:true|false)", "const REVERT_TO_BUILTIN = false", src)
 native = sys.argv[2]
 src = re.sub(r"const NATIVE_VERSION = '[^']*'", f"const NATIVE_VERSION = '{native}'", src)
+# The bundle was built against this native, so devices below it are not offered it (brewmie-23).
+src = re.sub(r"const MIN_NATIVE_VERSION = '[^']*'", f"const MIN_NATIVE_VERSION = '{native}'", src)
 p.write_text(src)
 PY
 ok "worker.js patched"

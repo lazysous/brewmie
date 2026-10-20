@@ -325,6 +325,19 @@ The Supabase schema, RLS policies and grants are NOT in this archive. The script
 applied live in `supabase/`, but a live dump with a drift check needs the database password
 or a service-role key, neither of which is on this machine (owner step; see the audit page).
 
+## 7c. Bad OTA: the one-minute runbook (audit 2026-10, shared-03, brewmie-39)
+
+1. `scripts/ota_rollback.sh <last good version>` points the worker back at a zip that is
+   still live on brewmie.app (ota_push.sh keeps every local zip in each Pages deploy),
+   redeploys the worker and proves the answer. `scripts/ota_rollback.sh builtin` resets
+   every device to the bundle in the store binary (the worker answers `version: "builtin"`,
+   which @capgo/capacitor-updater treats as a reset; devices already on the native bundle
+   get no_new_version, so it cannot loop). `scripts/ota_rollback.sh off` stops serving
+   updates and devices keep what they have. Devices re-poll within about an hour.
+2. Fix forward with `scripts/ota_push.sh <higher version>`. Versions are never reused.
+3. `--dry-run` on the rollback shows the worker constants it would deploy without deploying.
+   `tests/ota-worker.test.ts` pins the worker's decision table.
+
 ## 8. Troubleshooting
 
 - **iOS "No 'Apple Distribution' identity" or "profile not installed"**:

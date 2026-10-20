@@ -126,6 +126,9 @@ if [ -n "$CURRENT_OTA" ] && [ "$CURRENT_OTA" != "$VERSION" ]; then
     fi
     ok "kept live ${CURRENT_OTA}.zip in dist/ota/builds"
 fi
+# Every zip still on disk rides along too, so a rollback to the previous version has a
+# bundle to point at (brewmie-39: keep the last releases on Pages).
+for z in ota/builds/*.zip; do [ -f "$z" ] && cp -n "$z" "dist/ota/builds/" 2>/dev/null || true; done
 
 # 4) Deploy Pages
 info "wrangler pages deploy"
@@ -138,7 +141,7 @@ ok "Pages deployed; zip live at https://brewmie.app/${ZIP_REL}"
 
 # 5) Rewrite worker constants
 info "updating ota/worker.js (OTA_ENABLED=true, LATEST_VERSION=${VERSION})"
-python3 - "$VERSION" <<'PY'
+python3 - "$VERSION" "$NATIVE_VERSION" <<'PY'
 import re, sys
 from pathlib import Path
 ver = sys.argv[1]
@@ -151,6 +154,9 @@ src = re.sub(
     f"const LATEST_URL = 'https://brewmie.app/ota/builds/{ver}.zip'",
     src,
 )
+src = re.sub(r"const REVERT_TO_BUILTIN = (?:true|false)", "const REVERT_TO_BUILTIN = false", src)
+native = sys.argv[2]
+src = re.sub(r"const NATIVE_VERSION = '[^']*'", f"const NATIVE_VERSION = '{native}'", src)
 p.write_text(src)
 PY
 ok "worker.js patched"

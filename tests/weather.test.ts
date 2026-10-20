@@ -1,6 +1,7 @@
 // The weather lookup must never send a precise location off the device.
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { openMeteoUrl, roundCoord } from '../src/lib/weather'
 
 describe('openMeteoUrl', () => {
@@ -24,7 +25,7 @@ describe('openMeteoUrl', () => {
 
 describe('fence', () => {
   it('App.tsx builds the weather URL only through openMeteoUrl', () => {
-    const app = readFileSync('src/App.tsx', 'utf8')
+    const app = readFileSync(path.join(__dirname, '../src/App.tsx'), 'utf8')
     expect(app).toContain('openMeteoUrl(coords.latitude, coords.longitude)')
     expect(app).not.toContain('api.open-meteo.com')
   })

@@ -14,6 +14,27 @@
 //   4. Bump LATEST_VERSION + LATEST_URL below
 //   5. wrangler deploy ota/worker.js --name brewmie-ota
 
+// Pure decision so the behaviour is unit-tested (tests/ota-worker.test.ts) and the
+// rollback path is proven without a deploy. cfg: { enabled, latestVersion, latestUrl,
+// revertToBuiltin, nativeVersion }.
+//
+// Rollback (audit 2026-10, brewmie-39): scripts/ota_rollback.sh <version> republishes an
+// older zip by rewriting latestVersion/latestUrl; `builtin` sets revertToBuiltin, which
+// answers {version:"builtin"} so @capgo/capacitor-updater resets devices to the bundle that
+// shipped in the store binary (Android _reset / setNextBundle(builtin), iOS _reset). A
+// device already on the native bundle reports nativeVersion and gets no_new_version, so
+// the reset never loops; `off` sets enabled=false and every device keeps what it has.
+export function decide(deviceVersion, cfg) {
+  const noNew = { message: 'No new version available', error: 'no_new_version_available', version: deviceVersion }
+  if (!cfg.enabled) return noNew
+  if (cfg.revertToBuiltin) {
+    if (deviceVersion === cfg.nativeVersion) return noNew
+    return { version: 'builtin', url: '' }
+  }
+  if (deviceVersion === cfg.latestVersion) return noNew
+  return { version: cfg.latestVersion, url: cfg.latestUrl }
+}
+
 export default {
   async fetch(request) {
     if (request.method === 'OPTIONS') {
@@ -37,35 +58,22 @@ export default {
       } catch { /* ignore */ }
     }
 
-    // Bump these when pushing a new OTA bundle.
+    // These constants are rewritten by scripts/ota_push.sh and scripts/ota_rollback.sh;
+    // never edit them by hand on a live push.
     //
     // OTA_ENABLED=false serves "no_new_version_available" to all devices,
-    // regardless of what they report. This is the safe default — flip to
-    // true only when LATEST_URL points at a verified-good bundle ZIP.
-    // Dark while v1.0 is in App Store review — the 1.0.1 bundle predates the
-    // account-dialog + Restore Purchases code that ships in iOS build 8.
-    // Re-enable AFTER push a fresh bundle that matches the shipping native.
+    // regardless of what they report.
     const OTA_ENABLED = true
     const LATEST_VERSION = '1.1.2'
     const LATEST_URL = 'https://brewmie.app/ota/builds/1.1.2.zip'
+    const REVERT_TO_BUILTIN = false
+    const NATIVE_VERSION = '1.1'
 
-    if (!OTA_ENABLED || deviceVersion === LATEST_VERSION) {
-      return new Response(JSON.stringify({
-        message: 'No new version available',
-        error: 'no_new_version_available',
-        version: deviceVersion,
-      }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      })
-    }
-
-    return new Response(JSON.stringify({
-      version: LATEST_VERSION,
-      url: LATEST_URL,
-    }), {
+    const body = decide(deviceVersion, {
+      enabled: OTA_ENABLED, latestVersion: LATEST_VERSION, latestUrl: LATEST_URL,
+      revertToBuiltin: REVERT_TO_BUILTIN, nativeVersion: NATIVE_VERSION,
+    })
+    return new Response(JSON.stringify(body), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

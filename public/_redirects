@@ -3,10 +3,18 @@
 # '/' is the marketing landing page. The web app lives at /app/: /app is normalised to /app/
 # (301), and the SPA shell is served by Pages' BUILT-IN single-page fallback (index.html for
 # any path with no file), which is why there is no public/404.html: adding one on 2026-10-22
-# disabled that fallback and /app/ went 404 (brewmie-78 stays open until a Pages Function
-# can return a real 404 without losing the shell). The shell keeps Vite's relative base
-# ('./', needed by Capacitor and OTA), so under /app/ its relative URLs are mapped back to
-# the real root paths below (brewmie-79: the old fallback served HTML for those assets).
+# disabled that fallback and /app/ went 404. brewmie-78 is now answered by a Pages Function
+# (functions/[[path]].js, routing in functions/_lib/decide.js, scope in public/_routes.json):
+# it runs only for '/' and for paths that match no file, returns a real 404 for the latter and
+# the landing page with 200 for '/'. It never runs for /app, /app/*, assets, fonts, translations,
+# /ota or any file in public/, so the shell keeps using the built-in fallback.
+# The function ships ONLY when `wrangler pages deploy dist` runs from the repo root (it reads
+# ./functions; there is no --functions flag). Verify on a PREVIEW deployment first
+# (BUILD_AUTOMATION.md section 4d). If '/' still answers 308 on preview, Pages applies this
+# file before the function: delete the '/' line below, redeploy preview, and re-check.
+# The shell keeps Vite's relative base ('./', needed by Capacitor and OTA), so under /app/ its
+# relative URLs are mapped back to the real root paths below (brewmie-79: the old fallback
+# served HTML for those assets).
 
 /   /landing.html   200
 /app   /app/   301

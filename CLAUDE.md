@@ -163,6 +163,8 @@ matching filename patterns.
 
 - **Always ship through `scripts/ota_push.sh`, never a bare `wrangler pages deploy`.** A Pages deploy replaces the whole site, so a bare deploy deletes the live OTA zip while `ota/worker.js` still advertises it and every device gets a download error. Since 2026-10-20 the script keeps the currently advertised zip in `dist/ota/builds`, refuses a dirty or unpushed tree, a reused or backwards version, a missing or placeholder `.env.local`, a bundle without the real Supabase URL, runs `npm test` and `tsc` (SKIP_TESTS=1 shouts and is recorded in the tag), proves the uploaded zip is live as application/zip at the exact size (`scripts/ota_smoke.sh`, tested by `npm run test:ota-smoke`), and commits + tags `ota-v<version>`.
 
+- **Community dataset cleanup and the Pages Function are written, not applied** (audit brewmie-60 / -78, 2026-10-21): `supabase/2026-10-22_dataset_dedupe.sql` (owner pastes it: dry run, one transaction, then a unique index on `source_id`; the table has no duplicated source_id, its surplus is 327 legacy NULL-source rows) and `functions/[[path]].js` + `public/_routes.json` (real 404, canonical `/`). `wrangler pages deploy` has no `--functions` flag and ships `./functions` from the repo root, so `ota_push.sh` refuses to run until the function is proven on a `--branch preview` deployment (BUILD_AUTOMATION.md section 4d) and `BREWMIE_FUNCTIONS_VERIFIED=1` is set.
+
 - Deploys are MANUAL wrangler only. No auto-deploy. A git push alone ships
   nothing.
 - Never take the site offline. brewmie.app availability is a hard rule.

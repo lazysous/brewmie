@@ -263,6 +263,37 @@ before the prices go back up. `tests/sale.test.ts`, `tests/sale-worker.test.ts`
 and `tests/premium-modal-sale.test.tsx` pin it. The badge ships in bundle 1.1.4
 and later; older bundles show the introductory-offer badge as before.
 
+## 4d. Pages Function (404 + canonical `/`) and the web-only deploy (brewmie-78)
+
+`functions/[[path]].js` (decision in `functions/_lib/decide.js`, scope in `public/_routes.json`) gives unknown
+paths a real 404 and serves the landing page at `/` with 200. It never runs for `/app`, `/app/*`, assets, fonts,
+translations, `/ota` or any file in `public/` (a test fails if `public/` gains a file that `_routes.json` does not
+exclude). Add a file or folder to `public/` and you must also add it to `_routes.json` and `decide.js`.
+
+How it deploys: `wrangler pages deploy dist` (4.x) has NO `--functions` flag. It reads `./functions` from the
+working directory, so the command must run from the REPO ROOT (as `ota_push.sh` does); `--cwd` changes that. A bare
+`wrangler pages deploy` from the root therefore ships the function too. `ota_push.sh` refuses to run while
+`functions/` exists unless `BREWMIE_FUNCTIONS_VERIFIED=1`, so the first production deploy is a deliberate step.
+
+Web-only deploy recipe (no OTA, no version bump). Always keep every zip, the live advertised one included:
+
+```bash
+npm run build
+mkdir -p dist/ota/builds && cp ota/builds/*.zip dist/ota/builds/        # a Pages deploy REPLACES the site; missing zips = OTA download errors
+# the zip the worker advertises must be in dist/ota/builds (curl it from https://brewmie.app/ota/builds/<v>.zip if not local)
+# 1) PREVIEW first, never production first:
+wrangler pages deploy dist --project-name brewmie --branch preview --commit-dirty=true
+# 2) verify on the preview URL it prints (see below), then production:
+BREWMIE_FUNCTIONS_VERIFIED=1 wrangler pages deploy dist --project-name brewmie --branch main --commit-dirty=true
+```
+
+Preview checks (curl -sI against the `https://preview.brewmie.pages.dev` alias or the hash URL):
+`/app/` 200 text/html and the shell's JS under `/app/assets/...` 200 with a JS content type; `/` 200 with NO redirect
+(if it is 308, delete the `/` line in `public/_redirects`, redeploy preview, re-check); `/nope` and
+`/.well-known/x` 404 with the small page; `/landing`, `/privacy`, `/support`, `/delete-account` 200;
+`/manifest.json`, `/robots.txt`, `/sitemap.xml` 200; `/ota/builds/<advertised>.zip` 200 application/zip.
+Roll back by redeploying the previous `dist` without `functions/` (move the folder aside for that one command).
+
 ## 5. Day-to-day commands
 
 | Command | What it does |

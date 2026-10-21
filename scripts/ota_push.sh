@@ -37,6 +37,8 @@ VERSION="${1:?Usage: scripts/ota_push.sh <version>}"
     exit 2
 }
 
+# Pages Function (brewmie-78): `wrangler pages deploy dist` from the repo root also deploys ./functions. It was
+# proven on a preview deployment and promoted on 2026-10-22; change it only via a preview first (BUILD_AUTOMATION 4d).
 # Refuse to push a bundle older than the shipping native binary. The bug
 # fixed on 2026-05-23: pushing OTA <native> means fresh installs (which
 # report the native marketing version on first poll) get told to "upgrade"

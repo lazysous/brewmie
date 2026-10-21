@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [
+    "/app",
+    "/app/*",
+    "/assets/*",
+    "/fonts/*",
+    "/translations/*",
+    "/ota/*",
+    "/index.html",
+    "/landing",
+    "/landing.html",
+    "/privacy",
+    "/privacy.html",
+    "/support",
+    "/support.html",
+    "/delete-account",
+    "/delete-account.html",
+    "/manifest.json",
+    "/llms.txt",
+    "/robots.txt",
+    "/sitemap.xml"
+  ]
+}

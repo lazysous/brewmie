@@ -8,7 +8,7 @@
 <meta name="robots" content="noarchive">
 <meta name="format-detection" content="telephone=no">
 <title>Privacy Policy | Brewmie</title>
-<meta name="description" content="Privacy Policy for Brewmie, the espresso dialling-in app by Lazy Sous.">
+<meta name="description" content="Privacy Policy for Brewmie, an espresso dialling-in app by Lazy Sous.">
 
 <link rel="icon" type="image/png" href="/assets/icon-192.png">
 <link rel="apple-touch-icon" href="/assets/icon-192.png">
@@ -88,16 +88,6 @@ h1 {
 
 .content strong { font-weight: 600; }
 
-.content ul {
-    margin: 0 0 15px 22px;
-}
-
-.content li {
-    font-size: 15px;
-    line-height: 1.7;
-    margin-bottom: 6px;
-}
-
 .content em {
     font-style: italic;
     color: var(--text-medium);
@@ -133,7 +123,7 @@ h1 {
     .container { padding: 30px 20px; }
     h1 { font-size: 36px; }
     .content h2 { font-size: 17px; }
-    .content p, .content li { font-size: 14px; }
+    .content p { font-size: 14px; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -141,7 +131,7 @@ h1 {
     .container { background: #221C15; }
     h1 { color: #E5B891; }
     .content h2 { color: #ccc; }
-    .content p, .content li { color: #e0ddd8; }
+    .content p { color: #e0ddd8; }
     .content em { color: #999; }
 }
 </style>
@@ -155,11 +145,6 @@ h1 {
     </div>
 
     <div class="content">
-        <h2>Who we are.</h2>
-        <p>
-            Brewmie is operated by its independent developer in Australia. That person decides why and how your data is used, which makes them the controller of it. Contact: <strong>chef@lazysous.app</strong>.
-        </p>
-
         <h2>Your shots stay on your device unless you sign in.</h2>
         <p>
             Without signing in, your shots, gear and settings stay on your phone or in your browser, and we can't see them. You can delete a single shot, or clear your whole shot history (Clear in Insights), and deleting the app removes the rest. The one exception is the optional anonymous shot statistics described below.
@@ -168,68 +153,37 @@ h1 {
             If you sign in, we sync your shots, gear setup, and preferences across your devices.
         </p>
 
-        <h2>What we collect, and why.</h2>
+        <h2>What we collect.</h2>
         <p>
-            Each item below says what is sent, where it goes, and our legal basis for it. "Consent" means you said yes and can say no again any time. "Contract" means we need it to give you the feature you asked for. "Legitimate interest" means a small, low-risk use that keeps the app working and that you would reasonably expect.
+            Signed in: your email, display name, shots, gear, and settings. That is what syncing needs, nothing more.
         </p>
-        <ul>
-            <li><strong>Your account (only if you sign in).</strong> Your email and display name from your sign-in provider, an account ID, your shots, your gear and bean setup, and your settings. They are stored in Supabase so your shots follow you between devices. Basis: contract.</li>
-            <li><strong>Anonymous shot statistics (only if you choose to share).</strong> Each shot you log can be added to a public, anonymous dataset that feeds the recommendation engine. A shot is added once it has a taste rating. The row holds your machine brand, grinder type, tamp type and tamp value, grind setting, dose, target and actual yield and time, score, taste flavour and strength, bean age in a range (such as 8 to 14 days) rather than a date, roast level, and the temperature and humidity if you allowed location. It holds no name, no email, no account ID and no device ID. It is stored in Supabase. Both this and the usage counts below are shared only after you choose to share: Brewmie asks once, nothing is sent before you say yes, and you can switch it off any time in Setup, under Privacy. Basis: consent.</li>
-            <li><strong>Usage counts (only if you choose to share).</strong> Brewmie uses Google Analytics to count anonymous events such as opening the app, switching screen, logging a shot (shot number, score, roast level, bean age range), opening the Premium sheet, and errors. Every event also carries the version of the app bundle you are running. We switch off Google signals and ad personalisation, so nothing is used for advertising or tracking across other apps and sites. Basis: consent.</li>
-            <li><strong>Weather (only if you allow location).</strong> See the next section. Basis: consent.</li>
-            <li><strong>App updates.</strong> The mobile app checks for updates to its own code from the Brewmie update service, which runs on Cloudflare. Your device sends the version of the app and its update bundle, its platform and operating system version, and a random update ID the update tool creates for your install. It is not your advertising ID and not your name or email. The service uses only the version numbers to decide whether to send an update. Basis: legitimate interest (fixing bugs without waiting for a store review).</li>
-            <li><strong>Sale price check.</strong> When the Premium sheet opens, the app asks the same update service whether a sale is running. It sends nothing about you beyond what any web request carries, such as your IP address. Basis: legitimate interest.</li>
-            <li><strong>Premium purchase notice.</strong> When you buy Premium, the app tells the developer by sending the product name, your platform (iOS or Android) and the price you paid to a function in the developer's Google Firebase project, which emails it to the developer. It carries no name, email, account ID or store receipt. Basis: legitimate interest (knowing a sale happened, and protecting against fraud and mistakes).</li>
-            <li><strong>Community counters and recommendations.</strong> The app reads the total number of shots logged by everyone and the settings learned from the anonymous dataset. Supabase sees the request, including your IP address, as any server would. Basis: legitimate interest.</li>
-        </ul>
+        <p>
+            Anonymous shot statistics (grind, dose, yield, time, taste, and the temperature and humidity if you allow location) feed the recommendation engine. They are shared only after you choose to share, whether or not you are signed in: Brewmie asks once, and nothing is sent before you say yes. No names, no emails, no device IDs, no location. Switch sharing off any time in Setup, under Privacy; shots you log after that are not shared.
+        </p>
 
         <h2>Location and weather.</h2>
         <p>
-            Optional. Humidity and temperature change how espresso extracts, so Brewmie asks for your location when the app opens. It rounds it to about 11 km on your device and sends only that to MET Norway (the Norwegian Meteorological Institute), a public weather service, to get the current temperature and humidity. We keep those two numbers with your shot. Your location itself is never stored and never sent anywhere else. Weather data from MET Norway. Say no and your shots are logged without weather.
+            Optional. Humidity and temperature change how espresso extracts, so Brewmie asks for your location once per session. It rounds it to about 11 km on your device and sends only that to MET Norway (the Norwegian Meteorological Institute), a public weather service, to get the current temperature and humidity. We keep those two numbers with your shot. Your location itself is never stored and never sent anywhere else. Weather data from MET Norway. Say no and your shots are logged without weather.
         </p>
 
         <h2>Who else handles your data.</h2>
-        <ul>
-            <li><strong>Supabase</strong> stores the account, shots and settings of signed-in users, and the anonymous shot dataset.</li>
-            <li><strong>Google Analytics</strong> counts anonymous usage, with advertising signals switched off, and only after you choose to share.</li>
-            <li><strong>Cloudflare</strong> hosts the Brewmie website and runs the update service. It sees your IP address when your device contacts either.</li>
-            <li><strong>Google Firebase</strong> runs the function that emails the developer when a purchase is made.</li>
-            <li><strong>MET Norway</strong> receives the rounded location described above.</li>
-            <li><strong>Apple, Google and GitHub</strong> handle sign-in if you choose them. GitHub sign-in is offered on the web only. We never see your password.</li>
-            <li><strong>The App Store and Google Play</strong> handle purchases. We never see your card.</li>
-        </ul>
         <p>
-            The Brewmie fonts are served from our own site, so no font request goes to Google. We don't sell data and there is no advertising in Brewmie.
+            Supabase stores the data of signed-in users. Google Analytics counts anonymous usage, with advertising signals switched off, and only after you choose to share. MET Norway receives the rounded location described above. Your sign-in provider (Apple, Google or GitHub) handles sign-in, and the App Store or Google Play handles purchases. We never see your password or card. We don't sell data and there is no advertising in Brewmie.
         </p>
 
         <h2>Sign-in.</h2>
         <p>
-            Optional. Premium works without it. When you sign in with Apple, Google or GitHub, we get an account ID, your email (Apple may give you a private relay address) and your name or display name, as your provider shares them. We never see your password.
+            Optional. We get your account ID, email and display name. We never see your password.
         </p>
 
-        <h2>How long we keep it.</h2>
-        <ul>
-            <li>Account data: until you delete your account.</li>
-            <li>Anonymous shot statistics: kept, because they carry nothing that identifies you and so can't be traced back to be removed.</li>
-            <li>Google Analytics events: for the limited period set in Google Analytics, at most 14 months.</li>
-            <li>Update service: it stores nothing itself and only writes version numbers to Cloudflare's short-lived operating logs.</li>
-            <li>Purchase notice: the email sits in the developer's inbox, and the app does not store it.</li>
-            <li>Weather: the temperature and humidity stay with the shot they were recorded for. The location is not kept.</li>
-        </ul>
-
-        <h2>Where your data goes.</h2>
-        <p>
-            Brewmie is operated from Australia. Supabase, Cloudflare, Google (Analytics and Firebase) and MET Norway run their own servers, so your data may be processed outside Australia and outside your own country, including in the United States (the purchase notice function runs in Google's us-central1 region) and in Norway. We use providers that publish their own privacy terms, and we send them only what is listed on this page.
-        </p>
-
-        <h2>Cookies and local storage.</h2>
+        <h2>Cookies.</h2>
         <p>
             For sign-in sessions and preferences. Anonymous analytics run only after you say yes to the one-time sharing question, which everyone is asked, wherever they are.
         </p>
 
         <h2>Your rights.</h2>
         <p>
-            Access, correct, export, or delete your data any time. You can edit or delete any shot, export your shots as CSV or JSON, clear your shot history in Insights, and use Delete account (in Setup under Privacy, or in the account menu) to permanently remove your account and everything synced to it. The page <a href="/delete-account">brewmie.app/delete-account</a> explains both ways. You can withdraw your consent to sharing any time in Setup, under Privacy. You can also email chef@lazysous.app to ask for a copy of your data, a correction, or deletion, and we will reply within 30 days (deletion usually within 7). If you are not happy with our answer you can complain to your local privacy regulator, such as the Office of the Australian Information Commissioner.
+            Access, correct, export, or delete your data any time. You can edit or delete any shot, export your shots as CSV or JSON, clear your shot history in Insights, and use Delete account (in Setup under Privacy, or in the account menu) to permanently remove your account and everything synced to it. You can also email us.
         </p>
 
         <h2>Children.</h2>

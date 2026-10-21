@@ -1,13 +1,12 @@
 # Brewmie Cloudflare Pages routing.
 #
-# '/' is the marketing landing page. The web app lives at /app/ and nowhere else:
-# /app is normalised to /app/ (301); /app/ and /app/* serve the SPA shell with a 200
-# rewrite. The shell keeps Vite's relative base ('./', needed by Capacitor and OTA), so
-# at /app/ its relative URLs resolve under /app/ and the four static folders/files below
-# are mapped back to their real root paths BEFORE the catch-all. Everything else falls
-# through to real files (/privacy, /support, /.well-known/*, /ota/builds/*, ...) and any
-# unknown path gets public/404.html with a real 404 status (there is deliberately NO
-# '/* /index.html 200' rule).
+# '/' is the marketing landing page. The web app lives at /app/: /app is normalised to /app/
+# (301), and the SPA shell is served by Pages' BUILT-IN single-page fallback (index.html for
+# any path with no file), which is why there is no public/404.html: adding one on 2026-10-22
+# disabled that fallback and /app/ went 404 (brewmie-78 stays open until a Pages Function
+# can return a real 404 without losing the shell). The shell keeps Vite's relative base
+# ('./', needed by Capacitor and OTA), so under /app/ its relative URLs are mapped back to
+# the real root paths below (brewmie-79: the old fallback served HTML for those assets).
 
 /   /landing.html   200
 /app   /app/   301
@@ -15,4 +14,3 @@
 /app/fonts/*   /fonts/:splat   200
 /app/translations/*   /translations/:splat   200
 /app/manifest.json   /manifest.json   200
-/app/*   /index.html   200

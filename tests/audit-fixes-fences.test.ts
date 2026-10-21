@@ -40,14 +40,15 @@ describe('community sharing copy matches the opt-in code (brewmie-11)', () => {
 describe('web routing (brewmie-78/79)', () => {
   const r = src('public/_redirects')
   const rules = r.split('\n').filter((l) => l.trim() && !l.startsWith('#'))
-  it('serves the SPA only for /app and /app/*, never a catch-all', () => {
+  it('maps the shell asset paths under /app/ and normalises /app, with no explicit index rewrite', () => {
     expect(rules).toContain('/app   /app/   301')
     expect(rules.some((l) => /^\/app\/\*\s+\/index\.html\s+200$/.test(l))).toBe(true)
     expect(rules.some((l) => /^\/\*\s/.test(l))).toBe(false)
     expect(rules.some((l) => l.includes('.well-known'))).toBe(false)
   })
   it('has a real 404 page, and the manifest and canonical point at /app/', () => {
-    expect(existsSync(path.join(root, 'public/404.html'))).toBe(true)
+    // No 404.html: it disables Pages' built-in SPA fallback that /app/ relies on (seen live 2026-10-22).
+    expect(existsSync(path.join(root, 'public/404.html'))).toBe(false)
     expect(JSON.parse(src('public/manifest.json')).start_url).toBe('/app/')
     expect(src('index.html')).toContain('<link rel="canonical" href="https://brewmie.app/app/" />')
   })

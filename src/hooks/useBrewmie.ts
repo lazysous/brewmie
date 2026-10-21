@@ -116,6 +116,13 @@ function brewmieReducer(state: BrewmieState, action: AppAction): BrewmieState {
       if (state.tier === 'premium' && action.payload === 'free') return state
       return { ...state, tier: action.payload }
 
+    case 'STORE_REVOKE_PREMIUM':
+      // The store affirmatively reported Premium as not owned (refund,
+      // revocation, Family Sharing removal) for a device that held it from a
+      // store purchase. The only path that lowers the tier: SET_TIER and
+      // MERGE never downgrade.
+      return state.tier === 'premium' ? { ...state, tier: 'free' } : state
+
     case 'MERGE': {
       const { tier, ...rest } = action.payload
       const next = { ...state, ...rest }

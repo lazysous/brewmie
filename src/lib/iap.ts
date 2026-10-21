@@ -6,21 +6,28 @@
 // One product only: brewmie_premium_lifetime, non-consumable, one-time unlock.
 // The store SDK is only loaded on native; web is a no-op.
 //
-// Lifecycle (lazy):
-//   1. initIAP(onOwnership) at app start REGISTERS the product + wires event
-//      handlers. It does NOT call store.initialize() — that talks to Apple's
-//      storefront and surfaces a native auth prompt on devices whose
-//      App Store session has expired. We defer the initialize call until the
-//      user actually triggers an IAP-related action.
-//   2. ensureIAPInitialized() is called lazily by purchasePremium() and
-//      restorePurchases() before they do real work. Idempotent + cached.
-//   3. When the store reports an owned/verified receipt, onOwnership() fires
-//      so App.tsx can flip state.tier and persist via Supabase.
+// Lifecycle:
+//   1. initIAP(onOwnership, opts) at app start REGISTERS the product + wires
+//      event handlers.
+//   2. syncStoreOwnership() is then called once at launch (audit brewmie-08).
+//      It runs store.initialize(), which replays any approved-but-unfinished
+//      purchase through the handlers (so verify() + finish() acknowledge it,
+//      and a missed Android acknowledgement can no longer refund the order),
+//      then reads owned products: owned grants Premium, an affirmative "not
+//      owned" after a store-granted Premium revokes it (brewmie-65). If the
+//      store cannot be queried nothing changes. Never throws.
+//   3. ensureIAPInitialized() is also called by purchasePremium() and
+//      restorePurchases(). One cached promise, so it never runs twice
+//      concurrently; a failure (a rejection, or errors with no product
+//      loaded, which is how a failed Play Billing setup arrives) resets it so
+//      the next tap retries (brewmie-09).
+//   4. A deferred (Ask to Buy) or Android pending order is reported as
+//      pending, never as success (brewmie-64); Premium arrives later through
+//      the approved/verified handlers or the next launch check.
 //
-// Net effect: returning users who don't tap purchase or restore won't see
-// the StoreKit auth prompt at launch. Source of truth for tier remains
-// Supabase (set on sign-in); StoreKit ownership is a fallback for users
-// who reinstall without signing in.
+// The store-granted flag (STORE_PREMIUM_KEY) records that Premium came from a
+// store receipt on this device, so a legacy Supabase-granted Premium is never
+// downgraded by the launch check.
 
 import { Capacitor } from '@capacitor/core'
 import { store, Platform, ProductType, ErrorCode, type Transaction, type VerifiedReceipt } from 'capacitor-plugin-cdv-purchase'
@@ -28,9 +35,39 @@ import { store, Platform, ProductType, ErrorCode, type Transaction, type Verifie
 export const PREMIUM_PRODUCT_ID = 'brewmie_premium_lifetime'
 
 let registered = false
-let initialized = false
 let initPromise: Promise<void> | null = null
 let onOwnershipCallback: (() => void) | null = null
+let onNotOwnedCallback: (() => void) | null = null
+let pendingSeen = false
+
+export const STORE_PREMIUM_KEY = 'brewmie_premium_from_store'
+export const STRIKES_KEY = 'brewmie_not_owned_strikes'
+export const STRIKES_TO_REVOKE = 2
+export const PENDING_MESSAGE_KEY = 'premium.purchasePending'
+
+function markStoreOwned(): void {
+  try { localStorage.setItem(STORE_PREMIUM_KEY, '1') } catch {}
+  onOwnershipCallback?.()
+}
+
+function heldFromStore(): boolean {
+  try { return localStorage.getItem(STORE_PREMIUM_KEY) === '1' } catch { return false }
+}
+
+function clearStoreOwned(): void {
+  try { localStorage.removeItem(STORE_PREMIUM_KEY) } catch {}
+}
+
+function readStrikes(): number {
+  try { return Number(localStorage.getItem(STRIKES_KEY)) || 0 } catch { return 0 }
+}
+
+function writeStrikes(n: number): void {
+  try {
+    if (n <= 0) localStorage.removeItem(STRIKES_KEY)
+    else localStorage.setItem(STRIKES_KEY, String(n))
+  } catch {}
+}
 
 // Purchase-notification email. Fire-and-forget POST to a Firebase function
 // (hosted in the lazy-sous project, same Gmail inbox) when a NEW purchase
@@ -67,10 +104,11 @@ function platformId() {
  *
  * Idempotent: subsequent calls are no-ops except for updating the callback.
  */
-export function initIAP(onOwnership: () => void): Promise<void> {
+export function initIAP(onOwnership: () => void, opts?: { onNotOwned?: () => void }): Promise<void> {
   if (!Capacitor.isNativePlatform()) return Promise.resolve()
 
   onOwnershipCallback = onOwnership
+  if (opts?.onNotOwned) onNotOwnedCallback = opts.onNotOwned
 
   if (registered) return Promise.resolve()
   registered = true
@@ -85,6 +123,9 @@ export function initIAP(onOwnership: () => void): Promise<void> {
   }])
 
   store.when()
+    .pending((tx: Transaction) => {
+      if (tx.products?.some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID)) pendingSeen = true
+    })
     .approved(async (tx: Transaction) => {
       console.log('[iap] approved', { products: tx.products, hasVerify: typeof tx.verify })
       // Belt-and-braces: also fire ownership on approved so a stuck verify()
@@ -92,7 +133,8 @@ export function initIAP(onOwnership: () => void): Promise<void> {
       // so any approved transaction is the premium order.
       if (tx.products?.some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID)) {
         console.log('[iap] approved->onOwnership (immediate)')
-        onOwnershipCallback?.()
+        pendingSeen = false
+        markStoreOwned()
       }
       try {
         await tx.verify()
@@ -114,7 +156,8 @@ export function initIAP(onOwnership: () => void): Promise<void> {
       console.log('[iap] verified', { txCount: txs.length, owns })
       if (owns) {
         console.log('[iap] verified->onOwnership')
-        onOwnershipCallback?.()
+        pendingSeen = false
+        markStoreOwned()
       }
       try {
         await receipt.finish()
@@ -128,41 +171,77 @@ export function initIAP(onOwnership: () => void): Promise<void> {
 }
 
 /**
- * Lazily call store.initialize(). This is the call that talks to Apple's
- * storefront and may trigger the StoreKit auth prompt on a device whose
- * App Store session has expired. Only call this from user-initiated
- * flows (purchase, restore) — never at launch.
+ * Call store.initialize() once. It talks to the storefront and may surface the
+ * StoreKit auth prompt on a device whose App Store session has expired; that
+ * is accepted since brewmie-08 (Premium must be discovered at launch).
  *
- * Idempotent. Cached after first success. Re-throws so callers can show
- * a real error message if init fails.
+ * Idempotent: concurrent callers share one promise. A failure resets the
+ * state so the next call retries, and re-throws so callers can show the text.
  */
 async function ensureIAPInitialized(): Promise<void> {
   if (!Capacitor.isNativePlatform()) return
   if (!registered) {
     throw new Error('IAP not registered yet — call initIAP first.')
   }
-  if (initialized && initPromise) return initPromise
+  if (initPromise) return initPromise
 
-  initialized = true
   const platform = platformId()
   if (!platform) return
 
   initPromise = (async () => {
-    await store.initialize([platform])
-    console.log('[iap] store.initialize resolved, owned?', store.owned(PREMIUM_PRODUCT_ID))
-    // Cache the localized price so future modal opens can show it
-    // immediately without re-initializing the store.
-    cachePremiumPrice()
-    if (store.owned(PREMIUM_PRODUCT_ID)) onOwnershipCallback?.()
+    try {
+      const errors = (await store.initialize([platform])) as Array<{ message?: string; code?: number }> | undefined
+      // A failed Play Billing setup RESOLVES with an error list and no product
+      // (it does not reject), so treat "errors and no product" as a failure.
+      if (errors && errors.length > 0 && !store.get(PREMIUM_PRODUCT_ID)) {
+        throw new Error(errors[0]?.message || `code ${errors[0]?.code ?? 'unknown'}`)
+      }
+      console.log('[iap] store.initialize resolved, owned?', store.owned(PREMIUM_PRODUCT_ID))
+      // Cache the localized price so future modal opens can show it
+      // immediately without re-initializing the store.
+      cachePremiumPrice()
+      if (store.owned(PREMIUM_PRODUCT_ID)) markStoreOwned()
+    } catch (e) {
+      initPromise = null
+      throw e
+    }
   })()
 
-  // If initialize fails, reset so the next user action can retry.
-  initPromise.catch(() => {
-    initialized = false
-    initPromise = null
-  })
-
   return initPromise
+}
+
+/**
+ * Launch-time store check (brewmie-08 / brewmie-65). Initialises the store,
+ * which replays unfinished purchases through the handlers (acknowledging
+ * them), then reads ownership. Resolves 'owned', 'not-owned' or 'unknown';
+ * never throws. Only an affirmative not-owned answer, after Premium was
+ * previously granted by the store on this device, fires onNotOwned.
+ */
+export async function syncStoreOwnership(): Promise<'owned' | 'not-owned' | 'unknown'> {
+  if (!Capacitor.isNativePlatform()) return 'unknown'
+  try {
+    await ensureIAPInitialized()
+  } catch (e) {
+    console.warn('[iap] launch check could not query the store', e)
+    return 'unknown'
+  }
+  if (store.owned(PREMIUM_PRODUCT_ID)) {
+    writeStrikes(0)
+    return 'owned'
+  }
+  // Two consecutive launches must both answer not-owned before Premium is
+  // revoked, in case ownership was read before a replayed transaction landed.
+  if (heldFromStore()) {
+    const strikes = readStrikes() + 1
+    if (strikes >= STRIKES_TO_REVOKE) {
+      writeStrikes(0)
+      clearStoreOwned()
+      onNotOwnedCallback?.()
+    } else {
+      writeStrikes(strikes)
+    }
+  }
+  return 'not-owned'
 }
 
 // Localized price persistence. We cache the most recent localized price
@@ -221,7 +300,7 @@ export function getPremiumPriceDisplay(): string | null {
  * initializes the store on first call. Resolves with { ok: true } on
  * success or { ok: false, cancelled?, message? } otherwise.
  */
-export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: boolean; message?: string }> {
+export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: boolean; pending?: boolean; message?: string }> {
   if (!Capacitor.isNativePlatform()) {
     return { ok: false, message: 'In-app purchase is only available in the Brewmie app.' }
   }
@@ -239,8 +318,12 @@ export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: bool
   const offer = product.getOffer()
   if (!offer) return { ok: false, message: 'No purchase offer available. Check your network and try again.' }
 
+  pendingSeen = false
   const err = await offer.order()
   if (!err) {
+    // Ask to Buy and Android pending orders resolve order() with no error but
+    // leave the transaction PENDING. That is not a purchase yet (brewmie-64).
+    if (isPremiumPending()) return { ok: false, pending: true }
     const pricing = product.pricing
     notifyPurchase({
       productId: PREMIUM_PRODUCT_ID,
@@ -256,6 +339,18 @@ export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: bool
   return { ok: false, message: `Purchase failed: ${detail}` }
 }
 
+function isPremiumPending(): boolean {
+  if (pendingSeen) return true
+  try {
+    const txs = (store.localTransactions ?? []) as Transaction[]
+    return txs.some((t) =>
+      (t.products ?? []).some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID) &&
+      (t.state === 'pending' || t.isPending === true))
+  } catch {
+    return false
+  }
+}
+
 /**
  * Ask the store to re-deliver any prior purchases. Lazily initializes
  * the store on first call. The verified() handler from initIAP fires if
@@ -267,7 +362,9 @@ export async function restorePurchases(): Promise<void> {
     await ensureIAPInitialized()
   } catch (e) {
     console.warn('[iap] ensureIAPInitialized threw during restore', e)
-    return
+    // Surface the text to the sheet (brewmie-09); the next tap retries.
+    const msg = e instanceof Error ? e.message : String(e)
+    throw new Error(`Store not ready: ${msg}`)
   }
   await store.restorePurchases()
 }

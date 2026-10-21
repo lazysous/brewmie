@@ -165,6 +165,7 @@ export type AppAction =
   | { type: 'SET_USER'; payload: string | null }
   | { type: 'SET_DISPLAY_NAME'; payload: string | null }
   | { type: 'SET_TIER'; payload: Tier }
+  | { type: 'STORE_REVOKE_PREMIUM' }
   | { type: 'HYDRATE'; payload: BrewmieState }
   // Partial merge applied by the reducer against the CURRENT state. HYDRATE
   // took a whole state built by the caller, which captured a stale copy.

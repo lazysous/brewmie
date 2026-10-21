@@ -324,3 +324,16 @@ describe('community post waits for the taste rating (audit brewmie-59)', () => {
     expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('STORE_REVOKE_PREMIUM (brewmie-65)', () => {
+  it('lowers premium to free, while SET_TIER and MERGE still never downgrade', async () => {
+    seed({ tier: 'premium' })
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    act(() => { result.current.dispatch({ type: 'SET_TIER', payload: 'free' }) })
+    act(() => { result.current.dispatch({ type: 'MERGE', payload: { tier: 'free' } }) })
+    expect(result.current.state.tier).toBe('premium')
+    act(() => { result.current.dispatch({ type: 'STORE_REVOKE_PREMIUM' }) })
+    expect(result.current.state.tier).toBe('free')
+  })
+})

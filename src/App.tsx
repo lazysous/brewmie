@@ -10,7 +10,7 @@ import { SetupScreen } from './screens/SetupScreen'
 import { BrewScreen } from './screens/BrewScreen'
 import { InsightsScreen } from './screens/InsightsScreen'
 import { supabase, fetchShots, fetchUserConfig, fetchAlgoParams, loadAlgoParams, fetchDisplayName, fetchTier, signInWithApple, signInWithGoogle, bulkUpsertShots } from './lib/supabase'
-import { initIAP } from './lib/iap'
+import { initIAP, syncStoreOwnership } from './lib/iap'
 import { notifyAppReady } from './lib/native'
 import { localOnly } from './lib/shots'
 import { markConfigHydrated, mergeServerConfig } from './lib/hydration'
@@ -113,9 +113,12 @@ export function App() {
     // account and Restore Purchases carries it to other devices; the client
     // no longer writes profiles.tier (the column is read-only to clients
     // since 2026-10-05, after a review found any signed-in user could set it).
-    initIAP(() => {
-      dispatch({ type: 'SET_TIER', payload: 'premium' })
-    }).catch(() => {})
+    // Then check the store once at launch (brewmie-08/-65): owned grants
+    // Premium, an affirmative "not owned" after a store purchase revokes it.
+    initIAP(
+      () => { dispatch({ type: 'SET_TIER', payload: 'premium' }) },
+      { onNotOwned: () => { dispatch({ type: 'STORE_REVOKE_PREMIUM' }) } },
+    ).then(() => syncStoreOwnership()).catch(() => {})
   }, [])
 
   // Track tab changes as screen views

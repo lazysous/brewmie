@@ -45,6 +45,8 @@ its own) and emails chef.lazysous@gmail.com, the same inbox as Lazy Sous. A shar
 token (`PURCHASE_NOTIFY_TOKEN`) gates it against spam. The client side ships to
 users only on the next OTA.
 
+- Launch-time store check (audit brewmie-08/-09/-64/-65): App.tsx calls `initIAP` then `syncStoreOwnership()` once at launch. `store.initialize()` replays unfinished purchases through the approved/verified handlers (acknowledging them), owned grants Premium, and an affirmative "not owned" after a store-granted Premium (flag `brewmie_premium_from_store`) dispatches `STORE_REVOKE_PREMIUM`, the only action that lowers the tier. A failed init (a rejection, or errors with no product) resets so the next tap retries and the text reaches the sheet. A deferred or Android pending order returns `{ ok: false, pending: true }` and shows `premium.purchasePending`; Premium follows when the store approves it, but no purchase email is sent on that later approval (notification stays tied to a fresh order success). The downgrade needs two consecutive not-owned launches (`brewmie_not_owned_strikes`; an owned result resets it, an unreachable store leaves it unchanged).
+
 ## Tests
 
 `npm test` (vitest, offline, seconds) and `npm run typecheck` must be green

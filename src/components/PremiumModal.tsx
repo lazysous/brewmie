@@ -133,6 +133,10 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
       if (result.cancelled) {
         return
       }
+      if (result.pending) {
+        setError(t('premium.purchasePending'))
+        return
+      }
       if (!result.ok) {
         setError(result.message ?? t('premium.purchaseUnavailable'))
         return
@@ -176,8 +180,8 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
       } else {
         setError(t('premium.restoreNothingFound'))
       }
-    } catch {
-      setError(t('premium.restoreFailed'))
+    } catch (e) {
+      setError(e instanceof Error && e.message ? e.message : t('premium.restoreFailed'))
     } finally {
       setRestoring(false)
     }

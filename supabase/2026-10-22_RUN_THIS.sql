@@ -78,4 +78,7 @@ select
           and policyname = 'owners delete their own shots')                          as delete_policy_ok,
   exists (select 1 from pg_trigger where tgname = 'public_shots_daily_cap')          as daily_cap_ok,
   exists (select 1 from pg_indexes where indexname = 'public_shots_source_id_key')   as unique_index_ok,
-  not has_function_privilege('anon', 'public.delete_user_account()', 'execute')      as anon_cannot_delete_ok;
+  not has_function_privilege('anon', 'public.delete_user_account()', 'execute')      as anon_cannot_delete_ok,
+  (select string_agg(a.attname, ', ' order by a.attnum) from pg_index i
+     join pg_attribute a on a.attrelid = i.indrelid and a.attnum = any(i.indkey)
+    where i.indrelid = 'public.shots'::regclass and i.indisprimary)                   as shots_primary_key;  -- brewmie-62: 'id' alone means global

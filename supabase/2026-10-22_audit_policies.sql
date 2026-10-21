@@ -39,5 +39,5 @@ create trigger public_shots_daily_cap before insert on public.public_shots
   for each row execute function public.public_shots_daily_cap();
 
 -- brewmie-58: the account-deletion function is for signed-in users only.
-revoke execute on function public.delete_user_account() from anon;
-grant execute on function public.delete_user_account() to authenticated;
+revoke execute on function public.delete_user_account() from public, anon;
+grant execute on function public.delete_user_account() to authenticated, service_role;

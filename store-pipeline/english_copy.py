@@ -49,10 +49,7 @@ Shots live on your device by default. Sign in to sync across phones. Anonymous s
 
 Built for baristas who got tired of guessing."""
 
-WHATS_NEW = (
-    "First release. Pull a shot, log the time and yield, rate the taste. "
-    "Brewmie tells you what to change next, in your grinder's actual units."
-)  # 148 chars
+WHATS_NEW = "Small fixes and polish for better shots."  # 40 chars
 
 # Pre-flight assertions
 assert len(TITLE) <= 30, f"TITLE {len(TITLE)} > 30"

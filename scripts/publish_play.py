@@ -56,7 +56,7 @@ SA_KEY = Path.home() / ".brewmie" / "play-publish.json"
 # Android Studio's bundled JBR, so gradle can run without a system Java
 JBR = "/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
-DEFAULT_NOTES = "First release. Pull a shot, dial it in, no subscription."
+DEFAULT_NOTES = "Small fixes and polish for better shots."
 
 
 def die(msg: str, code: int = 1) -> None:

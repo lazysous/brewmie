@@ -46,11 +46,7 @@ from _auth import asc_request, APP_ID  # noqa: E402
 REPO = Path(__file__).resolve().parent.parent
 PBXPROJ = REPO / "ios" / "App" / "App.xcodeproj" / "project.pbxproj"
 TRANSLATIONS = REPO / "store-pipeline" / "translations"
-ENGLISH_COPY = (
-    "First release. Pull a shot, log the time and yield, rate the taste. "
-    "Brewmie tells you exactly what to change next, in your grinder's units. "
-    "Built by baristas. No subscription."
-)
+ENGLISH_COPY = "Small fixes and polish for better shots."
 
 EDITABLE_STATES = (
     "PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED",

@@ -131,6 +131,50 @@ describe('purchase notification', () => {
   })
 })
 
+describe('purchase notification transactionId', () => {
+  const ALLOWED = ['productId', 'platform', 'price', 'transactionId', 'orderId', 'receiptHash', 'token']
+  const premium = [{ id: 'brewmie_premium_lifetime' }]
+  // setup runs inside order(), like the real store firing approved() mid-order.
+  async function buy(setup?: () => Promise<void> | void) {
+    const iap = await freshIap()
+    await iap.initIAP(() => {})
+    ;(fake.store as Record<string, unknown>).localTransactions = []
+    const order = async () => { if (setup) await setup(); return undefined }
+    fake.store.get.mockReturnValue({ pricing: { price: 'A$2.99', currency: 'AUD' }, getOffer: () => ({ order }) } as never)
+    await iap.purchasePremium()
+    const [, init] = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit]
+    return JSON.parse(init.body as string) as Record<string, unknown>
+  }
+
+  it('includes transactionId from the approved transaction', async () => {
+    const body = await buy(async () => { await fake.handlers.approved[0]({ transactionId: 'tx-123', products: premium, verify: async () => {} }) })
+    expect(body).toEqual({ productId: 'brewmie_premium_lifetime', platform: 'ios', price: 'A$2.99 AUD', transactionId: 'tx-123' })
+  })
+
+  it('falls back to localTransactions and to nativePurchase.orderId', async () => {
+    const body = await buy(() => {
+      ;(fake.store as Record<string, unknown>).localTransactions = [{ products: premium, state: 'approved', nativePurchase: { orderId: 'GPA.1' } }]
+    })
+    expect(body.transactionId).toBe('GPA.1')
+  })
+
+  it('omits transactionId when absent or empty', async () => {
+    expect('transactionId' in (await buy())).toBe(false)
+    const body = await buy(async () => { await fake.handlers.approved[0]({ transactionId: '', products: premium, verify: async () => {} }) })
+    expect('transactionId' in body).toBe(false)
+    ;(fetch as unknown as ReturnType<typeof vi.fn>).mockClear()
+    const nonString = await buy(async () => { await fake.handlers.approved[0]({ transactionId: 42, products: premium, verify: async () => {} }) })
+    expect('transactionId' in nonString).toBe(false)
+  })
+
+  it('only sends keys the server allows, all string values, transactionId capped at 200', async () => {
+    const body = await buy(async () => { await fake.handlers.approved[0]({ transactionId: 'x'.repeat(500), products: premium, verify: async () => {} }) })
+    for (const k of Object.keys(body)) expect(ALLOWED).toContain(k)
+    for (const v of Object.values(body)) expect(typeof v).toBe('string')
+    expect((body.transactionId as string).length).toBe(200)
+  })
+})
+
 const PRODUCT = { pricing: { price: 'A$2.99', currency: 'AUD' }, getOffer: () => ({ order: async () => undefined }) }
 
 describe('launch-time store check (brewmie-08)', () => {

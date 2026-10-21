@@ -77,7 +77,40 @@ function writeStrikes(n: number): void {
 const PURCHASE_NOTIFY_URL = 'https://us-central1-lazy-sous.cloudfunctions.net/brewmiePurchaseWebhook'
 const PURCHASE_NOTIFY_TOKEN = 'bru_ntfy_k7Qm2Zp9Lx4w'
 
-function notifyPurchase(detail: { productId: string; platform: string; price: string }): void {
+// Server-side dedupe id. The webhook accepts transactionId (string, max 200)
+// and 400s on any other unknown key, so this is the only extra key we send.
+const TX_ID_MAX = 200
+
+/** Store transaction id: Transaction.transactionId on both platforms (base
+ *  class in store.d.ts), falling back to GooglePlay nativePurchase.orderId. */
+function transactionIdOf(tx: unknown): string {
+  const t = tx as { transactionId?: unknown; nativePurchase?: { orderId?: unknown } } | null | undefined
+  for (const v of [t?.transactionId, t?.nativePurchase?.orderId]) {
+    if (typeof v === 'string' && v.trim() !== '') return v.slice(0, TX_ID_MAX)
+  }
+  return ''
+}
+
+const isPremiumTx = (t: Transaction): boolean =>
+  (t?.products ?? []).some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID)
+
+let lastPremiumTxId = ''
+
+function currentPremiumTxId(): string {
+  if (lastPremiumTxId) return lastPremiumTxId
+  try {
+    const txs = ((store.localTransactions ?? []) as Transaction[]).filter(isPremiumTx)
+    for (let i = txs.length - 1; i >= 0; i--) {
+      const id = transactionIdOf(txs[i])
+      if (id) return id
+    }
+  } catch {
+    // ignore
+  }
+  return ''
+}
+
+function notifyPurchase(detail: { productId: string; platform: string; price: string; transactionId?: string }): void {
   try {
     fetch(PURCHASE_NOTIFY_URL, {
       method: 'POST',
@@ -134,6 +167,7 @@ export function initIAP(onOwnership: () => void, opts?: { onNotOwned?: () => voi
       if (tx.products?.some((p: { id: string }) => p.id === PREMIUM_PRODUCT_ID)) {
         console.log('[iap] approved->onOwnership (immediate)')
         pendingSeen = false
+        lastPremiumTxId = transactionIdOf(tx) || lastPremiumTxId
         markStoreOwned()
       }
       try {
@@ -157,6 +191,9 @@ export function initIAP(onOwnership: () => void, opts?: { onNotOwned?: () => voi
       if (owns) {
         console.log('[iap] verified->onOwnership')
         pendingSeen = false
+        for (const t of txs) {
+          if (isPremiumTx(t)) lastPremiumTxId = transactionIdOf(t) || lastPremiumTxId
+        }
         markStoreOwned()
       }
       try {
@@ -336,18 +373,21 @@ export async function purchasePremium(): Promise<{ ok: boolean; cancelled?: bool
   if (!offer) return { ok: false, message: 'No purchase offer available. Check your network and try again.' }
 
   pendingSeen = false
+  lastPremiumTxId = ''
   const err = await offer.order()
   if (!err) {
     // Ask to Buy and Android pending orders resolve order() with no error but
     // leave the transaction PENDING. That is not a purchase yet (brewmie-64).
     if (isPremiumPending()) return { ok: false, pending: true }
     const pricing = product.pricing
+    const transactionId = currentPremiumTxId()
     notifyPurchase({
       productId: PREMIUM_PRODUCT_ID,
       platform: Capacitor.getPlatform(),
       price: pricing?.price
         ? (pricing.currency ? `${pricing.price} ${pricing.currency}` : String(pricing.price))
         : '?',
+      ...(transactionId ? { transactionId } : {}),
     })
     return { ok: true }
   }

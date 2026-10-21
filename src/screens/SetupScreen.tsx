@@ -26,6 +26,8 @@ import {
   GRINDER_MODELS,
   BEAN_TYPES,
   BEAN_ROASTERS,
+  isBuiltInGrinder,
+  buildGrinderConfig,
 } from '../data/equipment'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -449,7 +451,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
   // ── Grinder local state ──────────────────────────────────────────────────────
   const [grinderBuiltIn, setGrinderBuiltIn] = useState<boolean>(
-    state.grinder ? state.grinder.type !== 'flat-burr' && state.grinder.type !== 'conical-burr' && state.grinder.brand === '' : false
+    isBuiltInGrinder(state.grinder)
   )
   const [grinderBrand, setGrinderBrand] = useState<string>(state.grinder?.brand ?? '')
   const [grinderModel, setGrinderModel] = useState<string>(state.grinder?.model ?? '')
@@ -492,13 +494,14 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
   function dispatchGrinder(overrides: Partial<GrinderConfig> = {}) {
     const cfg: GrinderConfig = {
-      type: grinderBuiltIn ? 'blade' : 'flat-burr',
-      brand: grinderBuiltIn ? '(Built-in)' : grinderBrand,
-      model: grinderBuiltIn ? '' : grinderModel,
-      minSetting: grinderMin,
-      // A dial needs a real range (audit brewmie-04): max below or equal to min collapsed
-      // every grind move to zero.
-      maxSetting: grinderMax > grinderMin ? grinderMax : grinderMin + 1,
+      ...buildGrinderConfig({
+        builtIn: grinderBuiltIn,
+        brand: grinderBrand,
+        model: grinderModel,
+        min: grinderMin,
+        max: grinderMax,
+        existingType: state.grinder?.type ?? null,
+      }),
       ...overrides,
     }
     dispatch({ type: 'SET_GRINDER', payload: cfg })
@@ -883,6 +886,8 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                 )}
               </Field>
 
+            </>
+          )}
               <div className="sc-row">
                 <Field label={t('setup.minSetting')}>
                   <input
@@ -905,8 +910,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                   />
                 </Field>
               </div>
-            </>
-          )}
+
         </Card>
 
         {/* ── 4. Tamper ── */}
@@ -1296,6 +1300,8 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                           </select>
                         )}
                       </Field>
+                    </>
+                  )}
                       <div className="sc-row">
                         <Field label={t('setup.minSetting')}>
                           <input type="number" className="sc-input" min={0} step={1}
@@ -1306,8 +1312,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
                             value={grinderMax} onChange={(e) => setGrinderMax(Number(e.target.value))} />
                         </Field>
                       </div>
-                    </>
-                  )}
+
                   </>)}
                 </>
               )}
@@ -1529,7 +1534,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           column-gap: 12px;
           row-gap: 4px;
           width: 100%;
-          background: linear-gradient(180deg, var(--accent-green) 0%, #5C7E4F 100%);
+          background: linear-gradient(180deg, var(--accent-green) 0%, #46683A 100%);
           border: none;
           padding: 14px 18px;
           border-radius: 14px;
@@ -1638,7 +1643,7 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
           border-radius: 9999px;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
-            linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
+            linear-gradient(180deg, #567A48 0%, #567A48 55%, #46683A 100%);
           color: var(--white);
           border: 1.5px solid rgba(184, 116, 74, 0.45);
           cursor: pointer;

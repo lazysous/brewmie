@@ -267,3 +267,24 @@ describe('revocation (brewmie-65)', () => {
     expect(notOwned).not.toHaveBeenCalled()
   })
 })
+
+describe('refreshPremiumPrice (brewmie-18) and signed-out purchase (brewmie-17)', () => {
+  it('re-runs the store fetch and returns the price once the store answers', async () => {
+    const iap = await freshIap()
+    await iap.initIAP(() => {})
+    fake.store.get.mockReturnValue({ pricing: { price: 'AU$3.99', currency: 'AUD' } })
+    expect(await iap.refreshPremiumPrice()).toBe('AU$3.99 AUD')
+    expect(fake.store.initialize).toHaveBeenCalled()
+  })
+  it('returns null (never throws) when the store cannot be reached', async () => {
+    const iap = await freshIap()
+    await iap.initIAP(() => {})
+    fake.store.initialize.mockRejectedValue(new Error('offline'))
+    expect(await iap.refreshPremiumPrice()).toBeNull()
+  })
+  it('the purchase notification and the iap module never read a user id', async () => {
+    const { readFileSync } = await import('node:fs')
+    const src = readFileSync('src/lib/iap.ts', 'utf8')
+    expect(src).not.toMatch(/userId|user_id/i)
+  })
+})

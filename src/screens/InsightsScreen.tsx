@@ -100,10 +100,10 @@ function dialInDays(shots: ShotEntry[]): number | null {
 // ─── Score pill colour helper ──────────────────────────────────────────────────
 
 function scorePillStyle(score: number | null): React.CSSProperties {
-  if (score === null) return { background: '#E0E0E0', color: '#6A6A6A' }
+  if (score === null) return { background: '#E0E0E0', color: '#555555' }
   if (score >= 95) return { background: '#FFD700', color: '#6B4E00' }
-  if (score >= 85) return { background: '#6B8E5C', color: '#FFFFFF' }
-  if (score >= 70) return { background: '#9A9A9A', color: '#FFFFFF' }
+  if (score >= 85) return { background: '#567A48', color: '#FFFFFF' }
+  if (score >= 70) return { background: '#6A6A6A', color: '#FFFFFF' }
   return { background: '#8B1A1A', color: '#FFFFFF' }
 }
 
@@ -539,7 +539,7 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         <span
           className="ix-adj-badge"
           style={{
-            color: adj.neutral ? '#6A9A6A' : adj.positive ? '#6B8E5C' : '#8B1A1A',
+            color: adj.neutral || adj.positive ? '#46683A' : '#8B1A1A',
             background: adj.neutral
               ? 'rgba(107, 142, 92, 0.07)'
               : adj.positive

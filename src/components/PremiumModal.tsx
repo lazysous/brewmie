@@ -5,7 +5,7 @@ import { useTranslation } from '../hooks/useTranslation'
 import { setTierOverride } from '../hooks/useTier'
 import { track } from '../lib/analytics'
 import { signInWithApple, signInWithGoogle } from '../lib/supabase'
-import { purchasePremium, restorePurchases, getPremiumPriceDisplay } from '../lib/iap'
+import { purchasePremium, restorePurchases, getPremiumPriceDisplay, refreshPremiumPrice } from '../lib/iap'
 import { useSale } from '../hooks/useSale'
 
 // Platform detection — read once at module load so render is sync.
@@ -48,11 +48,27 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   // an attempted purchase.
   const [localizedPrice, setLocalizedPrice] = useState<string | null>(null)
   useEffect(() => {
-    if (open) setLocalizedPrice(getPremiumPriceDisplay())
+    if (open) { setLocalizedPrice(getPremiumPriceDisplay()); setPriceFailed(false) }
   }, [open])
+  // Price retry (audit brewmie-18): when the store has not answered, the button
+  // shows a placeholder and "Try again" re-runs the store fetch.
+  const [priceLoading, setPriceLoading] = useState(false)
+  const [priceFailed, setPriceFailed] = useState(false)
+  const handlePriceRetry = async () => {
+    setPriceLoading(true)
+    setPriceFailed(false)
+    try {
+      const price = await refreshPremiumPrice()
+      setLocalizedPrice(price)
+      if (!price) setPriceFailed(true)
+    } catch {
+      setPriceFailed(true)
+    } finally {
+      setPriceLoading(false)
+    }
+  }
   // Gold "Sale price" badge while the sale flag says a sale is on (src/lib/sale.ts).
-  // It takes the place of the introductory-offer badge; the price itself is
-  // always the live store price.
+  // The price itself is always the live store price. There is no introductory offer.
   const saleOn = useSale(open)
   // Mirror isPremium into a ref so the verification polling sees fresh values
   // without each tick capturing a stale closure of the prop.
@@ -79,7 +95,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   const isDev = import.meta.env.DEV
 
   const handleNativeSignIn = async () => {
-    track('premium_cta_click', { product: 'brewmie_only', signed_in: false, platform: PLATFORM })
+    track('premium_sign_in_click', { platform: PLATFORM })
     setSigningIn(true)
     setError(null)
     try {
@@ -94,9 +110,8 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
         setError(r.error.message ?? t('auth.errorGeneric'))
         return
       }
-      // Auth state listener in App.tsx will set state.userId, which flips
-      // isSignedIn=true. Modal re-renders with the Purchase button. User
-      // taps that to actually trigger the IAP.
+      // Auth state listener in App.tsx will set state.userId. Signing in is
+      // optional (brewmie-17): buying and restoring never wait for it.
     } catch (e: unknown) {
       // Cancellation throws on some platforms — silent. Real errors surface.
       const msg = e instanceof Error ? e.message : ''
@@ -107,7 +122,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
   }
 
   const handlePurchase = async () => {
-    track('premium_cta_click', { product: 'brewmie_only', signed_in: true, platform: PLATFORM })
+    track('premium_cta_click', { product: 'brewmie_only', signed_in: isSignedIn, platform: PLATFORM })
     setPurchasing(true)
     setError(null)
     try {
@@ -204,8 +219,9 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
 
   // ── Body branches ──
   // 1. Web (signed-in or not): purchase is store-only; show app-only block.
-  // 2. Native + signed-out: single CTA goes straight to platform sign-in.
-  // 3. Native + signed-in: original buy flow.
+  // 2. Native (signed in or out): buy flow. Premium belongs to the store
+  //    account, so Buy and Restore never need a Brewmie sign-in (brewmie-17).
+  //    Signed-out users also get an optional sign-in link below.
   const webAppOnly = PLATFORM === 'web'
 
   return createPortal(
@@ -267,29 +283,11 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
               </a>
             </div>
           </div>
-        ) : !isSignedIn ? (
-          <>
-            <button
-              className={`pm-btn pm-btn--${PLATFORM === 'ios' ? 'apple' : 'google'}`}
-              onClick={handleNativeSignIn}
-              type="button"
-              disabled={signingIn}
-            >
-              <span className="pm-btn__label">
-                {PLATFORM === 'ios' ? t('premium.signInApple') : t('premium.signInGoogle')}
-              </span>
-            </button>
-            <p className="pm-explainer">{t('premium.signInExplainer')}</p>
-          </>
         ) : (
           <>
-            {saleOn ? (
+            {saleOn && (
               <div className="pm-intro" aria-label={t('premium.salePrice')}>
                 <span className="pm-intro__badge pm-intro__badge--sale" data-testid="sale-badge">{t('premium.salePrice')}</span>
-              </div>
-            ) : (
-              <div className="pm-intro" aria-label={t('premium.introOffer')}>
-                <span className="pm-intro__badge">{t('premium.introOffer')}</span>
               </div>
             )}
             <button className="pm-btn pm-btn--primary" onClick={handlePurchase} type="button" disabled={purchasing || verifying}>
@@ -297,7 +295,24 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
                 {verifying ? t('premium.verifying') : t('premium.cta')}
               </span>
               {!verifying && localizedPrice && <span className="pm-btn__price">{localizedPrice}</span>}
+              {!verifying && !localizedPrice && (
+                <span className="pm-btn__price pm-skel" data-testid="price-skeleton" aria-hidden="true" />
+              )}
             </button>
+            {!verifying && !localizedPrice && (
+              <p className="pm-pricenote">
+                <span>{priceFailed ? t('premium.priceUnavailable') : t('premium.priceLoading')}</span>
+                <button
+                  className="pm-pricenote__retry"
+                  type="button"
+                  onClick={handlePriceRetry}
+                  disabled={priceLoading}
+                  data-testid="price-retry"
+                >
+                  {priceLoading ? t('premium.priceRetrying') : t('premium.priceRetry')}
+                </button>
+              </p>
+            )}
           </>
         )}
 
@@ -314,6 +329,22 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           >
             {restoring ? t('premium.restoring') : t('premium.restore')}
           </button>
+        )}
+
+        {!webAppOnly && (
+          <>
+            <p className="pm-explainer">{t('premium.signInExplainer')}</p>
+            {!isSignedIn && (
+              <button
+                className="pm-signin"
+                type="button"
+                onClick={handleNativeSignIn}
+                disabled={signingIn}
+              >
+                {PLATFORM === 'ios' ? t('premium.signInApple') : t('premium.signInGoogle')}
+              </button>
+            )}
+          </>
         )}
 
         {isDev && (
@@ -456,7 +487,7 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
         .pm-btn--primary {
           background: var(--accent-green);
           color: #fff;
-          box-shadow: 0 6px 14px rgba(107, 142, 92, 0.22);
+          box-shadow: 0 6px 14px rgba(86, 122, 72, 0.22);
         }
         /* Apple HIG-compliant Sign in with Apple — solid black, white text,
            system font. Label may not be modified. */
@@ -482,6 +513,50 @@ export function PremiumModal({ open, onClose, trigger, isSignedIn = true, isPrem
           margin: 10px 2px 0;
           text-align: center;
         }
+        .pm-signin {
+          display: block;
+          width: 100%;
+          margin: 2px 0 0;
+          padding: 10px;
+          background: transparent;
+          border: none;
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--copper-deep);
+          text-decoration: underline;
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .pm-signin:disabled { opacity: 0.4; cursor: default; }
+        .pm-skel {
+          display: inline-block;
+          width: 56px;
+          height: 14px;
+          border-radius: 7px;
+          background: rgba(255,255,255,0.35);
+          animation: pmSkel 1.2s ease-in-out infinite;
+        }
+        @keyframes pmSkel { 0%,100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+        .pm-pricenote {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          font-size: 12px;
+          color: var(--text-tertiary);
+          margin: 8px 0 0;
+        }
+        .pm-pricenote__retry {
+          background: transparent;
+          border: none;
+          padding: 6px 4px;
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--copper-deep);
+          text-decoration: underline;
+          cursor: pointer;
+        }
+        .pm-pricenote__retry:disabled { opacity: 0.5; cursor: default; }
         .pm-btn__label {
           font-size: 15px;
           font-weight: 700;

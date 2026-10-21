@@ -13,9 +13,10 @@
   --cream: #FAF7F2;
 
   /* Brand accent — sage from Lazy Sous, with one Brewmie-only copper note */
-  --accent-green: #6B8E5C;       /* matches Lazy Sous --green-dark */
+  --accent-green: #567A48;       /* matches Lazy Sous --green-dark */
   --accent-green-soft: #8FA57F;  /* matches Lazy Sous --green */
-  --accent-green-tint: rgba(107, 142, 92, 0.10);
+  --accent-green-text: #46683A;  /* green text on tints and off-white (AA) */
+  --accent-green-tint: rgba(86, 122, 72, 0.10);
   --copper: #B8744A;             /* Brewmie's single distinctive note: crema/copper */
   --copper-deep: #8B5A36;
   --gold: #FFD700;
@@ -196,7 +197,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--accent-green) !important;
-  box-shadow: 0 0 0 3px rgba(107, 142, 92, 0.15);
+  box-shadow: 0 0 0 3px rgba(86, 122, 72, 0.15);
 }
 
 ::selection {
@@ -352,7 +353,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.3px;
 }
-.pill-badge--green { background: var(--accent-green-tint); color: var(--accent-green); }
+.pill-badge--green { background: var(--accent-green-tint); color: var(--accent-green-text); }
 .pill-badge--gold  { background: rgba(184, 116, 74, 0.12); color: var(--copper-deep); }
 .pill-badge--red   { background: rgba(160, 80, 80, 0.10); color: #8A4040; }
 .pill-badge--grey  { background: rgba(107, 114, 128, 0.08); color: var(--grey-medium); }

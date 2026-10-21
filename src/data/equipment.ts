@@ -150,6 +150,43 @@ export const GRINDER_BRANDS = [
 
 // Models per brand. Where we know the grind setting range, we attach it.
 // minSetting/maxSetting are pre-filled when the user picks a known model.
+// ─── Built-in grinder profile (audit brewmie-47) ──────────────────────────────
+// A machine's built-in grinder is stored with type 'blade' and this brand.
+// Setup recognises it from what is stored, so re-entering Setup restores it.
+
+import type { GrinderConfig, GrinderType } from '../types'
+
+export const BUILT_IN_GRINDER_BRAND = '(Built-in)'
+export const BUILT_IN_GRINDER_TYPE: GrinderType = 'blade'
+
+export function isBuiltInGrinder(g: Pick<GrinderConfig, 'type' | 'brand'> | null | undefined): boolean {
+  if (!g) return false
+  // Current saves: the built-in brand. Older saves where the type was overwritten
+  // with 'flat-burr' still carry the brand. Oldest saves: a non-burr type, no brand.
+  if (g.brand === BUILT_IN_GRINDER_BRAND) return true
+  return g.type === BUILT_IN_GRINDER_TYPE && g.brand === ''
+}
+
+export function buildGrinderConfig(input: {
+  builtIn: boolean
+  brand: string
+  model: string
+  min: number
+  max: number
+  existingType?: GrinderType | null
+}): GrinderConfig {
+  const standaloneType: GrinderType =
+    input.existingType === 'conical-burr' ? 'conical-burr' : 'flat-burr'
+  return {
+    type: input.builtIn ? BUILT_IN_GRINDER_TYPE : standaloneType,
+    brand: input.builtIn ? BUILT_IN_GRINDER_BRAND : input.brand,
+    model: input.builtIn ? '' : input.model,
+    minSetting: input.min,
+    // A dial needs a real range (audit brewmie-04): max at or below min collapses every grind move.
+    maxSetting: input.max > input.min ? input.max : input.min + 1,
+  }
+}
+
 export interface GrinderModel {
   name: string
   range?: [number, number]

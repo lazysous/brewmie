@@ -1,8 +1,8 @@
 // The gold "Sale price" badge on the Premium sheet (src/components/PremiumModal.tsx).
 // Native, signed in, not premium: the branch that shows the price. With the flag off
-// the introductory-offer badge stays; with it on the gold badge takes its place and the
-// button still quotes the live store price; the sheet opens before the flag has landed
-// and settles once it does.
+// there is no badge (the introductory offer was removed, audit brewmie-18); with it on the
+// gold badge appears and the button still quotes the live store price; the sheet opens
+// before the flag has landed and settles once it does.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor, cleanup } from '@testing-library/react'
 import React from 'react'
@@ -14,6 +14,7 @@ vi.mock('../src/lib/iap', () => ({
   purchasePremium: vi.fn(async () => ({ ok: true })),
   restorePurchases: vi.fn(async () => undefined),
   getPremiumPriceDisplay: () => 'AU$3.99 AUD',
+  refreshPremiumPrice: vi.fn(async () => 'AU$3.99 AUD'),
 }))
 vi.mock('../src/hooks/useTranslation', async () => {
   const { translate } = await import('../src/lib/i18n')
@@ -36,20 +37,20 @@ beforeEach(() => { _resetSaleCache() })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 describe('PremiumModal sale badge', () => {
-  it('flag off: the introductory-offer badge, no sale badge, live price on the button', async () => {
+  it('flag off: no badge at all, no sale badge, live price on the button', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ active: false, until: null }) })))
     open()
-    expect(screen.getByText('Introductory offer')).toBeTruthy()
+    expect(screen.queryByText('Introductory offer')).toBeNull()
     expect(screen.queryByTestId('sale-badge')).toBeNull()
     expect(screen.getByText('AU$3.99 AUD')).toBeTruthy()
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1))
     expect(screen.queryByTestId('sale-badge')).toBeNull()
   })
 
-  it('flag on: the gold "Sale price" badge takes the place of the introductory one once the flag lands', async () => {
+  it('flag on: the gold "Sale price" badge appears once the flag lands', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ active: true, until: FUTURE }) })))
     open()
-    expect(screen.getByText('Introductory offer')).toBeTruthy()
+    expect(screen.queryByTestId('sale-badge')).toBeNull()
     const badge = await screen.findByTestId('sale-badge')
     expect(badge.textContent).toBe('Sale price')
     expect(badge.className).toContain('pm-intro__badge--sale')
@@ -70,6 +71,6 @@ describe('PremiumModal sale badge', () => {
     open()
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1))
     expect(screen.queryByTestId('sale-badge')).toBeNull()
-    expect(screen.getByText('Introductory offer')).toBeTruthy()
+    expect(screen.queryByText('Introductory offer')).toBeNull()
   })
 })

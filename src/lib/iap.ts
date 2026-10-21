@@ -296,6 +296,23 @@ export function getPremiumPriceDisplay(): string | null {
 }
 
 /**
+ * Re-run the store fetch for the price (audit brewmie-18 retry). Initialises
+ * the store if needed (an explicit tap, so an auth prompt is acceptable), then
+ * returns the display price or null. Never throws.
+ */
+export async function refreshPremiumPrice(): Promise<string | null> {
+  if (!Capacitor.isNativePlatform()) return null
+  try {
+    await ensureIAPInitialized()
+  } catch (e) {
+    console.warn('[iap] price refresh could not reach the store', e)
+    return getPremiumPriceDisplay()
+  }
+  cachePremiumPrice()
+  return getPremiumPriceDisplay()
+}
+
+/**
  * Trigger the store purchase sheet for the Premium product. Lazily
  * initializes the store on first call. Resolves with { ok: true } on
  * success or { ok: false, cancelled?, message? } otherwise.

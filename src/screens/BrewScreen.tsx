@@ -2687,7 +2687,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           color: #fff;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
-            linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
+            linear-gradient(180deg, #567A48 0%, #567A48 55%, #46683A 100%);
           border: 1.5px solid rgba(184, 116, 74, 0.4);
           cursor: pointer;
           -webkit-tap-highlight-color: transparent;
@@ -2822,7 +2822,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           border-radius: 9999px;
           background:
             radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.16), transparent 55%),
-            linear-gradient(180deg, #84A571 0%, #6B8E5C 55%, #587D49 100%);
+            linear-gradient(180deg, #567A48 0%, #567A48 55%, #46683A 100%);
           color: var(--white);
           font-family: var(--font-primary);
           font-size: 17px;
@@ -2878,7 +2878,7 @@ export function BrewScreen({ state, dispatch, onNavigateToSetup, onSignIn, weath
           box-shadow: none;
         }
         .bs-brew-btn--brewing {
-          background: linear-gradient(180deg, #6B8E5C 0%, #587D49 100%);
+          background: linear-gradient(180deg, #567A48 0%, #46683A 100%);
           box-shadow: 0 1px 3px rgba(60, 40, 20, 0.08), 0 4px 12px rgba(107, 142, 92, 0.24);
           animation: bsBrewPulse 1.6s ease-in-out infinite;
         }

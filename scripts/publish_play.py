@@ -5,7 +5,9 @@ Build a signed AAB and upload it to Google Play via the Publishing API.
 Usage:
   scripts/publish_play.py                  # uploads to "internal" track (default)
   scripts/publish_play.py --track beta
-  scripts/publish_play.py --track production
+  scripts/publish_play.py --track production                         # staged, 20% of users
+  scripts/publish_play.py --track production --rollout-fraction 0.5
+  scripts/publish_play.py --complete-rollout                         # move the staged release to 100%
   scripts/publish_play.py --no-bump        # don't auto-bump versionCode
   scripts/publish_play.py --notes "Bug fixes"
 
@@ -129,7 +131,25 @@ def get_publish_client():
     return build("androidpublisher", "v3", credentials=creds, cache_discovery=False)
 
 
-def upload_and_release(track: str, notes: str | None) -> None:
+def complete_rollout(track: str = "production") -> None:
+    """Move the in-progress staged release on `track` to 100 percent."""
+    client = get_publish_client()
+    edits = client.edits()
+    edit_id = edits.insert(packageName=PACKAGE_NAME, body={}).execute()["id"]
+    body = edits.tracks().get(packageName=PACKAGE_NAME, editId=edit_id, track=track).execute()
+    staged = [r for r in body.get("releases", []) if r.get("status") == "inProgress"]
+    if not staged:
+        edits.delete(packageName=PACKAGE_NAME, editId=edit_id).execute()
+        die(f"no inProgress (staged) release on track '{track}'")
+    for r in staged:
+        r["status"] = "completed"
+        r.pop("userFraction", None)
+    edits.tracks().update(packageName=PACKAGE_NAME, editId=edit_id, track=track, body=body).execute()
+    edits.commit(packageName=PACKAGE_NAME, editId=edit_id).execute()
+    ok(f"Staged release on '{track}' is now at 100%.")
+
+
+def upload_and_release(track: str, notes: str | None, rollout_fraction: float = 0.2) -> None:
     from googleapiclient.http import MediaFileUpload
 
     client = get_publish_client()
@@ -152,6 +172,10 @@ def upload_and_release(track: str, notes: str | None) -> None:
         "versionCodes": [str(version_code)],
         "status": "completed",
     }
+    # Production ships staged by default (audit brewmie-26); 1.0 means everyone at once.
+    if track == "production" and rollout_fraction < 1.0:
+        release_body["status"] = "inProgress"
+        release_body["userFraction"] = rollout_fraction
     if notes:
         release_body["releaseNotes"] = [{"language": "en-US", "text": notes[:500]}]
 
@@ -174,8 +198,20 @@ def main() -> None:
                     choices=["internal", "alpha", "beta", "production"])
     ap.add_argument("--no-bump", action="store_true", help="Skip versionCode bump")
     ap.add_argument("--notes", default=DEFAULT_NOTES, help="Release notes (max 500 chars)")
+    ap.add_argument("--rollout-fraction", type=float, default=0.2,
+                    help="Production only: fraction of users in the staged rollout, "
+                         "0 < f <= 1 (default 0.2). 1.0 ships to everyone at once.")
+    ap.add_argument("--complete-rollout", action="store_true",
+                    help="Move the staged production release to 100 percent, then exit. "
+                         "Builds and uploads nothing.")
     ap.add_argument("--skip-build", action="store_true", help="Use existing AAB")
     args = ap.parse_args()
+
+    if not 0 < args.rollout_fraction <= 1:
+        die("--rollout-fraction must be above 0 and at most 1")
+    if args.complete_rollout:
+        complete_rollout()
+        return
 
     if not shutil.which("npx"):
         die("npx not found, Node is required for cap:sync")
@@ -192,7 +228,7 @@ def main() -> None:
         die(f"--skip-build set but no AAB at {AAB_PATH}")
 
     t0 = time.time()
-    upload_and_release(args.track, args.notes)
+    upload_and_release(args.track, args.notes, rollout_fraction=args.rollout_fraction)
     ok(f"Done in {int(time.time() - t0)}s.")
 
 

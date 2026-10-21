@@ -1,12 +1,12 @@
 # Build automation, one-time setup
 
-Last verified: 2026-10-05
+Last verified: 2026-10-22
 
 Once the credentials below exist, every future Brewmie release is one command.
 
 ```bash
 scripts/release.sh ota 1.0.4           # JS bundle via our own OTA (Cloudflare Pages + Worker)
-scripts/release.sh native              # iOS .ipa + Android .aab uploads
+scripts/release.sh native              # gate, iOS submit, then Play at a 20% staged rollout
 scripts/release.sh all 1.0.4           # All three
 ```
 
@@ -273,10 +273,29 @@ and later; older bundles show the introductory-offer badge as before.
 | `scripts/publish_ios.sh --no-bump` | Same archive, current build number (retry after upload failure). |
 | `scripts/publish_ios.sh --skip-upload` | Archive + export only, leaves `.ipa` under `build/ios/ipa/`. |
 | `scripts/publish_play.py --track internal` | Bump versionCode, cap:sync, bundleRelease, upload AAB to Internal Testing. ~2 min. |
-| `scripts/publish_play.py --track production --notes "..."` | Same, ships to Production with release notes. |
+| `scripts/publish_play.py --track production --notes "..."` | Same, ships to Production with release notes, as a STAGED rollout to 20 percent of users (`--rollout-fraction 0.5` changes it, `1.0` ships to everyone). |
+| `scripts/publish_play.py --complete-rollout` | Moves the staged production release to 100 percent. Builds and uploads nothing. Run it when the 20 percent looks healthy. |
+| `scripts/release_preflight.sh` | The native release gate (below). Runs first inside `release.sh native`; can be run alone. |
 | `scripts/publish_play.py --no-bump --skip-build` | Re-upload existing AAB after a failed network upload. |
-| `PLAY_NOTES="..." scripts/release.sh native` | iOS + Play in parallel. iOS foreground (manual signing, section 3), Play background to `/tmp/brewmie-play.log`. `PLAY_NOTES` is the Play release note; without it a generic one ships. |
+| `PLAY_NOTES="..." scripts/release.sh native` | Gate, then iOS (upload, validate, submit for review), then Play as a 20 percent staged production rollout, then the `native-v<version>` tag (push it yourself). Sequential: Play is never touched until iOS is submitted. `PLAY_NOTES` is the Play release note; without it a generic one ships. |
 | `scripts/release.sh all 1.0.4` | OTA push, then native. |
+
+### Native release gate and order (audit brewmie-26)
+
+`scripts/release.sh native` now runs `scripts/release_preflight.sh` before any build or upload. It refuses when:
+
+- the working tree is dirty, or HEAD is not `origin/main` (the binary must match a pushed commit);
+- `npm run build`, `npx vitest run` or `npx tsc --noEmit` fails;
+- the iOS version equals the live App Store version in `CHANGELOG.md`
+  (the "Current shipped versions" line; update it as soon as Apple approves a build, and in every release commit);
+- a `native-v<version>` tag already exists for that version.
+
+The iOS version is read from `ios/App/App.xcodeproj/project.pbxproj` (`MARKETING_VERSION`) when it exists locally
+(`ios/` is gitignored and lives only on this Mac), otherwise from `package.json` `version`. Then the order is:
+iOS archive and upload (`publish_ios.sh`), App Store version created and submitted (`submit_ios_release.py --wait --submit`),
+and only then Google Play, as a 20 percent staged production rollout. After a healthy day or two, widen it with
+`scripts/publish_play.py --complete-rollout`. The gate is pinned by `npm run test:release-preflight`
+(`scripts/test_release_preflight.sh`, a throwaway git repo with a stub for the code checks).
 
 After upload:
 - iOS: appears in App Store Connect, TestFlight in ~10 min (Apple processing).
@@ -370,6 +389,51 @@ or a service-role key, neither of which is on this machine (owner step; see the 
 2. Fix forward with `scripts/ota_push.sh <higher version>`. Versions are never reused.
 3. `--dry-run` on the rollback shows the worker constants it would deploy without deploying.
    `tests/ota-worker.test.ts` pins the worker's decision table.
+
+## 7d. Recurring secrets (audit brewmie-89)
+
+Sign in with Apple on the WEB needs a Supabase Apple "client secret", a JWT signed with the Apple key, and Apple
+caps its life at 6 months. When it lapses, web "Continue with Apple" fails (native iOS sign-in uses the identity token
+and is not affected). Nothing in this repo holds it.
+
+Rotation steps (owner, about 10 minutes):
+
+1. Apple Developer, Certificates, Identifiers and Profiles, **Keys**: find the Sign in with Apple key (its Key ID is
+   already in Supabase). Reuse it, or create a new key with Sign in with Apple enabled and download the `.p8` once.
+2. Generate the client secret JWT: ES256, signed with that `.p8`; header `kid` = Key ID; payload `iss` = Team ID
+   (`L36L3B3J32`), `iat` = now, `exp` = at most now + 6 months (15777000 s), `aud` = `https://appleid.apple.com`,
+   `sub` = the Services ID (the `client_id` Supabase holds, `app.brewmie.brewmie.web` per the sign-in checklist below).
+   Supabase's docs have a small generator, or use `pyjwt` in the Lazy Sous venv.
+3. Supabase dashboard, Authentication, Providers, **Apple**: paste the new JWT into the Secret key field and Save.
+4. Test web sign-in with Apple on brewmie.app/app.
+5. **Read the secret's creation date in the Supabase dashboard (Apple provider page) and set a calendar reminder 5
+   months after it**, so there is a month of slack before the 6 month expiry.
+
+Do not write the JWT or the `.p8` into the repo, a doc or a chat. They stay in the Apple and Supabase consoles and your
+password manager.
+
+## 7e. Next native release checklist
+
+Edits that wait for the next binary (no native file is changed until then; `ios/` and `android/` are gitignored, so
+record each one in NATIVE_SETUP.md when done):
+
+1. **Android coarse location for weather (audit brewmie-52).** Android never asks for location today, so weather is
+   silently absent on Android while iOS asks. Owner decision: add coarse location.
+   - `android/app/src/main/AndroidManifest.xml`, inside `<manifest>`, add
+     `<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />`.
+   - Plugin: the code uses the WebView's `navigator.geolocation` (`src/App.tsx`), the same call iOS answers with its
+     `NSLocationWhenInUseUsageDescription` prompt. No `@capacitor/geolocation` is installed or needed in principle, because
+     Capacitor's Android bridge forwards the WebView request to the runtime permission prompt once the manifest declares
+     the permission. Test on a real Android 14 device: if no prompt appears, add `@capacitor/geolocation@^6` and call
+     its `requestPermissions({ permissions: ['coarseLocation'] })` before `getCurrentPosition`, then `npx cap sync android`.
+     If the WebView only prompts when `ACCESS_FINE_LOCATION` is also declared, declare both but keep the rounding in
+     `src/lib/weather.ts` and answer Data safety as below plus precise location (re-read `docs/STORE_PRIVACY_LABELS.md`).
+   - Play Console, App content, **Data safety**: add Location, **Approximate location**, collected, shared (MET Norway),
+     optional, purpose App functionality. Keep the privacy policy as it is (it already describes the rounded lookup).
+   - Raise the versionCode as usual; the Play review may ask for a location declaration, answer "weather at shot time".
+2. Add the store `statsUrl` for the updater (`https://brewmie-ota.richbwilliamson.workers.dev/stats`) only if you want
+   updater stats; the privacy policy and `docs/STORE_PRIVACY_LABELS.md` flow 4 say none are sent today.
+3. Update `CHANGELOG.md` "Current shipped versions" line when each store approves.
 
 ## 8. Troubleshooting
 

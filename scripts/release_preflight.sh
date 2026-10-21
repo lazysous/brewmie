@@ -27,7 +27,9 @@ fi
 git fetch -q origin main || fail "cannot fetch origin/main"
 [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] || fail "HEAD is not origin/main; push first"
 
-LIVE_IOS=$(grep -m1 -E 'Current shipped versions' CHANGELOG.md 2>/dev/null | grep -oE 'iOS [0-9]+\.[0-9]+(\.[0-9]+)?' | head -1 | grep -oE '[0-9.]+$' || true)
+# Every line mentioning the marker is searched (the CHANGELOG's own explanation also names it); the first
+# 'iOS x.y[.z]' on those lines is the live version.
+LIVE_IOS=$(grep -E 'Current shipped versions' CHANGELOG.md 2>/dev/null | grep -oE 'iOS [0-9]+\.[0-9]+(\.[0-9]+)?' | head -1 | grep -oE '[0-9.]+$' || true)
 [ -n "$LIVE_IOS" ] || fail "cannot read the live iOS version from the 'Current shipped versions' line of CHANGELOG.md"
 [ "$IOS" != "$LIVE_IOS" ] || fail "iOS version $IOS equals the live App Store version in CHANGELOG.md; bump it first"
 [ -z "$(git tag --list "native-v$IOS")" ] || fail "tag native-v$IOS already exists; that native version was already released"

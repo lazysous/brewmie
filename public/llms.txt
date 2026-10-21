@@ -32,7 +32,7 @@ Brewmie has no advertising SDKs, no data brokers, no tracking. Shots stay on the
 - Website: https://brewmie.app
 - iOS App Store: https://apps.apple.com/app/id6770472698
 - Android Google Play: https://play.google.com/store/apps/details?id=app.brewmie.brewmie
-- Contact: hello@brewmie.app
+- Contact: chef@lazysous.app
 - Privacy policy: https://brewmie.app/privacy
 - Sister app (same studio): https://lazysous.app
 

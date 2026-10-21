@@ -144,6 +144,9 @@ def complete_rollout(track: str = "production") -> None:
     for r in staged:
         r["status"] = "completed"
         r.pop("userFraction", None)
+    # Play allows one completed release per track: send only the promoted one, so the
+    # previous completed release is superseded instead of rejected ("Only one completed release").
+    body["releases"] = staged
     edits.tracks().update(packageName=PACKAGE_NAME, editId=edit_id, track=track, body=body).execute()
     edits.commit(packageName=PACKAGE_NAME, editId=edit_id).execute()
     ok(f"Staged release on '{track}' is now at 100%.")

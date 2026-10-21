@@ -41,10 +41,14 @@ describe('web routing (brewmie-78/79)', () => {
   const r = src('public/_redirects')
   const rules = r.split('\n').filter((l) => l.trim() && !l.startsWith('#'))
   it('maps the shell asset paths under /app/ and normalises /app, with no explicit index rewrite', () => {
-    expect(rules).toContain('/app   /app/   301')
-    expect(rules.some((l) => /^\/app\/\*\s+\/index\.html\s+200$/.test(l))).toBe(true)
-    expect(rules.some((l) => /^\/\*\s/.test(l))).toBe(false)
-    expect(rules.some((l) => l.includes('.well-known'))).toBe(false)
+    expect(r).toMatch(/^\/app\s+\/app\/\s+301/m)
+    expect(r).toMatch(/^\/app\/assets\/\*\s+\/assets\/:splat\s+200/m)
+    // The SPA shell comes from Pages' built-in fallback: no index.html rewrite, no catch-all,
+    // and no 404.html (adding one disabled the fallback and /app/ went 404 on 2026-10-22).
+    expect(r).not.toMatch(/\/index\.html\s+200/)
+    expect(r).not.toMatch(/^\/\*\s/m)
+    expect(existsSync(path.join(root, 'public/404.html'))).toBe(false)
+    expect(src('index.html')).toContain('<link rel="canonical" href="https://brewmie.app/app/" />')
   })
   it('has a real 404 page, and the manifest and canonical point at /app/', () => {
     // No 404.html: it disables Pages' built-in SPA fallback that /app/ relies on (seen live 2026-10-22).

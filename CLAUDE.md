@@ -126,13 +126,14 @@ matching filename patterns.
   none.
 - The permission string promises "rough location", so `src/lib/weather.ts`
   rounds the coordinates to one decimal place (about 11 km) before they go to
-  Open-Meteo; a fence test keeps App.tsx from building that URL itself. The
+  MET Norway; a fence test keeps App.tsx from building that URL itself. The
   privacy policy (`public/privacy.html`, live at brewmie.app/privacy)
   discloses it under "Location and weather" and names every processor.
   Keep the three in step: plist string, rounding, policy.
+- Weather provider (audit brewmie-68): Open-Meteo's free tier is non-commercial, so the lookup uses MET Norway Locationforecast 2.0 (`weatherUrl` / `parseWeather` in `src/lib/weather.ts`, same `{ temp, humidity }` shape). Hero and SubHeader append "MET Norway" and `public/privacy.html` names it; browsers drop a scripted User-Agent, so the header is best effort and the Origin identifies the app. Needs an OTA to reach users.
 - Every Capacitor plugin is on the 6.x line, matching the 6.2.1 core. The ATT
-  plugin was removed (nothing called it). `npm install` still needs
-  `--legacy-peer-deps`, now for one reason only:
+  plugin was removed (nothing called it). `.npmrc` carries
+  `legacy-peer-deps=true` (so a fresh `npm ci` works), now for one reason only:
   `@codetrix-studio/capacitor-google-auth@3.3.6` declares a peer of
   `@capacitor/core@^5`.
 - `ios/` and `android/` are gitignored, so none of the native config above is

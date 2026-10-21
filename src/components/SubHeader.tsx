@@ -1,6 +1,7 @@
 import type { AppTab, BrewmieState } from '../types'
 import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
+import { WEATHER_ATTRIBUTION } from '../lib/weather'
 
 interface SubHeaderProps {
   activeTab: AppTab
@@ -55,7 +56,7 @@ function getBrewSubLine(state: BrewmieState, t: T, weather?: { temp: number; hum
     let key = 'subheader.weatherNeutral'
     if (weather.humidity > 70) key = 'subheader.weatherHumid'
     else if (weather.humidity < 40) key = 'subheader.weatherDry'
-    parts.push(t(key, { temp: weather.temp, humidity: weather.humidity }))
+    parts.push(`${t(key, { temp: weather.temp, humidity: weather.humidity })} · ${WEATHER_ATTRIBUTION}`)
   }
 
   return parts.length > 0 ? parts.join(' · ') : null

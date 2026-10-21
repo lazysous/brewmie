@@ -18,7 +18,7 @@ import { Capacitor } from '@capacitor/core'
 import { rescheduleAllReminders } from './lib/notifications'
 import { trackScreen, track } from './lib/analytics'
 import type { AlgoParams } from './lib/supabase'
-import { openMeteoUrl } from './lib/weather'
+import { weatherUrl, parseWeather, WEATHER_USER_AGENT } from './lib/weather'
 
 // Native iOS opens Apple sign-in directly; Android opens Google directly.
 // Web falls back to the AuthModal which offers multiple providers (no native
@@ -199,13 +199,10 @@ export function App() {
     if (!navigator.geolocation) return
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        const url = openMeteoUrl(coords.latitude, coords.longitude)
-        fetch(url).then(r => r.json()).then(data => {
-          const temp = data?.current?.temperature_2m
-          const humidity = data?.current?.relative_humidity_2m
-          if (typeof temp === 'number' && typeof humidity === 'number') {
-            setWeather({ temp: Math.round(temp), humidity: Math.round(humidity) })
-          }
+        const url = weatherUrl(coords.latitude, coords.longitude)
+        fetch(url, { headers: { 'User-Agent': WEATHER_USER_AGENT } }).then(r => r.json()).then(data => {
+          const w = parseWeather(data)
+          if (w) setWeather(w)
         }).catch(() => {})
       },
       () => {},

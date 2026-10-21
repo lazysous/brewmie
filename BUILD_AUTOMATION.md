@@ -218,6 +218,9 @@ their reported version.
 
 ## 4b. Tests (run before every OTA)
 
+Install with plain `npm ci` or `npm install`: `.npmrc` sets `legacy-peer-deps=true`
+(the Google sign-in plugin declares a peer of `@capacitor/core@^5`), so no flag is needed.
+
 ```bash
 npm test            # vitest, offline, a few seconds
 npm run typecheck   # tsc --noEmit

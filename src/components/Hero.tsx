@@ -1,4 +1,5 @@
 import React from 'react'
+import { WEATHER_ATTRIBUTION } from '../lib/weather'
 import { createPortal } from 'react-dom'
 import { Capacitor } from '@capacitor/core'
 import type { AppTab, BrewmieState, AppAction } from '../types'
@@ -49,7 +50,7 @@ function weatherLabel(weather: HeroProps['weather'], t: T): string | null {
   let key = 'hero.weatherNeutral'
   if (weather.humidity > 70) key = 'hero.weatherHumid'
   else if (weather.humidity < 40) key = 'hero.weatherDry'
-  return t(key, { temp: weather.temp, humidity: weather.humidity })
+  return `${t(key, { temp: weather.temp, humidity: weather.humidity })} · ${WEATHER_ATTRIBUTION}`
 }
 
 function brewCopy(state: BrewmieState, weather: HeroProps['weather'], t: T): HeroCopy {

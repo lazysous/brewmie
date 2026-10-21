@@ -34,8 +34,52 @@ describe('consentState()', () => {
     expect(consentState()).toBe('denied')
   })
 
-  it('is granted outside the EU/UK without any banner', async () => {
+  // Adjusted for brewmie-11: the community dataset is opt-in for everyone, so a user
+  // outside the EU/UK is 'pending' until they choose (was silently 'granted').
+  it('is pending outside the EU/UK until the person chooses', async () => {
     tz('Australia/Melbourne')
+    const { consentState } = await import('../src/lib/analytics')
+    expect(consentState()).toBe('pending')
+  })
+
+  it('a non-EU user silently consented by the old default (seen=true, optOut=false) is asked once', async () => {
+    tz('Australia/Melbourne')
+    localStorage.setItem('hasSeenConsent', 'true')
+    localStorage.setItem('analyticsOptOut', 'false')
+    const { consentState } = await import('../src/lib/analytics')
+    expect(consentState()).toBe('pending')
+  })
+
+  it('a non-EU explicit opt-out is kept, never re-asked', async () => {
+    tz('Australia/Melbourne')
+    localStorage.setItem('hasSeenConsent', 'true')
+    localStorage.setItem('analyticsOptOut', 'true')
+    const { consentState } = await import('../src/lib/analytics')
+    expect(consentState()).toBe('denied')
+  })
+
+  it('setCommunityChoice(true) grants in any region and keeps the legacy keys in step', async () => {
+    tz('Australia/Melbourne')
+    const { consentState, setCommunityChoice } = await import('../src/lib/analytics')
+    setCommunityChoice(true)
+    expect(consentState()).toBe('granted')
+    expect(localStorage.getItem('analyticsOptOut')).toBe('false')
+    expect(localStorage.getItem('hasSeenConsent')).toBe('true')
+  })
+
+  it('setCommunityChoice(false) denies, and a later grant (Setup switch) wins over the old opt-out', async () => {
+    tz('Europe/London')
+    const { consentState, setCommunityChoice } = await import('../src/lib/analytics')
+    setCommunityChoice(false)
+    expect(consentState()).toBe('denied')
+    setCommunityChoice(true)
+    expect(consentState()).toBe('granted')
+  })
+
+  it('an EU user who answered the old banner keeps the answer', async () => {
+    tz('Europe/Madrid')
+    localStorage.setItem('hasSeenConsent', 'true')
+    localStorage.setItem('analyticsOptOut', 'false')
     const { consentState } = await import('../src/lib/analytics')
     expect(consentState()).toBe('granted')
   })

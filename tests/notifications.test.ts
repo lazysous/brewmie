@@ -45,7 +45,6 @@ import {
   NOTIFICATION_IDS,
   pickVariant,
   scheduleMaintReminder,
-  scheduleDailyPing,
   scheduleBeanReminders,
   rescheduleAllReminders,
 } from '../src/lib/notifications'
@@ -163,18 +162,6 @@ describe('scheduleMaintReminder', () => {
     await scheduleMaintReminder('maintBackflush', due)
     const call = scheduleMock.mock.calls[0][0]
     expect(call.at).toEqual(new Date('2026-10-05T09:00:00'))
-  })
-})
-
-describe('scheduleDailyPing', () => {
-  it('schedules now + 24h under the stable dailyPing id', async () => {
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date('2026-10-05T06:00:00.000Z'))
-    await scheduleDailyPing((k) => k)
-    expect(scheduleMock).toHaveBeenCalledTimes(1)
-    const call = scheduleMock.mock.calls[0][0]
-    expect(call.id).toBe(1004)
-    expect(call.at).toEqual(new Date('2026-10-06T06:00:00.000Z'))
   })
 })
 

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from '../hooks/useTranslation'
-import { isEURegion } from '../lib/region'
+import { consentState, setCommunityChoice, CONSENT_EVENT } from '../lib/analytics'
 
-const SEEN_KEY = 'hasSeenConsent'
 const OPT_OUT_KEY = 'analyticsOptOut'
 
 export function useConsent() {
@@ -13,11 +12,10 @@ export function useConsent() {
 }
 
 /**
- * GDPR-minimum consent banner. Shows ONLY for EU/UK timezone users on their
- * first visit. Everyone else is silently consented (the default).
- * Matches Lazy Sous's pattern. Anonymous shot data + GA are on by default; the
- * banner is informational + offers one tap to opt out for users in regions
- * that legally need the prompt.
+ * One-time, opt-in choice for the anonymous community dataset and analytics (audit
+ * brewmie-11). Shown to EVERY user whose consentState() is 'pending', in every region,
+ * including existing users the old code silently consented. Nothing is shared before
+ * the answer. The Setup switch changes the same state later.
  */
 export function ConsentBanner() {
   const { t } = useTranslation()
@@ -25,41 +23,39 @@ export function ConsentBanner() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (localStorage.getItem(SEEN_KEY)) return
-    if (!isEURegion()) {
-      // Non-EU: silently default to consented, no prompt.
-      localStorage.setItem(SEEN_KEY, 'true')
-      localStorage.setItem(OPT_OUT_KEY, 'false')
-      return
+    let id: ReturnType<typeof setTimeout> | undefined
+    const sync = () => {
+      if (id) { clearTimeout(id); id = undefined }
+      if (consentState() !== 'pending') { setVisible(false); return }
+      id = setTimeout(() => setVisible(true), 2200)
     }
-    // EU: show the small notice after the app has rendered.
-    const id = setTimeout(() => setVisible(true), 2200)
-    return () => clearTimeout(id)
+    sync()
+    // The Setup switch answers the same question; keep the banner in step with it.
+    window.addEventListener(CONSENT_EVENT, sync)
+    return () => { if (id) clearTimeout(id); window.removeEventListener(CONSENT_EVENT, sync) }
   }, [])
 
   if (!visible) return null
 
   function acknowledge() {
-    localStorage.setItem(SEEN_KEY, 'true')
-    localStorage.setItem(OPT_OUT_KEY, 'false')
+    setCommunityChoice(true)
     setVisible(false)
   }
 
   function optOut() {
-    localStorage.setItem(SEEN_KEY, 'true')
-    localStorage.setItem(OPT_OUT_KEY, 'true')
+    setCommunityChoice(false)
     setVisible(false)
   }
 
   return createPortal(
     <div className="cb-toast" role="dialog" aria-label={t('consent.ariaLabel')}>
-      <p className="cb-toast__body">{t('consent.body')}</p>
+      <p className="cb-toast__body">{t('consent.shareBody')}</p>
       <div className="cb-toast__actions">
         <button className="cb-toast__ok" onClick={acknowledge} type="button">
-          {t('consent.allow')}
+          {t('consent.shareAllow')}
         </button>
         <button className="cb-toast__opt" onClick={optOut} type="button">
-          {t('consent.decline')}
+          {t('consent.shareDecline')}
         </button>
       </div>
 

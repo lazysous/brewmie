@@ -10,11 +10,11 @@ Brewmie is a free espresso dial-in coach for home baristas. It runs on iOS and A
 - Bean profiles that travel across bags, with roast date awareness
 - Tamp pressure and ambient humidity factored into the model
 - Lifetime shot history and personal benchmarks (Premium)
-- CSV export of every shot (Premium)
+- CSV export of every shot (free for everyone)
 - Works offline; sign-in is optional
 
 ## Pricing
-Free to download and use, including the shot timer, recipe set, and dial-in coach. Premium is a one-off purchase, currently at an introductory launch price, localised by App Store and Google Play in each region. Premium unlocks per-grinder dial units, lifetime shot history, personal benchmarks, and CSV export. There is no subscription, ever.
+Free to download and use, including the shot timer, recipe set, and dial-in coach. Premium is a one-off purchase, currently at an introductory launch price, localised by App Store and Google Play in each region. Premium unlocks per-grinder dial units, lifetime shot history and personal benchmarks (CSV export is free). There is no subscription, ever.
 
 ## Who it is for
 Home baristas with prosumer espresso machines and single-dosing grinders. Coffee gift recipients who own the kit and want to actually use it. Cafes wanting a consistent dial-in log across staff. People who keep a paper notebook full of "grind 5.5, too sour, try 5.0" scribbles and want to throw it away.
@@ -26,7 +26,7 @@ Home baristas with prosumer espresso machines and single-dosing grinders. Coffee
 - Different from subscription apps: Brewmie is a one-time Premium purchase, never a subscription.
 
 ## Privacy
-Brewmie has no advertising SDKs, no data brokers, no tracking. Google Analytics 4 (first-party, aggregate only) can be disabled in Setup > Privacy. Sign-in is optional and uses Sign in with Apple or Sign in with Google. Account deletion is one tap from the profile menu and is a hard delete (shots, profile, and the auth record all removed). Encryption in transit (HTTPS/TLS) for all server traffic. No ATT prompt because the app does not track.
+Brewmie has no advertising SDKs, no data brokers, no tracking. Shots stay on the phone unless you sign in. Anonymous shot statistics and basic usage (Google Analytics 4, aggregate only) are shared only after the person chooses to share, signed in or not: Brewmie asks once, and nothing is sent until the answer is yes. Sharing can be switched off in Setup > Privacy at any time. Sign-in is optional and uses Sign in with Apple or Sign in with Google. Account deletion is one tap from the profile menu and is a hard delete (shots, profile, and the auth record all removed). Encryption in transit (HTTPS/TLS) for all server traffic. No ATT prompt because the app does not track.
 
 ## Links
 - Website: https://brewmie.app

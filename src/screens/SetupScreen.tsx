@@ -16,6 +16,7 @@ import { useTranslation } from '../hooks/useTranslation'
 import type { TParams } from '../lib/i18n'
 import { TIER_1_LOCALES, TIER_2_LOCALES } from '../lib/i18n'
 import { useTier } from '../hooks/useTier'
+import { consentState, setCommunityChoice, CONSENT_EVENT } from '../lib/analytics'
 import { PremiumModal } from '../components/PremiumModal'
 import { deleteUserAccount } from '../lib/supabase'
 import {
@@ -433,14 +434,21 @@ export function SetupScreen({ state, dispatch, onSignIn }: SetupScreenProps) {
 
   // ── Privacy / consent local state ───────────────────────────────────────────
   const [sharingOn, setSharingOn] = useState<boolean>(
-    () => localStorage.getItem('analyticsOptOut') !== 'true'
+    () => consentState() === 'granted'
   )
 
   function handleSharingToggle() {
     const next = !sharingOn
     setSharingOn(next)
-    localStorage.setItem('analyticsOptOut', next ? 'false' : 'true')
+    setCommunityChoice(next)
   }
+
+  // The consent banner answers the same question; follow it.
+  useEffect(() => {
+    const sync = () => setSharingOn(consentState() === 'granted')
+    window.addEventListener(CONSENT_EVENT, sync)
+    return () => window.removeEventListener(CONSENT_EVENT, sync)
+  }, [])
 
   // ── Machine local state ──────────────────────────────────────────────────────
   const [machineBrand, setMachineBrand] = useState<string>(state.machine?.brand ?? '')

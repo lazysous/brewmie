@@ -404,10 +404,9 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
   // ── Handlers ──────────────────────────────────────────────────────────────
 
   // CSV export — Title Case headers, ISO dates, clean column order matching
-  // the field names the app uses. Premium-gated.
+  // the field names the app uses. Open to everyone (brewmie-63); Insights itself is Premium.
   async function handleExportCsv() {
     if (shots.length === 0) return
-    if (isFree) { setPremiumTrigger('export'); return }
     const cols: { key: keyof ShotEntry; label: string }[] = [
       { key: 'timestamp',     label: 'Timestamp' },
       { key: 'inputGrind',    label: 'Grind' },
@@ -748,8 +747,8 @@ export function InsightsScreen({ state, dispatch, onSignIn }: InsightsScreenProp
         )}
       </div>
 
-      {/* Export history (premium — gated on native, open on web while testing) */}
-      {!isFree && shots.length > 0 && (
+      {/* Export history: available to everyone (brewmie-63) */}
+      {shots.length > 0 && (
         <button
           type="button"
           className="ix-export-btn"

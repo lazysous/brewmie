@@ -134,6 +134,7 @@ describe('change-based sync', () => {
 
   it('signed out: a new shot goes to the public dataset only', async () => {
     seed({ userId: null, shots: [] })
+    localStorage.setItem('brewmie_community_choice', 'granted') // opt-in (brewmie-11)
     const { result } = renderHook(() => useBrewmie())
     await flush()
     act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
@@ -156,6 +157,15 @@ describe('change-based sync', () => {
     act(() => result.current.dispatch({ type: 'UPDATE_SHOT', payload: { id: '9', updates: { score: 90 } } }))
     await flush()
     expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
+  })
+
+  it('signed out with no community choice made (non-EU): nothing is posted until the person opts in (brewmie-11)', async () => {
+    seed({ userId: null, shots: [] })
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('p1', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
+    await flush()
+    expect(calls.upsertPublicShot).not.toHaveBeenCalled()
   })
 
   it('analytics opt-out stops the public write', async () => {
@@ -298,6 +308,7 @@ describe('community uploads are for shots recorded this session (audit brewmie-0
   })
   it('a shot recorded now with a taste is posted once', async () => {
     seed({ userId: null, shots: [] })
+    localStorage.setItem('brewmie_community_choice', 'granted') // opt-in (brewmie-11)
     const { result } = renderHook(() => useBrewmie())
     await flush()
     act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('n1', { tasteFlavor: 'balanced' }), timestamp: new Date().toISOString() } }))
@@ -309,6 +320,7 @@ describe('community uploads are for shots recorded this session (audit brewmie-0
 describe('community post waits for the taste rating (audit brewmie-59)', () => {
   it('a shot recorded this session is posted once, when its taste arrives, and not again on a later edit', async () => {
     seed({ userId: null, shots: [] })
+    localStorage.setItem('brewmie_community_choice', 'granted') // opt-in (brewmie-11)
     const { result } = renderHook(() => useBrewmie())
     await flush()
     const fresh = { ...shot('t1'), timestamp: new Date().toISOString() }

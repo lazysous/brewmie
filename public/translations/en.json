@@ -102,7 +102,10 @@
     "title": "Cookies",
     "body": "We use cookies to improve the app. Anonymous, never sold.",
     "allow": "OK",
-    "decline": "No thanks"
+    "decline": "No thanks",
+    "shareBody": "Share anonymous shot statistics (grind, dose, yield, time, taste) and basic app usage to help improve Brewmie? No name, email or account is attached. Nothing is shared unless you say yes. You can change this any time in Setup.",
+    "shareAllow": "Share",
+    "shareDecline": "Don't share"
   },
   "auth": {
     "ariaLabel": "Sign in",
@@ -272,7 +275,7 @@
     "feature1Head": "Your gear, your units",
     "feature1Sub": "Add your grinder, tamper, and beans. Recommendations land in your units.",
     "feature2Head": "Lifetime history",
-    "feature2Sub": "Every shot saved. Export anytime.",
+    "feature2Sub": "Every shot saved, for good.",
     "feature3Head": "Personal benchmarks",
     "feature3Sub": "Compare each shot against your own best.",
     "cta": "Unlock Premium",

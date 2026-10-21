@@ -6,7 +6,7 @@
 //   1001 maintBackflush  fires at 09:00 on the backflush due day
 //   1002 maintDescale    fires at 09:00 on the descale due day
 //   1003 maintGrinder    fires at 09:00 on the grinder clean due day
-//   1004 dailyPing       fires 24h after the most recent shot save
+//   1004 dailyPing       reserved id, never scheduled (the daily ping was removed)
 //   1005 rateReminder    fires 10 min after a shot is logged if not rated
 //   1006 beansPeak       fires at 09:00 on day 7 from roastDate (positive)
 //   1007 beansStale      fires at 09:00 on day 30 from roastDate
@@ -47,7 +47,6 @@ export const NOTIFICATION_IDS = {
 } as const
 
 const RATE_REMINDER_DELAY_MS = 10 * 60 * 1000
-const DAILY_PING_DELAY_MS = 24 * 60 * 60 * 1000
 const BEANS_PEAK_DAYS = 7
 const BEANS_STALE_DAYS = 30
 
@@ -131,24 +130,6 @@ export async function scheduleMaintReminder(
 }
 
 /**
- * Schedule the 24-hour-after-coffee daily ping. Call this every time a shot
- * is saved. Stable ID means each new shot overwrites the previous schedule,
- * so the ping naturally rolls forward to fire 24h after the most recent shot.
- * If the user keeps brewing daily, it never fires. If they stop, it lands once.
- */
-export async function scheduleDailyPing(t?: Translator): Promise<void> {
-  await getEnDict()
-  const id = NOTIFICATION_IDS.dailyPing
-  const at = new Date(Date.now() + DAILY_PING_DELAY_MS)
-  const { title, body } = pickVariant('dailyPing', t)
-  await scheduleLocalNotification({ id, title, body, at })
-}
-
-export async function cancelDailyPing(): Promise<void> {
-  await cancelLocalNotification(NOTIFICATION_IDS.dailyPing)
-}
-
-/**
  * Schedule bean-age reminders relative to the current bag's roast date.
  * Two notifications: a positive ping at day 7 (peak window) and a swap-out
  * nudge at day 30 (stale). Both at 09:00 local.
@@ -211,9 +192,8 @@ function isoToDate(iso: string | null | undefined): Date | null {
  * Safe to call repeatedly (on app open, after maintenance edits, after
  * roast date change).
  *
- * The two event-driven notifications (rateReminder and dailyPing) are NOT
- * cancelled here: they're scheduled by the shot-save path with stable IDs
- * that overwrite on each new shot.
+ * The event-driven rateReminder is NOT cancelled here: it is scheduled by the
+ * shot-save path with a stable ID that overwrites on each new shot.
  */
 export async function rescheduleAllReminders(
   state: BrewmieState,

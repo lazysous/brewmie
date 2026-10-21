@@ -11,9 +11,10 @@ const EVENT = 'brewmie:tier-override'
 
 const OVERRIDE_ENABLED: boolean = import.meta.env.DEV
 
-// While we're testing on web, gating is OFF. Every feature is available, no
-// modal, no locks, no PREMIUM badges. Native apps (iOS/Android) keep the full
-// free/premium model — they're where monetisation will live once shipped.
+// The web build (brewmie.app/app) is deliberately ungated: there is no store
+// purchase path on the web, so every feature is available, with no modal, no
+// locks and no PREMIUM badges. Native apps (iOS/Android) keep the full
+// free/premium model, because the stores are where Premium is bought.
 const GATING_ENABLED = Capacitor.isNativePlatform()
 
 function readOverride(): Tier | null {

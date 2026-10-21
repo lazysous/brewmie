@@ -1,9 +1,18 @@
 # Brewmie Cloudflare Pages routing.
 #
-# Root '/' serves the marketing landing page. All other paths fall through
-# to direct file serving (assets, /privacy, /support, /delete-account,
-# /ota/builds/*, /.well-known/*, etc.). The SPA's index.html still exists
-# at dist/index.html for the Capacitor bundle; visiting brewmie.app/index.html
-# directly would still hit it, but nothing on the marketing site links there.
+# '/' is the marketing landing page. The web app lives at /app/ and nowhere else:
+# /app is normalised to /app/ (301); /app/ and /app/* serve the SPA shell with a 200
+# rewrite. The shell keeps Vite's relative base ('./', needed by Capacitor and OTA), so
+# at /app/ its relative URLs resolve under /app/ and the four static folders/files below
+# are mapped back to their real root paths BEFORE the catch-all. Everything else falls
+# through to real files (/privacy, /support, /.well-known/*, /ota/builds/*, ...) and any
+# unknown path gets public/404.html with a real 404 status (there is deliberately NO
+# '/* /index.html 200' rule).
 
 /   /landing.html   200
+/app   /app/   301
+/app/assets/*   /assets/:splat   200
+/app/fonts/*   /fonts/:splat   200
+/app/translations/*   /translations/:splat   200
+/app/manifest.json   /manifest.json   200
+/app/*   /index.html   200

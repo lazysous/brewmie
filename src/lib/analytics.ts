@@ -23,19 +23,43 @@ function userOptedOut(): boolean {
 }
 
 /**
- * Whether anything may leave the device. 'denied' = the user opted out; 'pending' =
- * EU/UK and the consent banner has not been answered yet; 'granted' otherwise.
+ * Whether anything may leave the device (audit brewmie-11): one switch, one state, for the
+ * anonymous community dataset AND Google Analytics. Opt-in for everyone.
+ *  - 'denied'  : analyticsOptOut === 'true' (an explicit opt-out always wins), or the
+ *                person chose "no" (COMMUNITY_CHOICE_KEY === 'denied').
+ *  - 'granted' : the person chose "yes" (COMMUNITY_CHOICE_KEY === 'granted'), or they
+ *                answered the old EU/UK banner (hasSeenConsent set in an EU/UK timezone).
+ *  - 'pending' : everything else, in every region. That includes a non-EU user the old
+ *                code silently consented (hasSeenConsent set by the default, no choice
+ *                key): they are asked once.
  * Analytics and community-dataset writes proceed only on 'granted'.
  */
 export type ConsentState = 'granted' | 'denied' | 'pending'
+export const COMMUNITY_CHOICE_KEY = 'brewmie_community_choice'
+export const CONSENT_EVENT = 'brewmie:consent'
+
+function readKey(k: string): string | null {
+  try { return typeof localStorage !== 'undefined' ? localStorage.getItem(k) : null } catch { return null }
+}
+
 export function consentState(): ConsentState {
   if (userOptedOut()) return 'denied'
-  if (isEURegion()) {
-    let seen = false
-    try { seen = typeof localStorage !== 'undefined' && !!localStorage.getItem('hasSeenConsent') } catch { /* ignore */ }
-    if (!seen) return 'pending'
-  }
-  return 'granted'
+  const choice = readKey(COMMUNITY_CHOICE_KEY)
+  if (choice === 'denied') return 'denied'
+  if (choice === 'granted') return 'granted'
+  // Legacy: only an EU/UK answer to the old banner was ever an explicit choice.
+  if (isEURegion() && readKey('hasSeenConsent')) return 'granted'
+  return 'pending'
+}
+
+/** Record the person's choice (banner or Setup switch). Keeps the legacy keys in step. */
+export function setCommunityChoice(granted: boolean) {
+  try {
+    localStorage.setItem(COMMUNITY_CHOICE_KEY, granted ? 'granted' : 'denied')
+    localStorage.setItem('hasSeenConsent', 'true')
+    localStorage.setItem('analyticsOptOut', granted ? 'false' : 'true')
+  } catch { /* ignore */ }
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(CONSENT_EVENT))
 }
 
 declare global {

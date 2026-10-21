@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from '../hooks/useTranslation'
+import { isEURegion } from '../lib/region'
 
 const SEEN_KEY = 'hasSeenConsent'
 const OPT_OUT_KEY = 'analyticsOptOut'
@@ -18,17 +19,6 @@ export function useConsent() {
  * banner is informational + offers one tap to opt out for users in regions
  * that legally need the prompt.
  */
-function isEURegion(): boolean {
-  if (typeof Intl === 'undefined') return false
-  try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-    // EU member states + UK + Norway/Switzerland/Iceland (EEA) + Ceuta
-    return tz.startsWith('Europe/') || tz === 'Africa/Ceuta' || tz === 'Atlantic/Canary' || tz === 'Atlantic/Madeira' || tz === 'Atlantic/Azores'
-  } catch {
-    return false
-  }
-}
-
 export function ConsentBanner() {
   const { t } = useTranslation()
   const [visible, setVisible] = useState(false)

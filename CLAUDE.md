@@ -139,6 +139,8 @@ matching filename patterns.
 
 ## Load-bearing gotchas
 
+- Consent gate (audit 2026-10): `consentState()` in `src/lib/analytics.ts` returns 'denied' on opt-out, 'pending' for EU/UK timezones until the banner is answered (`hasSeenConsent`), else 'granted'. `track()` and the community-dataset post in `useBrewmie.ts` act only on 'granted', and fonts are self-hosted in `public/fonts` so nothing reaches Google before consent.
+
 - **A shot joins the community dataset once it has a taste rating** (OTA 1.1.10, audit brewmie-59): the public post happens when `tasteFlavor` first lands on a shot recorded this session, not at creation, so the rating reaches the dataset; a later edit does not re-post. The 'Always do this' switch on the results card was removed with its `SET_AUTO_APPLY` action and `autoApplyAdjustments` field (brewmie-32): nothing ever read it.
 - **Narrow-range grinders get a real move** (OTA 1.1.9, audit brewmie-04): when the flow signal is real and the modifiers did not cancel it (same sign after summing) but the percent-of-range move snapped to zero, `computeAdjustments` moves one dial step in the signal direction instead of answering "cancelled out" (Mazzer Mini 1-8 at 18 s / 40 ml is pinned to -0.5). Degenerate ranges keep their pinned behaviour, and Setup saves `maxSetting` strictly above `minSetting`.
 - **Only shots recorded this session go to the community dataset** (OTA 1.1.8, audit brewmie-06): shots that arrive from the server on sign-in are never re-posted (session-start timestamp rule in useBrewmie). Account deletion keeps the `analyticsOptOut` choice and resets in-memory state before the reload, in both delete flows (brewmie-14).

@@ -5,6 +5,8 @@
 // raw shot timestamps, or location. Just aggregate behavioural signals that
 // tell us what's working in the product.
 
+import { isEURegion } from './region'
+
 const GA_ID = import.meta.env.VITE_GA_ID as string | undefined
 let loaded = false
 let loading = false
@@ -18,6 +20,22 @@ export function getBundleVersion() { return bundleVersion }
 function userOptedOut(): boolean {
   if (typeof localStorage === 'undefined') return false
   return localStorage.getItem('analyticsOptOut') === 'true'
+}
+
+/**
+ * Whether anything may leave the device. 'denied' = the user opted out; 'pending' =
+ * EU/UK and the consent banner has not been answered yet; 'granted' otherwise.
+ * Analytics and community-dataset writes proceed only on 'granted'.
+ */
+export type ConsentState = 'granted' | 'denied' | 'pending'
+export function consentState(): ConsentState {
+  if (userOptedOut()) return 'denied'
+  if (isEURegion()) {
+    let seen = false
+    try { seen = typeof localStorage !== 'undefined' && !!localStorage.getItem('hasSeenConsent') } catch { /* ignore */ }
+    if (!seen) return 'pending'
+  }
+  return 'granted'
 }
 
 declare global {
@@ -57,7 +75,7 @@ function loadGtag() {
 
 export function track(event: string, params?: Record<string, string | number | boolean>) {
   if (!GA_ID || typeof window === 'undefined') return
-  if (userOptedOut()) return
+  if (consentState() !== 'granted') return
   loadGtag()
   window.gtag?.('event', event, { bundle_version: bundleVersion, ...(params ?? {}) })
 }

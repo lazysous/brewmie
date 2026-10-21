@@ -37,6 +37,8 @@ function seed(state: Partial<BrewmieState>) {
 const flush = () => act(async () => { await Promise.resolve(); await Promise.resolve() })
 
 beforeEach(() => {
+  // Pin a non-EU zone so the consent gate does not depend on the host machine's timezone.
+  vi.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockReturnValue({ timeZone: 'Australia/Melbourne' } as Intl.ResolvedDateTimeFormatOptions)
   localStorage.clear()
   for (const fn of Object.values(calls)) fn.mockClear()
   calls.bulkUpsertShots.mockImplementation(async () => ({ error: null }))
@@ -137,6 +139,22 @@ describe('change-based sync', () => {
     act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
     await flush()
     expect(calls.upsertShot).not.toHaveBeenCalled()
+    expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
+  })
+
+  it('EU/UK with the consent banner unanswered posts nothing; the same shot posts after consent is granted', async () => {
+    vi.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockReturnValue({ timeZone: 'Europe/London' } as Intl.ResolvedDateTimeFormatOptions)
+    seed({ userId: null, shots: [] })
+    const { result } = renderHook(() => useBrewmie())
+    await flush()
+    act(() => result.current.dispatch({ type: 'ADD_SHOT', payload: { ...shot('9', { tasteFlavor: 'sour' }), timestamp: new Date().toISOString() } }))
+    await flush()
+    expect(calls.upsertPublicShot).not.toHaveBeenCalled()
+    // The banner is answered with consent; the next shots update re-runs the effect.
+    localStorage.setItem('hasSeenConsent', 'true')
+    localStorage.setItem('analyticsOptOut', 'false')
+    act(() => result.current.dispatch({ type: 'UPDATE_SHOT', payload: { id: '9', updates: { score: 90 } } }))
+    await flush()
     expect(calls.upsertPublicShot).toHaveBeenCalledTimes(1)
   })
 

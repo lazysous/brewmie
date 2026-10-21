@@ -2,7 +2,7 @@ import { useReducer, useEffect, useRef, useCallback } from 'react'
 import type { BrewmieState, AppAction, ShotEntry } from '../types'
 import { loadState, saveState, clearState, defaultState, defaultMaintenanceRecord } from '../lib/storage'
 import { upsertShot, upsertPublicShot, upsertUserConfig, bulkUpsertShots } from '../lib/supabase'
-import { track } from '../lib/analytics'
+import { track, consentState } from '../lib/analytics'
 import { unionShots, addTombstone } from '../lib/shots'
 import { isConfigHydrated } from '../lib/hydration'
 import { deleteShot } from '../lib/supabase'
@@ -247,9 +247,8 @@ export function useBrewmie(): UseBrewmieReturn {
       return
     }
     const posted = publicPostedRef.current
-    let optedOut = false
-    try { optedOut = localStorage.getItem('analyticsOptOut') === 'true' } catch { /* ignore */ }
-    if (optedOut) return
+    // Nothing leaves the device until consent is granted (opt-out, or EU/UK with the banner unanswered).
+    if (consentState() !== 'granted') return
     for (const shot of state.shots) {
       if (posted.has(shot.id)) continue
       if (!shot.tasteFlavor) continue
